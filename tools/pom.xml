@@ -2,14 +2,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>adbeback</artifactId>
-		<groupId>fr.k2i</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<groupId>fr.k2i.adbeback.addonf</groupId>
+        <artifactId>addonf</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>fr.k2i</groupId>
+
+	<groupId>fr.k2i.adbeback.addonf.tools</groupId>
 	<artifactId>tools</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ADBEBACK - TOOLS</name>
+	<name>TOOLS</name>
+
 	<dependencies>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -23,10 +25,5 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>
-
-        <!--        <dependency>
-                    <groupId>commons-beanutils</groupId>
-                    <artifactId>commons-beanutils</artifactId>
-                </dependency>-->
 	</dependencies>
 </project>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+  <head>
+    <title>Layout</title>
+
+      <link rel="stylesheet" th:href="@{/lib/bootstrap-3.0.2/css/bootstrap.css}" href="/lib/bootstrap-3.0.2/css/bootstrap.css"/>
+      <link rel="stylesheet" th:href="@{/css/justified-nav.css}" href="/css/justified-nav.css"/>
+      <link rel="stylesheet" th:href="@{/lib/bootstrap-3.0.2/css/bootstrap-theme.css}" href="/lib/bootstrap-3.0.2/css/bootstrap-theme.css"/>
+
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="//code.jquery.com/jquery.js" th:src="@{/js/jquery-2.0.3.js}"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="lib/bootstrap-3.0.2/js/bootstrap.min.js" th:src="@{/lib/bootstrap-3.0.2/js/bootstrap.min.js}"></script>
+
+<!--      <script src="lib/angular-1.2.0-rc.3/angular.js" th:src="@{/lib/angular-1.2.0-rc.3/angular.js}"></script>
+      <script src="lib/angular-1.2.0-rc.3/angular-animate.js" th:src="@{/lib/angular-1.2.0-rc.3/angular-animate.js}"></script>
+      <script src="lib/angular-1.2.0-rc.3/angular-resource.js" th:src="@{/lib/angular-1.2.0-rc.3/angular-resource.js}"></script>
+      <script src="lib/angular-1.2.0-rc.3/angular-route.js" th:src="@{/lib/angular-1.2.0-rc.3/angular-route.js}"></script>
+
+      <script src="js/application/app.js" th:src="@{/js/application/app.js}"></script>
+      <script src="js/animation/animations.js" th:src="@{/js/animation/animations.j}"></script>
+      <script src="js/controller/controllers.js" th:src="@{/js/controller/controllers.js}"></script>
+      <script src="js/filter/filters.js" th:src="@{/js/filter/filters.js}"></script>
+      <script src="js/service/services.js" th:src="@{/js/service/services.js}"></script>-->
+
+  </head>
+  <body>
+  <div class="main">
+      <div class="container">
+
+          <div class="masthead">
+              <h3 class="text-muted">A2onf</h3>
+              <ul class="nav nav-justified">
+                  <li class="active"><a href="#">Home</a></li>
+                  <li><a href="#">Projects</a></li>
+                  <li><a href="#">Services</a></li>
+                  <li><a href="#">Downloads</a></li>
+                  <li><a href="#">About</a></li>
+                  <li><a href="#">Contact</a></li>
+              </ul>
+          </div>
+
+          <div style="margin-top: 40px;">
+              <div class="container" layout:fragment="content">
+                  Fake
+              </div>
+          </div>
+
+
+          <!-- Site footer -->
+          <div class="footer">
+              <p>&copy; AdBeBack 2013</p>
+          </div>
+
+      </div>
+
+
+  </div>
+  </body>
+</html>
