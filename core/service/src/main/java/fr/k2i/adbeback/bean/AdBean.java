@@ -8,16 +8,10 @@ public class AdBean implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -427599826972908154L;
-	private String url;
 	private String question;
 	private List<PossibilityBean> possibilities;
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	public String getQuestion() {
+
+    public String getQuestion() {
 		return question;
 	}
 	public void setQuestion(String question) {

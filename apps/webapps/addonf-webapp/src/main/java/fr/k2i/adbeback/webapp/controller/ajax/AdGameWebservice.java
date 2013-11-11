@@ -1,27 +1,22 @@
 package fr.k2i.adbeback.webapp.controller.ajax;
 
-import fr.k2i.adbeback.bean.AdBean;
-import fr.k2i.adbeback.bean.AdGameBean;
-import fr.k2i.adbeback.bean.PossibilityBean;
-import fr.k2i.adbeback.core.business.game.*;
-import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.bean.*;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
 import fr.k2i.adbeback.webapp.facade.PlayerFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
+
+import static fr.k2i.adbeback.webapp.facade.AdGameFacade.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,8 +35,50 @@ public class AdGameWebservice {
     @Autowired
     private PlayerFacade playerFacade;
 
+    @Value("${addonf.ads.location:/videos/}")
+    private String pathAds;
+
+
     @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
     public @ResponseBody AdGameBean createGame(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return adGameFacade.createAdGame(playerFacade.getCurrentPlayer().getId(), request);
     }
+
+    @RequestMapping(value = "/video/{index}", method = RequestMethod.GET)
+    public void streamVideoAd(@PathVariable int index,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<String> videos = (List<String>) request.getSession().getAttribute(ADS_VIDEO);
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        File file = new File(pathAds+videos.get(index));
+        FileInputStream fileInputStream = new FileInputStream(file);
+        int read =0;
+        byte []b = new byte[1024];
+        while((read = fileInputStream.read(b, 0, 1024))>0){
+            outputStream.write(b, 0, read);
+            b = new byte[1024];
+        }
+        fileInputStream.close();
+
+    }
+
+
+    @RequestMapping(value = "/rest/play/{index}/{responseId}", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseAdGameBean play(@RequestParam Integer index, @RequestParam Long responseId,
+                            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        return adGameFacade.userResponse(request,index,responseId);
+
+    }
+
+    @RequestMapping(value = "/rest/noresponse/{index}", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseAdGameBean noResponse(@RequestParam Integer index,
+                                  HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        return adGameFacade.noUserResponse(request,index);
+
+    }
+
 }

@@ -2,23 +2,15 @@
 
 /* Controllers */
 
-function PhoneListCtrl($scope, Phone) {
-  $scope.phones = Phone.query();
-  $scope.orderProp = 'age';
-}
+var adgameControllers = angular.module('adgameControllers', []);
 
-//PhoneListCtrl.$inject = ['$scope', 'Phone'];
+adgameControllers.controller('GameCtrl', ['$scope', 'Game',
+    function($scope, Game) {
+        $scope.phones = Game.query();
+    }]);
 
 
 
-function PhoneDetailCtrl($scope, $routeParams, Phone) {
-  $scope.phone = Phone.get({phoneId: $routeParams.phoneId}, function(phone) {
-    $scope.mainImageUrl = phone.images[0];
-  });
+/* Controllers */
 
-  $scope.setImage = function(imageUrl) {
-    $scope.mainImageUrl = imageUrl;
-  }
-}
 
-//PhoneDetailCtrl.$inject = ['$scope', '$routeParams', 'Phone'];

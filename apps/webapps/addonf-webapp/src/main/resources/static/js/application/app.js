@@ -2,10 +2,22 @@
 
 /* App Module */
 
-angular.module('phonecat', ['phonecatFilters', 'phonecatServices']).
-  config(['$routeProvider', function($routeProvider) {
-  $routeProvider.
-      when('/phones', {templateUrl: 'partials/phone-list.html',   controller: PhoneListCtrl}).
-      when('/phones/:phoneId', {templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl}).
-      otherwise({redirectTo: '/phones'});
-}]);
+var adgameApp = angular.module('adgameApp', [
+    'ngRoute',
+    'adgameControllers',
+    'adgameFilters',
+    'adgameServices'
+]);
+
+adgameApp.config(['$routeProvider',
+    function($routeProvider) {
+        $routeProvider.
+            when('/start', {templateUrl: 'partials/game.html',   controller: 'GameCtrl'}).
+            when('/pause', {templateUrl: 'partials/pause.html', controller: 'PauseCtrl'}).
+            when('/lost', {templateUrl: 'partials/lost.html', controller: 'LostCtrl'}).
+            when('/win', {templateUrl: 'partials/win.html', controller: 'WinCtrl'}).
+            otherwise({redirectTo: '/start'});
+    }]);
+
+
+

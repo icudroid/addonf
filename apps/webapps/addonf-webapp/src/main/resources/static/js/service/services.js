@@ -2,9 +2,12 @@
 
 /* Services */
 
-angular.module('phonecatServices', ['ngResource']).
-    factory('Phone', function($resource){
-  return $resource('phones/:phoneId.json', {}, {
-    query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
-  });
-});
+var adgameServices = angular.module('adgameServices', ['ngResource']);
+
+
+adgameServices.factory('Game', ['$resource',
+    function($resource){
+        return $resource('rest/createGame', {}, {
+            query: {method:'GET', params:{}, isArray:true}
+        });
+    }]);

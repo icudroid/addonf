@@ -10,6 +10,8 @@
 		</encoder>
 	</appender>
 
+    <logger name="org.springframework.security" level="DEBUG"/>
+
 	<root level="DEBUG ">
 		<appender-ref ref="CONSOLE" />
 	</root>

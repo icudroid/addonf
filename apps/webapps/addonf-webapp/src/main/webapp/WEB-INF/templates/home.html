@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout">
+      layout:decorator="layout"
+      ng-app="adgameApp" >
 <head>
 <title th:text="${title}">Title</title>
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
-	href="../../css/bootstrap.min.css" />
+
 </head>
+
+
+
 <body>
     <div layout:fragment="content">
-        home
+        hello
     </div>
 </body>
 </html>
