@@ -17,13 +17,16 @@
 package fr.k2i.adbeback.webapp.config;
 
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,13 +40,70 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "fr.k2i.adbeback")
+@PropertySource(value = "classpath:application.properties")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private ApplicationContext context;
+
+    @Value("${datasource.url}")
+    private String url;
+
+    @Value("${datasource.driverClassName}")
+    private String driverClassName;
+
+    @Value("${datasource.username}")
+    private String username;
+
+    @Value("${datasource.password}")
+    private String password;
+
+    @Value("${datasource.maxActive:100}")
+    private Integer maxActive;
+
+    @Value("${datasource.maxWait:1000}")
+    private Integer maxWait;
+
+    @Value("${datasource.poolPreparedStatements:true}")
+    private Boolean poolPreparedStatements;
+
+    @Value("${datasource.defaultAutoCommit:true}")
+    private Boolean defaultAutoCommit;
+
+
+    /**
+     *
+     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+     <property name="driverClassName" value="${jdbc.driverClassName}"/>
+     <property name="url" value="${jdbc.url}"/>
+     <property name="username" value="${jdbc.username}"/>
+     <property name="password" value="${jdbc.password}"/>
+     <property name="maxActive" value="100"/>
+     <property name="maxWait" value="1000"/>
+     <property name="poolPreparedStatements" value="true"/>
+     <property name="defaultAutoCommit" value="true"/>
+     </bean>
+     * @return
+     */
+
+    @Bean
+    public DataSource  dataSource(){
+        org.apache.commons.dbcp.BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setMaxActive(maxActive);
+        dataSource.setMaxWait(maxWait);
+        dataSource.setPoolPreparedStatements(poolPreparedStatements);
+        dataSource.setDefaultAutoCommit(defaultAutoCommit);
+        return dataSource;
+    }
 
 
     @Bean
@@ -75,6 +135,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                     .antMatchers("/").permitAll()
                     .antMatchers("/home.html").permitAll()
                     .antMatchers("/login").permitAll()
+                    .antMatchers("/lib/**").permitAll()
+                    .antMatchers("/css/**").permitAll()
+                    .antMatchers("/js/**").permitAll()
                     .antMatchers("/**").hasRole("USER")
                     //.fullyAuthenticated()
                     .and()

@@ -14,7 +14,7 @@ public class BrandPossibility extends Possibility {
 	private static final long serialVersionUID = 1785460358105543429L;
 	private Brand brand;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToOne
 	@JoinColumn(name = "BRAND_ID")
 	public Brand getBrand() {
 		return brand;

@@ -137,6 +137,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 				choises.setPossiblities(generatePossibilies(ad, correct,rule));
 				choises.setCorrect(choises.getPossiblities().get(correct));
 				choises.setNumber(i);
+                choises.setAdGame(game);
 				res.put(i, choises);
 
 				i++;

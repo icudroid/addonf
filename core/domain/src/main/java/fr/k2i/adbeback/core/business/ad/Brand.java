@@ -62,33 +62,30 @@ public class Brand extends BaseObject implements Serializable {
 		this.name = name;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((products == null) ? 0 : products.hashCode());
-		return result;
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Brand other = (Brand) obj;
-		if (products == null) {
-			if (other.products != null)
-				return false;
-		} else if (!products.equals(other.products))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Brand)) return false;
 
-	@Override
+        Brand brand = (Brand) o;
+
+        if (!id.equals(brand.id)) return false;
+        if (!logo.equals(brand.logo)) return false;
+        if (!name.equals(brand.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + logo.hashCode();
+        return result;
+    }
+
+    @Override
 	public String toString() {
 		return "Brand [products=" + products + ", id=" + id + "]";
 	}
