@@ -26,6 +26,11 @@ public class HomeController {
     }
 
 
+    @RequestMapping("/game")
+    public String game(Map<String, Object> model) {
+        return "game";
+    }
+
     @RequestMapping("/secure")
     public String secure(Map<String, Object> model) {
         return "home";
