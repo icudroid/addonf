@@ -2,6 +2,7 @@ package fr.k2i.adbeback.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -11,6 +12,8 @@ import java.util.List;
  * domain objects.
  *
  * @author <a href="mailto:bwnoll@gmail.com">Bryan Noll</a>
+ * @author jgarcia (update: added full text search + reindexing)
+ *
  * @param <T> a type variable
  * @param <PK> the primary key for that type
  */
@@ -71,18 +74,13 @@ public interface GenericDao<T, PK extends Serializable> {
     void remove(PK id);
 
     /**
-     *
-     * @param firstResult
-     * @param maxResult
-     * @return
+     * Find a list of records by using a named query
+     * @param queryName query name of the named query
+     * @param queryParams a map of the query names and the values
+     * @return a list of the records found
      */
-    List<T> getAllPaginated(int firstResult, int maxResult);
+    List<T> findByNamedQuery(String queryName, Map<String, Object> queryParams);
 
 
-    /**
-     *
-     * @return
-     */
-    Long countAll();
 
 }

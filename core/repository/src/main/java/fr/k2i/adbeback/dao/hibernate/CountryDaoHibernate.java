@@ -28,7 +28,7 @@ public class CountryDaoHibernate extends GenericDaoHibernate<Country, Long> impl
     }
 
 	public Country getByCode(String code) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		return (Country) session.createCriteria(Country.class)
 				.add(Restrictions.eq("code", code))
 				.uniqueResult();

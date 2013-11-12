@@ -27,8 +27,7 @@ public class LookupDaoHibernate extends GenericDaoHibernate<Role, Long>implement
     @SuppressWarnings("unchecked")
     public List<Role> getRoles() {
         log.debug("Retrieving all role names...");
-
-        return getHibernateTemplate().find("from Role order by name");
+        return  getSession().createCriteria(Role.class).list();
     }
 }
 

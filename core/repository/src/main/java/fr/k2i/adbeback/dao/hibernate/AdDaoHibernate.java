@@ -32,7 +32,7 @@ public class AdDaoHibernate extends GenericDaoHibernate<Ad, Long> implements AdD
     }
 
 	public List<Ad> getAll(Date date) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		Criteria criteria = session.createCriteria(Ad.class);
 		Criteria createAlias = criteria.createAlias("rules", "rule");
 		createAlias.add(Restrictions.and(Restrictions.le("rule.startDate", date), Restrictions.gt("rule.endDate", date)));

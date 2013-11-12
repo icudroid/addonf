@@ -1,71 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>fr.k2i.adbeback.addonf.webapps</groupId>
-		<artifactId>webapps</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>fr.k2i.adbeback.addonf.webapps</groupId>
+        <artifactId>webapps</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
     <groupId>fr.k2i.adbeback.addonf.webapps</groupId>
     <artifactId>addonf-webapp</artifactId>
-	<packaging>war</packaging>
-	<name>WEBAPPS - HOME WEBAPP</name>
+    <packaging>jar</packaging>
+    <name>WEBAPPS - HOME WEBAPP</name>
 
 
-	<dependencies>
-		<dependency>
-			<groupId>fr.k2i.adbeback.addonf.core</groupId>
-			<artifactId>domain</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
+    <dependencies>
+        <dependency>
             <groupId>fr.k2i.adbeback.addonf.core</groupId>
-			<artifactId>repository</artifactId>
+            <artifactId>domain</artifactId>
             <version>${project.version}</version>
-		</dependency>
-		<dependency>
+        </dependency>
+        <dependency>
             <groupId>fr.k2i.adbeback.addonf.core</groupId>
-			<artifactId>service</artifactId>
+            <artifactId>repository</artifactId>
             <version>${project.version}</version>
-		</dependency>
+        </dependency>
+        <dependency>
+            <groupId>fr.k2i.adbeback.addonf.core</groupId>
+            <artifactId>service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-<!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
--->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-<!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
--->
-
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>
+
+
+
+        <!--        <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-jpa</artifactId>
+                </dependency>
+        
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </dependency>
+        
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-security</artifactId>
+                </dependency>-->
 
 
 
@@ -94,17 +97,12 @@
         </dependency>
 
 
-<!--        <dependency>
+        <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <scope>runtime</scope>
-        </dependency>-->
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.23</version>
         </dependency>
+
 
         <dependency>
             <groupId>junit</groupId>
@@ -112,6 +110,15 @@
         </dependency>
     </dependencies>
 
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 
 

@@ -30,7 +30,7 @@ public class GooseWinDaoHibernate extends GenericDaoHibernate<GooseWin, Long> im
     }
 
 	public List<GooseWin> getLastWinners() throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		return session.createCriteria(GooseWin.class)
 		.addOrder(Property.forName("windate").desc())
 		.setMaxResults(25).list();

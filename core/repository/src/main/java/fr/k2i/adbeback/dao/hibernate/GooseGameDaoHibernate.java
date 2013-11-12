@@ -30,7 +30,7 @@ public class GooseGameDaoHibernate extends GenericDaoHibernate<GooseGame, Long> 
     }
 
 	public void addToLevel(GooseLevel level, Double value) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		StringBuilder query = new StringBuilder();
 		query.append("UPDATE goose_level g SET value=value+");
 		query.append(value);
@@ -40,7 +40,7 @@ public class GooseGameDaoHibernate extends GenericDaoHibernate<GooseGame, Long> 
 	}
 
 	public void resetLevelValue(GooseLevel level) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		StringBuilder query = new StringBuilder();
 		query.append("UPDATE goose_level g SET value=0");
 		query.append(" where id = ");
@@ -49,7 +49,7 @@ public class GooseGameDaoHibernate extends GenericDaoHibernate<GooseGame, Long> 
 	}
 
 	public GooseLevel getNextLevel(GooseLevel level) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		Criteria criteria = session.createCriteria(GooseLevel.class);
 		if(level==null){
 			criteria.add(Restrictions.eq("level", 0L));

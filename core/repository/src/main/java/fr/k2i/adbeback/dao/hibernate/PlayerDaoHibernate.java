@@ -4,7 +4,10 @@ import java.util.List;
 
 import javax.persistence.Table;
 
+import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,21 +43,24 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
      */
     @SuppressWarnings("unchecked")
     public List<Player> getPlayer() {
-        return getHibernateTemplate().find("from Player u order by upper(u.username)");
+        Query qry =  getSession().createQuery("from User u order by upper(u.username)");
+        return qry.list();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Player savePlayer(Player player) {
+
+
+    public  Player savePlayer(Player player) {
         if (log.isDebugEnabled()) {
             log.debug("user's id: " + player.getId());
         }
-        getHibernateTemplate().saveOrUpdate(player);
+        getSession().saveOrUpdate(player);
         // necessary to throw a DataIntegrityViolation and catch it in UserManager
-        getHibernateTemplate().flush();
+        getSession().flush();
         return player;
     }
+
+
+
 
     /**
      * Overridden simply to call the saveUser method. This is happenening 
@@ -69,32 +75,9 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
         return this.savePlayer(player);
     }
 
-    /** 
-     * {@inheritDoc}
-    */
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        List users = getHibernateTemplate().find("from Player where username=?", username);
-        if (users == null || users.isEmpty()) {
-            throw new UsernameNotFoundException("user '" + username + "' not found...");
-        } else {
-            return (UserDetails) users.get(0);
-        }
-    }
-
-    /** 
-     * {@inheritDoc}
-    */
-    public String getPlayerPassword(String username) {
-        SimpleJdbcTemplate jdbcTemplate =
-                new SimpleJdbcTemplate(SessionFactoryUtils.getDataSource(getSessionFactory()));
-        Table table = AnnotationUtils.findAnnotation(Player.class, Table.class);
-        return jdbcTemplate.queryForObject(
-                "select password from " + table.name() + " where username=?", String.class, username);
-
-    }
 
 	public Player loadUserByEmail(String email) {
-        List users = getHibernateTemplate().find("from Player where email=?", email);
+        List users = getSession().createCriteria(Player.class).add(Restrictions.eq("email", email)).list();
         if (users == null || users.isEmpty()) {
             return null;
         } else {
@@ -102,6 +85,41 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
         }
 	}
 
+
+
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        List users = getSession().createCriteria(Player.class).add(Restrictions.eq("username", username)).list();
+        if (users == null || users.isEmpty()) {
+            throw new UsernameNotFoundException("user '" + username + "' not found...");
+        } else {
+            return (UserDetails) users.get(0);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getPlayerPassword(Long userId) {
+        JdbcTemplate jdbcTemplate =
+                new JdbcTemplate(org.springframework.orm.hibernate4.SessionFactoryUtils.getDataSource(getSessionFactory()));
+        Table table = AnnotationUtils.findAnnotation(PlayerDao.class, Table.class);
+        return jdbcTemplate.queryForObject(
+                "select password from " + table.name() + " where id=?", String.class, userId);
+    }
+
+    @Override
+    public String getPlayerPassword(String username) {
+        JdbcTemplate jdbcTemplate =
+                new JdbcTemplate(org.springframework.orm.hibernate4.SessionFactoryUtils.getDataSource(getSessionFactory()));
+        Table table = AnnotationUtils.findAnnotation(PlayerDao.class, Table.class);
+        return jdbcTemplate.queryForObject(
+                "select password from " + table.name() + " where username=?", String.class, username);
+    }
 
 }
 

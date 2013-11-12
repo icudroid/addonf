@@ -36,7 +36,7 @@ public class AdGameDaoHibernate extends GenericDaoHibernate<AdGame, Long> implem
 
 	@SuppressWarnings("unchecked")
 	public List<AdGame> findWonAdGame(Long idPlayer) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		Criteria criteria = session.createCriteria(AdGame.class);
 		criteria.add(Restrictions.eq("player.id", idPlayer));
 		criteria.add(Restrictions.eq("statusGame", StatusGame.Win));

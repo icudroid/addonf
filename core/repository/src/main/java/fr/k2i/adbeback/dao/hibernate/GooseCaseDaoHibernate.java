@@ -34,7 +34,7 @@ public class GooseCaseDaoHibernate extends GenericDaoHibernate<GooseCase, Long> 
     }
 
 	public GooseCase getByNumber(Integer number,GooseLevel level) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		return (GooseCase) session.createCriteria(GooseCase.class)
 						.add(Restrictions.eq("number", number))
 						.add(Restrictions.eq("level",level))
@@ -44,7 +44,7 @@ public class GooseCaseDaoHibernate extends GenericDaoHibernate<GooseCase, Long> 
 	@SuppressWarnings("unchecked")
 	public List<GooseCase> get(GooseLevel level, Integer start, Integer nb)
 			throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		Criteria criteria = session.createCriteria(GooseCase.class);
 		criteria.add(Restrictions.eq("level",level));
 		List<Integer> nums = new ArrayList<Integer>();
@@ -58,7 +58,7 @@ public class GooseCaseDaoHibernate extends GenericDaoHibernate<GooseCase, Long> 
 
 	@SuppressWarnings("unchecked")
 	public List<GooseCase> getCases(GooseLevel level) throws Exception {
-		Session session = getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		return session.createCriteria(GooseCase.class)
 						.add(Restrictions.eq("level",level))
 						.addOrder(Property.forName("number").asc())

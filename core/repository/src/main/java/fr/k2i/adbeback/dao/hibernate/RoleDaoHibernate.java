@@ -2,6 +2,9 @@ package fr.k2i.adbeback.dao.hibernate;
 
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.player.Role;
@@ -28,12 +31,14 @@ public class RoleDaoHibernate extends GenericDaoHibernate<Role, Long> implements
      * {@inheritDoc}
      */
     public Role getRoleByName(String rolename) {
-        List roles = getHibernateTemplate().find("from Role where name=?", rolename);
+
+        List roles = getSession().createCriteria(Role.class).add(Restrictions.eq("name", rolename)).list();
         if (roles.isEmpty()) {
             return null;
         } else {
             return (Role) roles.get(0);
         }
+
     }
 
     /**
@@ -41,7 +46,8 @@ public class RoleDaoHibernate extends GenericDaoHibernate<Role, Long> implements
      */
     public void removeRole(String rolename) {
         Object role = getRoleByName(rolename);
-        getHibernateTemplate().delete(role);
+        Session session = getSession();
+        session.delete(role);
     }
 }
 
