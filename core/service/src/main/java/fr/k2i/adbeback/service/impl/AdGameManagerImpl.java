@@ -37,6 +37,7 @@ import fr.k2i.adbeback.dao.BrandDao;
 import fr.k2i.adbeback.dao.PlayerDao;
 import fr.k2i.adbeback.dao.PossibilityDao;
 import fr.k2i.adbeback.service.AdGameManager;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of UserManager interface.
@@ -86,6 +87,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 		this.possibilityDao = possibilityDao;
 	}
 
+    @Transactional
 	public AdGame generate(Long idPlayer) throws Exception {
 		AdGame game = new AdGame();
 

@@ -141,16 +141,27 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                     .antMatchers("/**").hasRole("USER")
                     //.fullyAuthenticated()
                     .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .failureUrl("/login?error")
-                    .permitAll();
+                        .formLogin()
+                        .loginPage("/login")
+                        .failureUrl("/login?error")
+                        .permitAll()
+                    .and()
+                        .logout()
+                        .deleteCookies("remove")
+                        .invalidateHttpSession(false)
+                        .logoutUrl("/custom-logout")
+                        .logoutSuccessUrl("/logout-success")
+                    .and()
+                        .sessionManagement()
+                            .maximumSessions(1)
+                            .expiredUrl("/login?expired");
         }
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/logout-success").setViewName("logout");
     }
 
 

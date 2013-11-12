@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.*;
@@ -53,17 +55,6 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
         this.persistentClass = persistentClass;
     }
 
-    /**
-     * Constructor that takes in a class and sessionFactory for easy creation of DAO.
-     *
-     * @param persistentClass the class type you'd like to persist
-     * @param sessionFactory  the pre-configured Hibernate SessionFactory
-     */
-    public GenericDaoHibernate(final Class<T> persistentClass, SessionFactory sessionFactory) {
-        this.persistentClass = persistentClass;
-        this.sessionFactory = sessionFactory;
-    }
-
 
     public SessionFactory getSessionFactory() {
         Session session = (Session) entityManager.getDelegate();
@@ -89,8 +80,9 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
      */
     @SuppressWarnings("unchecked")
     public List<T> getAll() {
-        Session sess = getSession();
-        return sess.createCriteria(persistentClass).list();
+        return this.entityManager.createQuery(
+                "select obj from " + this.persistentClass.getName() + " obj")
+                .getResultList();
     }
 
     /**
@@ -98,23 +90,20 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
      */
     @SuppressWarnings("unchecked")
     public List<T> getAllDistinct() {
-        Collection<T> result = new LinkedHashSet<T>(getAll());
-        return new ArrayList<T>(result);
+        Collection result = new LinkedHashSet(getAll());
+        return new ArrayList(result);
     }
-
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public T get(PK id) {
-        Session sess = getSession();
-        IdentifierLoadAccess byId = sess.byId(persistentClass);
-        T entity = (T) byId.load(id);
+        T entity = this.entityManager.find(this.persistentClass, id);
 
         if (entity == null) {
-            log.warn("Uh oh, '" + this.persistentClass + "' object with id '" + id + "' not found...");
-            throw new ObjectRetrievalFailureException(this.persistentClass, id);
+            String msg = "Uh oh, '" + this.persistentClass + "' object with id '" + id + "' not found...";
+            log.warn(msg);
+            throw new EntityNotFoundException(msg);
         }
 
         return entity;
@@ -123,53 +112,29 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public boolean exists(PK id) {
-        Session sess = getSession();
-        IdentifierLoadAccess byId = sess.byId(persistentClass);
-        T entity = (T) byId.load(id);
+        T entity = this.entityManager.find(this.persistentClass, id);
         return entity != null;
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public T save(T object) {
-        Session sess = getSession();
-        return (T) sess.merge(object);
+        return this.entityManager.merge(object);
     }
 
     /**
      * {@inheritDoc}
      */
     public void remove(T object) {
-        Session sess = getSession();
-        sess.delete(object);
+        this.entityManager.remove(object);
     }
 
     /**
      * {@inheritDoc}
      */
     public void remove(PK id) {
-        Session sess = getSession();
-        IdentifierLoadAccess byId = sess.byId(persistentClass);
-        T entity = (T) byId.load(id);
-        sess.delete(entity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public List<T> findByNamedQuery(String queryName, Map<String, Object> queryParams) {
-        Session sess = getSession();
-        Query namedQuery = sess.getNamedQuery(queryName);
-
-        for (String s : queryParams.keySet()) {
-            namedQuery.setParameter(s, queryParams.get(s));
-        }
-
-        return namedQuery.list();
+        this.entityManager.remove(this.get(id));
     }
 }
