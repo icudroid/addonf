@@ -29,7 +29,10 @@ public abstract class GooseCase extends BaseObject implements Serializable {
 	protected Long id;
 	protected GooseLevel level;
 	protected Integer number;
-	
+
+
+    public abstract int ihmValue();
+
 //	@SequenceGenerator(name = "GooseCase_Gen", sequenceName = "GooseCase_Sequence")
 	@Id
 //	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GooseCase_Gen")

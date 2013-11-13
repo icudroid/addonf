@@ -9,6 +9,11 @@ public class StartLevelGooseCase extends GooseCase {
 
 	private static final long serialVersionUID = -5268929254361161407L;
 
+    @Override
+    public int ihmValue() {
+        return 0;
+    }
+
 	@Override
 	public String toString() {
 		return "StartLevelGooseCase [id=" + id + ", level=" + level + "]";

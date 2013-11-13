@@ -1,6 +1,8 @@
 package fr.k2i.adbeback.webapp.controller.ajax;
 
-import fr.k2i.adbeback.bean.*;
+import fr.k2i.adbeback.webapp.bean.AdGameBean;
+import fr.k2i.adbeback.webapp.bean.PlayerGooseGame;
+import fr.k2i.adbeback.webapp.bean.ResponseAdGameBean;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
 import fr.k2i.adbeback.webapp.facade.PlayerFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,8 @@ public class AdGameWebservice {
 
 
     @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
-    public @ResponseBody AdGameBean createGame(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public @ResponseBody
+    AdGameBean createGame(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return adGameFacade.createAdGame(playerFacade.getCurrentPlayer().getId(), request);
     }
 
@@ -80,5 +83,13 @@ public class AdGameWebservice {
         return adGameFacade.noUserResponse(request,index);
 
     }
+
+
+    @RequestMapping(value = "/getGooseGame", method = RequestMethod.GET)
+    public @ResponseBody
+    List<PlayerGooseGame> getGooseGame(HttpServletRequest request) throws Exception {
+        return adGameFacade.getGooseGame(request);
+    }
+
 
 }

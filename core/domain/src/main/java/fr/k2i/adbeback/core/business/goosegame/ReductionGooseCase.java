@@ -14,6 +14,10 @@ public class ReductionGooseCase extends GooseCase {
 	private static final long serialVersionUID = -6050652995509263007L;
 	private Reduction reduction;
 
+    @Override
+    public int ihmValue() {
+        return 2;
+    }
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "REDUCTION_ID")

@@ -2,6 +2,7 @@ package fr.k2i.adbeback.core.business.goosegame;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("AdPot")
@@ -10,8 +11,12 @@ public class AddPotGooseCase extends GooseCase {
 	private static final long serialVersionUID = 3725803843441617038L;
 	private Double value;
 
+    @Override
+    public int ihmValue() {
+        return 5;
+    }
 
-	public Double getValue() {
+    public Double getValue() {
 		return value;
 	}
 

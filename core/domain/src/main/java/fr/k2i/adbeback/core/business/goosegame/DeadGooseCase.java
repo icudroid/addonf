@@ -9,6 +9,10 @@ public class DeadGooseCase extends GooseCase {
 
 	private static final long serialVersionUID = 5373444898760166087L;
 
+    @Override
+    public int ihmValue() {
+        return 4;
+    }
 
 	@Override
 	public String toString() {

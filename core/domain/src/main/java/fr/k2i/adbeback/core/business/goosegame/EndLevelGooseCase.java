@@ -9,6 +9,10 @@ public class EndLevelGooseCase extends GooseCase {
 
 	private static final long serialVersionUID = -1720562995087823116L;
 
+    @Override
+    public int ihmValue() {
+        return 3;
+    }
 
 	@Override
 	public String toString() {

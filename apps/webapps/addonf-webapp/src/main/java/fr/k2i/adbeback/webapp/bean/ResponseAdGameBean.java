@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.bean;
+package fr.k2i.adbeback.webapp.bean;
 
 import java.io.Serializable;
 

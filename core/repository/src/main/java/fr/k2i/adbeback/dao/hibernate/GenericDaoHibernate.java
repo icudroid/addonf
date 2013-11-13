@@ -45,6 +45,10 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
     @PersistenceContext
     private javax.persistence.EntityManager entityManager;
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
     /**
      * Constructor that takes in a class to see which type of entity to persist.
      * Use this constructor when subclassing.

@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.k2i.adbeback.bean.CagnotteBean;
 import fr.k2i.adbeback.core.business.goosegame.GooseCase;
 import fr.k2i.adbeback.core.business.goosegame.GooseGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
@@ -54,17 +53,6 @@ public class GooseGameManagerImpl extends GenericManagerImpl<GooseGame, Long> im
 		this.gooseWinDao = gooseWinDao;
 	}
 
-	public List<CagnotteBean> getCagnottes() throws Exception {
-		List<GooseLevel> all = gooseLevelDao.getAll();
-		List<CagnotteBean> res = new ArrayList<CagnotteBean>();
-		for (GooseLevel gooseLevel : all) {
-			CagnotteBean cagnotte = new CagnotteBean();
-			cagnotte.setLevel(gooseLevel.getLevel().intValue());
-			cagnotte.setValue(gooseLevel.getValue());
-			res.add(cagnotte);
-		}
-		return res;
-	}
 
 	public GooseCase getCase(long id) throws Exception {
 		return gooseCaseDao.get(id);

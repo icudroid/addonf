@@ -48,32 +48,12 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
     }
 
 
-
-    public  Player savePlayer(Player player) {
-        if (log.isDebugEnabled()) {
-            log.debug("user's id: " + player.getId());
-        }
-        getSession().saveOrUpdate(player);
-        // necessary to throw a DataIntegrityViolation and catch it in UserManager
-        getSession().flush();
-        return player;
+    public Player savePlayer(Player player) {
+        Player u = super.save(player);
+        getEntityManager().flush();
+        return u;
     }
 
-
-
-
-    /**
-     * Overridden simply to call the saveUser method. This is happenening 
-     * because saveUser flushes the session and saveObject of BaseDaoHibernate 
-     * does not.
-     *
-     * @param player the user to save
-     * @return the modified user (with a primary key set if they're new)
-     */
-    @Override
-    public Player save(Player player) {
-        return this.savePlayer(player);
-    }
 
 
 	public Player loadUserByEmail(String email) {
@@ -84,8 +64,6 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
             return (Player) users.get(0);
         }
 	}
-
-
 
 
 

@@ -12,6 +12,10 @@ public class JumpGooseCase extends GooseCase {
 	private static final long serialVersionUID = 7152651220130031461L;
 	private GooseCase jumpTo;
 
+    @Override
+    public int ihmValue() {
+        return 1;
+    }
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "GOOSEJUMP_ID")

@@ -1,22 +1,28 @@
 package fr.k2i.adbeback.webapp.facade;
 
-import fr.k2i.adbeback.bean.AdBean;
-import fr.k2i.adbeback.bean.AdGameBean;
-import fr.k2i.adbeback.bean.PossibilityBean;
-import fr.k2i.adbeback.bean.ResponseAdGameBean;
 import fr.k2i.adbeback.core.business.game.*;
+import fr.k2i.adbeback.core.business.goosegame.*;
+import fr.k2i.adbeback.core.business.partener.Reduction;
+import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.dao.GooseLevelDao;
+import fr.k2i.adbeback.dao.PlayerDao;
 import fr.k2i.adbeback.service.AdGameManager;
+import fr.k2i.adbeback.service.GooseGameManager;
+import fr.k2i.adbeback.webapp.bean.*;
+import fr.k2i.adbeback.webapp.bean.StatusGame;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,6 +46,19 @@ public class AdGameFacade {
 
     @Autowired
     private AdGameManager adGameManager;
+
+    @Autowired
+    private PlayerFacade playerFacade;
+
+    @Autowired
+    private GooseGameManager gooseGameManager;
+
+    @Autowired
+    private PlayerDao playerDao;
+
+    @Autowired
+    private GooseLevelDao gooseLevelDao;
+
 
 
     @Transactional
@@ -96,7 +115,8 @@ public class AdGameFacade {
         }
         res.setGame(game);
         res.setMinScore(generateAdGame.getMinScore());
-        res.setTimeLimite((long) (generateAdGame.getMinScore() * 20));
+        //res.setTimeLimite((long) (generateAdGame.getMinScore() * 20));
+        res.setTimeLimite(Long.valueOf(30));
         res.setTotalAds(choises.size());
 
 
@@ -131,6 +151,10 @@ public class AdGameFacade {
             res.setScore(score);
             request.getSession().setAttribute(USER_SCORE, score);
             answers.put(index, responseId);
+
+            goHeadToken(request);
+
+
         } else {
             res.setCorrect(false);
             res.setScore(score);
@@ -138,7 +162,7 @@ public class AdGameFacade {
             nbErrs++;
             request.getSession().setAttribute(NB_ERRORS, nbErrs);
             if (nbErrs > 6) {
-                res.setStatus(fr.k2i.adbeback.bean.StatusGame.Lost);
+                res.setStatus(fr.k2i.adbeback.webapp.bean.StatusGame.Lost);
                 emptyGameSession(request);
                 adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers);
                 return res;
@@ -146,13 +170,76 @@ public class AdGameFacade {
         }
 
             if (index < correctResponse.size()-1) {
-                res.setStatus(fr.k2i.adbeback.bean.StatusGame.Playing);
+                res.setStatus(StatusGame.Playing);
             } else {
-                res.setStatus(fr.k2i.adbeback.bean.StatusGame.WinLimitTime);
+                res.setStatus(StatusGame.WinLimitTime);
                 adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers);
             }
 
         return res;
+
+    }
+
+    private void goHeadToken(HttpServletRequest request) throws Exception {
+
+        Player player = playerFacade.getCurrentPlayer();
+
+        AdGame adGame = adGameManager.get((Long) request.getSession().getAttribute(ID_ADGAME));
+        Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
+
+        //faire avancer le token
+        int nbGo = score-adGame.getMinScore();
+        GooseToken token = player.getGooseToken();
+        GooseCase gooseCase = token.getGooseCase();
+        GooseLevel level = gooseCase.getLevel();
+
+        if (gooseCase instanceof EndLevelGooseCase) {
+            level = gooseGameManager.getNextLevel(level);
+            token.setGooseCase(level.getStartCase());
+        }else if (gooseCase instanceof JailGooseCase && nbGo!=6) {
+            //do fait rien car il est en prison
+            return;
+        }
+
+
+        if(nbGo>0){
+
+            Integer endCase = level.getEndCase().getNumber();
+
+            GooseCase byNumber = null;
+            if(gooseCase.getNumber()+nbGo >endCase){
+                byNumber = gooseGameManager.getCaseByNumber((2*endCase)-gooseCase.getNumber()-nbGo,level);
+            }else{
+                byNumber = gooseGameManager.getCaseByNumber(gooseCase.getNumber()+nbGo,level);
+            }
+
+            if (byNumber instanceof AddPotGooseCase) {
+                AddPotGooseCase add = (AddPotGooseCase) byNumber;
+                gooseGameManager.addToLevel(level, add.getValue());
+            }else if (byNumber instanceof DeadGooseCase) {
+                byNumber = level.getStartCase();
+            }else if (byNumber instanceof EndLevelGooseCase) {
+                gooseGameManager.resetLevelValue(level);
+                GooseWin win = new GooseWin();
+                win.setGooseLevel(level);
+                win.setValue(level.getValue());
+                win.setWindate(new Date());
+                win.setPlayer(player);
+                player.getWins().add(win);
+                playerDao.savePlayer(player);
+            }else if (byNumber instanceof JumpGooseCase) {
+                JumpGooseCase jump = (JumpGooseCase) byNumber;
+                byNumber = jump.getJumpTo();
+            }else if (byNumber instanceof ReductionGooseCase) {
+                ReductionGooseCase reduc = (ReductionGooseCase) byNumber;
+                Reduction reduction = reduc.getReduction();
+            }else if (byNumber instanceof JailGooseCase) {
+                //do nothing
+            }
+
+            token.setGooseCase(byNumber);
+            playerDao.save(player);
+        }
 
     }
 
@@ -178,18 +265,18 @@ public class AdGameFacade {
         request.getSession().setAttribute(NB_ERRORS, nbErrs);
 
         if (nbErrs > 6) {
-            res.setStatus(fr.k2i.adbeback.bean.StatusGame.Lost);
+            res.setStatus(StatusGame.Lost);
             emptyGameSession(request);
             adGameManager.saveResponses((Long) request.getSession()
                     .getAttribute(ID_ADGAME), score, answers);
         } else if (index +1 < correctResponse.size()) {
-            res.setStatus(fr.k2i.adbeback.bean.StatusGame.Playing);
+            res.setStatus(StatusGame.Playing);
         } else if(score >0){
-            res.setStatus(fr.k2i.adbeback.bean.StatusGame.WinLimitTime);
+            res.setStatus(StatusGame.WinLimitTime);
             adGameManager.saveResponses((Long) request.getSession()
                     .getAttribute(ID_ADGAME), score, answers);
         }else{
-            res.setStatus(fr.k2i.adbeback.bean.StatusGame.Lost);
+            res.setStatus(StatusGame.Lost);
             emptyGameSession(request);
             adGameManager.saveResponses((Long) request.getSession()
                     .getAttribute(ID_ADGAME), score, answers);
@@ -197,5 +284,49 @@ public class AdGameFacade {
 
         return res;
 
+    }
+
+
+
+    @Transactional
+    public List<PlayerGooseGame> getGooseGame(HttpServletRequest request)
+            throws Exception {
+        List<PlayerGooseGame> res = new ArrayList<PlayerGooseGame>();
+        SecurityContext ctx = SecurityContextHolder.getContext();
+        Player player = playerFacade.getCurrentPlayer();
+
+        GooseToken gooseToken = player.getGooseToken();
+        if(gooseToken == null){
+            gooseToken = new GooseToken();
+            gooseToken.setGooseCase(gooseGameManager.getCase(1L));
+            gooseToken.setPlayer(player);
+            player.setGooseToken(gooseToken);
+            playerDao.save(player);
+        }
+        GooseCase gooseCase = gooseToken.getGooseCase();
+        Integer number = gooseCase.getNumber();
+        GooseLevel level = gooseCase.getLevel();
+
+        List<GooseCase> cases = gooseGameManager.getCases(level, number,  7);
+        for (GooseCase c : cases) {
+            Integer type = c.ihmValue();
+            res.add(new PlayerGooseGame(c.getNumber().equals(number),c.getNumber(),type));
+        }
+
+        return res;
+    }
+
+
+    @Transactional
+    public List<CagnotteBean> getCagnottes() throws Exception {
+        List<GooseLevel> all = gooseLevelDao.getAll();
+        List<CagnotteBean> res = new ArrayList<CagnotteBean>();
+        for (GooseLevel gooseLevel : all) {
+            CagnotteBean cagnotte = new CagnotteBean();
+            cagnotte.setLevel(gooseLevel.getLevel().intValue());
+            cagnotte.setValue(gooseLevel.getValue());
+            res.add(cagnotte);
+        }
+        return res;
     }
 }

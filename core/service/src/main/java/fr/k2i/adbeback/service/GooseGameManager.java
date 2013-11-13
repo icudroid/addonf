@@ -2,7 +2,6 @@ package fr.k2i.adbeback.service;
 
 import java.util.List;
 
-import fr.k2i.adbeback.bean.CagnotteBean;
 import fr.k2i.adbeback.core.business.goosegame.GooseCase;
 import fr.k2i.adbeback.core.business.goosegame.GooseGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
@@ -16,12 +15,6 @@ import fr.k2i.adbeback.core.business.goosegame.GooseWin;
  */
 public interface GooseGameManager extends GenericManager<GooseGame, Long> {
 
-	/**
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	List<CagnotteBean> getCagnottes()throws Exception;
 
 	/**
 	 * 
