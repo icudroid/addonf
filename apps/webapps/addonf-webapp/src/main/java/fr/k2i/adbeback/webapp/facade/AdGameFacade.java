@@ -188,7 +188,7 @@ public class AdGameFacade {
         Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
 
         //faire avancer le token
-        int nbGo = score-adGame.getMinScore();
+        int nbGo = 1;
         GooseToken token = player.getGooseToken();
         GooseCase gooseCase = token.getGooseCase();
         GooseLevel level = gooseCase.getLevel();
@@ -214,25 +214,25 @@ public class AdGameFacade {
             }
 
             if (byNumber instanceof AddPotGooseCase) {
-                AddPotGooseCase add = (AddPotGooseCase) byNumber;
-                gooseGameManager.addToLevel(level, add.getValue());
+                /*AddPotGooseCase add = (AddPotGooseCase) byNumber;
+                gooseGameManager.addToLevel(level, add.getValue());*/
             }else if (byNumber instanceof DeadGooseCase) {
                 byNumber = level.getStartCase();
             }else if (byNumber instanceof EndLevelGooseCase) {
-                gooseGameManager.resetLevelValue(level);
+                /*gooseGameManager.resetLevelValue(level);
                 GooseWin win = new GooseWin();
                 win.setGooseLevel(level);
                 win.setValue(level.getValue());
                 win.setWindate(new Date());
                 win.setPlayer(player);
                 player.getWins().add(win);
-                playerDao.savePlayer(player);
+                playerDao.savePlayer(player);*/
             }else if (byNumber instanceof JumpGooseCase) {
                 JumpGooseCase jump = (JumpGooseCase) byNumber;
                 byNumber = jump.getJumpTo();
             }else if (byNumber instanceof ReductionGooseCase) {
-                ReductionGooseCase reduc = (ReductionGooseCase) byNumber;
-                Reduction reduction = reduc.getReduction();
+                /*ReductionGooseCase reduc = (ReductionGooseCase) byNumber;
+                Reduction reduction = reduc.getReduction();*/
             }else if (byNumber instanceof JailGooseCase) {
                 //do nothing
             }
@@ -329,4 +329,8 @@ public class AdGameFacade {
         }
         return res;
     }
+
+
+
+
 }

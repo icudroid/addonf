@@ -7,7 +7,8 @@ var adgameServices = angular.module('adgameServices', ['ngResource']);
 
 adgameServices.factory('Game', ['$resource',
     function($resource){
-        return $resource('rest/createGame', {}, {
-            query: {method:'GET', params:{}, isArray:true}
+        return $resource('/', {}, {
+            createGame: {url:'rest/createGame',method:'GET',responseType:"json",isArray: false},
+            doResponse: {url:'rest/play/:index/:responseId',method:'GET',responseType:"json",isArray: false}
         });
     }]);

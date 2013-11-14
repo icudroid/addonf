@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 
 
+import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,32 +50,20 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 		implements AdGameManager {
 
 
+    @Autowired
 	private AdDao adDao;
 
+    @Autowired
 	private BrandDao brandDao;
 	
 	private AdGameDao adGameDao;
-	
+
+    @Autowired
 	private PossibilityDao possibilityDao;
 
+    @Autowired
 	private PlayerDao playerDao;
-	
-	@Autowired
-	public void setPlayerDao(PlayerDao playerDao) {
-		this.playerDao = playerDao;
-	}
 
-
-	
-	@Autowired
-	public void setBrandDao(BrandDao brandDao) {
-		this.brandDao = brandDao;
-	}
-
-	@Autowired
-	public void setAdDao(AdDao adDao) {
-		this.adDao = adDao;
-	}
 
 	@Autowired
 	public void setAdGameDao(AdGameDao adGameDao) {
@@ -82,10 +71,6 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 		this.adGameDao = adGameDao;
 	}
 
-	@Autowired
-	public void setPossibilityDao(PossibilityDao possibilityDao) {
-		this.possibilityDao = possibilityDao;
-	}
 
     @Transactional
 	public AdGame generate(Long idPlayer) throws Exception {
@@ -103,6 +88,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 
 		game.setChoises(generateChoises(nbAds, game));
 		Player player = playerDao.get(idPlayer);
+
 		game.setPlayer(player);
 		return adGameDao.save(game);
 	}

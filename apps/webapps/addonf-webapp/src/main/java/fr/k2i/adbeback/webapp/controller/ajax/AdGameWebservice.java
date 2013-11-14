@@ -40,12 +40,35 @@ public class AdGameWebservice {
     @Value("${addonf.ads.location:/videos/}")
     private String pathAds;
 
+    @Value("${addonf.logo.location:/logos/}")
+    private String pathLogo;
+
 
     @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
     public @ResponseBody
     AdGameBean createGame(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return adGameFacade.createAdGame(playerFacade.getCurrentPlayer().getId(), request);
     }
+
+
+    @RequestMapping(value = "/logo/{filename}.{ext}", method = RequestMethod.GET)
+    public void streamLogoAd(@PathVariable String filename,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        File file = new File(pathLogo+filename+"."+ext);
+
+        FileInputStream fileInputStream = new FileInputStream(file);
+        int read =0;
+        byte []b = new byte[1024];
+        while((read = fileInputStream.read(b, 0, 1024))>0){
+            outputStream.write(b, 0, read);
+            b = new byte[1024];
+        }
+        fileInputStream.close();
+
+    }
+
+
 
     @RequestMapping(value = "/video/{index}", method = RequestMethod.GET)
     public void streamVideoAd(@PathVariable int index,HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -67,7 +90,7 @@ public class AdGameWebservice {
 
     @RequestMapping(value = "/rest/play/{index}/{responseId}", method = RequestMethod.GET)
     public @ResponseBody
-    ResponseAdGameBean play(@RequestParam Integer index, @RequestParam Long responseId,
+    ResponseAdGameBean play(@PathVariable Integer index, @PathVariable Long responseId,
                             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
@@ -77,7 +100,7 @@ public class AdGameWebservice {
 
     @RequestMapping(value = "/rest/noresponse/{index}", method = RequestMethod.GET)
     public @ResponseBody
-    ResponseAdGameBean noResponse(@RequestParam Integer index,
+    ResponseAdGameBean noResponse(@PathVariable Integer index,
                                   HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         return adGameFacade.noUserResponse(request,index);
@@ -90,6 +113,16 @@ public class AdGameWebservice {
     List<PlayerGooseGame> getGooseGame(HttpServletRequest request) throws Exception {
         return adGameFacade.getGooseGame(request);
     }
+
+
+
+    @RequestMapping(value = "/getResultAdGame", method = RequestMethod.GET)
+    public @ResponseBody
+    String getResultAdGame(HttpServletRequest request) throws Exception {
+        return "";
+    }
+
+
 
 
 }

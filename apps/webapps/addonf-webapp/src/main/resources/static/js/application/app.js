@@ -13,9 +13,7 @@ adgameApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
             when('/start', {templateUrl: 'partials/game.html',   controller: 'GameCtrl'}).
-            when('/pause', {templateUrl: 'partials/pause.html', controller: 'PauseCtrl'}).
-            when('/lost', {templateUrl: 'partials/lost.html', controller: 'LostCtrl'}).
-            when('/win', {templateUrl: 'partials/win.html', controller: 'WinCtrl'}).
+            when('/end', {templateUrl: 'partials/end.html', controller: 'EndCtrl'}).
             otherwise({redirectTo: '/start'});
     }]);
 

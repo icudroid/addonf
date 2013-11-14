@@ -5,9 +5,37 @@
 
 <div class="row">
     <div class="col-md-8">
-
+        Tableau de jeu TODO
     </div>
     <div class="col-md-4">
         {{score}}
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-8">
+        Question : <br />
+        {{current.question}}
+    </div>
+    <div class="col-md-4">
+        <h1>Reponses :</h1>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div ng-show="responded"><span>{{correct}}</span></div>
+        <video controls src="{{ad}}" ></video>
+        <progress percent="timeLeft"></progress>
+    </div>
+    <div class="col-md-4">
+        <button ng-repeat="possibility in current.possibilities" ng-click="userResponse(possibility)">
+            <img ng-if="possibility.type==0" src="http://localhost:8080/logo/{{possibility.answer}}" />
+            <img ng-if="possibility.type==1" src="http://localhost:8080/logo/{{possibility.answer}}" />
+            <span ng-if="possibility.type==2">{{possibility.answer}}</span>
+            <span ng-if="possibility.type==3">{{possibility.answer}}</span>
+        </button>
     </div>
 </div>
