@@ -42,6 +42,8 @@ public class AdGameFacade {
     public static final String NB_ERRORS = "errors";
     public static final String ADS_VIDEO = "adsVideo";
 
+    public static final String GAME_RESULT = "result";
+
 
 
     @Autowired
@@ -128,6 +130,7 @@ public class AdGameFacade {
         session.setAttribute(NB_ERRORS, 0);
         session.setAttribute(ID_ADGAME, generateAdGame.getId());
         session.setAttribute(ADS_VIDEO, adsVideo);
+        session.setAttribute(GAME_RESULT, null);
 
 
         return res;
@@ -161,23 +164,83 @@ public class AdGameFacade {
             answers.put(index, -1L);
             nbErrs++;
             request.getSession().setAttribute(NB_ERRORS, nbErrs);
-            if (nbErrs > 6) {
-                res.setStatus(fr.k2i.adbeback.webapp.bean.StatusGame.Lost);
+/*            if (nbErrs > 6) {
+                res.setStatus(StatusGame.Lost);
                 emptyGameSession(request);
                 adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers);
                 return res;
-            }
+            }*/
         }
 
             if (index < correctResponse.size()-1) {
                 res.setStatus(StatusGame.Playing);
             } else {
                 res.setStatus(StatusGame.WinLimitTime);
+                LimiteTimeAdGameBean gameResult = computeResultGame();
+                request.getSession().setAttribute(GAME_RESULT,gameResult);
                 adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers);
             }
 
         return res;
 
+    }
+
+    private LimiteTimeAdGameBean computeResultGame() throws Exception {
+        Player player = playerFacade.getCurrentPlayer();
+        GooseToken gooseToken = player.getGooseToken();
+        GooseCase gooseCase = gooseToken.getGooseCase();
+        GooseLevel level = gooseCase.getLevel();
+        LimiteTimeAdGameBean gameResult = new LimiteTimeAdGameBean();
+        if (gooseCase instanceof AddPotGooseCase) {
+            AddPotGooseCase add = (AddPotGooseCase) gooseCase;
+            gooseGameManager.addToLevel(level,add.getValue());
+            StringBuilder sb = new StringBuilder();
+            sb.append("Vous venez d'ajouter ");
+            sb.append(add.getValue());
+            sb.append(" d'euros à la cagnotte.");
+            gameResult.setMessage(sb.toString());
+        }else if (gooseCase instanceof DeadGooseCase) {
+            gooseCase = level.getStartCase();
+            gameResult.setMessage("Vous allez à la case : "+gooseCase.getNumber());
+        }else if (gooseCase instanceof EndLevelGooseCase) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Bravo vous venez de remporté la cagnotte d'une valeur de ");
+            sb.append(level.getValue());
+            sb.append(" euros");
+            gooseGameManager.resetLevelValue(level);
+            GooseWin win = new GooseWin();
+            win.setGooseLevel(level);
+            win.setValue(level.getValue());
+            win.setWindate(new Date());
+            win.setPlayer(player);
+            player.getWins().add(win);
+            playerDao.savePlayer(player);
+            gameResult.setMessage(sb.toString());
+        }else if (gooseCase instanceof JumpGooseCase) {
+            JumpGooseCase jump = (JumpGooseCase) gooseCase;
+            gooseCase = jump.getJumpTo();
+            gameResult.setMessage("Vous allez à la case : "+gooseCase.getNumber());
+        }else if (gooseCase instanceof ReductionGooseCase) {
+            ReductionGooseCase reduc = (ReductionGooseCase) gooseCase;
+            StringBuilder sb = new StringBuilder();
+            sb.append("Vous venez de gagner un bon d'achat d'une valeur de ");
+            Reduction reduction = reduc.getReduction();
+            if(reduction.getPercentageValue()!=null){
+                sb.append(reduction.getPercentageValue());
+                sb.append(" %, chez ");
+                sb.append(reduction.getPartener().getName());
+            }else{
+                sb.append(reduction.getPercentageValue());
+                sb.append(" euros, chez ");
+                sb.append(reduction.getPartener().getName());
+            }
+            gameResult.setMessage(sb.toString());
+        }else if (gooseCase instanceof JailGooseCase) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Vous êtes en prison, pour sortir vous devez faire 6 points supplémentaires");
+            gameResult.setMessage(sb.toString());
+        }
+        return gameResult;
     }
 
     private void goHeadToken(HttpServletRequest request) throws Exception {
@@ -211,30 +274,6 @@ public class AdGameFacade {
                 byNumber = gooseGameManager.getCaseByNumber((2*endCase)-gooseCase.getNumber()-nbGo,level);
             }else{
                 byNumber = gooseGameManager.getCaseByNumber(gooseCase.getNumber()+nbGo,level);
-            }
-
-            if (byNumber instanceof AddPotGooseCase) {
-                /*AddPotGooseCase add = (AddPotGooseCase) byNumber;
-                gooseGameManager.addToLevel(level, add.getValue());*/
-            }else if (byNumber instanceof DeadGooseCase) {
-                byNumber = level.getStartCase();
-            }else if (byNumber instanceof EndLevelGooseCase) {
-                /*gooseGameManager.resetLevelValue(level);
-                GooseWin win = new GooseWin();
-                win.setGooseLevel(level);
-                win.setValue(level.getValue());
-                win.setWindate(new Date());
-                win.setPlayer(player);
-                player.getWins().add(win);
-                playerDao.savePlayer(player);*/
-            }else if (byNumber instanceof JumpGooseCase) {
-                JumpGooseCase jump = (JumpGooseCase) byNumber;
-                byNumber = jump.getJumpTo();
-            }else if (byNumber instanceof ReductionGooseCase) {
-                /*ReductionGooseCase reduc = (ReductionGooseCase) byNumber;
-                Reduction reduction = reduc.getReduction();*/
-            }else if (byNumber instanceof JailGooseCase) {
-                //do nothing
             }
 
             token.setGooseCase(byNumber);

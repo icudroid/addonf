@@ -27,8 +27,11 @@
 <div class="row">
     <div class="col-md-8">
         <div ng-show="responded"><span>{{correct}}</span></div>
-        <video controls src="{{ad}}" ></video>
-        <progress percent="timeLeft"></progress>
+        <video>
+            <source src="{{ad}}" type="video/webm" />
+            Your browser does not support the video tag.
+        </video>
+        <progress percent="dynamic"></progress>
     </div>
     <div class="col-md-4">
         <button ng-repeat="possibility in current.possibilities" ng-click="userResponse(possibility)">

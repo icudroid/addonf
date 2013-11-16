@@ -9,6 +9,7 @@ adgameServices.factory('Game', ['$resource',
     function($resource){
         return $resource('/', {}, {
             createGame: {url:'rest/createGame',method:'GET',responseType:"json",isArray: false},
-            doResponse: {url:'rest/play/:index/:responseId',method:'GET',responseType:"json",isArray: false}
+            doResponse: {url:'rest/play/:index/:responseId',method:'GET',responseType:"json",isArray: false},
+            noResponse: {url:'rest/noresponse/:index',method:'GET',responseType:"json",isArray: false}
         });
     }]);
