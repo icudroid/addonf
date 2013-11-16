@@ -14,7 +14,6 @@ generated
 .nbproject
 .metadata
 nbproject
-lib
 {tomcat.server.log}
 .idea
 *.info
