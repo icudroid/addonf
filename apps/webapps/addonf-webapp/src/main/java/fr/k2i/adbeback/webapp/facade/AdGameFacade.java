@@ -4,6 +4,8 @@ import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.dao.AdGameDao;
+import fr.k2i.adbeback.dao.GooseGameDao;
 import fr.k2i.adbeback.dao.GooseLevelDao;
 import fr.k2i.adbeback.dao.PlayerDao;
 import fr.k2i.adbeback.service.AdGameManager;
@@ -44,6 +46,9 @@ public class AdGameFacade {
     public static final String PLAYER_TOKEN = "token";
 
 
+
+    @Autowired
+    private GooseGameDao gooseGameDao;
 
     @Autowired
     private AdGameManager adGameManager;
@@ -215,6 +220,7 @@ public class AdGameFacade {
 
     }
 
+    @Transactional
     private LimiteTimeAdGameBean computeResultGame(HttpServletRequest request) throws Exception {
         Player player = playerFacade.getCurrentPlayer();
         GooseToken gooseToken = player.getGooseToken();
@@ -231,6 +237,7 @@ public class AdGameFacade {
             gameResult.setMessage(sb.toString());
         }else if (gooseCase instanceof DeadGooseCase) {
             gooseCase = level.getStartCase();
+            gooseToken.setGooseCase(level.getStartCase());
             gameResult.setMessage("Vous allez à la case : "+gooseCase.getNumber());
         }else if (gooseCase instanceof EndLevelGooseCase) {
             StringBuilder sb = new StringBuilder();
@@ -249,6 +256,7 @@ public class AdGameFacade {
         }else if (gooseCase instanceof JumpGooseCase) {
             JumpGooseCase jump = (JumpGooseCase) gooseCase;
             gooseCase = jump.getJumpTo();
+            gooseToken.setGooseCase(gooseCase);
             gameResult.setMessage("Vous allez à la case : "+gooseCase.getNumber());
         }else if (gooseCase instanceof ReductionGooseCase) {
             ReductionGooseCase reduc = (ReductionGooseCase) gooseCase;
@@ -267,12 +275,13 @@ public class AdGameFacade {
             gameResult.setMessage(sb.toString());
         }else if (gooseCase instanceof JailGooseCase) {
             GooseCase startCase = (GooseCase) request.getSession().getAttribute(PLAYER_TOKEN);
-            if(gooseCase.equals(startCase)){
+            if(gooseCase.getNumber().equals(startCase.getNumber())){
                 Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
                 if(score == 6){
                     //go next case
                     GooseCase caseByNumber = gooseGameManager.getCaseByNumber(gooseCase.getNumber() + 1, gooseCase.getLevel());
                     player.getGooseToken().setGooseCase(caseByNumber);
+                    playerDao.savePlayer(player);
                     StringBuilder sb = new StringBuilder();
                     sb.append("Vous venez de sortir de prison");
                     gameResult.setMessage(sb.toString());
@@ -290,6 +299,7 @@ public class AdGameFacade {
         return gameResult;
     }
 
+    @Transactional
     private void goHeadToken(HttpServletRequest request) throws Exception {
 
         Player player = playerFacade.getCurrentPlayer();
@@ -304,12 +314,12 @@ public class AdGameFacade {
         GooseLevel level = gooseCase.getLevel();
 
         if (gooseCase instanceof EndLevelGooseCase) {
-            level = gooseGameManager.getNextLevel(level);
-            token.setGooseCase(level.getStartCase());
+            /*level = gooseGameManager.getNextLevel(level);
+            token.setGooseCase(level.getStartCase());*/
         }else if (gooseCase instanceof JailGooseCase && nbGo!=6) {
             //do fait rien car il est en prison
             GooseCase startCase = (GooseCase) request.getSession().getAttribute(PLAYER_TOKEN);
-            if(gooseCase.equals(startCase)){
+            if(gooseCase.getNumber().equals(startCase.getNumber())){
                return;
             }
         }

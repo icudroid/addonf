@@ -16,6 +16,7 @@ import fr.k2i.adbeback.dao.GooseLevelDao;
 import fr.k2i.adbeback.dao.GooseTokenDao;
 import fr.k2i.adbeback.dao.GooseWinDao;
 import fr.k2i.adbeback.service.GooseGameManager;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -67,6 +68,7 @@ public class GooseGameManagerImpl extends GenericManagerImpl<GooseGame, Long> im
 		return gooseGameDao.getNextLevel(level);
 	}
 
+    @Transactional
 	public GooseCase getCaseByNumber(Integer num, GooseLevel level)
 			throws Exception {
 		return gooseCaseDao.getByNumber(num, level);

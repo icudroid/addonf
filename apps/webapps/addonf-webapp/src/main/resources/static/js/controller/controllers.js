@@ -27,7 +27,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                         $scope.correct = "ko";
                     }
 
-                    $timeout(function() {
+                    $timeout.cancel($scope.hideResult);
+                    $scope.hideResult = $timeout(function() {
                         $scope.responded = false;
                     },3000);
 
@@ -102,6 +103,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                     $scope.correct = "ko";
                 }
 
+                $timeout.cancel($scope.hideResult);
                 $timeout(function() {
                     $scope.responded = false;
                 },3000);
