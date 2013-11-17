@@ -15,12 +15,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -42,7 +38,10 @@ public class AdGameFacade {
     public static final String NB_ERRORS = "errors";
     public static final String ADS_VIDEO = "adsVideo";
 
+    public static final String GAME_END_TIME = "endTime";
     public static final String GAME_RESULT = "result";
+    public static final String PLAYER_GOOSE_GAME = "gooseGameCases";
+    public static final String PLAYER_TOKEN = "token";
 
 
 
@@ -122,8 +121,26 @@ public class AdGameFacade {
         res.setTotalAds(choises.size());
 
 
+        Player player = playerFacade.getCurrentPlayer();
+        GooseToken gooseToken = player.getGooseToken();
+        GooseCase gooseCase = gooseToken.getGooseCase();
+        Integer number = gooseCase.getNumber();
+        GooseLevel level = gooseCase.getLevel();
+
+
+        List<PlayerGooseGame> pgg = new ArrayList<PlayerGooseGame>();
+        List<GooseCase> cases = gooseGameManager.getCases(level, number,  7);
+        for (GooseCase c : cases) {
+            Integer type = c.ihmValue();
+            pgg.add(new PlayerGooseGame(c.getNumber().equals(number), c.getNumber(), type));
+        }
+
+        res.setGooseGames(pgg);
+        res.setUserToken(gooseCase.getNumber());
+
         Map<Integer, Long> answers = new HashMap<Integer, Long>();
         HttpSession session = request.getSession();
+        session.setAttribute(PLAYER_GOOSE_GAME, pgg);
         session.setAttribute(USER_ANSWER, answers);
         session.setAttribute(CORRECT_ANSWER, correctResponse);
         session.setAttribute(USER_SCORE, 0);
@@ -131,7 +148,8 @@ public class AdGameFacade {
         session.setAttribute(ID_ADGAME, generateAdGame.getId());
         session.setAttribute(ADS_VIDEO, adsVideo);
         session.setAttribute(GAME_RESULT, null);
-
+        session.setAttribute(PLAYER_TOKEN, gooseCase);
+        session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
 
         return res;
     }
@@ -139,53 +157,65 @@ public class AdGameFacade {
     @Transactional
     public ResponseAdGameBean userResponse(HttpServletRequest request, Integer index, Long responseId) throws Exception {
         ResponseAdGameBean res = new ResponseAdGameBean();
-        Map<Integer, Long> correctResponse = (Map<Integer, Long>) request
-                .getSession().getAttribute(CORRECT_ANSWER);
-        Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
-        Map<Integer, Long> answers = (Map<Integer, Long>) request.getSession()
-                .getAttribute(USER_ANSWER);
-        Long correctId = correctResponse.get(index);
 
-        Integer nbErrs = (Integer) request.getSession().getAttribute(NB_ERRORS);
+        Long end = (Long) request.getSession().getAttribute(GAME_END_TIME);
+        if(end < new Date().getTime()){
+            res.setStatus(StatusGame.WinLimitTime);
+            LimiteTimeAdGameBean gameResult = computeResultGame(request);
+            request.getSession().setAttribute(GAME_RESULT,gameResult);
+        }else{
 
-        if (answers.get(index) == null && correctId.equals(responseId)) {
-            res.setCorrect(true);
-            score++;
-            res.setScore(score);
-            request.getSession().setAttribute(USER_SCORE, score);
-            answers.put(index, responseId);
+            Map<Integer, Long> correctResponse = (Map<Integer, Long>) request
+                    .getSession().getAttribute(CORRECT_ANSWER);
+            Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
+            Map<Integer, Long> answers = (Map<Integer, Long>) request.getSession()
+                    .getAttribute(USER_ANSWER);
+            Long correctId = correctResponse.get(index);
 
-            goHeadToken(request);
+            Integer nbErrs = (Integer) request.getSession().getAttribute(NB_ERRORS);
+
+            if (answers.get(index) == null && correctId.equals(responseId)) {
+                res.setCorrect(true);
+                score++;
+                res.setScore(score);
+                request.getSession().setAttribute(USER_SCORE, score);
+                answers.put(index, responseId);
+
+                goHeadToken(request);
 
 
-        } else {
-            res.setCorrect(false);
-            res.setScore(score);
-            answers.put(index, -1L);
-            nbErrs++;
-            request.getSession().setAttribute(NB_ERRORS, nbErrs);
+            } else {
+                res.setCorrect(false);
+                res.setScore(score);
+                answers.put(index, -1L);
+                nbErrs++;
+                request.getSession().setAttribute(NB_ERRORS, nbErrs);
 /*            if (nbErrs > 6) {
                 res.setStatus(StatusGame.Lost);
                 emptyGameSession(request);
                 adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers);
                 return res;
             }*/
-        }
+            }
 
             if (index < correctResponse.size()-1) {
                 res.setStatus(StatusGame.Playing);
             } else {
                 res.setStatus(StatusGame.WinLimitTime);
-                LimiteTimeAdGameBean gameResult = computeResultGame();
+                LimiteTimeAdGameBean gameResult = computeResultGame(request);
                 request.getSession().setAttribute(GAME_RESULT,gameResult);
                 adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers);
             }
+        }
+
+        Integer number = playerFacade.getCurrentPlayer().getGooseToken().getGooseCase().getNumber();
+        res.setUserToken(number);
 
         return res;
 
     }
 
-    private LimiteTimeAdGameBean computeResultGame() throws Exception {
+    private LimiteTimeAdGameBean computeResultGame(HttpServletRequest request) throws Exception {
         Player player = playerFacade.getCurrentPlayer();
         GooseToken gooseToken = player.getGooseToken();
         GooseCase gooseCase = gooseToken.getGooseCase();
@@ -236,9 +266,26 @@ public class AdGameFacade {
             }
             gameResult.setMessage(sb.toString());
         }else if (gooseCase instanceof JailGooseCase) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Vous êtes en prison, pour sortir vous devez faire 6 points supplémentaires");
-            gameResult.setMessage(sb.toString());
+            GooseCase startCase = (GooseCase) request.getSession().getAttribute(PLAYER_TOKEN);
+            if(gooseCase.equals(startCase)){
+                Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
+                if(score == 6){
+                    //go next case
+                    GooseCase caseByNumber = gooseGameManager.getCaseByNumber(gooseCase.getNumber() + 1, gooseCase.getLevel());
+                    player.getGooseToken().setGooseCase(caseByNumber);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Vous venez de sortir de prison");
+                    gameResult.setMessage(sb.toString());
+                }else{
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Vous êtes en prison, pour sortir vous devez faire 6 points supplémentaires");
+                    gameResult.setMessage(sb.toString());
+                }
+            }else{
+                StringBuilder sb = new StringBuilder();
+                sb.append("Vous êtes en prison, pour sortir vous devez faire 6 points supplémentaires");
+                gameResult.setMessage(sb.toString());
+            }
         }
         return gameResult;
     }
@@ -289,37 +336,50 @@ public class AdGameFacade {
     @Transactional
     public ResponseAdGameBean noUserResponse(HttpServletRequest request, Integer index) throws Exception {
         ResponseAdGameBean res = new ResponseAdGameBean();
-        Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
-        Map<Integer, Long> answers = (Map<Integer, Long>) request.getSession()
-                .getAttribute(USER_ANSWER);
-        Map<Integer, Long> correctResponse = (Map<Integer, Long>) request
-                .getSession().getAttribute(CORRECT_ANSWER);
-        Integer nbErrs = (Integer) request.getSession().getAttribute(NB_ERRORS);
 
-        answers.put(index, null);
-        res.setCorrect(false);
-        res.setScore(score);
-        nbErrs++;
-        request.getSession().setAttribute(USER_SCORE, score);
-        request.getSession().setAttribute(NB_ERRORS, nbErrs);
-
-        if (nbErrs > 6) {
-            res.setStatus(StatusGame.Lost);
-            emptyGameSession(request);
-            adGameManager.saveResponses((Long) request.getSession()
-                    .getAttribute(ID_ADGAME), score, answers);
-        } else if (index +1 < correctResponse.size()) {
-            res.setStatus(StatusGame.Playing);
-        } else if(score >0){
+        Long end = (Long) request.getSession().getAttribute(GAME_END_TIME);
+        if(end < new Date().getTime()){
             res.setStatus(StatusGame.WinLimitTime);
-            adGameManager.saveResponses((Long) request.getSession()
-                    .getAttribute(ID_ADGAME), score, answers);
+            LimiteTimeAdGameBean gameResult = computeResultGame(request);
+            request.getSession().setAttribute(GAME_RESULT,gameResult);
         }else{
-            res.setStatus(StatusGame.Lost);
-            emptyGameSession(request);
-            adGameManager.saveResponses((Long) request.getSession()
-                    .getAttribute(ID_ADGAME), score, answers);
+            Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
+            Map<Integer, Long> answers = (Map<Integer, Long>) request.getSession()
+                    .getAttribute(USER_ANSWER);
+            Map<Integer, Long> correctResponse = (Map<Integer, Long>) request
+                    .getSession().getAttribute(CORRECT_ANSWER);
+            Integer nbErrs = (Integer) request.getSession().getAttribute(NB_ERRORS);
+
+            answers.put(index, null);
+            res.setCorrect(false);
+            res.setScore(score);
+            nbErrs++;
+            request.getSession().setAttribute(USER_SCORE, score);
+            request.getSession().setAttribute(NB_ERRORS, nbErrs);
+
+            if (nbErrs > 6) {
+                res.setStatus(StatusGame.Lost);
+                emptyGameSession(request);
+                adGameManager.saveResponses((Long) request.getSession()
+                        .getAttribute(ID_ADGAME), score, answers);
+            } else if (index +1 < correctResponse.size()) {
+                res.setStatus(StatusGame.Playing);
+            } else if(score >0){
+                res.setStatus(StatusGame.WinLimitTime);
+                adGameManager.saveResponses((Long) request.getSession()
+                        .getAttribute(ID_ADGAME), score, answers);
+            }else{
+                res.setStatus(StatusGame.Lost);
+                emptyGameSession(request);
+                adGameManager.saveResponses((Long) request.getSession()
+                        .getAttribute(ID_ADGAME), score, answers);
+            }
+
         }
+
+
+        Integer number = playerFacade.getCurrentPlayer().getGooseToken().getGooseCase().getNumber();
+        res.setUserToken(number);
 
         return res;
 
@@ -370,6 +430,14 @@ public class AdGameFacade {
     }
 
 
+    public LimiteTimeAdGameBean getResultAdGame(HttpServletRequest request) throws Exception {
+        Player player = playerFacade.getCurrentPlayer();
+        player.getGooseToken();
 
+        LimiteTimeAdGameBean res = (LimiteTimeAdGameBean) request.getSession().getAttribute(GAME_RESULT);
+        res.setGooseGames(getGooseGame(request));
+        res.setUserToken(player.getGooseToken().getGooseCase().getNumber());
 
+        return res;
+    }
 }

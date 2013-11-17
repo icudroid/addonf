@@ -15,31 +15,32 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
 
         $scope.noResponse = function(){
-            Game.noResponse({index:$scope.index},function(data){
-                $scope.score = data.score;
 
-                $scope.responded = true;
+                Game.noResponse({index:$scope.index},function(data){
+                    $scope.score = data.score;
 
-                if(data.correct){
-                    $scope.correct = "ok";
-                }else{
-                    $scope.correct = "ko";
-                }
+                    $scope.responded = true;
 
-                $timeout(function() {
-                    $scope.responded = false;
-                },3000);
+                    if(data.correct){
+                        $scope.correct = "ok";
+                    }else{
+                        $scope.correct = "ko";
+                    }
 
-                if(data.status == "WinLimitTime"){
-                    $location.path('/end');
-                }
-            });
+                    $timeout(function() {
+                        $scope.responded = false;
+                    },3000);
+
+                    if(data.status == "WinLimitTime"){
+                        $location.path('/end');
+                    }
+                });
 
             $scope.$apply(function ($scope) {
                 $scope.index++;
                 if( $scope.adGame.game.length > $scope.index){
                     $scope.current = $scope.adGame.game[$scope.index];
-                    $scope.ad = "http://localhost:8080/video/"+$scope.index;
+                    $scope.ad = "http://localhost:8080/video/"+$scope.index+"?"+new Date().getTime();
                     $scope.videoElt[0].load();
                     $scope.videoElt[0].play();
                 }else{
@@ -57,8 +58,11 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             $scope.index = 0;
             $scope.adGame = data;
             $scope.current = $scope.adGame.game[$scope.index];
+            $scope.gooseCases =  $scope.adGame.gooseGames;
+            $scope.token =  $scope.adGame.userToken;
+
             $scope.score = 0;
-            $scope.ad = "http://localhost:8080/video/"+$scope.index;
+            $scope.ad = "http://localhost:8080/video/"+$scope.index+"?"+new Date().getTime();
             $scope.videoElt[0].load();
             $scope.videoElt[0].play();
 
@@ -90,6 +94,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
                 $scope.responded = true;
 
+                $scope.token =  data.userToken;
+
                 if(data.correct){
                     $scope.correct = "ok";
                 }else{
@@ -109,7 +115,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             if( $scope.adGame.game.length > $scope.index){
                 $scope.current = $scope.adGame.game[$scope.index];
                 $scope.videoElt[0].load();
-                $scope.ad = "http://localhost:8080/video/"+$scope.index;
+                $scope.ad = "http://localhost:8080/video/"+$scope.index+"?"+new Date().getTime();
                 $scope.videoElt[0].load();
                 $scope.videoElt[0].play();
             }else{
@@ -125,6 +131,14 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
 adgameControllers.controller('EndCtrl', ['$scope', 'Game', '$timeout', '$route',
     function($scope, Game, $timeout, $route) {
+
+    Game.resultGame(function(data){
+        $scope.message = data.message;
+        $scope.gooseCases = data.gooseGames;
+        $scope.score = data.score;
+        $scope.token =  $scope.userToken;
+    });
+
 
 }]);
 

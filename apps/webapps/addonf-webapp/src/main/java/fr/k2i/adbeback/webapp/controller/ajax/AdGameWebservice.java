@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.webapp.controller.ajax;
 
 import fr.k2i.adbeback.webapp.bean.AdGameBean;
+import fr.k2i.adbeback.webapp.bean.LimiteTimeAdGameBean;
 import fr.k2i.adbeback.webapp.bean.PlayerGooseGame;
 import fr.k2i.adbeback.webapp.bean.ResponseAdGameBean;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
@@ -108,7 +109,7 @@ public class AdGameWebservice {
     }
 
 
-    @RequestMapping(value = "/getGooseGame", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/getGooseGame", method = RequestMethod.GET)
     public @ResponseBody
     List<PlayerGooseGame> getGooseGame(HttpServletRequest request) throws Exception {
         return adGameFacade.getGooseGame(request);
@@ -116,10 +117,10 @@ public class AdGameWebservice {
 
 
 
-    @RequestMapping(value = "/getResultAdGame", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/getResultAdGame", method = RequestMethod.GET)
     public @ResponseBody
-    String getResultAdGame(HttpServletRequest request) throws Exception {
-        return "";
+    LimiteTimeAdGameBean getResultAdGame(HttpServletRequest request) throws Exception {
+        return adGameFacade.getResultAdGame(request);
     }
 
 

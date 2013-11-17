@@ -8,6 +8,8 @@ public class ResponseAdGameBean implements Serializable{
 	private Integer score;
 	private Boolean correct;
 	private StatusGame status;
+
+    private Integer userToken;
 	
 	public Integer getScore() {
 		return score;
@@ -28,4 +30,11 @@ public class ResponseAdGameBean implements Serializable{
 		this.status = status;
 	}
 
+    public Integer getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(Integer userToken) {
+        this.userToken = userToken;
+    }
 }

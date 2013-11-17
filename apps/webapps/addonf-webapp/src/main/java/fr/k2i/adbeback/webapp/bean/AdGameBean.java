@@ -12,7 +12,18 @@ public class AdGameBean implements Serializable{
 	private Integer totalAds;
 	private Long timeLimite;
 	private List<AdBean> game;
-	public Integer getMinScore() {
+    private List<PlayerGooseGame> gooseGames;
+    private Integer userToken;
+
+    public List<PlayerGooseGame> getGooseGames() {
+        return gooseGames;
+    }
+
+    public void setGooseGames(List<PlayerGooseGame> gooseGames) {
+        this.gooseGames = gooseGames;
+    }
+
+    public Integer getMinScore() {
 		return minScore;
 	}
 	public void setMinScore(Integer minScore) {
@@ -36,4 +47,13 @@ public class AdGameBean implements Serializable{
 	public void setGame(List<AdBean> game) {
 		this.game = game;
 	}
+
+
+    public void setUserToken(Integer userToken) {
+        this.userToken = userToken;
+    }
+
+    public Integer getUserToken() {
+        return userToken;
+    }
 }

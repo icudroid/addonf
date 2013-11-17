@@ -1,1 +1,22 @@
-end
+<div class="row">
+    <div class="col-md-8"><h1>Tableau de jeu :</h1></div>
+    <div class="col-md-4"><h1>Score :</h1></div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div  ng-repeat="gooseCase in gooseCases" class="col-md-2">
+            <img ng-src="http://localhost:8080/img/goose/{{gooseCase.type}}.png" />
+            <img ng-if="gooseCase.num == token" ng-src="http://localhost:8080/img/goose/token.png" />
+            <span style="position: absolute; bottom: 0;right: 15px;z-index: 10;">{{gooseCase.num}}</span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h1>{{score}}</h1>
+    </div>
+</div>
+
+<div class="row">
+
+</div>
+<a href="#/start">rejouer</a>
