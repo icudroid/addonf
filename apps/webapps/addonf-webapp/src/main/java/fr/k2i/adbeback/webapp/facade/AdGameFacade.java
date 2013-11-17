@@ -308,7 +308,10 @@ public class AdGameFacade {
             token.setGooseCase(level.getStartCase());
         }else if (gooseCase instanceof JailGooseCase && nbGo!=6) {
             //do fait rien car il est en prison
-            return;
+            GooseCase startCase = (GooseCase) request.getSession().getAttribute(PLAYER_TOKEN);
+            if(gooseCase.equals(startCase)){
+               return;
+            }
         }
 
 
@@ -391,7 +394,7 @@ public class AdGameFacade {
     public List<PlayerGooseGame> getGooseGame(HttpServletRequest request)
             throws Exception {
         List<PlayerGooseGame> res = new ArrayList<PlayerGooseGame>();
-        SecurityContext ctx = SecurityContextHolder.getContext();
+
         Player player = playerFacade.getCurrentPlayer();
 
         GooseToken gooseToken = player.getGooseToken();
@@ -430,13 +433,17 @@ public class AdGameFacade {
     }
 
 
+    @Transactional
     public LimiteTimeAdGameBean getResultAdGame(HttpServletRequest request) throws Exception {
-        Player player = playerFacade.getCurrentPlayer();
-        player.getGooseToken();
 
         LimiteTimeAdGameBean res = (LimiteTimeAdGameBean) request.getSession().getAttribute(GAME_RESULT);
+
+        Player player = playerFacade.getCurrentPlayer();
         res.setGooseGames(getGooseGame(request));
         res.setUserToken(player.getGooseToken().getGooseCase().getNumber());
+
+        res.setScore((Integer) request.getSession().getAttribute(USER_SCORE));
+
 
         return res;
     }

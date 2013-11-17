@@ -136,7 +136,7 @@ adgameControllers.controller('EndCtrl', ['$scope', 'Game', '$timeout', '$route',
         $scope.message = data.message;
         $scope.gooseCases = data.gooseGames;
         $scope.score = data.score;
-        $scope.token =  $scope.userToken;
+        $scope.token =  data.userToken;
     });
 
 

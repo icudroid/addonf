@@ -1,6 +1,8 @@
 package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.dao.PlayerDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,13 +17,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlayerFacade {
 
+
+    @Autowired
+    private PlayerDao playerDao;
+
     public Player getCurrentPlayer() {
         Object principal = getAuthenticationPlayer().getPrincipal();
         if (!(principal instanceof Player)) {
             throw new AssertionError("Please check configuration. Should be Player in the principal.");
         }
 
-        return (Player) principal;
+        return playerDao.get(((Player) principal).getId());
     }
 
     protected Authentication getAuthenticationPlayer() {
