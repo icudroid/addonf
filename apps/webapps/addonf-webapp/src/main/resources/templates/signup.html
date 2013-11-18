@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout"
+      ng-app="registrationApp">
+<head>
+    <title th:text="${title}">Enregistrement</title>
+
+    <script src="lib/angular-1.2.0/angular.js" th:src="@{/lib/angular-1.2.0/angular.js}"></script>
+    <script src="lib/angular-1.2.0/angular-animate.js" th:src="@{/lib/angular-1.2.0/angular-animate.js}"></script>
+    <script src="lib/angular-1.2.0/angular-resource.js" th:src="@{/lib/angular-1.2.0/angular-resource.js}"></script>
+    <script src="lib/angular-1.2.0/angular-route.js" th:src="@{/lib/angular-1.2.0/angular-route.js}"></script>
+
+    <script src="lib/ui.bootstrap-0.6.0/ui-bootstrap-custom-0.6.0.js" th:src="@{/lib/ui-bootstrap-0.6.0/ui-bootstrap-0.6.0.js}"></script>
+
+    <script src="js/controller/registration-controllers.js" th:src="@{/js/controller/registration-controllers.js}"></script>
+
+</head>
+
+
+<body>
+    <div layout:fragment="content"  ng-controller="registrationCtrl">
+
+        <form class="form-horizontal" role="form" th:action="@{/signup}" method="post" th:object="${player}">
+
+            <div class="form-group" th:class="${#fields.hasErrors('username')}? 'has-error' :''" >
+                <label for="pseudo" class="col-sm-2 control-label">Pseudo</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="pseudo" placeholder="Votre pseudo" th:field="*{username}" />
+                </div>
+            </div>
+
+            <div class="form-group" th:class="${#fields.hasErrors('password')}? 'has-error' :''" >
+                <label for="passwd" class="col-sm-2 control-label">Mot de passe</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="passwd" placeholder="Votre mot de passe" th:field="*{password}" />
+                </div>
+            </div>
+
+
+            <div class="form-group" th:class="${#fields.hasErrors('email')}? 'has-error' :''" >
+                <label for="email" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="email" placeholder="Votre E-mail" th:field="*{email}" />
+                </div>
+            </div>
+
+
+            <div class="form-group" th:class="${#fields.hasErrors('sex')}? 'has-error' :''" >
+                <label for="civility" class="col-sm-2 control-label">Civilité</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="civility" th:field="*{sex}">
+                        <option th:each="civility : ${civilities}" th:text="#{${civility}}" th:value="${civility}">...</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group" th:class="${#fields.hasErrors('birthday')}? 'has-error' :''" >
+                <label for="birthdate" class="col-sm-2 control-label">Date de naissance</label>
+                <div class="col-sm-10" >
+                    <input id="birthdate" type="text"
+                           datepicker-popup="dd/MM/yyyy"
+                           ng-model="dt"
+                           is-open="opened"
+                           th:field="*{birthday}" />
+
+                       <i class="icon-calendar" ng-click="open()">Open</i>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">S'enregistrer</button>
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                </div>
+            </div>
+        </form>
+
+
+
+
+
+    </div>
+
+
+
+
+</body>
+</html>
