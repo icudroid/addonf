@@ -12,6 +12,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         $scope.correct = "noreponse";
         $scope.videoElt = angular.element("video");
         $scope.index = 0;
+        $scope.base = addonf.base;
 
 
         $scope.noResponse = function(){
@@ -41,7 +42,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                 $scope.index++;
                 if( $scope.adGame.game.length > $scope.index){
                     $scope.current = $scope.adGame.game[$scope.index];
-                    $scope.ad = "http://localhost:8080/video/"+$scope.index+"?"+new Date().getTime();
+                    $scope.ad = $scope.base + "video/"+$scope.index+"?"+new Date().getTime();
                     $scope.videoElt[0].load();
                     $scope.videoElt[0].play();
                 }else{
@@ -63,7 +64,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             $scope.token =  $scope.adGame.userToken;
 
             $scope.score = 0;
-            $scope.ad = "http://localhost:8080/video/"+$scope.index+"?"+new Date().getTime();
+            $scope.ad = $scope.base + "video/"+$scope.index+"?"+new Date().getTime();
             $scope.videoElt[0].load();
             $scope.videoElt[0].play();
 
@@ -117,7 +118,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             if( $scope.adGame.game.length > $scope.index){
                 $scope.current = $scope.adGame.game[$scope.index];
                 $scope.videoElt[0].load();
-                $scope.ad = "http://localhost:8080/video/"+$scope.index+"?"+new Date().getTime();
+                $scope.ad = $scope.base + "video/"+$scope.index+"?"+new Date().getTime();
                 $scope.videoElt[0].load();
                 $scope.videoElt[0].play();
             }else{
@@ -133,6 +134,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
 adgameControllers.controller('EndCtrl', ['$scope', 'Game', '$timeout', '$route',
     function($scope, Game, $timeout, $route) {
+
+    $scope.base = addonf.base;
 
     Game.resultGame(function(data){
         $scope.message = data.message;
