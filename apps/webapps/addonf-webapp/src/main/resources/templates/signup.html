@@ -11,7 +11,7 @@
     <script src="lib/angular-1.2.0/angular-resource.js" th:src="@{/lib/angular-1.2.0/angular-resource.js}"></script>
     <script src="lib/angular-1.2.0/angular-route.js" th:src="@{/lib/angular-1.2.0/angular-route.js}"></script>
 
-    <script src="lib/ui.bootstrap-0.6.0/ui-bootstrap-custom-0.6.0.js" th:src="@{/lib/ui-bootstrap-0.6.0/ui-bootstrap-0.6.0.js}"></script>
+    <script src="lib/ui.bootstrap-0.6.0/ui-bootstrap-custom-0.6.0.js" th:src="@{/lib/ui-bootstrap-0.6.0/ui-bootstrap-tpls-0.6.0.js}"></script>
 
     <script src="js/controller/registration-controllers.js" th:src="@{/js/controller/registration-controllers.js}"></script>
 
@@ -20,7 +20,7 @@
 
 <body>
     <div layout:fragment="content"  ng-controller="registrationCtrl">
-
+        <h1>Enregistrement</h1>
         <form class="form-horizontal" role="form" th:action="@{/signup}" method="post" th:object="${player}">
 
             <div class="form-group" th:class="${#fields.hasErrors('username')}? 'has-error' :''" >
@@ -63,9 +63,9 @@
                            datepicker-popup="dd/MM/yyyy"
                            ng-model="dt"
                            is-open="opened"
-                           th:field="*{birthday}" />
-
-                       <i class="icon-calendar" ng-click="open()">Open</i>
+                           th:field="*{birthday}"
+                           ng-required="true"
+                            />
                 </div>
             </div>
 

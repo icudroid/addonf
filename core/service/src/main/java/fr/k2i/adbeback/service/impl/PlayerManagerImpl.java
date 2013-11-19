@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,8 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
     private PasswordEncoder passwordEncoder;
     private PlayerDao playerDao;
     private CountryDao countryDao;
-    
+    @Autowired(required = false)
+    private SaltSource saltSource;
     
     @Autowired
     public void setCountryDao(CountryDao countryDao) {
@@ -63,7 +65,61 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
      * {@inheritDoc}
      */
     public Player savePlayer(Player player) throws UserExistsException {
-    	if(player.getUsername() == null )return null;
+
+        if (player.getVersion() == null) {
+            // if new user, lowercase userId
+            player.setUsername(player.getUsername().toLowerCase());
+        }
+
+        // Get and prepare password management-related artifacts
+        boolean passwordChanged = false;
+        if (passwordEncoder != null) {
+            // Check whether we have to encrypt (or re-encrypt) the password
+            if (player.getVersion() == null) {
+                // New user, always encrypt
+                passwordChanged = true;
+            } else {
+                // Existing user, check password in DB
+                final String currentPassword = playerDao.getPlayerPassword(player.getUsername());
+                if (currentPassword == null) {
+                    passwordChanged = true;
+                } else {
+                    if (!currentPassword.equals(player.getPassword())) {
+                        passwordChanged = true;
+                    }
+                }
+            }
+
+            // If password was changed (or new user), encrypt it
+            if (passwordChanged) {
+                if (saltSource == null) {
+                    // backwards compatibility
+                    player.setPassword(passwordEncoder.encodePassword(player.getPassword(), null));
+                    log.warn("SaltSource not set, encrypting password w/o salt");
+                } else {
+                    player.setPassword(passwordEncoder.encodePassword(player.getPassword(),
+                            saltSource.getSalt(player)));
+                }
+            }
+        } else {
+            log.warn("PasswordEncoder not set, skipping password encryption...");
+        }
+
+        try {
+            return playerDao.savePlayer(player);
+        } catch (final Exception e) {
+            e.printStackTrace();
+            log.warn(e.getMessage());
+            throw new UserExistsException("User '" + player.getUsername() + "' already exists!");
+        }
+
+
+
+
+
+
+
+/*    	if(player.getUsername() == null )return null;
     	
         if (player.getVersion() == null) {
             // if new user, lowercase userId
@@ -116,7 +172,7 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
             //e.printStackTrace();
             log.warn(e.getMessage());
             throw new UserExistsException("User '" + player.getUsername() + "' already exists!");
-        }
+        }*/
     }
 
 

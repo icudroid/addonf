@@ -19,9 +19,6 @@ public class HomeController {
 
     @RequestMapping("/")
     public String home(Map<String, Object> model) {
-        model.put("message", "Hello World");
-        model.put("title", "Hello Home");
-        model.put("date", new Date());
         return "home";
     }
 
@@ -31,8 +28,8 @@ public class HomeController {
         return "game";
     }
 
-    @RequestMapping("/secure")
+    @RequestMapping("/logout-success")
     public String secure(Map<String, Object> model) {
-        return "home";
+        return "redirect:/";
     }
 }

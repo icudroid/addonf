@@ -46,7 +46,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "fr.k2i.adbeback")
-@PropertySource(value = "classpath:application.properties")
+@PropertySource(value = {"classpath:application.properties","classpath:mail.properties"})
 public class WebConfig {
 
 
@@ -62,6 +62,10 @@ public class WebConfig {
         return new MvcConfig();
     }
 
+    @Bean
+    public EmailConfig emailConfig(){
+        return new EmailConfig();
+    }
 
     public static void main(String[] args) throws Exception {
         new SpringApplicationBuilder(WebConfig.class).run(args);

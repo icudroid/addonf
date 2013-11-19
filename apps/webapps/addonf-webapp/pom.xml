@@ -102,10 +102,25 @@
 
 
         <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity3</artifactId>
+        </dependency>
+
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>fr.k2i.adbeback.addonf.core</groupId>
+            <artifactId>application-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
+
+
 
 
     <build>

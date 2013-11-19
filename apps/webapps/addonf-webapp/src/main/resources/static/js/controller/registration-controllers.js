@@ -35,11 +35,4 @@ var registrationCtrl = function ($scope, $timeout) {
         });
     };
 
-    $scope.dateOptions = {
-        'year-format': "'yy'",
-        'starting-day': 1
-    };
-
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
-    $scope.format = $scope.formats[0];
 };

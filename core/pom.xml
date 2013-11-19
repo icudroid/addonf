@@ -20,6 +20,7 @@
         <module>domain</module>
         <module>repository</module>
         <module>service</module>
+        <module>application-service</module>
     </modules>
     <dependencies>
         <dependency>

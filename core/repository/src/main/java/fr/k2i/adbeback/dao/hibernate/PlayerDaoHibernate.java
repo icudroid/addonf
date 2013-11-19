@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.PlayerDao;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -48,6 +49,7 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
     }
 
 
+    @Transactional
     public Player savePlayer(Player player) {
         Player u = super.save(player);
         getEntityManager().flush();

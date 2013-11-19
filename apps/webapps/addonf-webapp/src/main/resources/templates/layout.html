@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
   <head>
     <title>Layout</title>
 
@@ -23,14 +23,7 @@
 
           <div class="masthead">
               <h3 class="text-muted">A2onf</h3>
-<!--              <ul class="nav nav-justified">
-                  <li class="active"><a href="#">Home</a></li>
-                  <li><a href="#">Projects</a></li>
-                  <li><a href="#">Services</a></li>
-                  <li><a href="#">Downloads</a></li>
-                  <li><a href="#">About</a></li>
-                  <li><a href="#">Contact</a></li>
-              </ul>-->
+              <a href="/custom-logout"  th:href="@{/custom-logout}" sec:authorize="hasRole('ROLE_USER')">Deconnexion</a>
           </div>
 
           <div style="margin-top: 40px;">

@@ -60,7 +60,6 @@ public class Player extends BaseObject implements Serializable, UserDetails {
     private String username;                    // required
     private String password;                    // required
     private String confirmPassword;
-    private String passwordHint;
     private String firstName;                   // required
     private String lastName;                    // required
     private String email;                       // required; unique
@@ -163,25 +162,18 @@ public class Player extends BaseObject implements Serializable, UserDetails {
         return confirmPassword;
     }
 
-    @Column(name = "password_hint")
-    public String getPasswordHint() {
-        return passwordHint;
-    }
 
-    @Column(name = "first_name", nullable = false, length = 50)
-
+    @Column(name = "first_name", nullable = true, length = 50)
     public String getFirstName() {
         return firstName;
     }
 
-    @Column(name = "last_name", nullable = false, length = 50)
-
+    @Column(name = "last_name", nullable = true, length = 50)
     public String getLastName() {
         return lastName;
     }
 
     @Column(nullable = false, unique = true)
-
     public String getEmail() {
         return email;
     }
@@ -329,9 +321,6 @@ public class Player extends BaseObject implements Serializable, UserDetails {
         this.confirmPassword = confirmPassword;
     }
 
-    public void setPasswordHint(String passwordHint) {
-        this.passwordHint = passwordHint;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
