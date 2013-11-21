@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.ReflectionUtils;
@@ -33,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         locations={ "classpath:/applicationContext-test.xml"})
-public class MailEngineTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class MailEngineTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     MailEngine mailEngine;
     
@@ -95,7 +96,6 @@ public class MailEngineTest extends AbstractTransactionalJUnit4SpringContextTest
         wiser.start();
 
         ClassPathResource cpResource = new ClassPathResource("/test-attachment.txt");
-
 
         Map<String,Object> model = new HashMap<String, Object>();
         model.put("test","test");

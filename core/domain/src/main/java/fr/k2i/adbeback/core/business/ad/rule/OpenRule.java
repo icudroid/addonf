@@ -33,42 +33,35 @@ public class OpenRule extends AdRule {
 	public void setResponses(List<AdResponse> responses) {
 		this.responses = responses;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((question == null) ? 0 : question.hashCode());
-		result = prime * result
-				+ ((responses == null) ? 0 : responses.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OpenRule other = (OpenRule) obj;
-		if (question == null) {
-			if (other.question != null)
-				return false;
-		} else if (!question.equals(other.question))
-			return false;
-		if (responses == null) {
-			if (other.responses != null)
-				return false;
-		} else if (!responses.equals(other.responses))
-			return false;
-		return true;
-	}
-	@Override
-	public String toString() {
-		return "OpenRule [question=" + question + ", responses=" + responses
-				+ ", id=" + id + ", startDate=" + startDate + ", endDate="
-				+ endDate + "]";
-	}
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OpenRule)) return false;
+        if (!super.equals(o)) return false;
+
+        OpenRule openRule = (OpenRule) o;
+
+        if (correct != null ? !correct.equals(openRule.correct) : openRule.correct != null) return false;
+        if (responses != null ? !responses.equals(openRule.responses) : openRule.responses != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (responses != null ? responses.hashCode() : 0);
+        result = 31 * result + (correct != null ? correct.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenRule{" +
+                "responses=" + responses +
+                ", correct=" + correct +
+                '}';
+    }
 }

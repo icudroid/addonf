@@ -14,11 +14,13 @@ import fr.k2i.adbeback.core.business.game.AdGame;
 public interface AdGameManager extends GenericManager<AdGame, Long> {
 	/**
 	 * Generation du jeu$
+     *
      * @param idPlayer
-	 * @return
+	 * @param gooseLevel
+     * @return
 	 * @throws Exception
 	 */
-	AdGame generate(Long idPlayer)throws Exception;
+	AdGame generate(Long idPlayer, Long gooseLevel)throws Exception;
 	
 
 	/**

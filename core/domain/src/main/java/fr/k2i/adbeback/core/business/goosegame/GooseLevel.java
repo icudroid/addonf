@@ -25,11 +25,30 @@ public class GooseLevel extends BaseObject implements Serializable {
 	private Long id;
 	private Long level;
 	private Double value;
+    private Integer nbMaxAdByPlay;
+    private Integer minScore;
 	private StartLevelGooseCase startCase;
 	private EndLevelGooseCase endCase;
 	private List<GooseCase> gooseCases;
-	
-	@OneToMany(cascade = CascadeType.ALL)
+
+
+    public Integer getMinScore() {
+        return minScore;
+    }
+
+    public void setMinScore(Integer minScore) {
+        this.minScore = minScore;
+    }
+
+    public Integer getNbMaxAdByPlay() {
+        return nbMaxAdByPlay;
+    }
+
+    public void setNbMaxAdByPlay(Integer nbMaxAdByPlay) {
+        this.nbMaxAdByPlay = nbMaxAdByPlay;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "GOOSELEVEL_ID")
 	public List<GooseCase> getGooseCases() {
 		return gooseCases;
@@ -143,7 +162,7 @@ public class GooseLevel extends BaseObject implements Serializable {
 	public String toString() {
 		return "GooseLevel [id=" + id + ", level=" + level + ", value=" + value
 				+ ", startCase=" + startCase + ", endCase=" + endCase
-				+ ", gooseCases=" + gooseCases + "]";
+				;
 	}
 
 

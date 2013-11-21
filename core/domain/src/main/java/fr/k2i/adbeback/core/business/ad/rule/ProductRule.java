@@ -11,8 +11,7 @@ public class ProductRule extends AdRule {
 
 	@Override
 	public String toString() {
-		return "ProductRule [id=" + id + ", startDate=" + startDate
-				+ ", endDate=" + endDate + "]";
+		return "ProductRule";
 	}
 
 }

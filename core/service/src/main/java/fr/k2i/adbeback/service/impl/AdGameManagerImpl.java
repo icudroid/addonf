@@ -11,7 +11,10 @@ import java.util.Random;
 import java.util.Set;
 
 
-import fr.k2i.adbeback.core.business.goosegame.GooseToken;
+import fr.k2i.adbeback.core.business.country.Country;
+import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.player.Address;
+import fr.k2i.adbeback.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +35,6 @@ import fr.k2i.adbeback.core.business.game.OpenPossibility;
 import fr.k2i.adbeback.core.business.game.Possibility;
 import fr.k2i.adbeback.core.business.game.ProductPossibility;
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.dao.AdDao;
-import fr.k2i.adbeback.dao.AdGameDao;
-import fr.k2i.adbeback.dao.BrandDao;
-import fr.k2i.adbeback.dao.PlayerDao;
-import fr.k2i.adbeback.dao.PossibilityDao;
 import fr.k2i.adbeback.service.AdGameManager;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +62,8 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
     @Autowired
 	private PlayerDao playerDao;
 
+    @Autowired
+    private GooseLevelDao gooseLevelDao;
 
 	@Autowired
 	public void setAdGameDao(AdGameDao adGameDao) {
@@ -73,12 +73,13 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 
 
     @Transactional
-	public AdGame generate(Long idPlayer) throws Exception {
-		AdGame game = new AdGame();
+	public AdGame generate(Long idPlayer, Long gooseLevel) throws Exception {
+        GooseLevel level = gooseLevelDao.get(gooseLevel);
 
-		Integer nbAds = 0;
-		game.setMinScore(nbAds);
-		nbAds += 6;
+
+        AdGame game = new AdGame();
+
+		game.setMinScore(level.getMinScore());
 
 		game.setGenerated(new Date());
 
@@ -86,22 +87,28 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 		score.setScore(0);
 		game.setScore(score);
 
-		game.setChoises(generateChoises(nbAds, game));
-		Player player = playerDao.get(idPlayer);
+        Player player = playerDao.get(idPlayer);
+        game.setChoises(generateChoises(level.getNbMaxAdByPlay(), game,player));
 
 		game.setPlayer(player);
 		return adGameDao.save(game);
 	}
 
-	private Map<Integer, AdChoise> generateChoises(Integer nbAds, AdGame game) throws Exception {
+	private Map<Integer, AdChoise> generateChoises(Integer nbAds, AdGame game,Player player) throws Exception {
 		Map<Integer, AdChoise> res = new HashMap<Integer, AdChoise>();
 
-		Map<Integer, Ad> mapTest = new HashMap<Integer, Ad>();
-		List<Ad> allAds = adDao.getAll(new Date());
+        Address address = player.getAddress();
+
+
+        Map<Integer, Ad> mapTest = new HashMap<Integer, Ad>();
+
+        //List<Ad> allAds = adDao.getAll(new Date());
+        List<Ad> allAds =  adDao.getAllValideFor(player);
 		Random ramRandom = new Random();
 
 		int i = 0;
 		while (i <= nbAds-1) {
+            // Todo : comment mettre en concurence les annonceurs
 			int nextInt = ramRandom.nextInt(allAds.size());
 			Ad ad = mapTest.get(nextInt);
 			if (ad == null) {
@@ -110,17 +117,27 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 
 				AdChoise choises = new AdChoise();
 				int correct = ramRandom.nextInt(3);
-				
+
+
+                //TODO : comment choisir la règle
 				List<AdRule> rules = ad.getRules();
-				AdRule rule = null;
-				Date now = new Date();
-				
+                List<AdRule> rulesPossible = new ArrayList<AdRule>();
+
+
 				for (AdRule adRule : rules) {
-					if(now.after(adRule.getStartDate()) && now.before(adRule.getEndDate()) ){
-						rule = adRule;
-						break;
-					}
+                    if (adRule instanceof BrandRule) {
+                        rulesPossible.add(adRule);
+                    }
+                    if (adRule instanceof OpenRule) {
+                        rulesPossible.add(adRule);
+                    }
+                    if (adRule instanceof ProductRule) {
+                        rulesPossible.add(adRule);
+                    }
 				}
+
+                AdRule rule = rulesPossible.get(ramRandom.nextInt(rulesPossible.size()));
+
 				choises.setQuestion(rule.getQuestion());
 				choises.setPossiblities(generatePossibilies(ad, correct,rule));
 				choises.setCorrect(choises.getPossiblities().get(correct));

@@ -45,10 +45,10 @@ public class AdGameWebservice {
     private String pathLogo;
 
 
-    @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/createGame/{level}", method = RequestMethod.GET)
     public @ResponseBody
-    AdGameBean createGame(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return adGameFacade.createAdGame(playerFacade.getCurrentPlayer().getId(), request);
+    AdGameBean createGame(@PathVariable Long level,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return adGameFacade.createAdGame(playerFacade.getCurrentPlayer().getId(),level, request);
     }
 
 
@@ -106,13 +106,6 @@ public class AdGameWebservice {
             throws Exception {
         return adGameFacade.noUserResponse(request,index);
 
-    }
-
-
-    @RequestMapping(value = "/rest/getGooseGame", method = RequestMethod.GET)
-    public @ResponseBody
-    List<PlayerGooseGame> getGooseGame(HttpServletRequest request) throws Exception {
-        return adGameFacade.getGooseGame(request);
     }
 
 

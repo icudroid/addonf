@@ -3,12 +3,23 @@ package fr.k2i.adbeback.dao.hibernate;
 import java.util.Date;
 import java.util.List;
 
+import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import fr.k2i.adbeback.core.business.ad.rule.AdRule_;
+import fr.k2i.adbeback.core.business.ad.rule.DateRule_;
+import fr.k2i.adbeback.core.business.player.Address;
+import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.player.Sex;
+import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.joda.time.LocalDate;
+import org.joda.time.Months;
+import org.joda.time.Years;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.ad.Ad_;
 import fr.k2i.adbeback.dao.AdDao;
 
 /**
@@ -39,6 +50,27 @@ public class AdDaoHibernate extends GenericDaoHibernate<Ad, Long> implements AdD
 		return criteria.list();
 	}
 
+    @Override
+    public List<Ad> getAllValideFor(Player player) {
+        Address address = player.getAddress();
+        
+        LocalDate date = new LocalDate();
+        
+        Sex sex = player.getSex();
+        
+        LocalDate birthday = new LocalDate(player.getBirthday());
+        Years years = Years.yearsBetween(birthday, date);
+        
+        Integer age = years.getYears();
+
+
+        CriteriaBuilderHelper<Ad> helper = new CriteriaBuilderHelper(getEntityManager(),Ad.class);
+/*        helper.criteriaHelper.and(
+                helper.criteriaHelper.lessThan(helper.rootHelper.join(Ad_.rules).get(DateRule_.startDate),date.toDate()),
+                helper.criteriaHelper.greaterThan(helper.rootHelper.join(Ad_.rules).get(DateRule_.endDate),date.toDate())
+        );*/
+       return helper.getResultList();
+    }
 
 
 }

@@ -33,11 +33,8 @@ import fr.k2i.adbeback.core.business.country.Country;
 public abstract class  AdRule extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 8629354590055381187L;
 	protected Long id;
-	protected Date startDate;
-	protected Date endDate;
 	protected String question;
-	protected List<Country> countries;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 
@@ -48,23 +45,6 @@ public abstract class  AdRule extends BaseObject implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	@Temporal(TemporalType.DATE)
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-	
-	@Temporal(TemporalType.DATE)
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
 
 	public String getQuestion() {
 		return question;
@@ -74,47 +54,23 @@ public abstract class  AdRule extends BaseObject implements Serializable {
 		this.question = question;
 	}
 
-	@ManyToMany(targetEntity = Country.class, cascade = { CascadeType.PERSIST,CascadeType.MERGE })
-	@JoinTable(name = "adrule_country", joinColumns = @JoinColumn(name = "ADRULE_ID"), inverseJoinColumns = @JoinColumn(name = "COUNTRY_ID"))
-	public List<Country> getCountries() {
-		return countries;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AdRule)) return false;
 
-	public void setCountries(List<Country> countries) {
-		this.countries = countries;
-	}
+        AdRule adRule = (AdRule) o;
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result
-				+ ((startDate == null) ? 0 : startDate.hashCode());
-		return result;
-	}
+        if (id != null ? !id.equals(adRule.id) : adRule.id != null) return false;
+        if (question != null ? !question.equals(adRule.question) : adRule.question != null) return false;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AdRule other = (AdRule) obj;
-		if (endDate == null) {
-			if (other.endDate != null)
-				return false;
-		} else if (!endDate.equals(other.endDate))
-			return false;
-		if (startDate == null) {
-			if (other.startDate != null)
-				return false;
-		} else if (!startDate.equals(other.startDate))
-			return false;
-		return true;
-	}
+        return true;
+    }
 
-
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (question != null ? question.hashCode() : 0);
+        return result;
+    }
 }

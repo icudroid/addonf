@@ -79,9 +79,22 @@ public class Player extends BaseObject implements Serializable, UserDetails {
     /*private List<ViewedMedia> medias = new ArrayList<ViewedMedia>();*/
     private List<AdGame> games = new ArrayList<AdGame>();
     private List<GooseWin> wins = new ArrayList<GooseWin>();
-    
-    private GooseToken gooseToken;
-    
+
+
+    private List<GooseToken> gooseTokens;
+
+
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="PLAYER_ID")
+    public List<GooseToken> getGooseTokens() {
+        return gooseTokens;
+    }
+
+    public void setGooseTokens(List<GooseToken> gooseToken) {
+        this.gooseTokens = gooseToken;
+    }
+
+    /*
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "TOKEN_ID")
 	public GooseToken getGooseToken() {
@@ -91,6 +104,7 @@ public class Player extends BaseObject implements Serializable, UserDetails {
 	public void setGooseToken(GooseToken gooseToken) {
 		this.gooseToken = gooseToken;
 	}
+*/
 
 /*	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="PLAYER_ID")
@@ -446,5 +460,13 @@ public class Player extends BaseObject implements Serializable, UserDetails {
             sb.append("No Granted Authorities");
         }
         return sb.toString();
+    }
+
+    public void addGooseToken(GooseToken gooseToken) {
+        if(gooseTokens==null){
+            gooseTokens = new ArrayList<GooseToken>();
+        }
+        gooseToken.setPlayer(this);
+        gooseTokens.add(gooseToken);
     }
 }

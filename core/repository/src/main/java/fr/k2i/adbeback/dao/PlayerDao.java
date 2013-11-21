@@ -2,6 +2,7 @@ package fr.k2i.adbeback.dao;
 
 import java.util.List;
 
+import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Propagation;
@@ -54,6 +55,7 @@ public interface PlayerDao extends GenericDao<Player, Long> {
      * @return
      */
 	Player loadUserByEmail(String email);
-    
+
+    GooseToken getPlayerGooseToken(Long idPlayer, Long idGooseLevel);
 }
 

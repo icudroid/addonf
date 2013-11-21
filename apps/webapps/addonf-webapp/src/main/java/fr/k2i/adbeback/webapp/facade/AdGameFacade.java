@@ -4,10 +4,7 @@ import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.dao.AdGameDao;
-import fr.k2i.adbeback.dao.GooseGameDao;
-import fr.k2i.adbeback.dao.GooseLevelDao;
-import fr.k2i.adbeback.dao.PlayerDao;
+import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
 import fr.k2i.adbeback.webapp.bean.*;
@@ -39,6 +36,7 @@ public class AdGameFacade {
     public static final String ID_ADGAME = "adGameId";
     public static final String NB_ERRORS = "errors";
     public static final String ADS_VIDEO = "adsVideo";
+    public static final String GOOSE_LEVEL = "gooseLevel";
 
     public static final String GAME_END_TIME = "endTime";
     public static final String GAME_RESULT = "result";
@@ -65,11 +63,14 @@ public class AdGameFacade {
     @Autowired
     private GooseLevelDao gooseLevelDao;
 
+    @Autowired
+    private GooseTokenDao gooseTokenDao;
+
 
 
     @Transactional
-    public AdGameBean createAdGame(Long idPlayer,HttpServletRequest request) throws Exception {
-        AdGame generateAdGame = adGameManager.generate(idPlayer);
+    public AdGameBean createAdGame(Long idPlayer,Long gooseLevel,HttpServletRequest request) throws Exception {
+        AdGame generateAdGame = adGameManager.generate(idPlayer,gooseLevel);
         List<String> adsVideo = new ArrayList<String>();
 
         Map<Integer, Long> correctResponse = new HashMap<Integer, Long>();
@@ -127,7 +128,14 @@ public class AdGameFacade {
 
 
         Player player = playerFacade.getCurrentPlayer();
-        GooseToken gooseToken = player.getGooseToken();
+
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(idPlayer, gooseLevel);
+        if(gooseToken==null){
+            GooseLevel level = gooseLevelDao.get(gooseLevel);
+            gooseToken = new GooseToken();
+            gooseToken.setGooseCase(level.getStartCase());
+            player.addGooseToken(gooseToken);
+        }
         GooseCase gooseCase = gooseToken.getGooseCase();
         Integer number = gooseCase.getNumber();
         GooseLevel level = gooseCase.getLevel();
@@ -154,6 +162,7 @@ public class AdGameFacade {
         session.setAttribute(ADS_VIDEO, adsVideo);
         session.setAttribute(GAME_RESULT, null);
         session.setAttribute(PLAYER_TOKEN, gooseCase);
+        session.setAttribute(GOOSE_LEVEL, gooseLevel);
         session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
 
         return res;
@@ -213,7 +222,9 @@ public class AdGameFacade {
             }
         }
 
-        Integer number = playerFacade.getCurrentPlayer().getGooseToken().getGooseCase().getNumber();
+
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(playerFacade.getCurrentPlayer().getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
+        Integer number = gooseToken.getGooseCase().getNumber();
         res.setUserToken(number);
 
         return res;
@@ -223,7 +234,9 @@ public class AdGameFacade {
     @Transactional
     private LimiteTimeAdGameBean computeResultGame(HttpServletRequest request) throws Exception {
         Player player = playerFacade.getCurrentPlayer();
-        GooseToken gooseToken = player.getGooseToken();
+
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(player.getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
+
         GooseCase gooseCase = gooseToken.getGooseCase();
         GooseLevel level = gooseCase.getLevel();
         LimiteTimeAdGameBean gameResult = new LimiteTimeAdGameBean();
@@ -280,7 +293,7 @@ public class AdGameFacade {
                 if(score == 6){
                     //go next case
                     GooseCase caseByNumber = gooseGameManager.getCaseByNumber(gooseCase.getNumber() + 1, gooseCase.getLevel());
-                    player.getGooseToken().setGooseCase(caseByNumber);
+                    gooseToken.setGooseCase(caseByNumber);
                     playerDao.savePlayer(player);
                     StringBuilder sb = new StringBuilder();
                     sb.append("Vous venez de sortir de prison");
@@ -309,7 +322,8 @@ public class AdGameFacade {
 
         //faire avancer le token
         int nbGo = 1;
-        GooseToken token = player.getGooseToken();
+
+        GooseToken token =  playerDao.getPlayerGooseToken(player.getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
         GooseCase gooseCase = token.getGooseCase();
         GooseLevel level = gooseCase.getLevel();
 
@@ -337,6 +351,7 @@ public class AdGameFacade {
             }
 
             token.setGooseCase(byNumber);
+            gooseTokenDao.save(token);
             playerDao.save(player);
         }
 
@@ -390,8 +405,8 @@ public class AdGameFacade {
 
         }
 
-
-        Integer number = playerFacade.getCurrentPlayer().getGooseToken().getGooseCase().getNumber();
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(playerFacade.getCurrentPlayer().getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
+        Integer number = gooseToken.getGooseCase().getNumber();
         res.setUserToken(number);
 
         return res;
@@ -400,21 +415,13 @@ public class AdGameFacade {
 
 
 
-    @Transactional
-    public List<PlayerGooseGame> getGooseGame(HttpServletRequest request)
+    private List<PlayerGooseGame> getGooseGame(HttpServletRequest request)
             throws Exception {
         List<PlayerGooseGame> res = new ArrayList<PlayerGooseGame>();
 
         Player player = playerFacade.getCurrentPlayer();
 
-        GooseToken gooseToken = player.getGooseToken();
-        if(gooseToken == null){
-            gooseToken = new GooseToken();
-            gooseToken.setGooseCase(gooseGameManager.getCase(1L));
-            gooseToken.setPlayer(player);
-            player.setGooseToken(gooseToken);
-            playerDao.save(player);
-        }
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(playerFacade.getCurrentPlayer().getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
         GooseCase gooseCase = gooseToken.getGooseCase();
         Integer number = gooseCase.getNumber();
         GooseLevel level = gooseCase.getLevel();
@@ -448,9 +455,11 @@ public class AdGameFacade {
 
         LimiteTimeAdGameBean res = (LimiteTimeAdGameBean) request.getSession().getAttribute(GAME_RESULT);
 
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(playerFacade.getCurrentPlayer().getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
+
         Player player = playerFacade.getCurrentPlayer();
         res.setGooseGames(getGooseGame(request));
-        res.setUserToken(player.getGooseToken().getGooseCase().getNumber());
+        res.setUserToken(gooseToken.getGooseCase().getNumber());
 
         res.setScore((Integer) request.getSession().getAttribute(USER_SCORE));
 

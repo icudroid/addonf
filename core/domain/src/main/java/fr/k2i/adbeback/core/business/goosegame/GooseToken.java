@@ -38,7 +38,7 @@ public class GooseToken extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToOne()
 	@JoinColumn(name = "GOOSECASE_ID")
 	public GooseCase getGooseCase() {
 		return gooseCase;
@@ -48,7 +48,8 @@ public class GooseToken extends BaseObject implements Serializable {
 		this.gooseCase = gooseCase;
 	}
 
-	@OneToOne(mappedBy = "gooseToken")
+	@ManyToOne()
+    @JoinColumn(name = "PLAYER_ID")
 	public Player getPlayer() {
 		return player;
 	}

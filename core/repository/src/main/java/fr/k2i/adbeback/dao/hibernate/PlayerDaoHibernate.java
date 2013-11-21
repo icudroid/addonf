@@ -4,12 +4,19 @@ import java.util.List;
 
 import javax.persistence.Table;
 
+import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.ad.Ad_;
+import fr.k2i.adbeback.core.business.ad.rule.DateRule_;
+import fr.k2i.adbeback.core.business.goosegame.GooseCase_;
+import fr.k2i.adbeback.core.business.goosegame.GooseLevel_;
+import fr.k2i.adbeback.core.business.goosegame.GooseToken;
+import fr.k2i.adbeback.core.business.goosegame.GooseToken_;
+import fr.k2i.adbeback.core.business.player.Player_;
+import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -67,6 +74,17 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
         }
 	}
 
+    @Transactional
+    @Override
+    public GooseToken getPlayerGooseToken(Long idPlayer, Long idGooseLevel) {
+        CriteriaBuilderHelper<GooseToken> helper = new CriteriaBuilderHelper(getEntityManager(),GooseToken.class);
+        helper.criteriaHelper.and(
+                helper.criteriaHelper.equal(helper.rootHelper.join(GooseToken_.player).get(Player_.id),idPlayer),
+                helper.criteriaHelper.equal(helper.rootHelper.join(GooseToken_.gooseCase).join(GooseCase_.level).get(GooseLevel_.id), idGooseLevel)
+        );
+
+        return helper.getSingleResult();
+    }
 
 
     /**

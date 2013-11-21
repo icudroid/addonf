@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.player.Player;
 
 /**
  * User Data Access Object (GenericDao) interface.
@@ -20,6 +21,7 @@ public interface AdDao extends GenericDao<Ad, Long> {
 	 */
 	List<Ad> getAll(Date date)throws Exception;
 
-    
+
+    List<Ad> getAllValideFor(Player player);
 }
 
