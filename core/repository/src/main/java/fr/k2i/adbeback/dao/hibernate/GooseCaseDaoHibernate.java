@@ -48,9 +48,15 @@ public class GooseCaseDaoHibernate extends GenericDaoHibernate<GooseCase, Long> 
 		Criteria criteria = session.createCriteria(GooseCase.class);
 		criteria.add(Restrictions.eq("level",level));
 		List<Integer> nums = new ArrayList<Integer>();
+
+        if(level.getEndCase().getNumber()>=nb){
+            nb = level.getEndCase().getNumber();
+        }
+
 		for (int i = 0; i < nb; i++) {
 			nums.add(start+i);
 		}
+
 		criteria.add(Restrictions.in("number",nums));
 		criteria.addOrder(Property.forName("number").asc());
 		return criteria.list();

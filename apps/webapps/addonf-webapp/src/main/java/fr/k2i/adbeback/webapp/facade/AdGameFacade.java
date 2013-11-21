@@ -43,6 +43,8 @@ public class AdGameFacade {
     public static final String PLAYER_GOOSE_GAME = "gooseGameCases";
     public static final String PLAYER_TOKEN = "token";
 
+    public static final String CAN_BE_DOWNLOAD = "donwload";
+
 
 
     @Autowired
@@ -130,16 +132,20 @@ public class AdGameFacade {
         Player player = playerFacade.getCurrentPlayer();
 
         GooseToken gooseToken =  playerDao.getPlayerGooseToken(idPlayer, gooseLevel);
+        GooseLevel level = gooseLevelDao.get(gooseLevel);
         if(gooseToken==null){
-            GooseLevel level = gooseLevelDao.get(gooseLevel);
+
             gooseToken = new GooseToken();
             gooseToken.setGooseCase(level.getStartCase());
             player.addGooseToken(gooseToken);
+        }else if(!level.isMultiple()){
+            gooseToken.setGooseCase(level.getStartCase());
         }
+
+        res.setMultiple(level.isMultiple());
+
         GooseCase gooseCase = gooseToken.getGooseCase();
         Integer number = gooseCase.getNumber();
-        GooseLevel level = gooseCase.getLevel();
-
 
         List<PlayerGooseGame> pgg = new ArrayList<PlayerGooseGame>();
         List<GooseCase> cases = gooseGameManager.getCases(level, number,  7);
@@ -196,7 +202,6 @@ public class AdGameFacade {
                 answers.put(index, responseId);
 
                 goHeadToken(request);
-
 
             } else {
                 res.setCorrect(false);
@@ -348,6 +353,10 @@ public class AdGameFacade {
                 byNumber = gooseGameManager.getCaseByNumber((2*endCase)-gooseCase.getNumber()-nbGo,level);
             }else{
                 byNumber = gooseGameManager.getCaseByNumber(gooseCase.getNumber()+nbGo,level);
+            }
+
+            if (gooseCase instanceof WinGooseCase) {
+                request.getSession().setAttribute(CAN_BE_DOWNLOAD,true);
             }
 
             token.setGooseCase(byNumber);

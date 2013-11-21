@@ -14,6 +14,16 @@ public class AdGameBean implements Serializable{
 	private List<AdBean> game;
     private List<PlayerGooseGame> gooseGames;
     private Integer userToken;
+    private boolean multiple;
+
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
 
     public List<PlayerGooseGame> getGooseGames() {
         return gooseGames;

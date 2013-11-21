@@ -30,6 +30,7 @@ public class GooseLevel extends BaseObject implements Serializable {
 	private StartLevelGooseCase startCase;
 	private EndLevelGooseCase endCase;
 	private List<GooseCase> gooseCases;
+    private boolean multiple;
 
 
     public Integer getMinScore() {
@@ -166,4 +167,11 @@ public class GooseLevel extends BaseObject implements Serializable {
 	}
 
 
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
 }

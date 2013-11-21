@@ -45,6 +45,15 @@ public class AdGameWebservice {
     private String pathLogo;
 
 
+    @RequestMapping(value = "/dln", method = RequestMethod.GET)
+    public @ResponseBody
+    void dnl(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if(true == ((Boolean)request.getSession().getAttribute(CAN_BE_DOWNLOAD))){
+
+        }
+    }
+
+
     @RequestMapping(value = "/rest/createGame/{level}", method = RequestMethod.GET)
     public @ResponseBody
     AdGameBean createGame(@PathVariable Long level,HttpServletRequest request, HttpServletResponse response) throws Exception {

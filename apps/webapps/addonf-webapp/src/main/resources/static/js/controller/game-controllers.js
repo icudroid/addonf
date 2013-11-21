@@ -13,7 +13,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         $scope.videoElt = angular.element("video");
         $scope.index = 0;
         $scope.base = addonf.base;
-        $scope.level = 1;
+        $scope.level = 3;
+        $scope.canDownload = false;
 
         $scope.noResponse = function(){
 
@@ -63,6 +64,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             $scope.gooseCases =  $scope.adGame.gooseGames;
             $scope.token =  $scope.adGame.userToken;
 
+
             $scope.score = 0;
             $scope.ad = $scope.base + "video/"+$scope.index+"?"+new Date().getTime();
             $scope.videoElt[0].load();
@@ -97,6 +99,12 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                 $scope.responded = true;
 
                 $scope.token =  data.userToken;
+
+                if(!$scope.adGame.multiple && $scope.gooseCases[$scope.index].num ==  $scope.token &&  $scope.gooseCases[$scope.index].type==7){
+                    //download ask music
+                    $scope.canDownload = true;
+                }
+
 
                 if(data.correct){
                     $scope.correct = "ok";

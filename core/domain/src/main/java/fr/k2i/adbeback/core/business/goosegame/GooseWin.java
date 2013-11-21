@@ -45,7 +45,7 @@ public class GooseWin extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToOne()
 	@JoinColumn(name = "GOOSELEVEL_ID")
 	public GooseLevel getGooseLevel() {
 		return gooseLevel;
