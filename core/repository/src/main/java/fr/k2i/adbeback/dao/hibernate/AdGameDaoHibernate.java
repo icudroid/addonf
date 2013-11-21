@@ -4,13 +4,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import fr.k2i.adbeback.core.business.game.AdGame;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.dao.AdGameDao;
 
@@ -25,19 +25,19 @@ import fr.k2i.adbeback.dao.AdGameDao;
  *   the new BaseDaoHibernate implementation that uses generics.
 */
 @Repository("adGameDao")
-public class AdGameDaoHibernate extends GenericDaoHibernate<AdGame, Long> implements AdGameDao {
+public class AdGameDaoHibernate extends GenericDaoHibernate<AbstractAdGame, Long> implements AdGameDao {
 
     /**
      * Constructor that sets the entity to User.class.
      */
     public AdGameDaoHibernate() {
-        super(AdGame.class);
+        super(AbstractAdGame.class);
     }
 
 	@SuppressWarnings("unchecked")
-	public List<AdGame> findWonAdGame(Long idPlayer) throws Exception {
+	public List<AbstractAdGame> findWonAdGame(Long idPlayer) throws Exception {
 		Session session = getSession();
-		Criteria criteria = session.createCriteria(AdGame.class);
+		Criteria criteria = session.createCriteria(AbstractAdGame.class);
 		criteria.add(Restrictions.eq("player.id", idPlayer));
 		criteria.add(Restrictions.eq("statusGame", StatusGame.Win));
 		Calendar now = new GregorianCalendar();

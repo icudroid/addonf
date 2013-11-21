@@ -23,7 +23,7 @@ public class AdChoise extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -7659738703107950065L;
 	private Long id;
 	private List<Possibility> possiblities;
-	private AdGame adGame;
+	private AbstractAdGame adGame;
 	private Possibility correct;
 	private String question;
 	private Integer number;
@@ -60,11 +60,11 @@ public class AdChoise extends BaseObject implements Serializable {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AD_GAME_ID")
-	public AdGame getAdGame() {
+	public AbstractAdGame getAdGame() {
 		return adGame;
 	}
 
-	public void setAdGame(AdGame adGame) {
+	public void setAdGame(AbstractAdGame adGame) {
 		this.adGame = adGame;
 	}
 

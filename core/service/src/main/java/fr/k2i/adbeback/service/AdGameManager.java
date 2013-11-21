@@ -3,7 +3,7 @@ package fr.k2i.adbeback.service;
 import java.util.Map;
 
 
-import fr.k2i.adbeback.core.business.game.AdGame;
+import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 
 
 /**
@@ -11,7 +11,7 @@ import fr.k2i.adbeback.core.business.game.AdGame;
  * persistence layer.
  *
  */
-public interface AdGameManager extends GenericManager<AdGame, Long> {
+public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
 	/**
 	 * Generation du jeu$
      *
@@ -20,7 +20,7 @@ public interface AdGameManager extends GenericManager<AdGame, Long> {
      * @return
 	 * @throws Exception
 	 */
-	AdGame generate(Long idPlayer, Long gooseLevel)throws Exception;
+	AbstractAdGame generate(Long idPlayer, Long gooseLevel)throws Exception;
 	
 
 	/**

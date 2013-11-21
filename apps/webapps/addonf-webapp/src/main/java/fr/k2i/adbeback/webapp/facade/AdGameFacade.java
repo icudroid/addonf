@@ -2,6 +2,8 @@ package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
+import fr.k2i.adbeback.core.business.media.Media;
+import fr.k2i.adbeback.core.business.media.Music;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.*;
@@ -9,15 +11,30 @@ import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.StatusGame;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,8 +61,7 @@ public class AdGameFacade {
     public static final String PLAYER_TOKEN = "token";
 
     public static final String CAN_BE_DOWNLOAD = "donwload";
-
-
+    private static final String CART = "cart";
 
     @Autowired
     private GooseGameDao gooseGameDao;
@@ -68,11 +84,24 @@ public class AdGameFacade {
     @Autowired
     private GooseTokenDao gooseTokenDao;
 
+    @Value("${addonf.tmp.location:/tmp/}")
+    private String tmpPath;
+
+
+    @Value("${addonf.music.location:/musics/}")
+    private String musicPath;
+
+    @Value("${addonf.video.location:/movies/}")
+    private String videoPath;
+
 
 
     @Transactional
     public AdGameBean createAdGame(Long idPlayer,Long gooseLevel,HttpServletRequest request) throws Exception {
-        AdGame generateAdGame = adGameManager.generate(idPlayer,gooseLevel);
+
+        CartBean cart = (CartBean) request.getSession().getAttribute(CART);
+
+        AbstractAdGame generateAdGame = adGameManager.generate(idPlayer,gooseLevel);
         List<String> adsVideo = new ArrayList<String>();
 
         Map<Integer, Long> correctResponse = new HashMap<Integer, Long>();
@@ -322,7 +351,7 @@ public class AdGameFacade {
 
         Player player = playerFacade.getCurrentPlayer();
 
-        AdGame adGame = adGameManager.get((Long) request.getSession().getAttribute(ID_ADGAME));
+        AbstractAdGame adGame = adGameManager.get((Long) request.getSession().getAttribute(ID_ADGAME));
         Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
 
         //faire avancer le token
@@ -355,7 +384,7 @@ public class AdGameFacade {
                 byNumber = gooseGameManager.getCaseByNumber(gooseCase.getNumber()+nbGo,level);
             }
 
-            if (gooseCase instanceof WinGooseCase) {
+            if (byNumber instanceof WinGooseCase) {
                 request.getSession().setAttribute(CAN_BE_DOWNLOAD,true);
             }
 
@@ -474,5 +503,86 @@ public class AdGameFacade {
 
 
         return res;
+    }
+
+    public void getMedias(Long idAdGame, HttpServletResponse response) throws IOException {
+        AbstractAdGame abstractAdGame = adGameManager.get(idAdGame);
+        if (abstractAdGame instanceof AdGameMedia) {
+            AdGameMedia adGame = (AdGameMedia) abstractAdGame;
+            List<Media> medias = adGame.getMedias();
+
+            if(medias.size()>1){
+                // mettre dans un zip
+                String zipFileName = tmpPath+idAdGame+".zip";
+                ZipFile zipFile;
+                try {
+                    zipFile = new ZipFile(zipFileName);
+                    ArrayList<File> filesToAdd = new ArrayList<File> ();
+
+                    for (Media media : medias) {
+                        if (media instanceof Music) {
+                            filesToAdd.add( new File(musicPath+media.getFile()));
+                        }else{
+                            filesToAdd.add( new File(videoPath+media.getFile()));
+                        }
+                    }
+
+                    ZipParameters parameters = new ZipParameters();
+/*
+                    parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE); // set compression method to store compression
+                    parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+                    parameters.setEncryptFiles(true);
+                    parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_AES);
+                    parameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256);
+                    parameters.setPassword(password);
+*/
+                    zipFile.createZipFile(filesToAdd, parameters);
+                } catch (ZipException e) {
+                    e.printStackTrace();
+                }
+
+                java.io.File file = new java.io.File(zipFileName);
+
+                response.setContentType("application/zip");
+                response.setContentLength((int) file.length());
+                ServletOutputStream outputStream = response.getOutputStream();
+                FileInputStream fileInputStream = new FileInputStream(file);
+                int read =0;
+                byte []b = new byte[1024];
+                while((read = fileInputStream.read(b, 0, 1024))>0){
+                    outputStream.write(b, 0, read);
+                    b = new byte[1024];
+                }
+                fileInputStream.close();
+
+                file.delete();
+
+            }else if(medias.size()==1){
+
+                Media media = medias.get(0);
+
+                java.io.File file = null;
+
+                if (media instanceof Music) {
+                    file =  new File(musicPath+media.getFile());
+                }else{
+                    file =  new File(videoPath+media.getFile());
+                }
+
+                response.setContentLength((int) file.length());
+                ServletOutputStream outputStream = response.getOutputStream();
+                FileInputStream fileInputStream = new FileInputStream(file);
+                int read =0;
+                byte []b = new byte[1024];
+                while((read = fileInputStream.read(b, 0, 1024))>0){
+                    outputStream.write(b, 0, read);
+                    b = new byte[1024];
+                }
+                fileInputStream.close();
+
+                file.delete();
+            }
+
+        }
     }
 }

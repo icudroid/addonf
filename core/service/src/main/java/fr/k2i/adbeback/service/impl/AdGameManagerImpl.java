@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.Set;
 
 
-import fr.k2i.adbeback.core.business.country.Country;
+import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.dao.*;
@@ -26,14 +26,6 @@ import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
 import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
 import fr.k2i.adbeback.core.business.ad.rule.ProductRule;
-import fr.k2i.adbeback.core.business.game.AdChoise;
-import fr.k2i.adbeback.core.business.game.AdGame;
-import fr.k2i.adbeback.core.business.game.AdResponsePlayer;
-import fr.k2i.adbeback.core.business.game.AdScore;
-import fr.k2i.adbeback.core.business.game.BrandPossibility;
-import fr.k2i.adbeback.core.business.game.OpenPossibility;
-import fr.k2i.adbeback.core.business.game.Possibility;
-import fr.k2i.adbeback.core.business.game.ProductPossibility;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.service.AdGameManager;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
 @Service("adGameManager")
-public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
+public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 		implements AdGameManager {
 
 
@@ -73,11 +65,16 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 
 
     @Transactional
-	public AdGame generate(Long idPlayer, Long gooseLevel) throws Exception {
+	public AbstractAdGame generate(Long idPlayer, Long gooseLevel) throws Exception {
         GooseLevel level = gooseLevelDao.get(gooseLevel);
+        AbstractAdGame game = null;
 
+        if(level.isMultiple()){
+            game = new AdGame();
+        }else{
+            game = new AdGameMedia();
+        }
 
-        AdGame game = new AdGame();
 
 		game.setMinScore(level.getMinScore());
 
@@ -94,7 +91,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 		return adGameDao.save(game);
 	}
 
-	private Map<Integer, AdChoise> generateChoises(Integer nbAds, AdGame game,Player player) throws Exception {
+	private Map<Integer, AdChoise> generateChoises(Integer nbAds, AbstractAdGame game,Player player) throws Exception {
 		Map<Integer, AdChoise> res = new HashMap<Integer, AdChoise>();
 
         Address address = player.getAddress();
@@ -233,7 +230,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AdGame, Long>
 
 	public void saveResponses(Long idAdGame, Integer score,
 			Map<Integer, Long> answers) throws Exception {
-		AdGame adGame = adGameDao.get(idAdGame);
+		AbstractAdGame adGame = adGameDao.get(idAdGame);
 		AdScore adScore = new AdScore();
 		adScore.setScore(score);
 		Map<Integer, AdResponsePlayer> answersPlayer = new HashMap<Integer, AdResponsePlayer>();

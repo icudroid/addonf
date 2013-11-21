@@ -22,7 +22,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,7 +37,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.LabelValue;
-import fr.k2i.adbeback.core.business.game.AdGame;
+import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.GooseWin;
 
@@ -77,7 +76,7 @@ public class Player extends BaseObject implements Serializable, UserDetails {
     private Boolean newsletter;
     
     /*private List<ViewedMedia> medias = new ArrayList<ViewedMedia>();*/
-    private List<AdGame> games = new ArrayList<AdGame>();
+    private List<AbstractAdGame> games = new ArrayList<AbstractAdGame>();
     private List<GooseWin> wins = new ArrayList<GooseWin>();
 
 
@@ -117,11 +116,11 @@ public class Player extends BaseObject implements Serializable, UserDetails {
 	}*/
 
 	@OneToMany(mappedBy="player",cascade=CascadeType.ALL)
-	public List<AdGame> getGames() {
+	public List<AbstractAdGame> getGames() {
 		return games;
 	}
 
-	public void setGames(List<AdGame> games) {
+	public void setGames(List<AbstractAdGame> games) {
 		this.games = games;
 	}
 

@@ -49,10 +49,10 @@ public class AdGameWebservice {
     public @ResponseBody
     void dnl(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if(true == ((Boolean)request.getSession().getAttribute(CAN_BE_DOWNLOAD))){
-
+            Long idGame = (Long) request.getSession().getAttribute(ID_ADGAME);
+            adGameFacade.getMedias(idGame, response);
         }
     }
-
 
     @RequestMapping(value = "/rest/createGame/{level}", method = RequestMethod.GET)
     public @ResponseBody
