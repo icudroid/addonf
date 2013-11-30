@@ -410,6 +410,9 @@ public class AdGameFacade {
             request.getSession().setAttribute(GAME_RESULT,gameResult);
         }else{
             Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
+            score++;
+            res.setCorrect(true);
+            goHeadToken(request);
             Map<Integer, Long> answers = (Map<Integer, Long>) request.getSession()
                     .getAttribute(USER_ANSWER);
             Map<Integer, Long> correctResponse = (Map<Integer, Long>) request

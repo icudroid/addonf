@@ -53,7 +53,15 @@ public class AdDaoHibernate extends GenericDaoHibernate<Ad, Long> implements AdD
     @Override
     public List<Ad> getAllValideFor(Player player) {
         Address address = player.getAddress();
-        
+
+        /*
+            Les règles sont les suivantes :
+                - Si l'annonceur a mit des critères par publicités (Age, Sex, Ville , Pays)
+                - Une publicité ne doit pas être vu plus de X fois configurable par l'annonceur
+
+         */
+
+
         LocalDate date = new LocalDate();
         
         Sex sex = player.getSex();

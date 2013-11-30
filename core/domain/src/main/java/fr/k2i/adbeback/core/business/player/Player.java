@@ -30,6 +30,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 
+import fr.k2i.adbeback.core.business.ad.ViewedAd;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.security.core.GrantedAuthority;
@@ -82,6 +83,27 @@ public class Player extends BaseObject implements Serializable, UserDetails {
 
     private List<GooseToken> gooseTokens;
 
+    private Integer validatedLevel;
+
+    private List<ViewedAd> viewedAds = new ArrayList<ViewedAd>();
+
+
+    public Integer getValidatedLevel() {
+        return validatedLevel;
+    }
+
+    public void setValidatedLevel(Integer validatedLevel) {
+        this.validatedLevel = validatedLevel;
+    }
+
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
+    public List<ViewedAd> getViewedAds() {
+        return viewedAds;
+    }
+
+    public void setViewedAds(List<ViewedAd> viewedAds) {
+        this.viewedAds = viewedAds;
+    }
 
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="PLAYER_ID")
