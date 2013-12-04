@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="signin.css" th:href="@{/css/signin.css}" />
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="container">
+        <form class="form-signin" action="/login" method="POST">
+            <h2 class="form-signin-heading">Connexion</h2>
+            <p th:if="${param.logout}" class="alert">You have been logged out</p>
+            <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
+
+            <input class="form-control" type="text" name="username" value="" placeholder="Username" />
+            <input class="form-control" type="password" name="password" placeholder="Password" />
+
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>
+
+

@@ -16,6 +16,8 @@
 
     <modules>
         <module>addonf-webapp</module>
+        <module>annonceur-webapp</module>
+        <module>admin-webapp</module>
     </modules>
 
 
