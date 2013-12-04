@@ -1,9 +1,8 @@
-package fr.k2i.adbeback.dao.hibernate;
+package fr.k2i.adbeback.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 
-import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
-import fr.k2i.adbeback.dao.GooseLevelDao;
+import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -15,14 +14,14 @@ import fr.k2i.adbeback.dao.GooseLevelDao;
  *   Modified by <a href="mailto:bwnoll@gmail.com">Bryan Noll</a> to work with 
  *   the new BaseDaoHibernate implementation that uses generics.
 */
-@Repository("gooseLevelDao")
-public class GooseLevelDaoHibernate extends GenericDaoHibernate<GooseLevel, Long> implements GooseLevelDao {
+@Repository("gooseTokenDao")
+public class GooseTokenDao extends GenericDaoJpa<GooseToken, Long> implements fr.k2i.adbeback.dao.IGooseTokenDao {
 
     /**
      * Constructor that sets the entity to User.class.
      */
-    public GooseLevelDaoHibernate() {
-        super(GooseLevel.class);
+    public GooseTokenDao() {
+        super(GooseToken.class);
     }
 
 

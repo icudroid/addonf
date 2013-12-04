@@ -1,14 +1,11 @@
-package fr.k2i.adbeback.dao.hibernate;
+package fr.k2i.adbeback.dao.jpa;
 
-import fr.k2i.adbeback.dao.GenericDao;
+import fr.k2i.adbeback.dao.IGenericDao;
+import fr.k2i.adbeback.dao.IGenericDao;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.ObjectRetrievalFailureException;
 
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -22,7 +19,7 @@ import java.util.*;
  * <p/>
  * <p>To register this class in your Spring context file, use the following XML.
  * <pre>
- *      &lt;bean id="fooDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate"&gt;
+ *      &lt;bean id="fooDao" class="org.appfuse.dao.jpa.IGenericDaoJpa"&gt;
  *          &lt;constructor-arg value="org.appfuse.model.Foo"/&gt;
  *      &lt;/bean&gt;
  * </pre>
@@ -33,7 +30,7 @@ import java.util.*;
  * @param <T> a type variable
  * @param <PK> the primary key for that type
  */
-public class GenericDaoHibernate<T, PK extends Serializable> implements GenericDao<T, PK> {
+public class GenericDaoJpa<T, PK extends Serializable> implements IGenericDao<T, PK> {
     /**
      * Log variable for all child classes. Uses LogFactory.getLog(getClass()) from Commons Logging
      */
@@ -55,7 +52,7 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
      *
      * @param persistentClass the class type you'd like to persist
      */
-    public GenericDaoHibernate(final Class<T> persistentClass) {
+    public GenericDaoJpa(final Class<T> persistentClass) {
         this.persistentClass = persistentClass;
     }
 
@@ -65,6 +62,9 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
         return session.getSessionFactory();
     }
 
+
+
+/*    @Deprecated
     public Session getSession() throws HibernateException {
         Session sess = null;
         try{
@@ -76,7 +76,7 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
             sess = getSessionFactory().openSession();
         }
         return sess;
-    }
+    }*/
 
 
     /**

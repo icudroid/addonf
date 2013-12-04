@@ -1,20 +1,15 @@
-package fr.k2i.adbeback.dao.hibernate;
+package fr.k2i.adbeback.dao.jpa;
 
 import java.util.List;
 
 import javax.persistence.Table;
 
-import fr.k2i.adbeback.core.business.ad.Ad;
-import fr.k2i.adbeback.core.business.ad.Ad_;
-import fr.k2i.adbeback.core.business.ad.rule.DateRule_;
 import fr.k2i.adbeback.core.business.goosegame.GooseCase_;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel_;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken_;
 import fr.k2i.adbeback.core.business.player.Player_;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
-import org.hibernate.Query;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.dao.PlayerDao;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -37,12 +31,12 @@ import org.springframework.transaction.annotation.Transactional;
  *   the new BaseDaoHibernate implementation that uses generics.
 */
 @Repository("playerDao")
-public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implements PlayerDao, UserDetailsService {
+public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adbeback.dao.IPlayerDao, UserDetailsService {
 
     /**
      * Constructor that sets the entity to User.class.
      */
-    public PlayerDaoHibernate() {
+    public PlayerDao() {
         super(Player.class);
     }
 
@@ -51,8 +45,9 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
      */
     @SuppressWarnings("unchecked")
     public List<Player> getPlayer() {
-        Query qry =  getSession().createQuery("from User u order by upper(u.username)");
-        return qry.list();
+        CriteriaBuilderHelper<Player> helper = new CriteriaBuilderHelper(getEntityManager(),Player.class);
+        helper.criteriaHelper.asc(helper.criteriaHelper.upper(helper.rootHelper.get(Player_.username)));
+        return helper.getResultList();
     }
 
 
@@ -66,7 +61,11 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
 
 
 	public Player loadUserByEmail(String email) {
-        List users = getSession().createCriteria(Player.class).add(Restrictions.eq("email", email)).list();
+        CriteriaBuilderHelper<Player> helper = new CriteriaBuilderHelper(getEntityManager(),Player.class);
+        helper.criteriaHelper.and(
+                helper.criteriaHelper.equal(helper.rootHelper.get(Player_.email), email)
+        );
+        List users = helper.getResultList();
         if (users == null || users.isEmpty()) {
             return null;
         } else {
@@ -91,7 +90,12 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
      * {@inheritDoc}
      */
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        List users = getSession().createCriteria(Player.class).add(Restrictions.eq("username", username)).list();
+        CriteriaBuilderHelper<Player> helper = new CriteriaBuilderHelper(getEntityManager(),Player.class);
+        helper.criteriaHelper.and(
+                helper.criteriaHelper.equal(helper.rootHelper.get(Player_.username), username)
+        );
+        List users = helper.getResultList();
+
         if (users == null || users.isEmpty()) {
             throw new UsernameNotFoundException("user '" + username + "' not found...");
         } else {
@@ -105,7 +109,7 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
     public String getPlayerPassword(Long userId) {
         JdbcTemplate jdbcTemplate =
                 new JdbcTemplate(org.springframework.orm.hibernate4.SessionFactoryUtils.getDataSource(getSessionFactory()));
-        Table table = AnnotationUtils.findAnnotation(PlayerDao.class, Table.class);
+        Table table = AnnotationUtils.findAnnotation(Player.class, Table.class);
         return jdbcTemplate.queryForObject(
                 "select password from " + table.name() + " where id=?", String.class, userId);
     }
@@ -114,7 +118,7 @@ public class PlayerDaoHibernate extends GenericDaoHibernate<Player, Long> implem
     public String getPlayerPassword(String username) {
         JdbcTemplate jdbcTemplate =
                 new JdbcTemplate(org.springframework.orm.hibernate4.SessionFactoryUtils.getDataSource(getSessionFactory()));
-        Table table = AnnotationUtils.findAnnotation(PlayerDao.class, Table.class);
+        Table table = AnnotationUtils.findAnnotation(Player.class, Table.class);
         return jdbcTemplate.queryForObject(
                 "select password from " + table.name() + " where username=?", String.class, username);
     }

@@ -182,7 +182,6 @@ public class Player extends BaseObject implements Serializable, UserDetails {
     }
 
     @Column(nullable = false, length = 50, unique = true)
-
     public String getUsername() {
         return username;
     }

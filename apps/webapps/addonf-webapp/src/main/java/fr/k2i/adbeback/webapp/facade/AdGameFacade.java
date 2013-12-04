@@ -14,27 +14,19 @@ import fr.k2i.adbeback.webapp.bean.StatusGame;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
-import net.lingala.zip4j.util.Zip4jConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,7 +56,7 @@ public class AdGameFacade {
     private static final String CART = "cart";
 
     @Autowired
-    private GooseGameDao gooseGameDao;
+    private IGooseGameDao gooseGameDao;
 
     @Autowired
     private AdGameManager adGameManager;
@@ -76,13 +68,13 @@ public class AdGameFacade {
     private GooseGameManager gooseGameManager;
 
     @Autowired
-    private PlayerDao playerDao;
+    private IPlayerDao playerDao;
 
     @Autowired
-    private GooseLevelDao gooseLevelDao;
+    private IGooseLevelDao gooseLevelDao;
 
     @Autowired
-    private GooseTokenDao gooseTokenDao;
+    private IGooseTokenDao gooseTokenDao;
 
     @Value("${addonf.tmp.location:/tmp/}")
     private String tmpPath;

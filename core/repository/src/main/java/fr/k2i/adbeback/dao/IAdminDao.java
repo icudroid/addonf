@@ -1,21 +1,21 @@
 package fr.k2i.adbeback.dao;
 
-import java.util.List;
-
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
+import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.user.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.k2i.adbeback.core.business.player.Player;
+import java.util.List;
 
 /**
- * User Data Access Object (GenericDao) interface.
+ * User Data Access Object (IGenericDao) interface.
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public interface PlayerDao extends GenericDao<Player, Long> {
+public interface IAdminDao extends IGenericDao<User, Long> {
 
     /**
      * Gets users information based on login name.
@@ -27,19 +27,7 @@ public interface PlayerDao extends GenericDao<Player, Long> {
     @Transactional
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
-    /**
-     * Gets a list of users ordered by the uppercase version of their username.
-     *
-     * @return List populated list of users
-     */
-    List<Player> getPlayer();
 
-    /**
-     * Saves a user's information.
-     * @param user the object to be saved
-     * @return the persisted User object
-     */
-    Player savePlayer(Player player);
 
     /**
      * Retrieves the password in DB for a user
@@ -47,15 +35,7 @@ public interface PlayerDao extends GenericDao<Player, Long> {
      * @return the password in DB, if the user is already persisted
      */
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    String getPlayerPassword(String username);
+    String getUserPassword(String username);
 
-    /**
-     * 
-     * @param email
-     * @return
-     */
-	Player loadUserByEmail(String email);
-
-    GooseToken getPlayerGooseToken(Long idPlayer, Long idGooseLevel);
 }
 

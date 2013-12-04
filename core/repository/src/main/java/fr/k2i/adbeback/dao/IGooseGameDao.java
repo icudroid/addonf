@@ -4,11 +4,11 @@ import fr.k2i.adbeback.core.business.goosegame.GooseGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 
 /**
- * User Data Access Object (GenericDao) interface.
+ * User Data Access Object (IGenericDao) interface.
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public interface GooseGameDao extends GenericDao<GooseGame, Long> {
+public interface IGooseGameDao extends IGenericDao<GooseGame, Long> {
 
 	/**
 	 * 

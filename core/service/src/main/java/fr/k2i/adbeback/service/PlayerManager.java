@@ -2,10 +2,10 @@ package fr.k2i.adbeback.service;
 
 import java.util.List;
 
+import fr.k2i.adbeback.dao.IPlayerDao;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.dao.PlayerDao;
 
 
 /**
@@ -20,7 +20,7 @@ public interface PlayerManager extends GenericManager<Player, Long> {
      * Convenience method for testing - allows you to mock the DAO and set it on an interface.
      * @param userDao the UserDao implementation to use
      */
-    void setPlayerDao(PlayerDao playerDao);
+    void setPlayerDao(IPlayerDao playerDao);
 
     /**
      * Retrieves a user by userId.  An exception is thrown if user not found

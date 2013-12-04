@@ -3,10 +3,11 @@ package fr.k2i.adbeback.service.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import fr.k2i.adbeback.dao.IGenericDao;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import fr.k2i.adbeback.dao.GenericDao;
+import fr.k2i.adbeback.dao.IGenericDao;
 import fr.k2i.adbeback.service.GenericManager;
 
 /**
@@ -18,7 +19,7 @@ import fr.k2i.adbeback.service.GenericManager;
  * <pre>
  *     &lt;bean id="userManager" class="org.appfuse.service.impl.GenericManagerImpl"&gt;
  *         &lt;constructor-arg&gt;
- *             &lt;bean class="org.appfuse.dao.hibernate.GenericDaoHibernate"&gt;
+ *             &lt;bean class="org.appfuse.dao.jpa.IGenericDaoJpa"&gt;
  *                 &lt;constructor-arg value="org.appfuse.model.User"/&gt;
  *                 &lt;property name="sessionFactory" ref="sessionFactory"/&gt;
  *             &lt;/bean&gt;
@@ -50,14 +51,14 @@ public class GenericManagerImpl<T, PK extends Serializable> implements GenericMa
     protected final Log log = LogFactory.getLog(getClass());
 
     /**
-     * GenericDao instance, set by constructor of child classes
+     * IGenericDao instance, set by constructor of child classes
      */
-    protected GenericDao<T, PK> dao;
+    protected IGenericDao<T, PK> dao;
 
     public GenericManagerImpl() {}
 
-    public GenericManagerImpl(GenericDao<T, PK> genericDao) {
-        this.dao = genericDao;
+    public GenericManagerImpl(IGenericDao<T, PK> IGenericDao) {
+        this.dao = IGenericDao;
     }
 
     /**

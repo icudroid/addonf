@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Generic Manager that talks to GenericDao to CRUD POJOs.
+ * Generic Manager that talks to IGenericDao to CRUD POJOs.
  *
  * <p>Extend this interface if you want typesafe (no casting necessary) managers
  * for your domain objects.

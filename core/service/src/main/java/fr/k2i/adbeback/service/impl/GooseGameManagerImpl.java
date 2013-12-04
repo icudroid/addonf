@@ -1,8 +1,8 @@
 package fr.k2i.adbeback.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import fr.k2i.adbeback.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +10,7 @@ import fr.k2i.adbeback.core.business.goosegame.GooseCase;
 import fr.k2i.adbeback.core.business.goosegame.GooseGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.GooseWin;
-import fr.k2i.adbeback.dao.GooseCaseDao;
-import fr.k2i.adbeback.dao.GooseGameDao;
-import fr.k2i.adbeback.dao.GooseLevelDao;
-import fr.k2i.adbeback.dao.GooseTokenDao;
-import fr.k2i.adbeback.dao.GooseWinDao;
+import fr.k2i.adbeback.dao.IGooseWinDao;
 import fr.k2i.adbeback.service.GooseGameManager;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,30 +23,30 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("gooseGameManager")
 public class GooseGameManagerImpl extends GenericManagerImpl<GooseGame, Long> implements GooseGameManager {
 
-	private GooseCaseDao gooseCaseDao;
-	private GooseTokenDao gooseTokenDao;
-	private GooseGameDao gooseGameDao;
-	private GooseLevelDao gooseLevelDao;
-	private GooseWinDao gooseWinDao;
+	private IGooseCaseDao gooseCaseDao;
+	private IGooseTokenDao gooseTokenDao;
+	private IGooseGameDao gooseGameDao;
+	private IGooseLevelDao gooseLevelDao;
+	private IGooseWinDao gooseWinDao;
 	
 	@Autowired
-	public void setGooseCaseDao(GooseCaseDao gooseCaseDao) {
+	public void setGooseCaseDao(IGooseCaseDao gooseCaseDao) {
 		this.gooseCaseDao = gooseCaseDao;
 	}
 	@Autowired
-	public void setGooseTokenDao(GooseTokenDao gooseTokenDao) {
+	public void setGooseTokenDao(IGooseTokenDao gooseTokenDao) {
 		this.gooseTokenDao = gooseTokenDao;
 	}
 	@Autowired
-	public void setGooseGameDao(GooseGameDao gooseGameDao) {
+	public void setGooseGameDao(IGooseGameDao gooseGameDao) {
 		this.gooseGameDao = gooseGameDao;
 	}
 	@Autowired
-	public void setGooseLevelDao(GooseLevelDao gooseLevelDao) {
+	public void setGooseLevelDao(IGooseLevelDao gooseLevelDao) {
 		this.gooseLevelDao = gooseLevelDao;
 	}
 	@Autowired
-	public void setGooseWinDao(GooseWinDao gooseWinDao) {
+	public void setGooseWinDao(IGooseWinDao gooseWinDao) {
 		this.gooseWinDao = gooseWinDao;
 	}
 

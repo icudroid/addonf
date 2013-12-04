@@ -2,18 +2,15 @@ package fr.k2i.adbeback.service.impl;
 
 import java.util.List;
 
+import fr.k2i.adbeback.dao.IPlayerDao;
+import fr.k2i.adbeback.dao.jpa.CountryDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.dao.CountryDao;
-import fr.k2i.adbeback.dao.PlayerDao;
 import fr.k2i.adbeback.service.PlayerManager;
 import fr.k2i.adbeback.service.UserExistsException;
 
@@ -26,7 +23,7 @@ import fr.k2i.adbeback.service.UserExistsException;
 @Service("playerManager")
 public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implements PlayerManager {
     private PasswordEncoder passwordEncoder;
-    private PlayerDao playerDao;
+    private IPlayerDao playerDao;
     private CountryDao countryDao;
     @Autowired(required = false)
     private SaltSource saltSource;
@@ -42,7 +39,7 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
     }
 
     @Autowired
-    public void setPlayerDao(PlayerDao playerDao) {
+    public void setPlayerDao(IPlayerDao playerDao) {
         this.dao = playerDao;
         this.playerDao = playerDao;
     }
@@ -128,7 +125,7 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
 
         if(player.getAddress()!=null && player.getAddress().getCountry()!=null && player.getAddress().getCountry().getCode()!=null){
         	try {
-				Country byCode = countryDao.getByCode(player.getAddress().getCountry().getCode());
+				Country byCode = ICountryDao.getByCode(player.getAddress().getCountry().getCode());
 				player.getAddress().setCountry(byCode);
 			} catch (Exception e) {
 				e.printStackTrace();

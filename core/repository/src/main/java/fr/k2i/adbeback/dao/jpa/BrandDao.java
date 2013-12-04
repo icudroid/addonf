@@ -1,9 +1,8 @@
-package fr.k2i.adbeback.dao.hibernate;
+package fr.k2i.adbeback.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.dao.BrandDao;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -16,12 +15,12 @@ import fr.k2i.adbeback.dao.BrandDao;
  *   the new BaseDaoHibernate implementation that uses generics.
 */
 @Repository("brandDao")
-public class BrandDaoHibernate extends GenericDaoHibernate<Brand, Long> implements BrandDao {
+public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeback.dao.IBrandDao {
 
     /**
      * Constructor that sets the entity to User.class.
      */
-    public BrandDaoHibernate() {
+    public BrandDao() {
         super(Brand.class);
     }
 

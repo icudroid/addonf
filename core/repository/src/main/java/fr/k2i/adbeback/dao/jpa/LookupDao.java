@@ -1,23 +1,24 @@
-package fr.k2i.adbeback.dao.hibernate;
+package fr.k2i.adbeback.dao.jpa;
 
 
 import java.util.List;
 
+import fr.k2i.adbeback.dao.ILookupDao;
+import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.player.Role;
-import fr.k2i.adbeback.dao.LookupDao;
 
 /**
- * Hibernate implementation of LookupDao.
+ * Hibernate implementation of LookupDaoI.
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
 @Repository
-public class LookupDaoHibernate extends GenericDaoHibernate<Role, Long>implements LookupDao {
+public class LookupDao extends GenericDaoJpa<Role, Long> implements ILookupDao {
 
 
-    public LookupDaoHibernate() {
+    public LookupDao() {
         super(Role.class);
     }
 
@@ -27,7 +28,8 @@ public class LookupDaoHibernate extends GenericDaoHibernate<Role, Long>implement
     @SuppressWarnings("unchecked")
     public List<Role> getRoles() {
         log.debug("Retrieving all role names...");
-        return  getSession().createCriteria(Role.class).list();
+        CriteriaBuilderHelper<Role> helper = new CriteriaBuilderHelper(getEntityManager(),Role.class);
+        return helper.getResultList();
     }
 }
 

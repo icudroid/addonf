@@ -2,11 +2,11 @@ package fr.k2i.adbeback.service.impl;
 
 import java.util.List;
 
+import fr.k2i.adbeback.dao.IRoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.k2i.adbeback.core.business.player.Role;
-import fr.k2i.adbeback.dao.RoleDao;
 import fr.k2i.adbeback.service.RoleManager;
 
 
@@ -17,10 +17,10 @@ import fr.k2i.adbeback.service.RoleManager;
  */
 @Service("roleManager")
 public class RoleManagerImpl extends GenericManagerImpl<Role, Long> implements RoleManager {
-    RoleDao roleDao;
+    IRoleDao roleDao;
 
     @Autowired
-    public RoleManagerImpl(RoleDao roleDao) {
+    public RoleManagerImpl(IRoleDao roleDao) {
         super(roleDao);
         this.roleDao = roleDao;
     }

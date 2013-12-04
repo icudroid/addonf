@@ -28,7 +28,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationManager authenticationManager(org.springframework.security.config.annotation.ObjectPostProcessor<Object> objectPostProcessor) throws Exception {
-        DaoAuthenticationConfigurer<AuthenticationManagerBuilder,UserDetailsService> builder = new AuthenticationManagerBuilder(objectPostProcessor).userDetailsService((UserDetailsService) context.getBean("playerDao"));
+        DaoAuthenticationConfigurer<AuthenticationManagerBuilder,UserDetailsService> builder = new AuthenticationManagerBuilder(objectPostProcessor).userDetailsService((UserDetailsService) context.getBean("adminDao"));
         builder.passwordEncoder(passwordEncoder());
 
         return builder.and().build();
@@ -40,16 +40,15 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/home.html").permitAll()
-                    .antMatchers("/signup").permitAll()
                     .antMatchers("/login").permitAll()
                     .antMatchers("/logout-success").permitAll()
                     .antMatchers("/lib/**").permitAll()
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/js/**").permitAll()
                     .antMatchers("/template/**").permitAll()
-                    .antMatchers("/custom-logout").hasRole("USER")
-                    .antMatchers("/**").hasRole("USER")
+                    .antMatchers("/custom-logout").hasRole("ADMIN")
+                    .antMatchers("/home.html").hasRole("ADMIN")
+                    .antMatchers("/**").hasRole("ADMIN")
                 //.fullyAuthenticated()
                     .and()
                         .formLogin()

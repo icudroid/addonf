@@ -1,7 +1,7 @@
 package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.dao.PlayerDao;
+import fr.k2i.adbeback.dao.IPlayerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +20,7 @@ public class PlayerFacade {
 
 
     @Autowired
-    private PlayerDao playerDao;
+    private IPlayerDao playerDao;
 
     @Transactional
     public Player getCurrentPlayer() {

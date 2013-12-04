@@ -5,11 +5,11 @@ import java.util.List;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 
 /**
- * User Data Access Object (GenericDao) interface.
+ * User Data Access Object (IGenericDao) interface.
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public interface AdGameDao extends GenericDao<AbstractAdGame, Long> {
+public interface IAdGameDao extends IGenericDao<AbstractAdGame, Long> {
 	/**
 	 * 
 	 * @param idPlayLong

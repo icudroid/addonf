@@ -7,21 +7,18 @@ import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.player.Player;
 
 /**
- * User Data Access Object (GenericDao) interface.
+ * User Data Access Object (IGenericDao) interface.
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public interface AdDao extends GenericDao<Ad, Long> {
+public interface IAdDao extends IGenericDao<Ad, Long> {
 
 	/**
 	 * Retourne toutes les publicité éligible
-	 * @param date
+     * @param player
 	 * @return
 	 * @throws Exception
 	 */
-	List<Ad> getAll(Date date)throws Exception;
-
-
     List<Ad> getAllValideFor(Player player);
 }
 

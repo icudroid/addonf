@@ -3,12 +3,12 @@ package fr.k2i.adbeback.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.k2i.adbeback.dao.ILookupDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.k2i.adbeback.core.business.LabelValue;
 import fr.k2i.adbeback.core.business.player.Role;
-import fr.k2i.adbeback.dao.LookupDao;
 import fr.k2i.adbeback.service.LookupManager;
 
 
@@ -20,7 +20,7 @@ import fr.k2i.adbeback.service.LookupManager;
 @Service("lookupManager")
 public class LookupManagerImpl implements LookupManager {
     @Autowired
-    LookupDao dao;
+    ILookupDao dao;
 
     /**
      * {@inheritDoc}

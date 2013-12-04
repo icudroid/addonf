@@ -8,7 +8,7 @@ import fr.k2i.adbeback.core.business.player.Role;
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public interface RoleDao extends GenericDao<Role, Long> {
+public interface IRoleDao extends IGenericDao<Role, Long> {
     /**
      * Gets role information based on rolename
      * @param rolename the rolename

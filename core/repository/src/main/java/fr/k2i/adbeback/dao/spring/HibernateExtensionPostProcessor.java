@@ -39,7 +39,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * these persistent classes are packaged in a jar called extension.jar which contains the Spring configuration file
  * applicationContext-dao.xml at the root level, then the standard AppFuse configuration will automatically pick up the
  * new Spring configuration file and the new persistent classes will be added to the list already defined for the
- * session factory bean configured within the standard appfuse-hibernate.jar file. And all this without needing to
+ * session factory bean configured within the standard appfuse-jpa.jar file. And all this without needing to
  * touch the original AppFuse configuration files!
  *
  * @author Michael Horwitz
@@ -145,7 +145,7 @@ public class HibernateExtensionPostProcessor implements BeanFactoryPostProcessor
     }
 
     /**
-     * The list of configuration locations (i.e. classpath:hibernate.cfg.xml) to add to the session factory
+     * The list of configuration locations (i.e. classpath:jpa.cfg.xml) to add to the session factory
      *
      * @param configLocations The list of configuration locations that need to be added.
      */

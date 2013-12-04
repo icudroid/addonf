@@ -21,7 +21,7 @@ public abstract class BaseObject implements Serializable {
     /**
      * When you override equals, you should override hashCode. See "Why are
      * equals() and hashCode() importation" for more information:
-     * http://www.hibernate.org/109.html
+     * http://www.jpa.org/109.html
      * @return hashCode
      */
     public abstract int hashCode();

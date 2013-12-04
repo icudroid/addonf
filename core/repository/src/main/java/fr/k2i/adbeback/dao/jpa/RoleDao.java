@@ -1,14 +1,13 @@
-package fr.k2i.adbeback.dao.hibernate;
+package fr.k2i.adbeback.dao.jpa;
 
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import fr.k2i.adbeback.core.business.player.Role_;
+import fr.k2i.adbeback.dao.IRoleDao;
+import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.player.Role;
-import fr.k2i.adbeback.dao.RoleDao;
 
 
 /**
@@ -18,12 +17,12 @@ import fr.k2i.adbeback.dao.RoleDao;
  * @author <a href="mailto:bwnoll@gmail.com">Bryan Noll</a> 
  */
 @Repository
-public class RoleDaoHibernate extends GenericDaoHibernate<Role, Long> implements RoleDao {
+public class RoleDao extends GenericDaoJpa<Role, Long> implements IRoleDao {
 
     /**
      * Constructor to create a Generics-based version using Role as the entity
      */
-    public RoleDaoHibernate() {
+    public RoleDao() {
         super(Role.class);
     }
 
@@ -31,8 +30,12 @@ public class RoleDaoHibernate extends GenericDaoHibernate<Role, Long> implements
      * {@inheritDoc}
      */
     public Role getRoleByName(String rolename) {
+        CriteriaBuilderHelper<Role> helper = new CriteriaBuilderHelper(getEntityManager(),Role.class);
+        helper.criteriaHelper.and(
+                helper.criteriaHelper.equal(helper.rootHelper.get(Role_.name), rolename)
+        );
 
-        List roles = getSession().createCriteria(Role.class).add(Restrictions.eq("name", rolename)).list();
+        List roles = helper.getResultList();
         if (roles.isEmpty()) {
             return null;
         } else {
@@ -46,8 +49,7 @@ public class RoleDaoHibernate extends GenericDaoHibernate<Role, Long> implements
      */
     public void removeRole(String rolename) {
         Object role = getRoleByName(rolename);
-        Session session = getSession();
-        session.delete(role);
+        getEntityManager().remove(role);
     }
 }
 
