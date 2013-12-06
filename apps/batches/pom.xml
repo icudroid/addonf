@@ -3,20 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>fr.k2i.adbeback.addonf</groupId>
-        <artifactId>addonf</artifactId>
+        <artifactId>apps</artifactId>
+        <groupId>fr.k2i.adbeback.addonf.apps</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.k2i.adbeback.addonf.apps</groupId>
-    <artifactId>apps</artifactId>
-    <packaging>pom</packaging>
-    <name>APPSs</name>
-
+    <groupId>fr.k2i.adbeback.addonf.webapps</groupId>
+    <artifactId>batches</artifactId>
+    <name>BATCHES</name>
     <modules>
-        <module>webapps</module>
-        <module>batches</module>
+        <module>statistics-batch</module>
     </modules>
+    <packaging>pom</packaging>
 
 </project>
