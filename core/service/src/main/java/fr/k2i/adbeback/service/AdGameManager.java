@@ -4,6 +4,7 @@ import java.util.Map;
 
 
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
+import fr.k2i.adbeback.core.business.game.StatusGame;
 
 
 /**
@@ -28,9 +29,10 @@ public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
 	 * @param idAdGame
 	 * @param score
 	 * @param answers
+     * @param statusGame
 	 * @throws Exception
 	 */
-	void saveResponses(Long idAdGame, Integer score, Map<Integer, Long> answers)throws Exception;
+	void saveResponses(Long idAdGame, Integer score, Map<Integer, Long> answers,StatusGame statusGame)throws Exception;
 	
 
 }

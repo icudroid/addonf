@@ -27,7 +27,7 @@ public class GooseWin extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -4925568112544086765L;
 	private Long id;
 	private GooseLevel gooseLevel;
-	private Double value;
+	private Integer value;
 	private WinStatus status = WinStatus.NotTranfered;
 	private Date windate = new Date();
 	private Player player;
@@ -55,11 +55,11 @@ public class GooseWin extends BaseObject implements Serializable {
 		this.gooseLevel = gooseLevel;
 	}
 
-	public Double getValue() {
+	public Integer getValue() {
 		return value;
 	}
 
-	public void setValue(Double value) {
+	public void setValue(Integer value) {
 		this.value = value;
 	}
 

@@ -76,7 +76,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
         }
 
 
-		game.setMinScore(level.getMinScore());
+		//game.setMinScore(level.getMinScore());
 
 		game.setGenerated(new Date());
 
@@ -229,7 +229,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
 	public void saveResponses(Long idAdGame, Integer score,
-			Map<Integer, Long> answers) throws Exception {
+			Map<Integer, Long> answers,StatusGame statusGame) throws Exception {
 		AbstractAdGame adGame = IAdGameDao.get(idAdGame);
 		AdScore adScore = new AdScore();
 		adScore.setScore(score);
@@ -245,12 +245,13 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 		}
 		adScore.setAnswers(answersPlayer);
 		adGame.setScore(adScore);
-		
-		if(score>=adGame.getMinScore()){
+
+        adGame.setStatusGame(statusGame);
+		/*if(score>=adGame.getMinScore()){
 			adGame.setStatusGame(fr.k2i.adbeback.core.business.game.StatusGame.Win);	
 		}else{
 			adGame.setStatusGame(fr.k2i.adbeback.core.business.game.StatusGame.Lost);
-		}
+		}*/
 		
 		IAdGameDao.save(adGame);
 	}

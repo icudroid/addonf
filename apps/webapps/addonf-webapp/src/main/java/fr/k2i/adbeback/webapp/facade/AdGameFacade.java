@@ -144,7 +144,7 @@ public class AdGameFacade {
             game.add(adBean);
         }
         res.setGame(game);
-        res.setMinScore(generateAdGame.getMinScore());
+        //res.setMinScore(generateAdGame.getMinScore());
         //res.setTimeLimite((long) (generateAdGame.getMinScore() * 20));
         res.setTimeLimite(Long.valueOf(30));
         res.setTotalAds(choises.size());
@@ -244,7 +244,7 @@ public class AdGameFacade {
                 res.setStatus(StatusGame.WinLimitTime);
                 LimiteTimeAdGameBean gameResult = computeResultGame(request);
                 request.getSession().setAttribute(GAME_RESULT,gameResult);
-                adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers);
+                adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Win);
             }
         }
 
@@ -422,18 +422,18 @@ public class AdGameFacade {
                 res.setStatus(StatusGame.Lost);
                 emptyGameSession(request);
                 adGameManager.saveResponses((Long) request.getSession()
-                        .getAttribute(ID_ADGAME), score, answers);
+                        .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
             } else if (index +1 < correctResponse.size()) {
                 res.setStatus(StatusGame.Playing);
             } else if(score >0){
                 res.setStatus(StatusGame.WinLimitTime);
                 adGameManager.saveResponses((Long) request.getSession()
-                        .getAttribute(ID_ADGAME), score, answers);
+                        .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Win);
             }else{
                 res.setStatus(StatusGame.Lost);
                 emptyGameSession(request);
                 adGameManager.saveResponses((Long) request.getSession()
-                        .getAttribute(ID_ADGAME), score, answers);
+                        .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
             }
 
         }

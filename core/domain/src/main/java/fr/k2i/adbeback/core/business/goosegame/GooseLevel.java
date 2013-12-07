@@ -1,18 +1,10 @@
 package fr.k2i.adbeback.core.business.goosegame;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
@@ -24,22 +16,39 @@ public class GooseLevel extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 3339924782068634755L;
 	private Long id;
 	private Long level;
-	private Double value;
+	private Integer value;
     private Integer nbMaxAdByPlay;
-    private Integer minScore;
+    //private Integer minScore;
 	private StartLevelGooseCase startCase;
 	private EndLevelGooseCase endCase;
 	private List<GooseCase> gooseCases;
     private boolean multiple;
+    private Integer strong;
+    private Integer minValue;
 
+    public Integer getMinValue() {
+        return minValue;
+    }
 
-    public Integer getMinScore() {
+    public void setMinValue(Integer minValue) {
+        this.minValue = minValue;
+    }
+
+    public Integer getStrong() {
+        return strong;
+    }
+
+    public void setStrong(Integer strong) {
+        this.strong = strong;
+    }
+
+/*    public Integer getMinScore() {
         return minScore;
     }
 
     public void setMinScore(Integer minScore) {
         this.minScore = minScore;
-    }
+    }*/
 
     public Integer getNbMaxAdByPlay() {
         return nbMaxAdByPlay;
@@ -51,6 +60,7 @@ public class GooseLevel extends BaseObject implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "GOOSELEVEL_ID")
+    @OrderBy("number")
 	public List<GooseCase> getGooseCases() {
 		return gooseCases;
 	}
@@ -80,11 +90,11 @@ public class GooseLevel extends BaseObject implements Serializable {
 		this.level = level;
 	}
 
-	public Double getValue() {
+	public Integer getValue() {
 		return value;
 	}
 
-	public void setValue(Double value) {
+	public void setValue(Integer value) {
 		this.value = value;
 	}
 
@@ -173,5 +183,26 @@ public class GooseLevel extends BaseObject implements Serializable {
 
     public void setMultiple(boolean multiple) {
         this.multiple = multiple;
+    }
+
+
+    public void startCase(StartLevelGooseCase start) {
+        start.setLevel(this);
+        if(gooseCases == null){
+            gooseCases = new ArrayList<GooseCase>();
+            gooseCases.add(start);
+        }
+
+    }
+
+    public void endCase(EndLevelGooseCase endLevelGooseCase) {
+        endLevelGooseCase.setLevel(this);
+        endCase = endLevelGooseCase;
+        gooseCases.add(endLevelGooseCase);
+    }
+
+    public void addCase(GooseCase acase) {
+        acase.setLevel(this);
+        gooseCases.add(acase);
     }
 }

@@ -21,7 +21,7 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
 	protected Map<Integer, AdChoise> choises;
 	protected Date generated;
 	protected AdScore score;
-	protected Integer minScore;
+	//protected Integer minScore;
 	protected StatusGame statusGame = StatusGame.Playing;
 	protected Player player;
 
@@ -76,13 +76,13 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
 		this.medias = medias;
 	}*/
 
-	public Integer getMinScore() {
+/*	public Integer getMinScore() {
 		return minScore;
 	}
 
 	public void setMinScore(Integer minScore) {
 		this.minScore = minScore;
-	}
+	}*/
 	
 	
 	@Enumerated(EnumType.ORDINAL)
@@ -111,9 +111,6 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
 		result = prime * result + ((choises == null) ? 0 : choises.hashCode());
 		result = prime * result
 				+ ((generated == null) ? 0 : generated.hashCode());
-		//result = prime * result + ((medias == null) ? 0 : medias.hashCode());
-		result = prime * result
-				+ ((minScore == null) ? 0 : minScore.hashCode());
 		result = prime * result + ((score == null) ? 0 : score.hashCode());
 		result = prime * result
 				+ ((statusGame == null) ? 0 : statusGame.hashCode());
@@ -144,11 +141,6 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
 				return false;
 		} else if (!medias.equals(other.medias))
 			return false;*/
-		if (minScore == null) {
-			if (other.minScore != null)
-				return false;
-		} else if (!minScore.equals(other.minScore))
-			return false;
 		if (score == null) {
 			if (other.score != null)
 				return false;
@@ -163,7 +155,7 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
 	public String toString() {
 		return "AbstractAdGame [id=" + id + ", choises=" + choises + ", generated="
 				+ generated + ", score=" + score //+ ", medias=" + medias
-				+ ", minScore=" + minScore + ", statusGame=" + statusGame + "]";
+				+ ", statusGame=" + statusGame + "]";
 	}
 
 

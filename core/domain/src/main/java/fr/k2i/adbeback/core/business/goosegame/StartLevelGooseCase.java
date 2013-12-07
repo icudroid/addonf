@@ -14,6 +14,10 @@ public class StartLevelGooseCase extends GooseCase {
         return 0;
     }
 
+    public StartLevelGooseCase(){
+        number = 0;
+    }
+
 	@Override
 	public String toString() {
 		return "StartLevelGooseCase [id=" + id + ", level=" + level + "]";

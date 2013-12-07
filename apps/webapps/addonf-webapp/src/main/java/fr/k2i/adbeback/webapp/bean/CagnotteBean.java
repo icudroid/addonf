@@ -2,7 +2,7 @@ package fr.k2i.adbeback.webapp.bean;
 
 public class CagnotteBean {
 	private Integer level;
-	private Double value;
+	private Integer value;
 
 	public Integer getLevel() {
 		return level;
@@ -10,10 +10,10 @@ public class CagnotteBean {
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
-	public Double getValue() {
+	public Integer getValue() {
 		return value;
 	}
-	public void setValue(Double value) {
+	public void setValue(Integer value) {
 		this.value = value;
 	}
 	

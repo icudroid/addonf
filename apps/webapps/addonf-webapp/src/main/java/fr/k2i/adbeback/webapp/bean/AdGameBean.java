@@ -8,7 +8,7 @@ public class AdGameBean implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -7410887579362937509L;
-	private Integer minScore;
+	//private Integer minScore;
 	private Integer totalAds;
 	private Long timeLimite;
 	private List<AdBean> game;
@@ -33,12 +33,12 @@ public class AdGameBean implements Serializable{
         this.gooseGames = gooseGames;
     }
 
-    public Integer getMinScore() {
+/*    public Integer getMinScore() {
 		return minScore;
 	}
 	public void setMinScore(Integer minScore) {
 		this.minScore = minScore;
-	}
+	}*/
 	public Integer getTotalAds() {
 		return totalAds;
 	}
