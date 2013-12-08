@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+    <br/>
+    <a href="#/search" th:text="#{manage.goosegame.link.back}">Retour</a>
+    <br/>
+    <div class="container" ng-show="responseResults">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th th:text="#{manage.goosegame.result.table.level}">Niveau</th>
+                    <th th:text="#{manage.goosegame.result.table.maxAdByPlay}">Nb Ads</th>
+                    <th th:text="#{manage.goosegame.result.table.strong}">Force</th>
+                    <th th:text="#{manage.goosegame.result.table.nbCase}">Nombre de case</th>
+                    <th th:text="#{manage.goosegame.result.table.minAmount}">Montant min.</th>
+                    <th th:text="#{manage.goosegame.result.table.amount}">Montant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{result.level}}</td>
+                    <td>{{result.nbMaxAdByPlay}}</td>
+                    <td>{{result.strong}}</td>
+                    <td>{{result.gooseCases.length}}</td>
+                    <td>{{result.minAmount}}</td>
+                    <td>{{result.amount}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br/>
+        <span th:text="#{manage.goosegame.details}">Détails</span>
+        <br/>
+
+        <div class="row" ng-repeat="ligne in result.matrice">
+            <div class="col-md-1"  ng-repeat="colonne in ligne">
+                <div ng-if="colonne.type != -1">
+                    <img ng-src="{{base}}img/goose/{{colonne.type}}.png"/>
+                    <span style="position: absolute; top: 40px;left: 5px;z-index: 11;">{{colonne.number}}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</body>
+</html>
+

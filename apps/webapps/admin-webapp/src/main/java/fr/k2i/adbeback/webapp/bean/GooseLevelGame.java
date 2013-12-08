@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.webapp.bean;
 
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.NoneGooseCase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -68,6 +69,49 @@ public class GooseLevelGame implements Serializable{
 
     public void setMinAmountWin(Integer minAmount){
         level.setMinValue(minAmount);
+    }
+
+    private int calculateStrong(int size){
+        int count = 0;
+        int strong = 1;
+        do{
+            count+=strong;
+            strong++;
+        }while (size > count+1);
+
+        return strong-1;
+    }
+
+    public LevelCase[][] getMatrice(){
+        int size = this.gooseCases.size();
+        int strong = calculateStrong(size);
+
+        LevelCase[][] matrice = new LevelCase[strong][strong];
+
+        for (int i = 0; i < strong; i++) {
+            for (int j = 0; j < strong; j++) {
+                matrice[i][j] = new NoCase();
+            }
+        }
+
+        int i = 1, x = 0, y = 0, direction = 0 , incr = strong;
+
+        while (incr>=1){
+            for (int j = 0; j < incr; j++,i++) {
+                if(i>=this.gooseCases.size()){
+                    return matrice;
+                }
+                matrice[y][x] = this.gooseCases.get(i);
+                if(j==incr-1){
+                    direction+=90;
+                }
+                x+=(int)Math.cos(Math.toRadians(direction));
+                y+=(int)Math.sin(Math.toRadians(direction));
+            }
+            incr--;
+        }
+
+        return matrice;
     }
 
     public GooseLevelGame(GooseLevel gooseLevel){

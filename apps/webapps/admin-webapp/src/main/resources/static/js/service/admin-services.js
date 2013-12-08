@@ -7,10 +7,8 @@ var adminServices = angular.module('adminServices', ['ngResource']);
 
 adminServices.factory('Admin', ['$resource',
     function($resource){
-        return $resource('/', {}, {
-
-
-
-
+        return $resource('/', {_csrf:addonf.token}, {
+            search: {url:addonf.base+'manage/gooseGame/search',method:'POST',responseType:"json",isArray: true},
+            level:{url:addonf.base+'manage/gooseGame/level/:levelId',method:'GET',responseType:"json",isArray: false}
         });
     }]);

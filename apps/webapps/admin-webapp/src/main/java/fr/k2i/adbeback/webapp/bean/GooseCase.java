@@ -9,10 +9,10 @@ import java.io.Serializable;
  * Time: 09:35
  * To change this template use File | Settings | File Templates.
  */
-public class GooseCase implements Serializable{
+public class GooseCase extends LevelCase implements Serializable{
     private fr.k2i.adbeback.core.business.goosegame.GooseCase gooseCase;
 
-    private int type;
+    public GooseCase() { }
 
     public int getType(){
         return gooseCase.ihmValue();

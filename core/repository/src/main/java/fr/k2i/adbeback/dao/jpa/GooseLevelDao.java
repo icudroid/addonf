@@ -1,8 +1,12 @@
 package fr.k2i.adbeback.dao.jpa;
 
+import fr.k2i.adbeback.core.business.goosegame.GooseLevel_;
+import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+
+import java.util.List;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -25,5 +29,21 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
     }
 
 
+    @Override
+    public List<GooseLevel> findLevel(Integer level, Boolean multiple) {
+        CriteriaBuilderHelper<GooseLevel> helper = new CriteriaBuilderHelper(getEntityManager(),GooseLevel.class);
+
+
+        helper.criteriaHelper.and(
+                helper.criteriaHelper.equal(helper.rootHelper.get(GooseLevel_.multiple), multiple)
+        );
+
+
+        if(level!=null){
+            helper.criteriaHelper.and(helper.criteriaHelper.equal(helper.rootHelper.get(GooseLevel_.level), level));
+        }
+
+        return helper.getResultList();
+    }
 }
 

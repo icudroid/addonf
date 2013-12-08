@@ -3,6 +3,7 @@ package fr.k2i.adbeback.webapp.facade;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.dao.jpa.GooseLevelDao;
 import fr.k2i.adbeback.service.GooseGameManager;
+import fr.k2i.adbeback.webapp.bean.GooseLevelGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,27 +87,18 @@ public class GooseGameFacade {
     }
 
     @Transactional
-    public void getGooseLevel(GooseLevel gooseLevel) throws Exception {
-        List<GooseCase> levelCases = gooseGameManager.getLevelCases(gooseLevel);
+    public GooseLevelGame getGooseLevel(Long levelId)  {
+        GooseLevel gooseLevel = gooseLevelDao.get(levelId);
+        return new GooseLevelGame(gooseLevel);
+    }
 
-        int size = levelCases.size();
-        int strong = gooseLevel.getStrong();
-
-        GooseCase[][] matrice = new GooseCase[strong][strong];
-
-        int i = 0, x = 0, y = 0, direction = 0 , incr = strong;
-
-        while (incr>=1){
-            for (int j = 0; j < incr; j++,i++) {
-                matrice[x][y] = levelCases.get(i);
-                if(j==incr-1){
-                    direction+=90;
-                }
-                x+=(int)Math.cos(Math.toRadians(direction));
-                y+=(int)Math.sin(Math.toRadians(direction));
-            }
-            incr--;
+    @Transactional
+    public List<GooseLevelGame> search(Integer level, Boolean multiple) {
+        List<GooseLevel> levels =  gooseLevelDao.findLevel(level,multiple);
+        List<GooseLevelGame> gooseLevelGames = new ArrayList<GooseLevelGame>();
+        for (GooseLevel gooseLevel : levels) {
+            gooseLevelGames.add(new GooseLevelGame(gooseLevel));
         }
-
+        return gooseLevelGames;
     }
 }

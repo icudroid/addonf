@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+    <div class="container">
+        <br/>
+        <div class="panel panel-default">
+            <div class="panel-heading" th:text="#{manage.goosegame.title.search}">Rechercher des jeux</div>
+            <div class="panel-body">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label class="sr-only" for="level" th:text="#{manage.goosegame.form.level}" >numéro du niveau</label>
+                        <input type="text" class="form-control" id="level" placeholder="level" ng-model="level"/>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="multiple"/><span th:text="#{manage.goosegame.form.multiple}">jeu multiple</span>
+                        </label>
+                    </div>
+
+                    <button type="button" class="btn btn-default" th:text="#{manage.goosegame.form.btn.search}" ng-click="search()">Rechercher</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <button type="button" class="btn btn-default" th:text="#{manage.goosegame.form.btn.new}" ng-click="newLevel()">Créer un nouveau</button>
+    <br/>
+
+    <div class="container" ng-show="responseResults">
+        <span th:text="#{manage.goosegame.results}">Résultat</span><br/>
+
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th th:text="#{manage.goosegame.result.table.level}">Niveau</th>
+                    <th th:text="#{manage.goosegame.result.table.maxAdByPlay}">Nb Ads</th>
+                    <th th:text="#{manage.goosegame.result.table.strong}">Force</th>
+                    <th th:text="#{manage.goosegame.result.table.nbCase}">Nombre de case</th>
+                    <th th:text="#{manage.goosegame.result.table.minAmount}">Montant min.</th>
+                    <th th:text="#{manage.goosegame.result.table.amount}">Montant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="gooseLevel in results" ng-click="showDetailLevel(gooseLevel)">
+                    <td>{{gooseLevel.level}}</td>
+                    <td>{{gooseLevel.nbMaxAdByPlay}}</td>
+                    <td>{{gooseLevel.strong}}</td>
+                    <td>{{gooseLevel.gooseCases.length}}</td>
+                    <td>{{gooseLevel.minAmount}}</td>
+                    <td>{{gooseLevel.amount}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+</body>
+</html>
+
