@@ -11,9 +11,9 @@ var adminApp = angular.module('adminApp', [
 adminApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-            when('/search', {templateUrl: addonf.base+'partials/goosegame.html',   controller: 'AdminCtrl'}).
-            when('/detail/:levelId', {templateUrl: addonf.base+'partials/detail.html',   controller: 'DetailCtrl'}).
-            when('/create', {templateUrl: addonf.base+'partials/create.html',   controller: 'CreateCtrl'}).
+            when('/search', {templateUrl: addonf.base+'manage/gooseGame/partials/goosegame.html',   controller: 'AdminCtrl'}).
+            when('/detail/:levelId', {templateUrl: addonf.base+'manage/gooseGame/partials/detail.html',   controller: 'DetailCtrl'}).
+            when('/create', {templateUrl: addonf.base+'manage/gooseGame/partials/create.html',   controller: 'CreateCtrl'}).
             otherwise({redirectTo: '/search'});
     }]);
 
