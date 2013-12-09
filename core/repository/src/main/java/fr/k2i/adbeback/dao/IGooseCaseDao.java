@@ -39,6 +39,7 @@ public interface IGooseCaseDao extends IGenericDao<GooseCase, Long> {
 	 */
 	List<GooseCase> getCases(GooseLevel level)throws Exception;
 
-    
+
+    void updateType(Long caseId, Integer type);
 }
 

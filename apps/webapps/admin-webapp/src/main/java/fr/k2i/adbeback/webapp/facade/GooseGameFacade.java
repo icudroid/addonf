@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.goosegame.*;
+import fr.k2i.adbeback.dao.jpa.GooseCaseDao;
 import fr.k2i.adbeback.dao.jpa.GooseLevelDao;
 import fr.k2i.adbeback.service.GooseGameManager;
 import fr.k2i.adbeback.webapp.bean.GooseLevelGame;
@@ -25,6 +26,10 @@ public class GooseGameFacade {
 
     @Autowired
     private GooseLevelDao gooseLevelDao;
+
+
+    @Autowired
+    private GooseCaseDao gooseCaseDao;
 
 
     @Transactional
@@ -96,5 +101,24 @@ public class GooseGameFacade {
             gooseLevelGames.add(new GooseLevelGame(gooseLevel));
         }
         return gooseLevelGames;
+    }
+
+    @Transactional
+    public void modifyCaseType(Long caseId, Integer type) {
+        gooseCaseDao.updateType(caseId, type);
+    }
+
+    @Transactional
+    public void modifyCaseTypeToJump(Long caseId, Integer jumpTo) {
+        GooseCase gooseCase = gooseCaseDao.get(caseId);
+        GooseLevel level = gooseCase.getLevel();
+        List<GooseCase> gooseCases = level.getGooseCases();
+        for (GooseCase aCase : gooseCases) {
+            if(aCase.getNumber() == jumpTo){
+                gooseCaseDao.updateTypeJumpTo(caseId, aCase.getId());
+                return;
+            }
+        }
+
     }
 }

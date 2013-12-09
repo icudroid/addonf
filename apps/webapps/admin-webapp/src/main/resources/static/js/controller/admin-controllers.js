@@ -65,11 +65,39 @@ adminControllers.controller('CreateCtrl', ['$scope', 'Admin', '$interval','$time
             });
         }
 
-        $scope.change = function(toCaseValue){
+        $scope.change = function(toCaseValue,gooseCase){
+
+            if(toCaseValue!=1){
+                Admin.modify({idCase:gooseCase.id,type:toCaseValue});
+                gooseCase.type = toCaseValue;
+            }
 
         };
+
+        $scope.doModifyJump = function(jumpTo){
+            Admin.modifyToJump({idCase:gooseCase.id,jumpTo:jumpTo});
+            gooseCase.type = toCaseValue;
+        }
     }
 ]);
+
+
+var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+
+    $scope.items = items;
+    $scope.selected = {
+        item: $scope.items[0]
+    };
+
+    $scope.doModifyJump = function () {
+        $modalInstance.close($scope.selected.item);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
 
 /* Controllers */
 

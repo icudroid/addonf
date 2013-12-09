@@ -3,12 +3,15 @@ package fr.k2i.adbeback.dao.jpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.k2i.adbeback.core.business.goosegame.GooseCase_;
+import fr.k2i.adbeback.core.business.goosegame.*;
+import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import fr.k2i.adbeback.core.business.goosegame.GooseCase;
-import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Table;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -81,6 +84,31 @@ public class GooseCaseDao extends GenericDaoJpa<GooseCase, Long> implements fr.k
 
 	}
 
-	
+
+    @Override
+    public void updateType(Long caseId, Integer type) {
+        JdbcTemplate jdbcTemplate =
+                new JdbcTemplate(org.springframework.orm.hibernate4.SessionFactoryUtils.getDataSource(getSessionFactory()));
+        Table table = AnnotationUtils.findAnnotation(GooseCase.class, Table.class);
+        GooseCaseType gooseCaseType = GooseCaseType.findByType(type);
+
+        Class<?> aClass = null;
+        try {
+            aClass = Class.forName("fr.k2i.adbeback.core.business.goosegame." + gooseCaseType.name());
+        } catch (ClassNotFoundException e) {
+            log.error(e);
+        }
+        DiscriminatorValue discriminatorValue = AnnotationUtils.findAnnotation(aClass, DiscriminatorValue.class);
+        jdbcTemplate.update("update " + table.name() + " set classe=? where id=?", discriminatorValue.value(), caseId);
+    }
+
+
+    public void updateTypeJumpTo(Long caseId, Long toCaseId) {
+        JdbcTemplate jdbcTemplate =
+                new JdbcTemplate(org.springframework.orm.hibernate4.SessionFactoryUtils.getDataSource(getSessionFactory()));
+        Table table = AnnotationUtils.findAnnotation(GooseCase.class, Table.class);
+        DiscriminatorValue discriminatorValue = AnnotationUtils.findAnnotation(JumpGooseCase.class, DiscriminatorValue.class);
+        jdbcTemplate.update("update " + table.name() + " set classe=?, GOOSEJUMP_ID=? where id=?", discriminatorValue.value(), toCaseId,caseId);
+    }
 }
 

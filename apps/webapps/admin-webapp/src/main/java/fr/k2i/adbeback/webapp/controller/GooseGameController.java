@@ -59,9 +59,21 @@ public class GooseGameController {
         }else{
             return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel());
         }
-
-
     }
+
+
+    @RequestMapping(value = "manage/gooseGame/modify/{caseId}/{type}",method  = RequestMethod.GET)
+    public void modify(@PathVariable Long caseId,@PathVariable Integer type){
+        gooseGameFacade.modifyCaseType(caseId,type);
+    }
+
+
+    @RequestMapping(value = "manage/gooseGame/modifyJump/{caseId}/{jumpToNumber}",method  = RequestMethod.GET)
+    public @ResponseBody String modifyJump(@PathVariable Long caseId, @PathVariable Integer jumpToNumber){
+        gooseGameFacade.modifyCaseTypeToJump(caseId,jumpToNumber);
+        return "";
+    }
+
 
 
 }

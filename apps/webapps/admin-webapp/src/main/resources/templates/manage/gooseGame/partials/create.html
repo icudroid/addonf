@@ -56,13 +56,30 @@
                     <a style="position: absolute; top: 40px;left: 5px;z-index: 11;" class="dropdown-toggle">{{colonne.number}}</a>
                     <ul class="dropdown-menu">
                         <li ng-repeat="choice in items">
-                            <a ng-click="change(choice.value)">{{choice.label}}</a>
+                            <a ng-click="change(choice.value,colonne)">{{choice.label}}</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3>Choose Jump To</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="jump" th:text="#{manage.goosegame.form.jump}" >Jump To</label>
+                <input type="text" class="form-control" id="jump" th:placeholder="#{manage.goosegame.placeholder.jump}" ng-model="jumpTo"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="doModifyJump(jumpTo)">OK</button>
+            <button class="btn btn-warning" ng-click="cancelModifyJump()">Cancel</button>
+        </div>
+    </script>
 
 </body>
 </html>
