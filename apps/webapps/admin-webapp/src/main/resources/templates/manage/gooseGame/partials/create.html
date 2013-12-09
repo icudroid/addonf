@@ -34,7 +34,7 @@
 
                     <div class="form-group" ng-show="!multiple">
                         <label class="col-sm-2 control-label" for="nbCase" th:text="#{manage.goosegame.form.nbCase}" >Nombre de case</label>
-                        <input type="text" class="form-control" id="nbCase"th:placeholder="#{manage.goosegame.placeholder.nbCase}" ng-model="nbCase"/>
+                        <input type="text" class="form-control" id="nbCase" th:placeholder="#{manage.goosegame.placeholder.nbCase}" ng-model="nbCase"/>
                     </div>
 
 
@@ -53,7 +53,12 @@
             <div class="col-md-1"  ng-repeat="colonne in ligne">
                 <div ng-if="colonne.type != -1">
                     <img ng-src="{{base}}img/goose/{{colonne.type}}.png"/>
-                    <span style="position: absolute; top: 40px;left: 5px;z-index: 11;">{{colonne.number}}</span>
+                    <a style="position: absolute; top: 40px;left: 5px;z-index: 11;" class="dropdown-toggle">{{colonne.number}}</a>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="choice in items">
+                            <a ng-click="change(choice.value)">{{choice.label}}</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

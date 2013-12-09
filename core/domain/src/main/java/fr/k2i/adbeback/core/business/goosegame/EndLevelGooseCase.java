@@ -10,7 +10,7 @@ public class EndLevelGooseCase extends GooseCase {
 	private static final long serialVersionUID = -1720562995087823116L;
 
     public EndLevelGooseCase(int number) {
-        number = number;
+        this.number = number;
     }
 
     public EndLevelGooseCase() {}

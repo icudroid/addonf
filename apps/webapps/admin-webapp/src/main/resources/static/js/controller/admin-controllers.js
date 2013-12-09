@@ -49,7 +49,25 @@ adminControllers.controller('DetailCtrl', ['$scope', 'Admin', '$routeParams','$i
 
 adminControllers.controller('CreateCtrl', ['$scope', 'Admin', '$interval','$timeout', '$route', '$location',
     function($scope, Admin, $interval, $timeout, $route, $location) {
+        $scope.base = addonf.base;
+        $scope.items = [
+            {label:"Add",value:5},
+            {label:"Dead",value:4},
+            {label:"Jail",value:6},
+            {label:"Jump",value:1},
+            {label:"None",value:8},
+            {label:"Reduction",value:2}
+        ];
 
+        $scope.create = function(){
+            Admin.create({multiple:$scope.multiple,level:$scope.level,strong:$scope.strong,nbCase:$scope.nbCase,minAmount:$scope.minAmount},function(data){
+                $scope.result = data;
+            });
+        }
+
+        $scope.change = function(toCaseValue){
+
+        };
     }
 ]);
 

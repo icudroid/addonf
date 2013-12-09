@@ -47,12 +47,12 @@ public class GooseGameController {
 
 
     @RequestMapping(value = "manage/gooseGame/level/{levelId}",method  = RequestMethod.GET)
-    public @ResponseBody GooseLevelGame level(@PathVariable Long levelId,Map<String, Object> model){
+    public @ResponseBody GooseLevelGame level(@PathVariable Long levelId){
         return gooseGameFacade.getGooseLevel(levelId);
     }
 
-    @RequestMapping(value = "/manage/gooseGame/search",method  = RequestMethod.POST)
-    public @ResponseBody GooseLevelGame create(@RequestBody CreateBean createBean,Map<String, Object> model){
+    @RequestMapping(value = "/manage/gooseGame/create",method  = RequestMethod.POST)
+    public @ResponseBody GooseLevelGame create(@RequestBody CreateBean createBean){
 
         if(createBean.getMultiple()==true){
             return gooseGameFacade.generateMultiLevel(createBean.getStrong(),createBean.getLevel(), createBean.getMinAmount());
@@ -69,7 +69,7 @@ public class GooseGameController {
 
 class SearchBean implements Serializable{
     private Boolean multiple;
-    private Long level;
+    private Integer level;
 
     Boolean getMultiple() {
         return multiple;
@@ -79,11 +79,11 @@ class SearchBean implements Serializable{
         this.multiple = multiple;
     }
 
-    Long getLevel() {
+    Integer getLevel() {
         return level;
     }
 
-    void setLevel(Long level) {
+    void setLevel(Integer level) {
         this.level = level;
     }
 }
@@ -92,7 +92,7 @@ class SearchBean implements Serializable{
 
 class CreateBean implements Serializable{
     private Boolean multiple;
-    private Long level;
+    private Integer level;
     private Integer strong;
     private Integer nbCase;
     private Integer minAmount;
@@ -129,11 +129,11 @@ class CreateBean implements Serializable{
         this.multiple = multiple;
     }
 
-    Long getLevel() {
+    Integer getLevel() {
         return level;
     }
 
-    void setLevel(Long level) {
+    void setLevel(Integer level) {
         this.level = level;
     }
 }

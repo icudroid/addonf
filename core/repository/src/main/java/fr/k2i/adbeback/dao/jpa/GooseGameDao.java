@@ -43,7 +43,7 @@ public class GooseGameDao extends GenericDaoJpa<GooseGame, Long> implements fr.k
 
         CriteriaBuilderHelper<GooseLevel> helper = new CriteriaBuilderHelper(getEntityManager(),GooseLevel.class);
 
-        Long l= 0L;
+        Integer l= 0;
         if(level!=null){
             l = level.getLevel()+1;
         }

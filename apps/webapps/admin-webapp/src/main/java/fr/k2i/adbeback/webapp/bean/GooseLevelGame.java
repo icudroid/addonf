@@ -19,7 +19,7 @@ public class GooseLevelGame implements Serializable{
     GooseLevel level;
     List<GooseCase> gooseCases;
 
-    public Long getLevel(){
+    public Integer getLevel(){
         return level.getLevel();
     }
 

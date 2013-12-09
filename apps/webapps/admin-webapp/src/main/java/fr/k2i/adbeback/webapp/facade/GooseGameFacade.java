@@ -28,7 +28,7 @@ public class GooseGameFacade {
 
 
     @Transactional
-    public GooseLevel generateSingleLevel(Integer nbCase,Long numLevel){
+    public GooseLevelGame generateSingleLevel(Integer nbCase,Integer numLevel){
         GooseLevel level = new GooseLevel();
         level.setLevel(numLevel);
         level.setMinValue(0);
@@ -48,15 +48,13 @@ public class GooseGameFacade {
 
         level.endCase(new EndLevelGooseCase(nbCase));
 
-        gooseLevelDao.save(level);
-
-        return level;
+        return new GooseLevelGame(gooseLevelDao.save(level));
     }
 
 
 
     @Transactional
-    public GooseLevel generateMultiLevel(Integer strong,Long numLevel,Integer minAmount){
+    public GooseLevelGame generateMultiLevel(Integer strong,Integer numLevel,Integer minAmount){
         GooseLevel level = new GooseLevel();
         level.setLevel(numLevel);
         level.setMinValue(minAmount);
@@ -66,7 +64,7 @@ public class GooseGameFacade {
         level.setValue(minAmount);
 
 
-        int nbCase = 1;
+        int nbCase = 0;
         for (int i = 1; i <= strong; i++) {
             nbCase+=i;
         }
@@ -81,9 +79,7 @@ public class GooseGameFacade {
 
         level.endCase(new EndLevelGooseCase(nbCase));
 
-        gooseLevelDao.save(level);
-
-        return level;
+        return new GooseLevelGame(gooseLevelDao.save(level));
     }
 
     @Transactional

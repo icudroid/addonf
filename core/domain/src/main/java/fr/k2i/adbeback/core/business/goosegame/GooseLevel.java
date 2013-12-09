@@ -15,7 +15,7 @@ public class GooseLevel extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 3339924782068634755L;
 	private Long id;
-	private Long level;
+	private Integer level;
 	private Integer value;
     private Integer nbMaxAdByPlay;
     //private Integer minScore;
@@ -82,11 +82,11 @@ public class GooseLevel extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	public Long getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
 
-	public void setLevel(Long level) {
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 
