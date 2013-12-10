@@ -71,13 +71,13 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="jump" th:text="#{manage.goosegame.form.jump}" >Jump To</label>
-                <input type="text" class="form-control" id="jump" th:placeholder="#{manage.goosegame.placeholder.jump}" ng-model="jumpTo"/>
+                <label class="control-label" for="jump">Jump To</label>
+                <input type="text" class="form-control" id="jump" ng-model="selected.jumpTo"/>
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="doModifyJump(jumpTo)">OK</button>
-            <button class="btn btn-warning" ng-click="cancelModifyJump()">Cancel</button>
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
 

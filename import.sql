@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `addonf` /*!40100 DEFAULT CHARACTER SET latin1 */
 USE `addonf`;
 -- MySQL dump 10.13  Distrib 5.5.34, for debian-linux-gnu (x86_64)
 --
--- Host: 127.0.0.1    Database: addonf
+-- Host: 127.ui-bootstrap-0.7.0.ui-bootstrap-0.7.0.1    Database: addonf
 -- ------------------------------------------------------
 -- Server version	5.5.34-0ubuntu0.13.10.1
 
@@ -12,10 +12,10 @@ USE `addonf`;
 /*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=ui-bootstrap-0.7.0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=ui-bootstrap-0.7.0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=ui-bootstrap-0.7.0 */;
 
 --
 -- Table structure for table `ad`

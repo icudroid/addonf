@@ -39,16 +39,22 @@
                     <th th:text="#{manage.goosegame.result.table.nbCase}">Nombre de case</th>
                     <th th:text="#{manage.goosegame.result.table.minAmount}">Montant min.</th>
                     <th th:text="#{manage.goosegame.result.table.amount}">Montant</th>
+                    <th th:text="#{manage.goosegame.result.table.action}">Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="gooseLevel in results" ng-click="showDetailLevel(gooseLevel)">
+                <tr ng-repeat="gooseLevel in results">
                     <td>{{gooseLevel.level}}</td>
                     <td>{{gooseLevel.nbMaxAdByPlay}}</td>
                     <td>{{gooseLevel.strong}}</td>
                     <td>{{gooseLevel.gooseCases.length}}</td>
                     <td>{{gooseLevel.minAmount}}</td>
                     <td>{{gooseLevel.amount}}</td>
+                    <td>
+                        <button type="button" class="btn btn-default" th:text="#{manage.goosegame.form.btn.delete}" ng-click="delete(gooseLevel)">Supprimer</button>
+                        <button type="button" class="btn btn-default" th:text="#{manage.goosegame.form.btn.modify}" ng-click="modify(gooseLevel)">Modifier</button>
+                        <button type="button" class="btn btn-default" th:text="#{manage.goosegame.form.btn.detail}" ng-click="showDetailLevel(gooseLevel)">Détail</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

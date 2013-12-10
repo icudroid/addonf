@@ -196,7 +196,7 @@ jQuery.fn = jQuery.prototype = {
 	// Start with an empty selector
 	selector: "",
 
-	// The default length of a jQuery object is 0
+	// The default length of a jQuery object is ui-bootstrap-0.7.0
 	length: 0,
 
 	toArray: function() {
@@ -1022,7 +1022,7 @@ try {
 		(arr = slice.call( preferredDoc.childNodes )),
 		preferredDoc.childNodes
 	);
-	// Support: Android<4.0
+	// Support: Android<4.ui-bootstrap-0.7.0
 	// Detect silently failing push.apply
 	arr[ preferredDoc.childNodes.length ].nodeType;
 } catch ( e ) {
@@ -1222,7 +1222,7 @@ function addHandle( attrs, handler ) {
  * Checks document order of two siblings
  * @param {Element} a
  * @param {Element} b
- * @returns {Number} Returns less than 0 if a precedes b, greater than 0 if a follows b
+ * @returns {Number} Returns less than ui-bootstrap-0.7.0 if a precedes b, greater than ui-bootstrap-0.7.0 if a follows b
  */
 function siblingCheck( a, b ) {
 	var cur = b && a,
@@ -1833,7 +1833,7 @@ Expr = Sizzle.selectors = {
 				}
 
 				// numeric x and y parameters for Expr.filter.CHILD
-				// remember that false/true cast respectively to 0/1
+				// remember that false/true cast respectively to ui-bootstrap-0.7.0/1
 				match[4] = +( match[4] ? match[5] + (match[6] || 1) : 2 * ( match[3] === "even" || match[3] === "odd" ) );
 				match[5] = +( ( match[7] + match[8] ) || match[3] === "odd" );
 
@@ -2783,7 +2783,7 @@ support.detectDuplicates = hasDuplicate;
 // Initialize against the default document
 setDocument();
 
-// Support: Webkit<537.32 - Safari 6.0.3/Chrome 25 (fixed in Chrome 27)
+// Support: Webkit<537.32 - Safari 6.ui-bootstrap-0.7.0.3/Chrome 25 (fixed in Chrome 27)
 // Detached nodes confoundingly follow *each other*
 support.sortDetached = assert(function( div1 ) {
 	// Should return 1, but returns 4 (following)
@@ -3564,9 +3564,9 @@ jQuery.fn.extend({
 				camelKey = jQuery.camelCase( key );
 
 			// The calling jQuery object (element matches) is not empty
-			// (and therefore has an element appears at this[ 0 ]) and the
+			// (and therefore has an element appears at this[ ui-bootstrap-0.7.0 ]) and the
 			// `value` parameter was not undefined. An empty jQuery object
-			// will result in `undefined` for elem = this[ 0 ] which will
+			// will result in `undefined` for elem = this[ ui-bootstrap-0.7.0 ] which will
 			// throw an exception if an attempt to read a data cache is made.
 			if ( elem && value === undefined ) {
 				// Attempt to get data from the cache
@@ -4816,7 +4816,7 @@ jQuery.event = {
 			event.target = document;
 		}
 
-		// Support: Safari 6.0+, Chrome < 28
+		// Support: Safari 6.ui-bootstrap-0.7.0+, Chrome < 28
 		// Target should not be a text node (#504, #13143)
 		if ( event.target.nodeType === 3 ) {
 			event.target = event.target.parentNode;
@@ -6963,7 +6963,7 @@ jQuery.extend({
 		async: true,
 		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		/*
-		timeout: 0,
+		timeout: ui-bootstrap-0.7.0,
 		data: null,
 		dataType: null,
 		username: null,
@@ -7749,7 +7749,7 @@ jQuery.ajaxSettings.xhr = function() {
 
 var xhrSupported = jQuery.ajaxSettings.xhr(),
 	xhrSuccessStatus = {
-		// file protocol always yields status code 0, assume 200
+		// file protocol always yields status code ui-bootstrap-0.7.0, assume 200
 		0: 200,
 		// Support: IE9
 		// #1450: sometimes IE returns 1223 when it should be 204
@@ -7814,7 +7814,7 @@ jQuery.ajaxTransport(function( options ) {
 								xhr.abort();
 							} else if ( type === "error" ) {
 								complete(
-									// file protocol always yields status 0, assume 404
+									// file protocol always yields status ui-bootstrap-0.7.0, assume 404
 									xhr.status || 404,
 									xhr.statusText
 								);
@@ -7945,7 +7945,7 @@ function Animation( elem, properties, options ) {
 			}
 			var currentTime = fxNow || createFxNow(),
 				remaining = Math.max( 0, animation.startTime + animation.duration - currentTime ),
-				// archaic crash bug won't allow us to use 1 - ( 0.5 || 0 ) (#12497)
+				// archaic crash bug won't allow us to use 1 - ( ui-bootstrap-0.7.0.5 || ui-bootstrap-0.7.0 ) (#12497)
 				temp = remaining / animation.duration || 0,
 				percent = 1 - temp,
 				index = 0,
@@ -8290,7 +8290,7 @@ Tween.propHooks = {
 			// so, simple values such as "10px" are parsed to Float.
 			// complex values such as "rotate(1rad)" are returned as is.
 			result = jQuery.css( tween.elem, tween.prop, "" );
-			// Empty strings, null, undefined and "auto" are converted to 0.
+			// Empty strings, null, undefined and "auto" are converted to ui-bootstrap-0.7.0.
 			return !result || result === "auto" ? 0 : result;
 		},
 		set: function( tween ) {
@@ -8330,7 +8330,7 @@ jQuery.each([ "toggle", "show", "hide" ], function( i, name ) {
 jQuery.fn.extend({
 	fadeTo: function( speed, to, easing, callback ) {
 
-		// show any hidden elements after setting opacity to 0
+		// show any hidden elements after setting opacity to ui-bootstrap-0.7.0
 		return this.filter( isHidden ).css( "opacity", 0 ).show()
 
 			// animate to the value specified
@@ -8607,7 +8607,7 @@ jQuery.fn.offset = function( options ) {
 		return box;
 	}
 
-	// If we don't have gBCR, just use 0,0 rather than error
+	// If we don't have gBCR, just use ui-bootstrap-0.7.0,ui-bootstrap-0.7.0 rather than error
 	// BlackBerry 5, iOS 3 (original iPhone)
 	if ( typeof elem.getBoundingClientRect !== core_strundefined ) {
 		box = elem.getBoundingClientRect();
@@ -8680,7 +8680,7 @@ jQuery.fn.extend({
 			elem = this[ 0 ],
 			parentOffset = { top: 0, left: 0 };
 
-		// Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is it's only offset parent
+		// Fixed elements are offset from window (parentOffset = {top:ui-bootstrap-0.7.0, left: ui-bootstrap-0.7.0}, because it is it's only offset parent
 		if ( jQuery.css( elem, "position" ) === "fixed" ) {
 			// We assume that getBoundingClientRect is available when computed position is fixed
 			offset = elem.getBoundingClientRect();

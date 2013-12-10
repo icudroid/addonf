@@ -22,11 +22,25 @@ adminControllers.controller('AdminCtrl', ['$scope', 'Admin', '$interval','$timeo
 
         $scope.showDetailLevel = function(gooseLevel){
             $location.path('/detail/'+gooseLevel.levelId);
-        }
+        };
 
         $scope.newLevel = function(){
             $location.path('/create');
-        }
+        };
+
+
+        $scope.delete = function(gooseLevel){
+            Admin.deleteLevel({levelId:gooseLevel.levelId},function(data){
+                $scope.search();
+            });
+        };
+
+        $scope.modify = function(gooseLevel){
+            addonf.modify = {
+                gooseLevel : gooseLevel
+            };
+            $location.path('/modify');
+        };
     }
 ]);
 
@@ -47,8 +61,8 @@ adminControllers.controller('DetailCtrl', ['$scope', 'Admin', '$routeParams','$i
 ]);
 
 
-adminControllers.controller('CreateCtrl', ['$scope', 'Admin', '$interval','$timeout', '$route', '$location',
-    function($scope, Admin, $interval, $timeout, $route, $location) {
+adminControllers.controller('CreateCtrl', ['$scope', 'Admin', '$interval','$timeout', '$route', '$location','$modal','$log',
+    function($scope, Admin, $interval, $timeout, $route, $location,$modal,$log) {
         $scope.base = addonf.base;
         $scope.items = [
             {label:"Add",value:5},
@@ -70,35 +84,103 @@ adminControllers.controller('CreateCtrl', ['$scope', 'Admin', '$interval','$time
             if(toCaseValue!=1){
                 Admin.modify({idCase:gooseCase.id,type:toCaseValue});
                 gooseCase.type = toCaseValue;
+            }else{
+
+                //open
+                var modalInstance = $modal.open({
+                    templateUrl: 'myModalContent.html',
+                    controller: "ModalInstanceCtrl"
+                });
+
+
+                modalInstance.result.then(function (jumpToNumber) {
+                    $scope.doModifyJump(gooseCase,jumpToNumber);
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+
             }
 
         };
 
-        $scope.doModifyJump = function(jumpTo){
+        $scope.doModifyJump = function(gooseCase,jumpTo){
             Admin.modifyToJump({idCase:gooseCase.id,jumpTo:jumpTo});
-            gooseCase.type = toCaseValue;
-        }
+            gooseCase.type = 1;
+        };
+
+
     }
 ]);
 
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+adminControllers.controller('ModalInstanceCtrl', ['$scope', 'Admin', '$interval','$timeout', '$route', '$location','$modal','$log','$modalInstance',
+    function($scope, Admin, $interval, $timeout, $route, $location,$modal,$log,$modalInstance) {
+        $scope.selected = {
+            jumpTo :""
+        };
 
-    $scope.items = items;
-    $scope.selected = {
-        item: $scope.items[0]
-    };
+        $scope.ok = function () {
+            $modalInstance.close($scope.selected.jumpTo);
+        };
 
-    $scope.doModifyJump = function () {
-        $modalInstance.close($scope.selected.item);
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-};
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    }
+]);
 
 
+
+
+adminControllers.controller('ModifyCtrl', ['$scope', 'Admin', '$interval','$timeout', '$route', '$location','$modal',
+    function($scope, Admin, $interval, $timeout, $route, $location,$modal) {
+        $scope.base = addonf.base;
+        $scope.items = [
+            {label:"Add",value:5},
+            {label:"Dead",value:4},
+            {label:"Jail",value:6},
+            {label:"Jump",value:1},
+            {label:"None",value:8},
+            {label:"Reduction",value:2}
+        ];
+        $scope.gooseLevel = addonf.modify.gooseLevel;
+
+        $scope.modify = function () {
+            Admin.modifyMinAmount({amount:$scope.gooseLevel.minAmount});
+        };
+
+        $scope.change = function(toCaseValue,gooseCase){
+
+            if(toCaseValue!=1){
+                Admin.modify({idCase:gooseCase.id,type:toCaseValue});
+                gooseCase.type = toCaseValue;
+            }else{
+
+                //open
+                var modalInstance = $modal.open({
+                    templateUrl: 'myModalContent.html',
+                    controller: "ModalInstanceCtrl"
+                });
+
+
+                modalInstance.result.then(function (jumpToNumber) {
+                    $scope.doModifyJump(gooseCase,jumpToNumber);
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+
+            }
+
+        };
+
+        $scope.doModifyJump = function(gooseCase,jumpTo){
+            Admin.modifyToJump({idCase:gooseCase.id,jumpTo:jumpTo});
+            gooseCase.type = 1;
+        };
+
+
+    }
+]);
 /* Controllers */
 
 

@@ -121,4 +121,9 @@ public class GooseGameFacade {
         }
 
     }
+
+    @Transactional
+    public void deleteLevel(Long levelId) {
+        gooseLevelDao.remove(levelId);
+    }
 }

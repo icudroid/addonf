@@ -89,7 +89,7 @@ public class LabelValue implements Comparable, Serializable {
      *
      * @see Comparable
      * @param o LabelValue object to compare to
-     * @return 0 if labels match for compared objects
+     * @return ui-bootstrap-0.7.0 if labels match for compared objects
      */
     public int compareTo(Object o) {
         // Implicitly tests for the correct type, throwing

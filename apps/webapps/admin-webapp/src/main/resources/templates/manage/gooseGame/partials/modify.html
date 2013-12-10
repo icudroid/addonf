@@ -1,0 +1,57 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+    <br/>
+    <a href="#/search" th:text="#{manage.goosegame.link.back}">Retour</a>
+    <br/>
+    <div class="container">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="minAmount" th:text="#{manage.goosegame.form.minAmount}" >Montant min.</label>
+                <input type="text" class="form-control" id="minAmount" th:placeholder="#{manage.goosegame.placeholder.minAmount}" ng-model="gooseLevel.minAmountWin"/>
+            </div>
+            <button type="button" class="btn btn-default" th:text="#{manage.goosegame.form.btn.modify}" ng-click="modify()">Modifier</button>
+        </form>
+
+
+        <div class="container">
+            <br/>
+            <div th:text="#{manage.goosegame.create.result}">Résultat :</div>
+            <br/>
+            <div class="row" ng-repeat="ligne in gooseLevel.matrice">
+                <div class="col-md-1"  ng-repeat="colonne in ligne">
+                    <div ng-if="colonne.type != -1">
+                        <img ng-src="{{base}}img/goose/{{colonne.type}}.png"/>
+                        <a style="position: absolute; top: 40px;left: 5px;z-index: 11;" class="dropdown-toggle">{{colonne.number}}</a>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="choice in items">
+                                <a ng-click="change(choice.value,colonne)">{{choice.label}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3>Choose Jump To</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label" for="jump">Jump To</label>
+                    <input type="text" class="form-control" id="jump" ng-model="selected.jumpTo"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="ok()">OK</button>
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
+    </div>
+
+
+
+</body>
+</html>
+

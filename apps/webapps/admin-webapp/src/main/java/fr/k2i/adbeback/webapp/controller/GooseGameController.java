@@ -3,6 +3,7 @@ package fr.k2i.adbeback.webapp.controller;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 import fr.k2i.adbeback.dao.jpa.GooseLevelDao;
 import fr.k2i.adbeback.webapp.bean.GooseLevelGame;
+import fr.k2i.adbeback.webapp.bean.JsonResultError;
 import fr.k2i.adbeback.webapp.facade.GooseGameFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,17 +64,25 @@ public class GooseGameController {
 
 
     @RequestMapping(value = "manage/gooseGame/modify/{caseId}/{type}",method  = RequestMethod.GET)
-    public void modify(@PathVariable Long caseId,@PathVariable Integer type){
+    public @ResponseBody
+    JsonResultError modify(@PathVariable Long caseId,@PathVariable Integer type){
         gooseGameFacade.modifyCaseType(caseId,type);
+        return JsonResultError.noError();
     }
 
 
     @RequestMapping(value = "manage/gooseGame/modifyJump/{caseId}/{jumpToNumber}",method  = RequestMethod.GET)
-    public @ResponseBody String modifyJump(@PathVariable Long caseId, @PathVariable Integer jumpToNumber){
+    public @ResponseBody JsonResultError modifyJump(@PathVariable Long caseId, @PathVariable Integer jumpToNumber){
         gooseGameFacade.modifyCaseTypeToJump(caseId,jumpToNumber);
-        return "";
+        return JsonResultError.noError();
     }
 
+
+    @RequestMapping(value = "manage/gooseGame/delete/{levelId}",method  = RequestMethod.GET)
+    public @ResponseBody JsonResultError delete(@PathVariable Long levelId){
+        gooseGameFacade.deleteLevel(levelId);
+        return JsonResultError.noError();
+    }
 
 
 }

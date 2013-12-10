@@ -34,7 +34,7 @@ public class GooseGameDao extends GenericDaoJpa<GooseGame, Long> implements fr.k
 	}
 
 	public void resetLevelValue(GooseLevel level) throws Exception {
-        Query q = getEntityManager().createQuery("UPDATE GooseLevel SET value=0 where id =:id");
+        Query q = getEntityManager().createQuery("UPDATE GooseLevel SET value=ui-bootstrap-0.7.0 where id =:id");
         q.setParameter("id", level.getId());
         q.executeUpdate();
 	}
