@@ -1,11 +1,16 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel_;
+import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 
+import javax.persistence.Query;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -44,6 +49,13 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
         }
 
         return helper.getResultList();
+    }
+
+    public void modifyLevelMinAmount(Long levelId, Integer minAmount) {
+        Query q = getEntityManager().createQuery("UPDATE GooseLevel SET minValue=:minAmount where id =:id");
+        q.setParameter("id", levelId);
+        q.setParameter("minAmount", minAmount);
+        q.executeUpdate();
     }
 }
 

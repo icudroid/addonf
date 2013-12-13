@@ -55,7 +55,7 @@ public class GooseGameController {
     @RequestMapping(value = "/manage/gooseGame/create",method  = RequestMethod.POST)
     public @ResponseBody GooseLevelGame create(@RequestBody CreateBean createBean){
 
-        if(createBean.getMultiple()==true){
+        if(createBean.getMultiple() != null && createBean.getMultiple()==true){
             return gooseGameFacade.generateMultiLevel(createBean.getStrong(),createBean.getLevel(), createBean.getMinAmount());
         }else{
             return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel());
@@ -84,6 +84,13 @@ public class GooseGameController {
         return JsonResultError.noError();
     }
 
+
+
+    @RequestMapping(value = "manage/gooseGame/modifyMinAmount/{levelId}/{amount}",method  = RequestMethod.POST)
+    public @ResponseBody JsonResultError modifyMinAmount(@PathVariable Long levelId,@PathVariable Integer amount){
+        gooseGameFacade.modifyMinAmount(levelId,amount);
+        return JsonResultError.noError();
+    }
 
 }
 

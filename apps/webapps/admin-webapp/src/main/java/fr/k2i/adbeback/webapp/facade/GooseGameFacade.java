@@ -126,4 +126,9 @@ public class GooseGameFacade {
     public void deleteLevel(Long levelId) {
         gooseLevelDao.remove(levelId);
     }
+
+    @Transactional
+    public void modifyMinAmount(Long levelId, Integer minAmount) {
+        gooseLevelDao.modifyLevelMinAmount(levelId,minAmount);
+    }
 }

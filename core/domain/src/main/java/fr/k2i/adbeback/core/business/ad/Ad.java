@@ -33,7 +33,6 @@ public class Ad extends BaseObject implements Serializable {
 	private List<AdRule> rules;
 	private String video;
 	private AdType type;
-	private List<Country> aForCountries;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -92,16 +91,6 @@ public class Ad extends BaseObject implements Serializable {
 
 	public void setType(AdType type) {
 		this.type = type;
-	}
-
-	@ManyToMany(targetEntity = Country.class, cascade = { CascadeType.PERSIST,CascadeType.MERGE })
-	@JoinTable(name = "ad_country", joinColumns = @JoinColumn(name = "AD_ID"), inverseJoinColumns = @JoinColumn(name = "COUNTRY_ID"))
-	public List<Country> getaForCountries() {
-		return aForCountries;
-	}
-
-	public void setaForCountries(List<Country> aForCountries) {
-		this.aForCountries = aForCountries;
 	}
 
 	@Override
