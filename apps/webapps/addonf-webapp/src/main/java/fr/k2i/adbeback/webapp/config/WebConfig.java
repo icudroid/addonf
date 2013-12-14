@@ -49,10 +49,7 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "fr.k2i.adbeback")
 @PropertySource(value = {"classpath:application.properties","classpath:mail.properties"})
-public class WebConfig {
-
-
-    TomcatDataSourceConfiguration dataSourceConfiguration = new TomcatDataSourceConfiguration();
+public class WebConfig extends AbstractWebConfig {
 
     @Bean
     public SecurityConfig securityConfig() {
@@ -62,19 +59,6 @@ public class WebConfig {
     @Bean
     public MvcConfig mvcConfig() {
         return new MvcConfig();
-    }
-
-    @Bean
-    public EmailConfig emailConfig(){
-        return new EmailConfig();
-    }
-
-    @Bean
-    public MessageSource messageSource(){
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("resources");
-        messageSource.setUseCodeAsDefaultMessage(true);
-        return messageSource;
     }
 
     public static void main(String[] args) throws Exception {

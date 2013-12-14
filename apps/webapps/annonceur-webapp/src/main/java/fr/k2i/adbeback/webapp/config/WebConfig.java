@@ -24,10 +24,12 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.TomcatDataSourceConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,10 +49,7 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "fr.k2i.adbeback")
 @PropertySource(value = {"classpath:application.properties","classpath:mail.properties"})
-public class WebConfig {
-
-
-    TomcatDataSourceConfiguration dataSourceConfiguration = new TomcatDataSourceConfiguration();
+public class WebConfig extends AbstractWebConfig{
 
     @Bean
     public SecurityConfig securityConfig() {
@@ -60,11 +59,6 @@ public class WebConfig {
     @Bean
     public MvcConfig mvcConfig() {
         return new MvcConfig();
-    }
-
-    @Bean
-    public EmailConfig emailConfig(){
-        return new EmailConfig();
     }
 
     public static void main(String[] args) throws Exception {

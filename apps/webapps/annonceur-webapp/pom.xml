@@ -18,6 +18,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>fr.k2i.adbeback.addonf.webapps</groupId>
+            <artifactId>common-resources</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>fr.k2i.adbeback.addonf.core</groupId>
             <artifactId>domain</artifactId>
             <version>${project.version}</version>
