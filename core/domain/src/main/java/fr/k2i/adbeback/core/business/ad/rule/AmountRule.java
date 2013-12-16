@@ -1,14 +1,18 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
+import fr.k2i.adbeback.core.business.IMetaData;
+
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 
 @Entity
-@DiscriminatorValue("Amount")
+@DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.AMOUNT_RULE)
 public class AmountRule extends AdRule {
 	private static final long serialVersionUID = 6708314171621564778L;
 
+    @Column(name = IMetaData.ColumnMetadata.AdRule.AMOUNT)
     private Double amount;
 
     public Double getAmount() {

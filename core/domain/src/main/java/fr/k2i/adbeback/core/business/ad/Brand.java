@@ -3,30 +3,54 @@ package fr.k2i.adbeback.core.business.ad;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.player.Address;
 
 @Entity
-@Table(name = "brand")
+@Table(name = IMetaData.TableMetadata.BRAND)
 public class Brand extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -2695302801414355764L;
-	private List<Product> products;
-	private Long id;
-	private String name;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = IMetaData.ColumnMetadata.Brand.ID)
+    private Long id;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Brand.PRODUCT_JOIN)
+    private List<Product> products;
+
+    @Column(name = IMetaData.ColumnMetadata.Brand.NAME)
+    private String name;
+
+    @Column(name = IMetaData.ColumnMetadata.Brand.LOGO)
 	private String logo;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @OneToMany(mappedBy = IMetaData.ColumnMetadata.Brand.CONTACT_JOIN,cascade = {CascadeType.ALL})
+    private List<Contact> contacts;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = IMetaData.ColumnMetadata.Brand.MAIN_CONTACT)
+    private Contact main;
+
+    @Column(name = IMetaData.ColumnMetadata.Brand.TVA_NUMBER)
+    private String tvaNumber;
+
+    @Column(name = IMetaData.ColumnMetadata.Brand.SIRET)
+    private String siret;
+
+    @Embedded
+    private Address address;
+
+    @Column(name = IMetaData.ColumnMetadata.Brand.PWD)
+    private String password;
+
+    @Column(name = IMetaData.ColumnMetadata.Brand.PHONE)
+    private String phone;
 
 	public Long getId() {
 		return id;
@@ -36,8 +60,6 @@ public class Brand extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "BRAND_ID")
 	public List<Product> getProducts() {
 		return products;
 	}
@@ -61,6 +83,64 @@ public class Brand extends BaseObject implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public Contact getMain() {
+        return main;
+    }
+
+    public void setMain(Contact main) {
+        this.main = main;
+    }
+
+    public String getTvaNumber() {
+        return tvaNumber;
+    }
+
+    public void setTvaNumber(String tvaNumber) {
+        this.tvaNumber = tvaNumber;
+    }
+
+    public String getSiret() {
+        return siret;
+    }
+
+    public void setSiret(String siret) {
+        this.siret = siret;
+    }
+
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
 
 
     @Override
@@ -86,8 +166,8 @@ public class Brand extends BaseObject implements Serializable {
     }
 
     @Override
-	public String toString() {
-		return "Brand [products=" + products + ", id=" + id + "]";
-	}
+    public String toString() {
+        return "Brand [products=" + products + ", id=" + id + "]";
+    }
 
 }

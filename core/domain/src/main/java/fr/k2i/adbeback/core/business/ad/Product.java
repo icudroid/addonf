@@ -2,29 +2,37 @@ package fr.k2i.adbeback.core.business.ad;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
 
 @Entity
-@Table(name = "product")
+@Table(name = IMetaData.TableMetadata.PRODUCT)
 public class Product extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 8346229795953025008L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = IMetaData.ColumnMetadata.Product.ID)
 	private Long id;
+
+    @Column(name = IMetaData.ColumnMetadata.Product.NAME)
 	private String name;
+
+    @Column(name = IMetaData.ColumnMetadata.Product.DESC)
 	private String description;
+
+    @Column(name = IMetaData.ColumnMetadata.Product.PUBLIC_FEE)
 	private Double publicPrice;
-	private Double adPrice;
+
+    @Column(name = IMetaData.ColumnMetadata.Product.AD_FEE)
+	private Integer adPrice;
+
+    @Column(name = IMetaData.ColumnMetadata.Product.LOGO)
 	private String logo;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 
 	public Long getId() {
 		return id;
@@ -58,11 +66,11 @@ public class Product extends BaseObject implements Serializable {
 		this.publicPrice = publicPrice;
 	}
 
-	public Double getAdPrice() {
+	public Integer getAdPrice() {
 		return adPrice;
 	}
 
-	public void setAdPrice(Double adPrice) {
+	public void setAdPrice(Integer adPrice) {
 		this.adPrice = adPrice;
 	}
 	

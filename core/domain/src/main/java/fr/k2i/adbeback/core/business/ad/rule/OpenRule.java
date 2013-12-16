@@ -1,5 +1,7 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
+import fr.k2i.adbeback.core.business.IMetaData;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,22 +13,25 @@ import javax.persistence.OneToOne;
 
 
 @Entity
-@DiscriminatorValue("Open")
+@DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.OPEN_RULE)
 public class OpenRule extends AdRule {
 	private static final long serialVersionUID = 2723929702129656644L;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.RESPONSE_JOIN)
 	private List<AdResponse>responses;
-	private AdResponse correct;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.CORRECT_RESPONSE)
+    private AdResponse correct;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "CORRECT_ID")
 	public AdResponse getCorrect() {
 		return correct;
 	}
 	public void setCorrect(AdResponse correct) {
 		this.correct = correct;
 	}
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "RULE_ID")
+
 	public List<AdResponse> getResponses() {
 		return responses;
 	}

@@ -3,39 +3,42 @@ package fr.k2i.adbeback.core.business.ad;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.country.Country;
 
 @Entity
-@Table(name = "ad")
+@Table(name = IMetaData.TableMetadata.AD)
 public class Ad extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -8627592656680311906L;
-	private Long id;
-	private Brand brand;
-	private Product product;
-	private List<AdRule> rules;
-	private String video;
-	private AdType type;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = IMetaData.ColumnMetadata.Ad.ID)
+    private Long id;
+
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.BRAND)
+    private Brand brand;
+
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.PRODUCT)
+    private Product product;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.RULE_JOIN)
+    private List<AdRule> rules;
+
+    @Column(name = IMetaData.ColumnMetadata.Ad.VIDEO)
+	private String video;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = IMetaData.ColumnMetadata.Ad.TYPE)
+	private AdType type;
 
 	public Long getId() {
 		return id;
@@ -45,8 +48,6 @@ public class Ad extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "BRAND_ID")
 	public Brand getBrand() {
 		return brand;
 	}
@@ -55,8 +56,6 @@ public class Ad extends BaseObject implements Serializable {
 		this.brand = brand;
 	}
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "PRODUCT_ID")
 	public Product getProduct() {
 		return product;
 	}
@@ -65,9 +64,6 @@ public class Ad extends BaseObject implements Serializable {
 		this.product = product;
 	}
 
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "AD_ID")
 	public List<AdRule> getRules() {
 		return rules;
 	}
@@ -84,7 +80,7 @@ public class Ad extends BaseObject implements Serializable {
 		this.video = video;
 	}
 
-	@Enumerated(EnumType.ORDINAL)
+
 	public AdType getType() {
 		return type;
 	}
@@ -126,7 +122,7 @@ public class Ad extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Ad [id=" + id + ", brand=" + brand + ", product=" + product
+		return "Ad [id=" + id + ", brand=" + brand.getName() + ", product=" + product.getName()
 				+ "]";
 	}
 

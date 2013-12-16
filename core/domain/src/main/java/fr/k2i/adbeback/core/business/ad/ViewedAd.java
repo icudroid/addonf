@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.ad;
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.player.Player;
 
@@ -8,17 +9,30 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "viewed_ad")
+@Table(name = IMetaData.TableMetadata.VIEWED_AD)
 public class ViewedAd extends BaseObject implements Serializable {
 
-    private Long id;
-    private Player player;
-    private Integer nb;
-    private Ad ad;
-    private AdRule adRule;//Brand, Product, Open
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = IMetaData.ColumnMetadata.ViewedMedia.ID)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name=IMetaData.ColumnMetadata.ViewedMedia.PLAYER)
+    private Player player;
+
+    @Column(name=IMetaData.ColumnMetadata.ViewedMedia.NB)
+    private Integer nb;
+
+    @ManyToOne
+    @JoinColumn(name = IMetaData.ColumnMetadata.ViewedMedia.AD)
+    private Ad ad;
+
+    @ManyToOne
+    @JoinColumn(name = IMetaData.ColumnMetadata.ViewedMedia.RULE)
+    private AdRule adRule;//Brand, Product, Open
+
     public Long getId() {
         return id;
     }
@@ -28,8 +42,6 @@ public class ViewedAd extends BaseObject implements Serializable {
     }
 
 
-    @ManyToOne
-    @JoinColumn(name="PLAYER_ID")
     public Player getPlayer() {
         return player;
     }
@@ -47,8 +59,6 @@ public class ViewedAd extends BaseObject implements Serializable {
         this.nb = nb;
     }
 
-    @ManyToOne()
-    @JoinColumn(name = "AD_ID")
     public Ad getAd() {
         return ad;
     }
@@ -57,8 +67,6 @@ public class ViewedAd extends BaseObject implements Serializable {
         this.ad = ad;
     }
 
-    @ManyToOne()
-    @JoinColumn(name = "AD_RULE_ID")
     public AdRule getAdRule() {
         return adRule;
     }

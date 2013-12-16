@@ -1,19 +1,20 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
+import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.country.Country;
 
 import javax.persistence.*;
 
 
 @Entity
-@DiscriminatorValue("Country")
+@DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.COUNTRY_RULE)
 public class CountryRule extends AdRule {
 	private static final long serialVersionUID = 6708314171621564778L;
 
+    @ManyToOne()
+    @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.JOIN_COUNTRY)
     private Country country;
 
-    @ManyToOne()
-    @JoinColumn(name = "COUNTRY_ID")
     public Country getCountry() {
         return country;
     }

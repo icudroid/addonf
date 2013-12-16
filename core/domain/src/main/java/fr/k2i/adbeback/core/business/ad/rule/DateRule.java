@@ -1,22 +1,26 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import fr.k2i.adbeback.core.business.IMetaData;
+
+import javax.persistence.*;
 import java.util.Date;
 
 
 @Entity
-@DiscriminatorValue("Date")
+@DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.DATE_RULE)
 public class DateRule extends AdRule {
 	private static final long serialVersionUID = 6708314171621564778L;
 
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = IMetaData.ColumnMetadata.AdRule.START_DATE)
     protected Date startDate;
-    protected Date endDate;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = IMetaData.ColumnMetadata.AdRule.END_DATE)
+    protected Date endDate;
+
+
     public Date getStartDate() {
         return startDate;
     }
@@ -25,7 +29,7 @@ public class DateRule extends AdRule {
         this.startDate = startDate;
     }
 
-    @Temporal(TemporalType.DATE)
+
     public Date getEndDate() {
         return endDate;
     }

@@ -2,21 +2,22 @@ package fr.k2i.adbeback.core.business.ad.rule;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
 
 
 @Entity
-@Table(name = "ad_response")
+@Table(name = IMetaData.TableMetadata.AD_RESPONSE)
 public class AdResponse extends BaseObject implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = IMetaData.ColumnMetadata.AdResponse.ID)
 	private Long id;
+
+    @Column(name = IMetaData.ColumnMetadata.AdResponse.RESPONSE)
 	private String response;
 	
 	public String getResponse() {
@@ -26,9 +27,6 @@ public class AdResponse extends BaseObject implements Serializable{
 	public void setResponse(String response) {
 		this.response = response;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 
 	public Long getId() {
 		return id;
