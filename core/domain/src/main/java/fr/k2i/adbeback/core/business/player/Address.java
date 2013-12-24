@@ -2,11 +2,10 @@ package fr.k2i.adbeback.core.business.player;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.country.City;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -26,40 +25,16 @@ public class Address extends BaseObject implements Serializable {
     private static final long serialVersionUID = 3617859655330969141L;
     private String address;
     private String compAddress;
-    private String city;
-    private String province;
-    private Country country;
-    private String postalCode;
+
+    @ManyToOne
+    @JoinColumn(name = IMetaData.ColumnMetadata.Address.CITY_JOIN)
+    private City city;
 
     @Column(length = 150)
-
     public String getAddress() {
         return address;
     }
 
-    @Column(length = 50)
-
-    public String getCity() {
-        return city;
-    }
-
-    @Column(length = 100)
-
-    public String getProvince() {
-        return province;
-    }
-
-    @ManyToOne
-    @JoinColumn(name="COUNTRY_ID")
-    public Country getCountry() {
-        return country;
-    }
-
-    @Column(name = "postal_code", length = 15)
-
-    public String getPostalCode() {
-        return postalCode;
-    }
 
     @Column(length = 150)
 
@@ -71,72 +46,49 @@ public class Address extends BaseObject implements Serializable {
         this.address = address;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-    
-
 	public void setCompAddress(String compAddress) {
 		this.compAddress = compAddress;
 	}
 
-	/**
-     * Overridden equals method for object comparison. Compares based on hashCode.
-     *
-     * @param o Object to compare
-     * @return true/false based on hashCode
-     */
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Address)) {
-            return false;
-        }
 
-        final Address address1 = (Address) o;
-
-        return this.hashCode() == address1.hashCode();
+    public City getCity() {
+        return city;
     }
 
-    /**
-     * Overridden hashCode method - compares on address, city, province, country and postal code.
-     *
-     * @return hashCode
-     */
-    public int hashCode() {
-        int result;
-        result = (address != null ? address.hashCode() : 0);
-        result = 29 * result + (city != null ? city.hashCode() : 0);
-        result = 29 * result + (province != null ? province.hashCode() : 0);
-        result = 29 * result + (country != null ? country.hashCode() : 0);
-        result = 29 * result + (postalCode != null ? postalCode.hashCode() : 0);
-        return result;
+    public void setCity(City city) {
+        this.city = city;
     }
 
-    /**
-     * Returns a multi-line String with key=value pairs.
-     *
-     * @return a String representation of this class.
-     */
+
+    @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("country", this.country)
-                .append("address", this.address)
-                .append("province", this.province)
-                .append("postalCode", this.postalCode)
-                .append("city", this.city).toString();
+        return "Address{" +
+                "address='" + address + '\'' +
+                ", compAddress='" + compAddress + '\'' +
+                ", city=" + city +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address1 = (Address) o;
+
+        if (address != null ? !address.equals(address1.address) : address1.address != null) return false;
+        if (city != null ? !city.equals(address1.city) : address1.city != null) return false;
+        if (compAddress != null ? !compAddress.equals(address1.compAddress) : address1.compAddress != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = address != null ? address.hashCode() : 0;
+        result = 31 * result + (compAddress != null ? compAddress.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        return result;
     }
 }

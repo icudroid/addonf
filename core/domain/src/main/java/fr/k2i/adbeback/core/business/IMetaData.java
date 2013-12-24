@@ -17,6 +17,8 @@ public interface IMetaData {
         String CONTACT =                                "contact";
         String PRODUCT =                                "product";
         String VIEWED_AD =                              "viewed_ad";
+        String CITY =                                   "city";
+        String OTP =                                    "one_time_pwd";
     }
 
     interface ColumnMetadata {
@@ -61,19 +63,32 @@ public interface IMetaData {
             String RULE_JOIN =                          "ad_id";
             String TYPE =                               "type";
             String VIDEO =                              "video";
+            String AUDIO =                              "audio";
+            String IMG =                                "img";
+            String INITIAL_AMOUNT =                     "initial_amount";
+            String START_DATE =                         "start_date";
+            String END_DATE =                           "end_date";
+
+            public interface Discrimator {
+                String DISCRIMINATOR =                  "classe";
+                String VIDEO_AD =                       "video";
+                String AUDIO_AD =                       "audio";
+                String STATIC_AD =                      "static";
+            }
         }
 
         public interface Brand {
             String ID =                                 "id";
             String PRODUCT_JOIN =                       "brand_id";
-            String CONTACT_JOIN =                       "brand_id";
             String MAIN_CONTACT =                       "main_contact_id";
             String NAME =                               "name";
             String LOGO =                               "logo";
-            String TVA_NUMBER =                         "tva_number";
             String SIRET =                              "siret";
             String PWD =                                "password";
-            String PHONE =                              "phone";
+            String ROLE_TABLE_JOIN =                    "brand_role";
+            String ROLE_JOIN =                          "role_id";
+            String BRAND_JOIN =                         "brand_id";
+            String LOGIN =                              "email";
         }
 
         public interface Contact {
@@ -103,6 +118,31 @@ public interface IMetaData {
             String AD =                                 "ad_id";
             String NB =                                 "nb";
             String RULE =                               "rule_id";
+        }
+
+        public interface City {
+            String ZIPCODE =                            "zipcode";
+            String CITY =                               "city";
+            String LON =                                "lon";
+            String LAT =                                "lat";
+            String COUNTRY =                            "country_id";
+        }
+
+        public interface Address {
+            String CITY_JOIN =                          "city_id";
+            String COUNTRY_JOIN =                       "country_id";
+        }
+
+        public interface OTPSecurity {
+            String KEY =                                "otp_key";
+            String CREATION_DATE =                      "creation_date";
+            String EXPIRATION_DATE =                    "expiration_date";
+            String BRAND_JOIN =                         "brand_id";
+
+            public interface Discrimator {
+                String DISCRIMINATOR =                  "classe";
+                String BRAND =                          "brand";
+            }
         }
     }
 }

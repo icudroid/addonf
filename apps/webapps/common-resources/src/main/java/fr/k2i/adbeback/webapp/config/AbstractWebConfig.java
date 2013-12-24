@@ -14,7 +14,10 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 public abstract class AbstractWebConfig {
 
-    protected TomcatDataSourceConfiguration dataSourceConfiguration = new TomcatDataSourceConfiguration();
+    @Bean
+    public TomcatDataSourceConfiguration dataSourceConfiguration(){
+        return new TomcatDataSourceConfiguration();
+    }
 
     @Bean
     public EmailConfig emailConfig(){

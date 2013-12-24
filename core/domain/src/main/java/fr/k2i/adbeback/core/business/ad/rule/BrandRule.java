@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.BRAND_RULE)
-public class BrandRule extends AdRule {
+public class BrandRule extends AdService {
 	private static final long serialVersionUID = 2387046492593489427L;
 
 

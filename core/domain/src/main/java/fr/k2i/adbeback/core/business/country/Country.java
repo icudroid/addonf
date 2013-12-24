@@ -20,11 +20,9 @@ public class Country extends BaseObject implements Serializable{
 	private static final long serialVersionUID = 2428113425860286720L;
 	private Long id;
 	private String code;
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
 	public Long getId() {
 		return id;
 	}

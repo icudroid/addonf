@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.ad;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -13,34 +14,45 @@ import fr.k2i.adbeback.core.business.country.Country;
 
 @Entity
 @Table(name = IMetaData.TableMetadata.AD)
-public class Ad extends BaseObject implements Serializable {
-	private static final long serialVersionUID = -8627592656680311906L;
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = IMetaData.ColumnMetadata.Ad.Discrimator.DISCRIMINATOR, discriminatorType = DiscriminatorType.STRING)
+public abstract  class Ad extends BaseObject implements Serializable {
+	protected static final long serialVersionUID = -8627592656680311906L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = IMetaData.ColumnMetadata.Ad.ID)
-    private Long id;
+    protected Long id;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.BRAND)
-    private Brand brand;
+    protected Brand brand;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.PRODUCT)
-    private Product product;
+    protected Product product;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.RULE_JOIN)
-    private List<AdRule> rules;
+    protected List<AdRule> rules;
 
-    @Column(name = IMetaData.ColumnMetadata.Ad.VIDEO)
-	private String video;
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.INITIAL_AMOUNT)
+    protected Double initialAmount;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = IMetaData.ColumnMetadata.Ad.TYPE)
-	private AdType type;
+	protected AdType type;
 
-	public Long getId() {
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = IMetaData.ColumnMetadata.Ad.START_DATE)
+    private Date startDate;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = IMetaData.ColumnMetadata.Ad.END_DATE)
+    private Date endDate;
+
+    public Long getId() {
 		return id;
 	}
 
@@ -72,13 +84,7 @@ public class Ad extends BaseObject implements Serializable {
 		this.rules = rules;
 	}
 	
-	public String getVideo() {
-		return video;
-	}
 
-	public void setVideo(String video) {
-		this.video = video;
-	}
 
 
 	public AdType getType() {
@@ -89,7 +95,31 @@ public class Ad extends BaseObject implements Serializable {
 		this.type = type;
 	}
 
-	@Override
+    public Double getInitialAmount() {
+        return initialAmount;
+    }
+
+    public void setInitialAmount(Double initialAmount) {
+        this.initialAmount = initialAmount;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -125,5 +155,6 @@ public class Ad extends BaseObject implements Serializable {
 		return "Ad [id=" + id + ", brand=" + brand.getName() + ", product=" + product.getName()
 				+ "]";
 	}
+
 
 }

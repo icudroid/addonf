@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout"
+        ng-app="manageAdsApp">
+<head>
+    <title th:text="${title}">Title</title>
+
+    <script th:inline="javascript">
+            var addonf = {};
+            addonf.base = [[@{/}]];
+            addonf.token = [[${_csrf.token}]];
+            addonf.config = {
+                dateFormat: "dd/MM/yyyy"
+            };
+    </script>
+
+
+
+
+    <script th:src="@{/lib/angular-1.2.0/angular.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-animate.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-resource.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-route.js}"></script>
+
+    <script th:src="@{/lib/angular-file-upload.js}"></script>
+
+    <script th:src="@{/lib/ui-bootstrap-0.7.0/ui-bootstrap-tpls-0.7.0.js}"></script>
+
+    <script th:src="@{/js/application/manageAds.js}"></script>
+    <script th:src="@{/js/controller/manageAds-controllers.js}"></script>
+    <script th:src="@{/js/service/manageAds-services.js}"></script>
+    <script th:src="@{/js/service/campaign-services.js}"></script>
+</head>
+
+
+<body>
+<div layout:fragment="content">
+    <ul class="nav nav-tabs">
+        <li><a th:href="@{/}" th:text="#{menu.home}">Home</a></li>
+        <li><a th:href="@{/parameters}" th:text="#{menu.parameter}">Mes paramètres</a></li>
+        <li class="active"><a th:href="@{/manageAds}" th:text="#{menu.manage.ad}">Gestion des publicités</a></li>
+        <li><a th:href="@{/manageProducts}" th:text="#{menu.manage.products}">Gestion des produits</a></li>
+        <li><a th:href="@{/manageActions}" th:text="#{menu.manage.actions}">Gestion des actions</a></li>
+        <li><a th:href="@{/statistics}" th:text="#{menu.statistics}">Rapport</a></li>
+    </ul>
+
+    <br/><br/>
+
+
+    <div class="container">
+        <ng-view></ng-view>
+    </div>
+
+</div>
+</body>
+</html>

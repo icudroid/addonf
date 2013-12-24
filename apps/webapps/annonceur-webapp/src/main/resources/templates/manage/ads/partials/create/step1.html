@@ -1,0 +1,72 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <ol class="breadcrumb">
+        <li class="active">Informations général</li>
+        <li>Produit présenté</li>
+        <li>Choix du public</li>
+        <li>Choix d'affichage</li>
+    </ol>
+
+    <div class="container">
+            <form class="form-horizontal" role="form" ng-submit="submit()">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Nom de la campagne</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="name" ng-required="true" ng-model="model.information.name"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="type" class="col-sm-2 control-label">Type</label>
+                    <div class="col-sm-10">
+                        <select id="type" class="form-control"  ng-required="true" ng-model="model.information.type">
+                            <option th:each="adType : ${values['adTypes']}"
+                                    th:value="${adType}"
+                                    th:text="#{${'reference.adType.'+adType}}">Voiture</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="adFile" class="col-sm-2 control-label">Média</label>
+                    <div class="col-sm-4">
+                        <input type="file" id="adFile" ng-required="true" ng-file-select="onFileSelect($files)"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="amount" class="col-sm-2 control-label">Montant max.</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" id="amount"  ng-required="true" ng-model="model.information.initialAmonut"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate" class="col-sm-2 control-label">Date de début</label>
+                    <div class="col-sm-4">
+                        <input id="startDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="model.information.startDate" is-open="startDatepicker.opened"  datepicker-options="dateOptions"  ng-required="true" close-text="Fermer" />
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn" ng-click="openDate(startDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate" class="col-sm-2 control-label">Date de fin</label>
+                    <div class="col-sm-4">
+                        <input id="endDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="model.information.endDate" is-open="endDatepicker.opened"  datepicker-options="dateOptions"  ng-required="true" close-text="Fermer" />
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn" ng-click="openDate(endDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Suivant</button>
+                    </div>
+                </div>
+            </form>
+    </div>
+
+</body>
+</html>

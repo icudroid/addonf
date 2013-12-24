@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.OPEN_RULE)
-public class OpenRule extends AdRule {
+public class OpenRule extends AdService {
 	private static final long serialVersionUID = 2723929702129656644L;
 
     @OneToMany(cascade = CascadeType.ALL)

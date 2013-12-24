@@ -3,7 +3,7 @@ package fr.k2i.adbeback.service.impl;
 import java.util.List;
 
 import fr.k2i.adbeback.dao.IPlayerDao;
-import fr.k2i.adbeback.dao.jpa.CountryDao;
+import fr.k2i.adbeback.dao.jpa.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -24,13 +24,13 @@ import fr.k2i.adbeback.service.UserExistsException;
 public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implements PlayerManager {
     private PasswordEncoder passwordEncoder;
     private IPlayerDao playerDao;
-    private CountryDao countryDao;
+    private CountryRepository countryRepository;
     @Autowired(required = false)
     private SaltSource saltSource;
     
     @Autowired
-    public void setCountryDao(CountryDao countryDao) {
-		this.countryDao = countryDao;
+    public void setCountryRepository(CountryRepository countryRepository) {
+		this.countryRepository = countryRepository;
 	}
 
 	@Autowired

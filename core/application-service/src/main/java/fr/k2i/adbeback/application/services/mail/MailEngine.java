@@ -43,10 +43,14 @@ public class MailEngine implements IMailEngine{
     private static final String OUTPUT_ENCODING = "UTF-8";
 
 
-    public MailEngine(JavaMailSender mailSender, String defaultFrom,FreeMarkerConfigurer configuration,String imagesResources) {
+    public MailEngine(JavaMailSender mailSender, String defaultFrom,FreeMarkerConfigurer configuration,String imagesResources) throws IOException, TemplateException {
         this.mailSender = mailSender;
         this.defaultFrom = defaultFrom;
-        this.configuration = configuration.getConfiguration();
+        if(configuration.getConfiguration() == null){
+            this.configuration = configuration.createConfiguration();
+        }else{
+            this.configuration = configuration.getConfiguration();
+        }
         this.imagesResources = imagesResources;
     }
 
@@ -88,20 +92,22 @@ public class MailEngine implements IMailEngine{
                     message.setSubject(subject);
                     if(contents.length==2){
                         message.setText(contents[CONTENT_TEXT], contents[CONTENT_HTML]);
+
+                        Collection<String> imgToSearch = findImgToSearch(contents[CONTENT_HTML]);
+
+                        if (imgToSearch != null) {
+                            for (String filename : imgToSearch) {
+                                ClassPathResource resource = new ClassPathResource(imagesResources+File.separator+filename);
+                                message.addInline(filename, resource);
+                            }
+                        }
                     }else{
                         message.setText(contents[CONTENT_TEXT]);
                     }
 
-                    Collection<String> imgToSearch = findImgToSearch(contents[CONTENT_HTML]);
 
-                    if (imgToSearch != null) {
-                        for (String filename : imgToSearch) {
-                            ClassPathResource resource = new ClassPathResource(imagesResources+File.separator+filename);
-                            message.addInline(filename, resource);
-                        }
-                    }
 
-                    mimeMessage.addHeader("X-Fianet-Message-Key", messageKey);
+
                     if(!attachements.isEmpty()){
                         for (Attachement attachement : attachements) {
                             message.addAttachment(attachement.getAttachmentName(),attachement.getResource());

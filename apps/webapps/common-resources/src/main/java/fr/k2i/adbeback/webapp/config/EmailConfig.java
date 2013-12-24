@@ -2,6 +2,7 @@ package fr.k2i.adbeback.webapp.config;
 
 import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.MailEngine;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -65,13 +67,33 @@ public class EmailConfig {
 
 
     @Bean
-    public IMailEngine mailEngine(){
+    public IMailEngine mailEngine() throws IOException, TemplateException {
         IMailEngine mailEngine = new MailEngine(mailSender(),defaultFrom,freeMarkerConfigurer(),imagesResources);
         return mailEngine;
     }
 
 
+/*
 
+    <!-- Configure Freemarker for sending e-mail -->
+    <bean id="freemarkerConfig"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPaths">
+            <list>
+                <value>/freemarker/</value>
+            </list>
+        </property>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="url_escaping_charset">UTF-8</prop>
+                <prop key="output_encoding">UTF-8</prop>
+                <prop key="tag_syntax">square_bracket</prop>
+            </props>
+        </property>
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+ */
     @Bean
     public org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer freeMarkerConfigurer(){
         FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
@@ -81,7 +103,7 @@ public class EmailConfig {
         props.setProperty("output_encoding","UTF-8");
         props.setProperty("tag_syntax","square_bracket");
         freeMarkerConfigurer.setFreemarkerSettings(props);
-
+        freeMarkerConfigurer.setDefaultEncoding("UTF-8");
         return freeMarkerConfigurer;
        }
 

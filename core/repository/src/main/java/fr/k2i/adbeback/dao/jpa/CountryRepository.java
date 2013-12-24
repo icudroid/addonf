@@ -1,11 +1,12 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import fr.k2i.adbeback.core.business.country.Country;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 
-@Repository("countryDao")
-public interface CountryDao extends org.springframework.data.repository.Repository<Country, Long> {
+@Repository("countryRepository")
+public interface CountryRepository extends CrudRepository<Country, Long> {
 	public Country findByCode(String code);
 }
 

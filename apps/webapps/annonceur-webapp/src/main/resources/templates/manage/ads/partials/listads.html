@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Campagnes de publicité</h3>
+    </div>
+    <div class="panel-body">
+        <button type="button" class="btn btn-default" ng-click="create()">Création d'un nouvelle campagne</button><br/>
+        <p>Bla Bla</p>
+    </div>
+    <!-- Table -->
+    <table class="table">
+        <tr>
+            <th>Nom</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Budget Initial</th>
+            <th>Budget restant</th>
+            <th>Actions</th>
+        </tr>
+        <tr ng-repeat="campaign in results">
+            <td>{{campaign.name}}</td>
+            <td>{{campaign.startDate}}</td>
+            <td>{{campaign.endDate}}</td>
+            <td>{{campaign.intialAmount}}</td>
+            <td>{{campaign.leftAmount}}</td>
+            <td>
+                <button type="button" class="btn btn-default" th:text="#{manageads.btn.stop}" ng-click="stop(campaign)">Supprimer</button>
+                <button type="button" class="btn btn-default" th:text="#{manageads.btn.modify}" ng-click="modify(campaign)">Modifier</button>
+                <button type="button" class="btn btn-default" th:text="#{manageads.btn.detail}" ng-click="showDetailLevel(campaign)">Détail</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

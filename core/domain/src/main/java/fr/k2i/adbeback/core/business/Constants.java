@@ -64,6 +64,10 @@ public final class Constants {
      */
     public static final String USER_ROLE = "ROLE_USER";
 
+
+
+    public static final String ANNONCEUR_ROLE = "ROLE_ANNONCEUR";
+
     /**
      * The name of the user's role list, a request-scoped attribute
      * when adding/editing a user.

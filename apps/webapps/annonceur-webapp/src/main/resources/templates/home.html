@@ -10,7 +10,26 @@
 
 <body>
     <div layout:fragment="content">
+        <div sec:authorize="hasRole('ROLE_ANNONCEUR')">
+            <ul class="nav nav-tabs">
+                <li class="active"><a th:href="@{/}" th:text="#{menu.home}">Home</a></li>
+                <li><a th:href="@{/parameters}" th:text="#{menu.parameter}">Mes paramètres</a></li>
+                <li><a th:href="@{/manageAds}" th:text="#{menu.manage.ad}">Gestion des publicités</a></li>
+                <li><a th:href="@{/manageProducts}" th:text="#{menu.manage.products}">Gestion des produits</a></li>
+                <li><a th:href="@{/manageActions}" th:text="#{menu.manage.actions}">Gestion des actions</a></li>
+                <li><a th:href="@{/statistics}" th:text="#{menu.statistics}">Rapport</a></li>
+            </ul>
 
+            <div class="container text-center" th:text="#{home.explain}">
+                Espace de gestion de compte
+            </div>
+
+        </div>
+
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/login}" th:text="#{home.login}">Se connectez</a><br />
+            Explain
+        </div>
     </div>
 </body>
 </html>
