@@ -14,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -80,10 +83,33 @@ public class ManageAdsController {
 
     @RequestMapping(IMetaDataController.Path.SAVE_STEP)
     public @ResponseBody
-    CampaignCommand save(@RequestBody MultipartFile file,@PathVariable Integer step,HttpServletRequest request, HttpServletResponse response){
+    CampaignCommand save( @RequestBody MultipartFile file,@PathVariable Integer step,BindingResult bindingResults, ModelMap model,HttpServletRequest request, HttpServletResponse response){
         ObjectMapper mapper = new ObjectMapper();
         try {
             CampaignCommand campaignCommand = mapper.readValue(request.getParameter("command"), CampaignCommand.class);
+
+            switch (step){
+                case 1:
+                    //validate information
+                    bindingResults
+                    break;
+                case 2:
+                    //validate product
+
+                    break;
+                case 3:
+                    //validate rules
+
+                    break;
+                case 4:
+                    //validates services
+
+                    break;
+
+            }
+
+
+
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
