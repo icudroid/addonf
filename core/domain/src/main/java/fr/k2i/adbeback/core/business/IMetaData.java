@@ -30,6 +30,7 @@ public interface IMetaData {
 
         public interface AdRule {
             String SEX =                                "sex";
+            String AROUND =                            "around";
 
             public interface Discrimator{
                 String DISCRIMINATOR =                  "classe";
@@ -48,7 +49,7 @@ public interface IMetaData {
             String AGE_MIN =                            "age_min";
             String AGE_MAX =                            "age_max";
             String AMOUNT =                             "amount";
-            String CITY =                               "city";
+            String CITY_JOIN  =                         "city_id";
             String JOIN_COUNTRY =                       "country_id";
             String START_DATE =                         "start_date";
             String END_DATE =                           "end_date";

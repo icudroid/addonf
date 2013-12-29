@@ -11,7 +11,7 @@ campaignServices.factory('Campaign', ['$resource',
     function($resource){
 
         var Campaign = $resource('/', {_csrf:addonf.token}, {
-            save: {url:addonf.base+'manageAds/save',method:'POST',responseType:"json",isArray: false},
+            _save: {url:addonf.base+'manageAds/saveStepNoFile/:step',method:'POST',responseType:"json",isArray: false},
             create: {url:addonf.base+'manageAds/create',method:'GET',responseType:"json",isArray: false}
         });
 
@@ -36,6 +36,13 @@ campaignServices.factory('Campaign', ['$resource',
             }
             return singleton;
         };
+
+
+
+        Campaign.save = function save(campaign,step, callback) {
+            return Campaign._save({"step":step}, campaign, callback);
+        };
+
 
         return Campaign;
 

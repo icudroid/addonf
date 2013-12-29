@@ -11,7 +11,7 @@ import java.util.List;
 @Repository("cityRepository")
 public interface CityRepository extends CrudRepository<City, Long> {
 	public List<City> findByZipcodeAndCountry_Code(String zipcode,String code);
-
     public City findByZipcodeAndCityAndCountry_Code(String zipcode,String city,String code);
+    public List<City> findByCityStartingWith(String name);
 }
 

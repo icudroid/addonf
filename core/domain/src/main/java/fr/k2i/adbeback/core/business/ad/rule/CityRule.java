@@ -1,10 +1,9 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.country.City;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 
 @Entity
@@ -12,14 +11,28 @@ import javax.persistence.Entity;
 public class CityRule extends AdRule {
 	private static final long serialVersionUID = 6708314171621564778L;
 
-    @Column(name = IMetaData.ColumnMetadata.AdRule.CITY)
-    private String city;
+    @ManyToOne
+    @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.CITY_JOIN)
+    private City city;
 
-    public String getCity() {
+
+    @Column(name = IMetaData.ColumnMetadata.AdRule.AROUND)
+    private Integer around;
+
+
+    public Integer getAround() {
+        return around;
+    }
+
+    public void setAround(Integer around) {
+        this.around = around;
+    }
+
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 

@@ -18,5 +18,4 @@ public class ProductBean implements Serializable{
     private String description;
     private Double publicPrice;
     private Integer adPrice;
-    private String logo;
 }

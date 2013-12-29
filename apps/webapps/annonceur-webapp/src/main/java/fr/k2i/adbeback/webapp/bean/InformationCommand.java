@@ -16,10 +16,10 @@ import java.util.Date;
  */
 @Data
 public class InformationCommand implements Serializable{
+    private Long id;
     private String name;
-    //private MultipartFile adFile;
-    //private boolean staticAd;
-    //private Double displayDuration;
+    private AdDisplay displayAd = AdDisplay.VIDEO;
+    private Integer displayDuration = 0;
     private AdType type;
     private Double initialAmonut;
     private Date startDate;

@@ -26,10 +26,32 @@
                         </select>
                     </div>
                 </div>
+
+
+                <div class="form-group">
+                    <label class="checkbox-inline">
+                        <input type="radio" value="VIDEO" ng-model="model.information.displayAd"/>
+                        Vidéo
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" value="STATIC" ng-model="model.information.displayAd"/>
+                        Image
+                    </label>
+                </div>
+
+                <div class="form-group" ng-show="model.information.displayAd == 'STATIC'">
+                    <label for="adFile" class="col-sm-2 control-label">Durée d'affichage de l'image en secondes</label>
+                    <div class="col-sm-4">
+                        <input type="number" id="displayDuration" ng-model="model.information.displayDuration"/>
+                    </div>
+                </div>
+
+
+
                 <div class="form-group">
                     <label for="adFile" class="col-sm-2 control-label">Média</label>
                     <div class="col-sm-4">
-                        <input type="file" id="adFile" ng-required="true" ng-file-select="onFileSelect($files)"/>
+                        <input type="file" id="adFile" ng-required="true" ng-file-select="onFileSelect($files)" accept='{{getAcceptedMedia(model.information.displayAd)}}'/>
                     </div>
                 </div>
 

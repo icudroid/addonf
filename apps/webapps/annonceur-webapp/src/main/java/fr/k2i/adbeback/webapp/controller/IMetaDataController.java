@@ -23,6 +23,7 @@ public interface IMetaDataController {
         String MANAGE_ADS_PARTIALS_ACTION =             "/manageAds/partials/{action}/{html}.html";
         String CREATE_CAMPAIGN =                        "/manageAds/create";
         String SAVE_STEP =                              "/manageAds/saveStep/{step}";
+        String SAVE_STEP_NO_FILE =                      "/manageAds/saveStepNoFile/{step}";;
     }
 
     interface View{

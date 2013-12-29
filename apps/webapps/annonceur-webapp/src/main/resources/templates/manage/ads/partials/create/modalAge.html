@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div class="modal-header">
+    <h3>Pour quelle tranche d'age voulez vous que votre publicité soit affichée ?</h3>
+</div>
+<div class="modal-body">
+
+    <form role="form">
+
+        <div class="form-group">
+            <label for="ageMin" class="col-sm-2 control-label">Age mini.</label>
+            <div class="col-sm-3">
+                <input id="ageMin" ng-model="ageRule.ageMin" class="form-control" type="number"/>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group">
+            <label for="ageMax" class="col-sm-2 control-label">Age max.</label>
+            <div class="col-sm-3">
+                <input id="ageMax" ng-model="ageRule.ageMax" class="form-control" type="number"/>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+    </form>
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Ajouter</button>
+    <button class="btn btn-warning" ng-click="cancel()">Annuler</button>
+</div>
+</body>
+</html>
