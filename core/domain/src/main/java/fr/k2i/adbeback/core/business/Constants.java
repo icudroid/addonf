@@ -23,7 +23,7 @@ public final class Constants {
     public static final String FILE_SEP = System.getProperty("file.separator");
 
     /**
-     * User home from System properties
+     * User push from System properties
      */
     public static final String USER_HOME = System.getProperty("user.home") + FILE_SEP;
 

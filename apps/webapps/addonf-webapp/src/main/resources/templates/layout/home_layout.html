@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <title>MTZik</title>
+    <link th:href="@{/img/favicon.ico}" rel="icon" />
+    <!-- Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+    <link rel="stylesheet" th:href="@{/lib/bootstrap-3.0.2/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/icons/fontawesome/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/icons/glyphicons/css/glyphicons_regular.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/icons/glyphicons/css/glyphicons_social.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/icons/glyphicons/css/glyphicons_filetypes.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/animate/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/owl-carousel/owl.carousel.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/owl-carousel/owl.theme.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+
+    <script src="../assets/components/library/jquery/jquery.min.js" th:src="@{/lib/jquery-2.0.3/jquery-min.js}"></script>
+    <script src="../assets/components/library/modernizr/modernizr.js" th:src="@{/lib/modernizr-2.7.0/modernizr.js}"></script>
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<div class="navbar navbar-coral navbar-fixed-top">
+    <!-- Nav Bar Header -->
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar "></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html?lang=en">
+                <img th:src="@{/img/logo.png}"/>
+            </a>
+        </div>
+        <!-- Nav Bar Collapse -->
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav main-menu">
+                <li class="active"><a href="index.html?lang=en" >Home</a></li>
+                <li><a href="catalog.html?lang=en">News</a></li>
+                <li><a href="catalog.html?lang=en">Populars</a></li>
+                <li><a href="catalog.html?lang=en">Search</a></li>
+            </ul>
+        </div>
+        <!-- NavBar Collapse -->
+        <!-- Nav Bar Right -->
+        <ul class="nav navbar-nav navbar-right right-side">
+            <!-- User LogIn Button -->
+            <li>
+                <div class="btn-group">
+                    <a href="#login-menu" class="btn btn-login" data-toggle="collapse"> Login</a>
+                    <div class="collapse login" id="login-menu">
+                        <form action="">
+                            <div>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" placeholder="Email" />
+                                    <span class="input-group-addon"><i class="fa fa-check"></i></span>
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <input type="password" class="form-control" placeholder="Password" />
+                                    <span class="input-group-addon"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                            <div class="pull-right">
+                                <i class="fa fa-refresh fa-spin"></i> <button type="button" class="btn btn-login">Login</button>
+                            </div>
+                            <div class="center">
+                                <a href="" class="recover-password">Recover Password <i class="fa fa-lock"></i></a>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="" class="btn btn-signup glyphicons user_add"><i></i>Sign up</a>
+                </div>
+            </li>
+            <li class="cart hidden-xs">
+                <a href="" class="glyphicons shopping_bag dropdown-toggle" data-toggle="dropdown"><i></i></a>
+                <ul class="dropdown-menu cart-dropdown">
+                    <li class="center innerAll">Your Shopping Cart</li>
+                    <li class="product-list">
+                        <a href="cart.html?lang=en"><i class="fa fa-times"></i></a><a href="product.html?lang=en">Coral Bootstrap T...  <span>&dollar;21.00</span> </a>
+                    </li>
+                    <li class="product-list">
+                        <a href="cart.html?lang=en"><i class="fa fa-times"></i></a><a href="product.html?lang=en">Flat KIT <span>&dollar;21.00</span></a>
+                    </li>
+                    <li class="product-list">
+                        <a href="cart.html?lang=en"><i class="fa fa-times"></i></a><a href="product.html?lang=en">Quick Admin<span>&dollar;21.00</span></a>
+                    </li>
+                    <li class="product-list">
+                        <a href="cart.html?lang=en"><i class="fa fa-times"></i></a><a href="product.html?lang=en">Admin KIT  <span>&dollar;21.00</span></a>
+                    </li>
+                    <li class="cart-button">
+                        <a href="cart.html?lang=en" class="btn btn-primary"><i class="fa fa-fw fa-shopping-cart"></i> View cart</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div layout:fragment="content" id="content">
+
+</div>
+
+
+<div id="footer" class="hidden-print">
+    <div class="container">
+
+        <ul class="list-unstyled center">
+            <li  class="active"><a href="index.html?lang=en">Home</a></li>
+            <li><a href="catalog.html?lang=en">Woman</a></li>
+            <li><a href="catalog.html?lang=en">Man</a></li>
+            <li><a href="catalog.html?lang=en">Accesories</a></li>
+            <li><a href="catalog.html?lang=en">Shoes</a></li>
+        </ul>
+        <div class="copy">Copyright &copy; 2013 CORAL. All Rights Reserved.</div>
+
+        <div class="copy margin-none"><a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.8.0 / <a target="_blank" href="http://demo.mosaicpro.biz/coral/CHANGELOG.txt">changelog</a></div>
+
+    </div>
+</div>
+<!-- // Footer END -->
+
+<!-- Global -->
+<script>
+    var basePath = '',
+            commonPath = '../assets/',
+            rootPath = '../',
+            DEV = false,
+            componentsPath = '../assets/components/';
+
+    var primaryColor = '#eb6a5a',
+            dangerColor = '#b55151',
+            successColor = '#609450',
+            warningColor = '#ab7a4b',
+            inverseColor = '#45484d';
+
+    var themerPrimaryColor = primaryColor;
+</script>
+
+
+
+
+<script src="../assets/components/library/bootstrap/js/bootstrap.min.js" th:src="@{/lib/bootstrap-3.0.2/js/bootstrap.min.js}"></script>
+<script src="../assets/components/modules/shop/core/js/shop.animations.init.js" th:src="@{/js/addonf/shop.animations.init.js}"></script>
+<script src="../assets/components/plugins/owl-carousel/owl.carousel.min.js" th:src="@{/lib/owl-carousel/owl.carousel.min.js}"></script>
+<script src="../assets/components/modules/shop/owl-carousel/featured/front.shop.owl-carousel.featured.js" th:src="@{/js/addonf/front.shop.owl-carousel.featured.js}"></script>
+<script src="../assets/components/plugins/holder/holder.js" th:src="@{/lib/holder/holder.js}"></script>
+<script src="../assets/components/plugins/parallax/stellar/jquery.stellar.min.js" th:src="@{/lib/parallax/stellar/jquery.stellar.min.js}"></script>
+<script src="../assets/components/plugins/parallax/waypoints/waypoints.min.js" th:src="@{/lib/bootstrap-3.0.2/js/bootstrap.min.js}"></script>
+<script src="../assets/components/plugins/parallax/parallax/parallax.init.js" th:src="@{/lib/parallax/parallax/parallax.init.js}"></script>
+<script src="../assets/components/plugins/appear/jquery.appear.js" th:src="@{/lib/appear/jquery.appear.js}"></script>
+<script src="../assets/components/modules/front/core/assets/js/front.core.init.js" th:src="@{/js/addonf/front.core.init.js}"></script>
+</body>
+</html>

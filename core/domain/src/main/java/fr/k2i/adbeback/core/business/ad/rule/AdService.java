@@ -21,4 +21,5 @@ public abstract class AdService extends AdRule{
     protected Date startDate;
     @Temporal(TemporalType.DATE)
     protected Date endDate;
+    protected Integer maxDisplayByUser;
 }

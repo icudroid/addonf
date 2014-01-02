@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.facade;
 
+import fr.k2i.adbeback.core.business.ad.VideoAd;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.media.Media;
@@ -138,7 +139,7 @@ public class AdGameFacade {
             adBean.setPossibilities(possibilities);
             adBean.setQuestion(adChoise.getQuestion());
             //adBean.setUrl(adChoise.getCorrect().getAd().getVideo());
-            adsVideo.add(adChoise.getCorrect().getAd().getVideo());
+            adsVideo.add(((VideoAd)adChoise.getCorrect().getAd()).getVideo());
 
             correctResponse.put(num, adChoise.getCorrect().getId());
             game.add(adBean);
