@@ -1,13 +1,11 @@
 package fr.k2i.adbeback.webapp.facade;
 
-import fr.k2i.adbeback.core.business.media.Artist;
-import fr.k2i.adbeback.core.business.media.Media;
-import fr.k2i.adbeback.core.business.media.Music;
-import fr.k2i.adbeback.core.business.media.Productor;
+import fr.k2i.adbeback.core.business.media.*;
 import fr.k2i.adbeback.core.business.push.HomePush;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.jpa.HomePushRepository;
 import fr.k2i.adbeback.webapp.bean.PersonBean;
+import fr.k2i.adbeback.webapp.bean.media.AlbumBean;
 import fr.k2i.adbeback.webapp.bean.media.MediaBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -79,10 +77,20 @@ public class MediaFacade {
         bean.setThumbJacket(media.getThumbJacket());
         bean.setTitle(media.getTitle());
         bean.setNbAdsNeeded(media.getNbAdsNeeded());
+        if(media instanceof Music){
+            List<Album> albums = ((Music) media).getAlbums();
+            List<AlbumBean> albumBeans = new ArrayList<AlbumBean>();
+            for (Album album : albums) {
+                albumBeans.add(new AlbumBean(album.getId(),album.getTitle()));
+            }
+            bean.setAlbums(albumBeans);
+        }
+
+
 
         List<PersonBean> productors = new ArrayList<PersonBean>();
         for (Productor p : media.getProductors()) {
-            productors.add(new PersonBean(p.getFirstName(), p.getLastName()));
+            productors.add(new PersonBean(p.getId(),p.getFirstName(), p.getLastName()));
         }
         bean.setProductors(productors);
 
@@ -90,7 +98,7 @@ public class MediaFacade {
             Music music = (Music) media;
             List<PersonBean> artists = new ArrayList<PersonBean>();
             for (Artist a : music.getArtists()) {
-                artists.add(new PersonBean(a.getFirstName(), a.getLastName()));
+                artists.add(new PersonBean(a.getId(), a.getFirstName(), a.getLastName()));
             }
 
             bean.setArtists(artists);
@@ -98,4 +106,8 @@ public class MediaFacade {
         return bean;
     }
 
+    public MediaBean getMediaById(Long musicId) {
+        Media media = mediaDao.get(musicId);
+        return contructMediaBean(media);
+    }
 }

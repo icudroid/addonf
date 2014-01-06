@@ -1,0 +1,37 @@
+<div id="owl-catalog" class="owl-carousel owl-theme">
+
+    <div class="item" th:each="push : ${pushes}">
+        <div class="box-generic">
+            <div class="wrapper">
+                <div class="row">
+                    <div class="col-lg-9 col-md-8 padding-none">
+                        <a th:href="@{/product.html(musicId=${push.id})}">
+                            <img th:src="@{${staticUrl}+'static/jacket/'+${push.jacket}}" alt="photo"
+                                 class="img-responsive"/>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 padding-none">
+                        <div class="innerAll inner-2x">
+                            <a href="#" class="btn btn-primary btn-circle pull-right addToCart" th:attr="data-music=${push.id}"><i class="fa fa-shopping-cart"></i></a>
+                            <a href="#" class="btn btn-primary btn-circle pull-right playMusic" th:attr="data-music=${push.id}" style="margin-right: 2px;"><i class="fa fa fa-play"></i></a>
+
+                            <h3 class="text-uppercase" th:text="${push.title}">Product name</h3>
+                            <span class="text-primary text-medium text-condensed" th:text="#{addonf.price(${push.nbAdsNeeded})}">&euro;220.00</span>
+
+                            <div class="clearfix"></div>
+                            <div class="separator"></div>
+
+                            <p class="innerTB" th:utext="${push.description}}">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Laboriosam, illo, labore, a, dolorum doloribus dignissimos vitae esse sint ipsum
+                                eos non repellat possimus saepe quod neque aliquam fugiat reiciendis
+                                cupiditate.</p>
+
+                            <a href="#" class="btn btn-primary addToCart" th:utext="#{addonf.product.addToCart}" th:attr="data-music=${push.id}"><i class="fa fa-plus"></i> Add to Cart</a>&nbsp;&nbsp;
+                            <a href="#" class="btn btn-primary playMusic" th:utext="#{addonf.product.playMusic}" th:attr="data-music=${push.id}"><i class="fa fa-play"></i> Play</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

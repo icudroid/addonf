@@ -33,27 +33,7 @@ public class CartFacade {
 
         line.setIdMedia(idMedia);
         line.setTitle(media.getTitle());
-
-        if (media instanceof Album) {
-            Album album = (Album) media;
-            line.setType(MediaLineBean.ALBUM_TYPE);
-            List<Music> musics = album.getMusics();
-            Integer nbAds = 0;
-            for (Music music : musics) {
-                MediaLineBean lineMusic = new MediaLineBean();
-                lineMusic.setAdNeeded(music.getNbAdsNeeded());
-                lineMusic.setIdMedia(music.getId());
-                lineMusic.setTitle(music.getTitle());
-                lineMusic.setType(MediaLineBean.MUSIC_TYPE);
-                nbAds+=music.getNbAdsNeeded();
-                line.getMedias().add(lineMusic);
-            }
-            line.setAdNeeded(media.getNbAdsNeeded());
-        }else if (media instanceof Music) {
-            line.setType(MediaLineBean.MUSIC_TYPE);
-            line.setAdNeeded(media.getNbAdsNeeded());
-        }
-
+        line.setAdNeeded(media.getNbAdsNeeded());
 
         return line;
     }

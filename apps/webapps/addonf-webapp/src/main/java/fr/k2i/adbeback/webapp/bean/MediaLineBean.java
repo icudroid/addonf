@@ -1,9 +1,12 @@
 package fr.k2i.adbeback.webapp.bean;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class MediaLineBean implements Serializable{
 	/**
 	 * 
@@ -12,41 +15,8 @@ public class MediaLineBean implements Serializable{
 	private String title;
 	private Integer adNeeded;
 	private Long idMedia;
-	public final static int MUSIC_TYPE = 1;
-	public final static int ALBUM_TYPE = 0;
-	
-	private Integer type;
-	private List<MediaLineBean> medias = new ArrayList<MediaLineBean>();
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public Integer getAdNeeded() {
-		return adNeeded;
-	}
-	public void setAdNeeded(Integer adNeeded) {
-		this.adNeeded = adNeeded;
-	}
-	public Long getIdMedia() {
-		return idMedia;
-	}
-	public void setIdMedia(Long idMedia) {
-		this.idMedia = idMedia;
-	}
-	public Integer getType() {
-		return type;
-	}
-	public void setType(Integer type) {
-		this.type = type;
-	}
-	public List<MediaLineBean> getMedias() {
-		return medias;
-	}
-	public void setMedias(List<MediaLineBean> medias) {
-		this.medias = medias;
-	}
+    private String jacket;
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

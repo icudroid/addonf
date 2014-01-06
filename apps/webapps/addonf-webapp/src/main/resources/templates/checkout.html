@@ -11,7 +11,7 @@
 <body>
     <div layout:fragment="content" id="content">
         <div class="container innerTB inner-2x">
-            <h2 class="margin-none">Checkout <i class="fa fa-fw fa-credit-card"></i></h2>
+            <h2 class="margin-none" th:utext="#{addonf.checkout.title}">Checkout <i class="fa fa-fw fa-credit-card"></i></h2>
         </div>
 
 
@@ -19,58 +19,53 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="box-generic padding-none">
-                    <h4 class="innerAll border-bottom margin-none">Checkout as a guest or register</h4>
+                    <h4 class="innerAll border-bottom margin-none" th:text="#{addonf.checkout.signup.title}">Checkout as a guest or register</h4>
                     <div class="innerAll inner-2x border-bottom">
-                        <a href="" class="btn btn-primary btn-sm pull-right">Continue</a>
-                        <label for="">
-                            <input type="radio" checked="checked" name="checkout_as" id="checkout_guest" /> &nbsp; checkout as guest
-                        </label><br/>
-                        <label for="">
-                            <input type="radio" name="checkout_as" id="checkout_member" /> &nbsp; register
-                        </label>
+                        <a th:href="@{/signup.html}" class="btn btn-primary btn-sm pull-right">Continue</a>
                     </div>
                     <div class="innerAll inner-2x">
-                        <p>Register with us and get:</p>
+                        <p th:text="#{addonf.checkout.enroll.why}">Register with us and get:</p>
                         <ul class="fa-ul">
-                            <li><i class="fa fa-li fa-check text-primary"></i> Easy checkout process</li>
-                            <li><i class="fa fa-li fa-check text-primary"></i> Real time delivery tracking</li>
-                            <li><i class="fa fa-li fa-check text-primary"></i> Fast access to your order history</li>
-                            <li class="strong text-primary"><i class="fa fa-li fa-check text-primary"></i> special promotions only for members</li>
-                            <li class="strong text-primary"><i class="fa fa-li fa-check text-primary"></i> 10% off your first order</li>
+                            <li th:utext="#{addonf.checkout.ask.only.username}"><i class="fa fa-li fa-check text-primary"></i> Easy checkout process</li>
+                            <li th:utext="#{addonf.checkout.ask.only.bithdate}"><i class="fa fa-li fa-check text-primary"></i> Real time delivery tracking</li>
+                            <li th:utext="#{addonf.checkout.ask.only.zipcode}"><i class="fa fa-li fa-check text-primary"></i> Fast access to your order history</li>
+                            <li th:utext="#{addonf.checkout.ask.only.email}"><i class="fa fa-li fa-check text-primary"></i> Fast access to your order history</li>
+                            <li th:utext="#{addonf.checkout.ask.only.password}"><i class="fa fa-li fa-check text-primary"></i> Fast access to your order history</li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box-generic padding-none">
-                    <h4 class="innerAll border-bottom margin-none">Login</h4>
+                    <h4 class="innerAll border-bottom margin-none" th:text="#{addonf.checkout.login.title}">Login</h4>
                     <form action="" class="margin-none">
                         <div class="innerAll bg-gray border-bottom">
-                            <p class="margin-none">Already a member? Sign in below.</p>
+                            <p class="margin-none" th:text="#{addonf.checkout.can.signin.below}">Already a member? Sign in below.</p>
                         </div>
                         <div class="innerAll inner-2x border-bottom">
-                            <label for="">Your email or Username</label>
-                            <input type="text" placeholder="Type your username" class="form-control" />
+                            <label for="login" th:text="#{addonf.checkout.login}">Your email or Username</label>
+                            <input id="login" type="text" th:placeholder="#{addonf.checkout.username.placeholder}" placeholder="Type your username" class="form-control" />
                             <div class="separator"></div>
-                            <label for="">Your Password</label>
-                            <input type="password" placeholder="Type your password" class="form-control"/>
+                            <label for="password" th:text="#{addonf.checkout.pwd}">Your Password</label>
+                            <input id="password" type="password" th:placeholder="#{addonf.checkout.password.placeholder}" placeholder="Type your password" class="form-control"/>
                         </div>
                         <div class="innerAll">
-                            <button class="btn btn-primary btn-sm">Login</button>
-                            &nbsp; <a href="">Forgot password</a>
+                            <button class="btn btn-primary btn-sm" th:text="#{addonf.checkout.login.btn}">Login</button>
+                            &nbsp; <a th:href="@{/forgottenPwd.html}" th:text="#{addonf.checkout.forgotten.pwd}">Forgot password</a>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box-generic padding-none">
-                    <h4 class="innerAll border-bottom margin-none">Need Help?</h4>
+                    <h4 class="innerAll border-bottom margin-none" th:text="#{addonf.checkout.need.help}">Need Help?</h4>
                     <div class="innerAll inner-2x">
                         <div class="lead innerAll text-center">
-                            <i class="fa fa-5x text-faded fa-phone"></i>
+                            <i class="fa fa-5x text-faded fa-question"></i>
                             <div class="separator"></div>
-                            <p class="lead strong">Call us! <span class="text-primary">Toll Free</span></p>
-                            1-800-MY-SHOP
+                            <p class="lead strong">
+                                <span th:utext="#{addonf.checkout.faq.see}">See</span> <a  th:href="@{/faq}" th:text="#{addonf.checkout.faq}" class="text-primary">FAQ</a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -85,134 +80,25 @@
 
                 <!-- Column -->
                 <div class="col-md-6">
-                    <div class="box-generic text-center innerAll inner-2x">
-                        <strong>Discount Code:</strong>
-                        <div class="separator bottom"></div>
-                        <div class="input-group">
-                            <input type="text" value="723-WTX31" class="form-control" />
-                            <div class="input-group-btn">
-                                <button class="btn btn-inverse">Apply code</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- Column END -->
 
                 <!-- Column -->
                 <div class="col-md-3">
-                    <table class="table table-borderless table-condensed cart_total">
-                        <tbody>
-                        <tr>
-                            <td class="right border-top-none">Subtotal:</td>
-                            <td class="right border-top-none strong">
-                                <span class="text-primary">&euro;856.00</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="right">Delivery:</td>
-                            <td class="right strong">&euro;5.00</td>
-                        </tr>
-                        <tr>
-                            <td class="right">VAT:</td>
-                            <td class="right strong">&euro;119.00</td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
                 <!-- // Column END -->
 
                 <div class="col-md-3">
                     <div class="box-generic padding-none text-center">
-                        <p class="lead margin-none strong innerAll border-bottom">Total: &euro;1,195.95</p>
+                        <p class="lead margin-none strong innerAll border-bottom" th:utext="#{addonf.cart.total(${cart.minScore})}">Total: &euro;1,195.95</p>
                         <div class="innerAll">
-                            <a href="cart.html?lang=en" class="btn btn-block btn-primary"><i class="fa fa-fw fa-edit"></i> Change your order</a>
+                            <a th:href="@{/cart.html}" class="btn btn-block btn-primary" th:utext="#{addonf.checkout.goCart}"><i class="fa fa-fw fa-edit"></i> Change your order</a>
                         </div>
                     </div>
                 </div>
 
             </div>
             <!-- // Row END -->
-        </div>
-    </div>
-
-
-
-
-
-
-    <div class="bg-inverse innerTB inner-2x">
-        <div class="container innerTB inner-2x text-center" data-animate="fadeInUp" data-delay="200">
-            <h2 class="text-white">Sign up for Newsletter</h2>
-            <div class="separator bottom"></div>
-            <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
-                    <div class="input-group input-group-lg">
-                        <input type="text" class="form-control" placeholder="Your email address" />
-                        <div class="input-group-btn">
-                            <button class="btn btn-primary"><i class="fa fa-check"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="parallax bg-gray innerTB inner-2x">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="text-center innerAll inner-2x" data-animate="fadeInLeft" data-delay="200">
-                        <h2>Catalog</h2>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="active"><a href="cart.html?lang=en">Woman Top Sellers</a></li>
-                            <li><a href="catalog.html?lang=en">New Products for Men</a></li>
-                            <li><a href="catalog.html?lang=en">Top Accesories</a></li>
-                            <li><a href="catalog.html?lang=en">Special Shoes</a></li>
-                            <li><a href="catalog.html?lang=en">Just for Kids</a></li>
-                            <li><a href="catalog.html?lang=en">Outlet Sale Specials</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="text-center innerAll inner-2x" data-animate="fadeInUp" data-delay="300">
-                        <h2>My Account</h2>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href="">Woman Top Sellers</a></li>
-                            <li><a href="">New Products for Men</a></li>
-                            <li><a href="">Top Accesories</a></li>
-                            <li><a href="">Special Shoes</a></li>
-                            <li><a href="">Just for Kids</a></li>
-                            <li><a href="">Outlet Sale Specials</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="text-center innerAll inner-2x" data-animate="fadeInUp" data-delay="350">
-                        <h2>Support</h2>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href="">Woman Top Sellers</a></li>
-                            <li><a href="">New Products for Men</a></li>
-                            <li><a href="">Top Accesories</a></li>
-                        </ul>
-                    </div>
-                    <div class="text-center innerAll inner-2x" data-animate="fadeInUp" data-delay="400">
-                        <p class="margin-none lead text-center">
-                            <i class="fa fa-2x text-faded fa-phone"></i><br/>1-800-MY-SHOP
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="text-center innerAll inner-2x" data-animate="fadeInRight" data-delay="200">
-                        <div class="lead innerAll text-center">
-                            <i class="fa fa-5x text-faded fa-map-marker"></i>
-                            <div class="separator"></div>
-                            <p class="lead strong">Coral Shop, Inc</p>
-                            1 Infinite Loop Cupertino, CA 95014
-                            USA
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

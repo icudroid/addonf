@@ -42,6 +42,15 @@ public class CartWebservice {
     }
 
 
+    @RequestMapping(value="/partial/cartTable.html",method = RequestMethod.GET)
+    public
+    String cartTable(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        CartBean cart = getCart(request, response);
+        model.put("cart",cart);
+        return "layout/fragment/cartTable";
+    }
+
+
     @RequestMapping(value="/rest/addToCart/{musicId}",method = RequestMethod.GET)
     public  @ResponseBody
     CartBean addToCart(@PathVariable Long musicId , HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -69,18 +78,8 @@ public class CartWebservice {
     	Integer nb = 0;
     	Integer nbMedias = 0;
 		for (MediaLineBean mediaLineBean : lines) {
-			if(!mediaLineBean.getMedias().isEmpty()){
-				Integer nbAlbum = 0;
-				for (MediaLineBean albumLine : mediaLineBean.getMedias()) {
-					nbAlbum+=albumLine.getAdNeeded();
-					nbMedias++;
-				}
-				mediaLineBean.setAdNeeded(nbAlbum);
-				nb+=nbAlbum;
-			}else if(MediaLineBean.MUSIC_TYPE == mediaLineBean.getType()){
-				nb+=mediaLineBean.getAdNeeded();
-				nbMedias++;
-			}
+            nb+=mediaLineBean.getAdNeeded();
+            nbMedias++;
 		}
 		cart.setNbProduct(nbMedias);
 		cart.setMinScore(nb);
@@ -97,13 +96,6 @@ public class CartWebservice {
 		for (MediaLineBean mediaLineBean : lines) {
 			if(mediaLineBean.getIdMedia().equals(musicId)){
 				toRemove = mediaLineBean;
-			}
-			if(!mediaLineBean.getMedias().isEmpty()){
-				for (MediaLineBean albumLine : mediaLineBean.getMedias()) {
-					if(albumLine.getIdMedia().equals(musicId)){
-						toRemove = albumLine;
-					}
-				}
 			}
 		}
 		lines.remove(toRemove);

@@ -8,11 +8,11 @@ $(function(){
 
 
         if($(this).find("i").hasClass("fa-pause") && currentSample!=null){
-            $("div.description > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
+            $("div > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
             currentSample.pause();
         }else{
             if(currentSample!=null){
-                $("div.description > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
+                $("div > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
                 currentSample.pause();
             }
             var music = $(this).data("music");

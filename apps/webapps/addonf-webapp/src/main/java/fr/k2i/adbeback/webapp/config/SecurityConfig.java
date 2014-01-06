@@ -52,7 +52,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/template/**").permitAll()
                     .antMatchers("/checkout.html").permitAll()
                     .antMatchers("/cart.html").permitAll()
+                    .antMatchers("/product.html").permitAll()
+                    .antMatchers("/catalog.html").permitAll()
                     .antMatchers("/custom-logout").hasRole("USER")
+
 
 
                 //manage cart
@@ -60,7 +63,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rest/removeFromCart/*").permitAll()
                 .antMatchers("/rest/cart").permitAll()
                 .antMatchers("/rest/cart/empty").permitAll()
-                .antMatchers("/partial/cart.html").permitAll()
+                .antMatchers("/partial/*.html").permitAll()
 
 
                 .antMatchers("/**").hasRole("USER")

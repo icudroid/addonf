@@ -19,7 +19,7 @@ public class Music extends Media {
 		this.mp3Sample = mp3Sample;
 	}
 
-	@ManyToMany(targetEntity = Music.class, cascade = { CascadeType.PERSIST,
+	@ManyToMany(targetEntity = Album.class, cascade = { CascadeType.PERSIST,
 		CascadeType.MERGE })
 	@JoinTable(name = "album_artist", joinColumns = @JoinColumn(name = "MUSIC_ID"), inverseJoinColumns = @JoinColumn(name = "ALBUM_ID"))
 	public List<Album> getAlbums() {

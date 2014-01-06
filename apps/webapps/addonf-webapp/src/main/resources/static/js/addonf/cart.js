@@ -13,7 +13,6 @@ $(function(){
             case "remove":
                 url='rest/removeFromCart/'+music;
                 break;
-
         }
         $.ajax({
             'type': 'GET',
@@ -30,6 +29,19 @@ $(function(){
                         cart.html(html);
                     }
                 });
+                var cart = $("#cartTable");
+                if(cart.length==1){
+                    $.ajax({
+                        'type': 'GET',
+                        'url': addonf.base+'partial/cartTable.html',
+                        'data': {_csrf:addonf.token},
+                        'success': function(html){
+                            cart.html(html);
+                        }
+                    });
+                }
+
+
             }
         });
     };
@@ -41,9 +53,17 @@ $(function(){
 
 
     $(".removeFromCart").click(function(e){
-        cartMethode("add",$(this).data("music"));
+        cartMethode("remove",$(this).data("music"));
         return false;
     });
+
+    $(".removeFromCartTable").click(function(e){
+        cartMethode("remove",$(this).data("music"));
+        //cartMethode("removeTable",$(this).data("music"));
+        return false;
+    });
+
+
 
 
 
