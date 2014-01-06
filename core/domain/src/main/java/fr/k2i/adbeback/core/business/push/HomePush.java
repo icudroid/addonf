@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.push;
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.media.Media;
 import lombok.Data;
 
@@ -19,9 +20,9 @@ public class HomePush extends BaseObject implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-    @ManyToMany(targetEntity = Media.class)
-    @JoinTable(name = "push_home", joinColumns = @JoinColumn(name = "PUSH_ID"), inverseJoinColumns = @JoinColumn(name = "MEDIA_ID"))
-	private List<Media> medias;
+    @ManyToOne
+    @JoinColumn(name = "media_id")
+    private Media medias;
 
     @Temporal(TemporalType.DATE)
 	private Date startDate;

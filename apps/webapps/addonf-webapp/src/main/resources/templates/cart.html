@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html
+       xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/cart_layout">
+<head>
+<title th:text="${title}">Title</title>
+
+</head>
+
+
+<body>
+    <div layout:fragment="content" id="content">
+
+        <div class="container">
+            <a href="catalog.html?lang=en" class="btn btn-default btn-sm"><i class="fa fa-arrow-left fa-fw"></i> Back to Shopping</a>
+            <a href="checkout.html?lang=en" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
+        </div>
+
+    <div class="container">
+        <div class="heading-buttons">
+            <h3 class="pull-left">Shopping Cart <i class="fa fa-fw fa-shopping-cart text-faded"></i></h3>
+            <div class="buttons checkboxs_actions hide form-inline small pull-right margin-right-none">
+                <label class="strong">With selected:</label> &nbsp;
+                <select class="selectpicker margin-none" data-style="btn-default btn-small">
+                    <option>Action</option>
+                    <option>Action</option>
+                    <option>Action</option>
+                </select>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="separator bottom"></div>
+
+        <!-- Shopping cart -->
+        <div class="overflow-x">
+
+            <!-- Cart table -->
+            <table class="table table-bordered table-primary table-striped table-vertical-center checkboxs js-table-sortable">
+                <thead>
+                <tr>
+                    <th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
+                    <th style="width: 1%;" class="center">No.</th>
+                    <th></th>
+                    <th style="width: 50px;">Qty</th>
+                    <th style="width: 50px;"></th>
+                    <th style="width: 80px;">Price</th>
+                    <th style="width: 80px;">VAT</th>
+                    <th style="width: 80px;">TAX incl.</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <!-- Cart item -->
+                <tr class="selectable">
+                    <td class="center uniformjs"><input type="checkbox" /></td>
+                    <td class="center">1</td>
+                    <td class="product">
+                        <div class="media">
+                            <a href="product.html?lang=en" class="media-object pull-left hidden-xs"><img width="80" height="116" style="width: 80px; height: 116px;" class="thumb" src="../assets/images/fashion/female/1.jpg" alt="" /></a>
+                            <div class="media-body">
+                                <h5 class="text-uppercase"><a href="product.html?lang=en" class="text-primary">Product name goes here</a></h5>
+								<span class="pull-left">
+									<p>Size:</p>
+									<span class="label label-default label-stroke">3-4 Years</span>
+								</span>
+                                <span class="pull-left innerL hidden-xs">&nbsp;</span>
+								<span class="pull-left">
+									<p>Color:</p>
+									<span class="label label-default label-stroke">Blue Navy</span>
+								</span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="center"><input type="text" value="1" class="form-control input-block-level" style="margin: 0;width: 50px;" /></td>
+                    <td class="center">
+                        <button class="btn btn-primary btn-circle"><i class="fa fa-times"></i></button>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;190.00</span>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;15.00</span>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;292.00</span>
+                    </td>
+                </tr>
+                <!-- // Cart item END -->
+                <!-- Cart item -->
+                <tr class="selectable selected">
+                    <td class="center uniformjs"><input type="checkbox" checked="checked" /></td>
+                    <td class="center">2</td>
+                    <td class="product">
+                        <div class="media">
+                            <a href="product.html?lang=en" class="media-object pull-left hidden-xs"><img width="80" height="116" style="width: 80px; height: 116px;" class="thumb" src="../assets/images/fashion/female/2.jpg" alt=""/></a>
+                            <div class="media-body">
+                                <h5 class="text-uppercase"><a href="product.html?lang=en" class="text-primary">Product name goes here</a></h5>
+								<span class="pull-left">
+									<p>Size:</p>
+									<span class="label label-default label-stroke">3-4 Years</span>
+								</span>
+                                <span class="pull-left innerL hidden-xs">&nbsp;</span>
+								<span class="pull-left">
+									<p>Color:</p>
+									<span class="label label-default label-stroke">Blue Navy</span>
+								</span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="center"><input type="text" value="1" class="form-control input-block-level" style="margin: 0;width: 50px;" /></td>
+                    <td class="center">
+                        <button class="btn btn-primary btn-circle"><i class="fa fa-times"></i></button>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;228.00</span>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;11.00</span>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;325.00</span>
+                    </td>
+                </tr>
+                <!-- // Cart item END -->
+                <!-- Cart item -->
+                <tr class="selectable">
+                    <td class="center uniformjs"><input type="checkbox" /></td>
+                    <td class="center">3</td>
+                    <td class="product">
+                        <div class="media">
+                            <a href="product.html?lang=en" class="media-object pull-left hidden-xs"><img width="80" height="116" style="width: 80px; height: 116px;" class="thumb" src="../assets/images/fashion/female/3.jpg" alt=""/></a>
+                            <div class="media-body">
+                                <h5 class="text-uppercase"><a href="product.html?lang=en" class="text-primary">Product name goes here</a></h5>
+								<span class="pull-left">
+									<p>Size:</p>
+									<span class="label label-default label-stroke">3-4 Years</span>
+								</span>
+                                <span class="pull-left innerL hidden-xs">&nbsp;</span>
+								<span class="pull-left">
+									<p>Color:</p>
+									<span class="label label-default label-stroke">Blue Navy</span>
+								</span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="center"><input type="text" value="1" class="form-control input-block-level" style="margin: 0;width: 50px;" /></td>
+                    <td class="center">
+                        <button class="btn btn-primary btn-circle"><i class="fa fa-times"></i></button>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;171.00</span>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;30.00</span>
+                    </td>
+                    <td class="center">
+                        <span class="strong">&euro;291.00</span>
+                    </td>
+                </tr>
+                <!-- // Cart item END -->
+
+                </tbody>
+            </table>
+            <!-- // Cart table END -->
+
+        </div>
+    </div>
+
+    <div class="bg-gray border-top innerTB inner-2x">
+        <div class="container innerTB inner-2x">
+            <!-- Row -->
+            <div class="row">
+
+                <!-- Column -->
+                <div class="col-md-6">
+
+                </div>
+                <!-- Column END -->
+
+                <!-- Column -->
+                <div class="col-md-3">
+                </div>
+                <!-- // Column END -->
+
+                <div class="col-md-3">
+                    <div class="box-generic padding-none text-center">
+                        <p class="lead margin-none strong innerAll border-bottom">Total: &euro;1,195.95</p>
+                        <div class="innerAll">
+                            <a href="checkout.html?lang=en" class="btn btn-block btn-primary"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- // Row END -->
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>

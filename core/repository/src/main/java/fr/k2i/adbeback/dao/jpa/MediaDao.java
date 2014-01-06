@@ -161,31 +161,5 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
 	}
 
-    @Transactional
-    @Override
-	public List<Music> getPushHomeMusic() throws Exception {
-        CriteriaBuilderHelper<HomePush> helper = new CriteriaBuilderHelper(getEntityManager(),HomePush.class);
-        Date now = new Date();
-
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.greaterThan(helper.rootHelper.get(HomePush_.startDate), now),
-                helper.criteriaHelper.lessThan(helper.rootHelper.get(HomePush_.endDate), now)
-        );
-
-        HomePush home = helper.getSingleResult();
-		if(home==null){
-			return searchBestMusicDownload(-1L);
-		}
-
-        List<Music> res = new ArrayList<Music>();
-
-        for (Media media : home.getMedias()) {
-            if(media instanceof Music){
-                res.add((Music) media);
-            }
-        }
-
-        return res;
-	}
 
 }

@@ -1,0 +1,451 @@
+//
+// Layout
+// --------------------------------------------------
+
+// Grid
+// -------------------------
+
+.row { margin: 0 -5px; }
+.row-merge { margin: 0; }
+div[class*="col-xs-"],
+div[class*="col-sm-"],
+div[class*="col-md-"],
+div[class*="col-lg-"] { padding: 0 5px; }
+
+.layout-app {
+	margin: @layoutAppSeparator @layoutAppSeparator 0;
+	.container {
+		padding: 0;
+	}
+	.row-app {
+		background: @containerBg;
+		margin: 0;
+		> div[class*="col-"] { padding: 0; }
+	}
+	.col-separator {
+		> .widget,
+		> .widget-body,
+		> .widget-stats,
+		> .list-group { 
+			margin: 0 !important; 
+			border: none !important; 
+		}
+		background-color: #fff;
+	}
+	.reset-components {
+		.widget,
+		.widget-body,
+		.widget-stats,
+		.list-group { 
+			margin: 0 !important; 
+			border: none !important;
+		}
+		.list-group li {
+			border-left: none !important;
+			border-right: none !important;
+		}
+	}
+	.col-separator-h {
+		height: 1px;
+		border-left: none;
+		border-right: none;
+		position: relative;
+		&:after {
+			content: "";
+			display: block;
+			position: absolute;
+			left: 0;
+			right: -1px;
+			top: 0;
+			bottom: 0;
+			background: #eaeaea;
+		}
+	}
+	.col-separator {
+		position: relative;
+		margin: 0;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+}
+.app .row-app { overflow: hidden; }
+
+@media (max-width: 767px) {
+	.layout-app {
+		.col-separator-h {
+			height: @layoutAppSeparator;
+		}
+	}
+}
+@media (min-width: 1200px)
+{
+	html,
+	html.app {
+		.layout-app {
+			margin: @layoutAppSeparator 0 0;
+			.col-separator {
+				position: relative;
+				margin-right: @layoutAppSeparator;
+				overflow: visible;
+			}
+			.col-separator-first { margin-left: @layoutAppSeparator; }
+			.col-separator-last { margin-right: 0; }
+			.col-separator-h {
+				height: @layoutAppSeparator;
+			}
+		}
+	}
+	html.app {
+		.layout-app {
+			margin: 0;
+			.col-separator {
+				overflow-x: hidden;
+				overflow-y: auto;
+			}
+		}
+	}
+}
+
+@media (max-width: 991px) {
+	html, html.app {
+		.row-app {
+			> [class*="col-sm-"] {
+				~ [class*="col-sm-12"] {
+					margin-top: @layoutAppSeparator;
+					position: relative;
+					overflow: visible !important;
+					&:after {
+						background: #eaeaea;
+						position: absolute;
+						top: -@layoutAppSeparator;
+						left: 0;
+						right: 0;
+						height: @layoutAppSeparator;
+						content: "";
+					}
+				}
+			}
+
+			> [class*="col-sm-"],
+			> [class*="col-md-"] {
+				~ [class*="col-md-"] {
+					&:after {
+						bottom: auto;
+						width: auto;
+						left: 0;
+						right: 0;
+						height: 1px;
+						content: "";
+					}
+				}
+			}
+		}
+	}
+}
+
+.layoutAppTop (@navbarMainHeight) when (@navbarMainHeight = 0) {
+	top: @layoutAppTop;
+}
+.layoutAppTop (@navbarMainHeight) when (@navbarMainHeight > 0) {
+	top: @layoutAppTop + @navbarMainHeight;
+}
+
+@media (max-width: 991px) {
+	html.app .layout-app {
+		[class*="col-sm-12"] {
+			> .col-separator {
+				left: 0;
+				right: 0;
+			}
+			~ [class*="col-sm-12"] {
+				margin-top: @layoutAppSeparator;
+				position: relative;
+				overflow: visible !important;
+				&:after {
+					background: #efefef;
+					position: absolute;
+					top: -@layoutAppSeparator;
+					left: 0;
+					right: 0;
+					height: @layoutAppSeparator;
+					content: "";
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 1199px) {
+	html, 
+	html.app {
+		[class*="col-sm-12"],
+		[class*="col-md-12"] {
+			> .col-separator {
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+		.row-app {
+			> [class*="col-sm-"],
+			> [class*="col-md-"] {
+				~ [class*="col-sm-"],
+				~ [class*="col-md-"] {
+					position: relative;
+					&:after {
+						background: #eaeaea;
+						position: absolute;
+						top: 0;
+						bottom: 0;
+						left: auto;
+						right: auto;
+						height: auto;
+						width: 1px;
+						content: "";
+					}
+				}
+				~ [class*="col-md-12"] {
+					margin-top: @layoutAppSeparator;
+					position: relative;
+					overflow: visible !important;
+					&:after {
+						background: #eaeaea;
+						position: absolute;
+						top: -@layoutAppSeparator;
+						left: 0;
+						right: 0;
+						height: @layoutAppSeparator;
+						content: "";
+					}
+				}
+			}
+		}
+	}
+}
+
+@media (min-width: 1200px) {
+	html.app {
+		&,
+		body, 
+		body .container-fluid {
+			min-height: 100%;
+			height: 100%; 
+			overflow: hidden;
+		}
+		#content {
+			height: 100%;
+			// padding: 0;
+		}
+		.layout-app {
+			position: absolute;
+			.layoutAppTop(@navbarMainHeight);
+			bottom: @footerHeight;
+			width: 100%;
+			
+			.col-table {
+				display: table;
+				height: 100%;
+				width: 100%;
+				position: absolute;
+				table-layout:fixed;
+				left: 0;
+				right: 0;
+			}
+
+			.col-table-row {
+				display: table-row;
+				height: 100%;
+				> .col-app > .col-app {
+					position: absolute;
+					width: 100%;
+				}
+			}
+
+			.col-app {
+				height: 100%;
+				overflow-x: hidden;
+				overflow-y: auto;
+				position: relative;
+			}
+
+			.row-app {
+				padding: 0;
+				width: 100%;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+
+				> div[class*="col-"],
+				.col-app {
+					height: 100%;
+					overflow-x: hidden;
+					overflow-y: auto;
+					position: relative;
+				}
+			}
+
+			.col-separator {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: @layoutAppSeparator;
+				margin: 0;
+				overflow-x: hidden;
+				overflow-y: auto;
+				&.col-unscrollable { overflow-y: hidden; overflow: hidden; }
+			}
+			.col-separator-first { left: @layoutAppSeparator; }
+			.col-separator-last { right: 0px; }
+
+			.col-scrollable { overflow-y: auto; overflow-x: hidden; }
+			.col-unscrollable { overflow-y: hidden; }
+		}
+	}
+}
+
+// Content
+// -------------------------
+
+.contentPaddingTop (@navbarMainHeight) when (@navbarMainHeight > 0) {
+	padding-top: @navbarMainHeight;
+}
+
+.container-fluid { 
+	background: @containerBg;
+	padding-bottom: @layoutAppSeparator;
+}
+
+#content { 
+	position: relative;
+	overflow: hidden;
+	min-width: 320px;
+	margin: 0 @menuSidebarKisWidth 0 @menuSidebarWidth;
+	padding: 0 0 @footerHeight;
+	background: @containerBg;
+	z-index: 1;
+}
+.app #content {
+	.contentPaddingTop(@navbarMainHeight);
+}
+
+@media (max-width: 767px) {
+	.container-fluid {
+		position: relative;
+		overflow-x: hidden;
+	}
+}
+
+@media (min-width: 768px) {
+	#content {
+		overflow: visible;
+	}
+}
+
+@media (min-width: 768px)
+{
+	.menu-right-hidden {
+		@menuSidebarKisWidth: 0;
+		#footer {
+			right: @menuSidebarKisWidth !important;
+		}
+		#content {
+			margin-right: @menuSidebarKisWidth !important;
+		}
+	}
+}
+
+.menu-right-visible,
+.menu-right-visible.menu-hidden,
+.menu-right-visible.menu-right-hidden {
+	@menuSidebarKisWidth: 70px;
+	#footer {
+		right: @menuSidebarKisWidth !important;
+	}
+	#content {
+		margin-right: @menuSidebarKisWidth !important;
+	}
+}
+
+.col-fs { left: 0 !important; right: 0 !important; margin: 0; top: 0 !important; }
+
+
+// helpers
+.bg-primary { background: @primaryColor !important; color: #fff; }
+.bg-primary-light {
+	background: lighten(@primaryColor, 33%) !important;
+	*:not(.btn) { border-color: lighten(@primaryColor, 17%) !important; }
+	&[class*="border-"], &.box-generic {
+		border-color: lighten(@primaryColor, 28%) !important;
+	}
+	.caret { 
+		border-left-color: transparent !important;
+		border-bottom-color: transparent !important;
+		border-top-color: transparent !important;
+		border-right-color: lighten(@primaryColor, 17%) !important;
+	}
+}
+.bg-container { background: #eaeaea !important; }
+.bg-gray { background: #f9f9f9 !important; }
+.bg-gray-dark { background: #f2f2f2 !important; }
+.bg-none { background: none !important; }
+.bg-white { background: #fff !important; }
+.bg-success { background: @successColor !important; color: #fff; }
+.bg-info { background: @infoColor !important; color: #fff; }
+.bg-info-dark { background: darken(@infoColor, 10%) !important; }
+.bg-inverse { background: @inverseColor !important; color: #fff; }
+.bg-inverse-faded { background: fade(@inverseColor, 50%) !important; }
+
+
+.bg-mustard {
+	background: @mustardColor !important; color: #fff; 
+}
+
+.bg-purple {
+	background: @purpleColor !important; color: #fff; 
+}
+
+.bg-lightred {
+	background: @lightredColor !important; color: #fff; 
+}
+
+.text-white { color: #fff; }
+.text-info { color: @infoColor; }
+.text-small { font-size: 12px; }
+.text-medium { font-size: 30px; line-height: 30px; }
+.text-condensed { letter-spacing: -2px; }
+.text-weight-normal { font-weight: 400; }
+.display-block { display: block; }
+.display-block-inline { display: inline-block; }
+.img-responsive { width: 100%; }
+
+.fa-6x {
+	font-size: 80px;
+}
+
+// global helpers
+.border-top { border-top : 1px solid #efefef;}
+.border-right { border-right: 1px solid #efefef;}
+.border-bottom { border-bottom: 1px solid #efefef !important;}
+.border-left { border-left: 1px solid #efefef;}
+.half {
+	&.innerAll { padding: @spacing / 2 !important; }
+	&.innerLR { padding-left: @spacing / 2 !important; padding-right: @spacing / 2 !important; }
+	&.innerTB { padding-top: @spacing / 2 !important; padding-bottom: @spacing / 2 !important; }
+	&.innerT { padding-top: @spacing / 2 !important; }
+	&.innerB { padding-bottom: @spacing / 2 !important; }
+	&.innerL { padding-left: @spacing / 2 !important; }
+	&.innerR { padding-right: @spacing / 2 !important; }
+}
+.inner-2x {
+	&.innerAll { padding: @spacing * 2 !important; }
+}
+
+.nicescroll-rails { display: none; }
+.overflow-hidden { overflow: hidden !important; }
+.overflow-x { overflow-x: auto; }
+.unscrollable { overflow: hidden !important; }
+
+.text-success { color:@successColor;}
+
+
+.fixed-bottom { position: absolute; left: 0; right: 0; bottom: 0; }

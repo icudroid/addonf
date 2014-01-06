@@ -45,12 +45,25 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/login").permitAll()
                     .antMatchers("/logout-success").permitAll()
                     .antMatchers("/lib/**").permitAll()
+                    .antMatchers("/components/**").permitAll()
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/js/**").permitAll()
                     .antMatchers("/img/**").permitAll()
                     .antMatchers("/template/**").permitAll()
+                    .antMatchers("/checkout.html").permitAll()
+                    .antMatchers("/cart.html").permitAll()
                     .antMatchers("/custom-logout").hasRole("USER")
-                    .antMatchers("/**").hasRole("USER")
+
+
+                //manage cart
+                .antMatchers("/rest/addToCart/*").permitAll()
+                .antMatchers("/rest/removeFromCart/*").permitAll()
+                .antMatchers("/rest/cart").permitAll()
+                .antMatchers("/rest/cart/empty").permitAll()
+                .antMatchers("/partial/cart.html").permitAll()
+
+
+                .antMatchers("/**").hasRole("USER")
                 //.fullyAuthenticated()
                     .and()
                         .formLogin()
@@ -70,3 +83,4 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     }
 
 }
+

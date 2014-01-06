@@ -24,7 +24,5 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
     List<Music> searchNewMusic(Long idGenre, String str, int max)
 			throws Exception;
 
-    @Transactional
-    List<Music> getPushHomeMusic() throws Exception;
 }
 

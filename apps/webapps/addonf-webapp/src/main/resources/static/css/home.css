@@ -1346,15 +1346,14 @@ html.csstransitions.csstransforms3d #slide1 .block {
   padding: 0 15px;
   position: relative;
   overflow: hidden;
-  color: #525252;
+  color: #999;
   text-decoration: none;
   font-weight: 600;
 }
 .widget.widget-tabs > .widget-head ul li a i:before {
   left: 5px;
   top: 5px;
-  color: #9d9d9d;
-  text-shadow: 0 1px 0 #ffffff;
+  color: #eaeaea;
 }
 .widget.widget-tabs > .widget-head ul li a.glyphicons {
   padding: 0 15px 0 35px;
@@ -1398,19 +1397,19 @@ html.csstransitions.csstransforms3d #slide1 .block {
   }
 }
 .widget.widget-tabs-double > .widget-head {
-  height: 40px;
+  height: 50px;
 }
 .widget.widget-tabs-double > .widget-head ul {
-  height: 40px;
+  height: 50px;
 }
 .widget.widget-tabs-double > .widget-head ul li,
 .widget.widget-tabs-double > .widget-head ul li.active {
-  height: 40px;
-  line-height: 20px;
+  height: 50px;
+  line-height: 25px;
 }
 .widget.widget-tabs-double > .widget-head ul li a,
 .widget.widget-tabs-double > .widget-head ul li.active a {
-  height: 35px;
+  height: 50px;
   padding: 5px 0 0;
 }
 .widget.widget-tabs-double > .widget-head ul li a span,
@@ -1420,11 +1419,11 @@ html.csstransitions.csstransforms3d #slide1 .block {
 }
 .widget.widget-tabs-double > .widget-head ul li a.glyphicons,
 .widget.widget-tabs-double > .widget-head ul li.active a.glyphicons {
-  padding: 5px 15px 0 38px;
+  padding: 10px 15px 0 42px;
 }
 .widget.widget-tabs-double > .widget-head ul li a.glyphicons i:before,
 .widget.widget-tabs-double > .widget-head ul li.active a.glyphicons i:before {
-  left: 4px;
+  left: 6px;
   top: 9px;
   font-size: 20px;
 }
@@ -2123,7 +2122,6 @@ html.csstransitions.csstransforms3d #slide1 .block {
 .widget .widget-head {
   background: #f7f7f7;
   border-bottom: 1px solid #efefef;
-  text-shadow: 0 1px 0 0 1px 0 #ffffff;
   height: 35px;
   line-height: 35px;
   position: relative;
@@ -2136,6 +2134,13 @@ html.csstransitions.csstransforms3d #slide1 .block {
   border-radius: 0 0 0 0;
   margin: 0;
   padding: 0;
+  height: 25px;
+  line-height: 25px;
+}
+.widget .widget-head.progress .progress-bar {
+  height: 25px;
+  line-height: 25px;
+  background: #eb6a5a;
 }
 .widget .widget-head > .glyphicons,
 .widget .widget-head ul .glyphicons {
@@ -2987,7 +2992,7 @@ div.glyphicons.glyphicon-primary i:before {
 #slide1 {
   padding: 140px 0;
   background-color: #ffffff;
-  background-image: url('../../images/shop/photodune-456272-fashion-woman-in-black-and-white-m.jpg');
+  background-image: url('../img/bk.png');
   background-position: 100% 20%;
   background-repeat: no-repeat;
 }
@@ -3157,7 +3162,7 @@ div.glyphicons.glyphicon-primary i:before {
   border-bottom: 1px solid #dfdfdf;
 }
 #menu-top .container {
-  padding: 0;
+  padding-top: 5px;
 }
 #menu-top ul {
   list-style: none;
@@ -3444,6 +3449,7 @@ div.glyphicons.glyphicon-primary i:before {
   background: #2c2c2c;
   border: none;
   margin: none;
+  top: 30px;
 }
 .navbar-coral .navbar-brand {
   padding: 0px 30px 0px 15px;
@@ -3685,7 +3691,7 @@ div.glyphicons.glyphicon-primary i:before {
 }
 .navbar-coral .navbar-nav.navbar-right li.cart .dropdown-menu li.cart-button {
   padding: 10px;
-  margin-top: 5px;
+  margin-top: 20px;
   border-top: 1px solid #3c3c3c;
   text-align: center;
 }

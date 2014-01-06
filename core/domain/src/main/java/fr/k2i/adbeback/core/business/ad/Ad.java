@@ -24,7 +24,7 @@ public abstract  class Ad extends BaseObject implements Serializable {
     @Column(name = IMetaData.ColumnMetadata.Ad.ID)
     protected Long id;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.BRAND)
     protected Brand brand;
 
