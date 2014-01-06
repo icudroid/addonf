@@ -8,6 +8,7 @@ import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.service.PlayerManager;
 import fr.k2i.adbeback.service.RoleManager;
 import fr.k2i.adbeback.service.UserExistsException;
+import fr.k2i.adbeback.webapp.bean.CartBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,7 +70,13 @@ public class SignupController {
 
     @ModelAttribute(value = "player")
     @RequestMapping(method = RequestMethod.GET)
-    public Player showForm(Map<String, Object> model) {
+    public Player showForm(Map<String, Object> model,HttpServletRequest request) {
+        CartBean cart = (CartBean) request.getSession().getAttribute("cart");
+        if(cart==null){
+            cart = new CartBean();
+            request.getSession().setAttribute("cart",cart);
+        }
+        model.put("cart", cart);
         model.put("civilities", Sex.values());
         return new Player();
     }
