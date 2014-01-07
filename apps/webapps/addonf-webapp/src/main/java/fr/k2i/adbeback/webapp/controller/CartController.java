@@ -16,7 +16,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class CartController {
+public class CartController{
 
     @Value(value ="${addonf.static.url}" )
     private String staticUrl;

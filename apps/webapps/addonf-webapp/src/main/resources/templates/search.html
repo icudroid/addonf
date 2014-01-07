@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html
+       xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/home_layout">
+<head>
+<title th:text="${title}">Title</title>
+</head>
+
+
+<body>
+    <div layout:fragment="content" id="content">
+         <div th:if="${nosearch == true}" class="container">
+            <div class="row innerTB">
+                <div class="col-md-9">
+                    <h5 class="text-faded"  th:text="#{addonf.search.no.query}">No query</h5>
+                </div>
+                <div th:substituteby="/layout/fragment/categories"></div>
+            </div>
+         </div>
+        <div th:if="${nosearch ==false}" class="container">
+            <div class="row innerTB">
+                <div class="col-md-9">
+                    <h5 class="text-faded">Artists</h5>
+                    <h5 class="text-faded">Labels</h5>
+                    <h5 class="text-faded">Musics</h5>
+                </div>
+                <div th:substituteby="/layout/fragment/categories"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

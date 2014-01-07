@@ -1,11 +1,18 @@
 package fr.k2i.adbeback.dao.jpa;
 
+import com.mysema.query.QueryModifiers;
+import com.mysema.query.Tuple;
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.OrderSpecifier;
 import fr.k2i.adbeback.core.business.media.*;
 import fr.k2i.adbeback.core.business.push.HomePush;
 import fr.k2i.adbeback.core.business.push.HomePush_;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +32,6 @@ import java.util.*;
 @Repository("mediaDao")
 public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
-    @Autowired
-    private MusicRepository musicRepository;
 
 	/**
 	 * Constructor that sets the entity to User.class.
@@ -34,6 +39,111 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 	public MediaDao() {
 		super(Media.class);
 	}
+
+    @Transactional
+    @Override
+    public Page<String> findMusicAndAlbumTitleByTitle(String str,Pageable pageable) throws Exception {
+
+        QMedia media = QMedia.media;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(media)
+                .where(
+                        media.title.containsIgnoreCase(str)
+                );
+
+        query
+                .limit(pageable.getPageSize())
+                .offset(pageable.getPageNumber())
+                .orderBy(media.title.asc());
+
+        return new PageImpl<String>(query.list(media.title),pageable,query.count());
+    }
+
+    @Transactional
+    @Override
+    public Page<String> findPersonFullNameByName(String req, Pageable pageable) {
+        QPerson person = QPerson.person;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(person)
+                .where(
+                        person.lastName.containsIgnoreCase(req).or(person.firstName.containsIgnoreCase(req))
+                );
+
+        query
+                .limit(pageable.getPageSize())
+                .offset(pageable.getPageNumber())
+                .orderBy(person.lastName.asc())
+                .orderBy(person.firstName.asc());
+
+        List<Tuple> list = query.list(person.lastName, person.firstName);
+
+        List<String> content = new ArrayList<String>();
+
+        for (Tuple tuple : list) {
+            content.add(tuple.get(person.firstName)+((tuple.get(person.firstName)!=null)?" ":"")+tuple.get(person.lastName));
+        }
+
+        return new PageImpl<String>(content,pageable,query.count());
+    }
+
+    @Transactional
+    @Override
+    public Page<Artist> findArtistByFullName(String req, Pageable pageable) {
+        QArtist artist = QArtist.artist;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(artist)
+                .where(
+                        artist.lastName.containsIgnoreCase(req).or(artist.firstName.containsIgnoreCase(req))
+                );
+
+        query
+                .limit(pageable.getPageSize())
+                .offset(pageable.getPageNumber())
+                .orderBy(artist.lastName.asc())
+                .orderBy(artist.firstName.asc());
+
+
+        return new PageImpl<Artist>(query.list(artist),pageable,query.count());
+    }
+
+    @Transactional
+    @Override
+    public Page<Productor> findProductorByFullName(String req, Pageable pageable) {
+        QProductor productor = QProductor.productor;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(productor)
+                .where(
+                        productor.lastName.containsIgnoreCase(req).or(productor.firstName.containsIgnoreCase(req))
+                );
+
+        query
+                .limit(pageable.getPageSize())
+                .offset(pageable.getPageNumber())
+                .orderBy(productor.lastName.asc())
+                .orderBy(productor.firstName.asc());
+
+
+        return new PageImpl<Productor>(query.list(productor),pageable,query.count());
+    }
+
+    @Transactional
+    @Override
+    public Page<Music> findMusicByTile(String req, Pageable pageable) {
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(music)
+                .where(
+                        music.title.containsIgnoreCase(req)
+                );
+
+        query
+                .limit(pageable.getPageSize())
+                .offset(pageable.getPageNumber())
+                .orderBy(music.title.asc());
+
+
+        return new PageImpl<Music>(query.list(music),pageable,query.count());
+    }
 
 
     @Transactional

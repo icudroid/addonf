@@ -67,6 +67,12 @@ public abstract class Person extends BaseObject implements Serializable {
 		this.lastName = lastName;
 	}
 
+
+    @Transient
+    public String getFullName() {
+        return firstName+((firstName!=null)?" ":"")+lastName;
+    }
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

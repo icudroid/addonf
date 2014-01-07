@@ -1,0 +1,22 @@
+<div class="col-md-3" data-animate="fadeInRight" data-delay="800">
+    <div class="innerT">
+        <h5 class="text-faded" th:text="#{addonf.browse.categories}">Browse categories</h5>
+        <div>
+            <ul class="list-group list-group-front">
+                <li class="list-group-item" th:each="category : ${categories}"><a th:href="@{/byGenre.html(genreId=${category.id})}"><span th:text="#{'addonf.reference.'+${category.codeGenre}}">Catégorie</span></a></li>
+            </ul>
+
+
+        </div>
+    </div>
+    <form th:action="@{/search.html}" method="get">
+        <div class="input-group">
+
+            <input type="text" th:placeholder="#{addonf.menu.search.placeholder}" class="form-control searchInput" name="q" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default searchBtn"><i class="fa fa-search"></i></button>
+                                </span>
+
+        </div>
+    </form>
+</div>

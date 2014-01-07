@@ -72,7 +72,24 @@
                 <artifactId>libphonenumber</artifactId>
                 <version>4.6</version>
             </dependency>
+
+
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>3.3.0</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-jpa</artifactId>
+                <version>3.3.0</version>
+            </dependency>
         </dependencies>
+
+
+
 
 
 
