@@ -90,9 +90,11 @@ public class AdGameFacade {
 
 
     @Transactional
-    public AdGameBean createAdGame(Long idPlayer,Long gooseLevel,HttpServletRequest request) throws Exception {
+    public AdGameBean createAdGame(Long idPlayer,HttpServletRequest request) throws Exception {
 
         CartBean cart = (CartBean) request.getSession().getAttribute(CART);
+
+        Long gooseLevel = gooseLevelDao.findForNbAds(cart.getMinScore());
 
         AbstractAdGame generateAdGame = adGameManager.generate(idPlayer,gooseLevel);
         List<String> adsVideo = new ArrayList<String>();
@@ -155,16 +157,18 @@ public class AdGameFacade {
 
         GooseToken gooseToken =  playerDao.getPlayerGooseToken(idPlayer, gooseLevel);
         GooseLevel level = gooseLevelDao.get(gooseLevel);
+        boolean multiple = (level instanceof IMultiGooseLevel);
+
         if(gooseToken==null){
 
             gooseToken = new GooseToken();
             gooseToken.setGooseCase(level.getStartCase());
             player.addGooseToken(gooseToken);
-        }else if(!level.isMultiple()){
+        }else if(!multiple){
             gooseToken.setGooseCase(level.getStartCase());
         }
 
-        res.setMultiple(level.isMultiple());
+        res.setMultiple(multiple);
 
         GooseCase gooseCase = gooseToken.getGooseCase();
         Integer number = gooseCase.getNumber();
@@ -280,19 +284,23 @@ public class AdGameFacade {
             gooseToken.setGooseCase(level.getStartCase());
             gameResult.setMessage("Vous allez à la case : "+gooseCase.getNumber());
         }else if (gooseCase instanceof EndLevelGooseCase) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Bravo vous venez de remporté la cagnotte d'une valeur de ");
-            sb.append(level.getValue());
-            sb.append(" euros");
-            gooseGameManager.resetLevelValue(level);
-            GooseWin win = new GooseWin();
-            win.setGooseLevel(level);
-            win.setValue(level.getValue());
-            win.setWindate(new Date());
-            win.setPlayer(player);
-            player.getWins().add(win);
-            playerDao.savePlayer(player);
-            gameResult.setMessage(sb.toString());
+            if(level instanceof IMultiGooseLevel){
+                StringBuilder sb = new StringBuilder();
+                sb.append("Bravo vous venez de remporté la cagnotte d'une valeur de ");
+                sb.append(((MultiGooseLevel)level).getValue());
+                sb.append(" euros");
+                gooseGameManager.resetLevelValue(level);
+                GooseWin win = new GooseWin();
+                win.setGooseLevel(level);
+                win.setValue(((MultiGooseLevel)level).getValue());
+                win.setWindate(new Date());
+                win.setPlayer(player);
+                player.getWins().add(win);
+                playerDao.savePlayer(player);
+                gameResult.setMessage(sb.toString());
+            }else{
+                //download music
+            }
         }else if (gooseCase instanceof JumpGooseCase) {
             JumpGooseCase jump = (JumpGooseCase) gooseCase;
             gooseCase = jump.getJumpTo();
@@ -477,7 +485,7 @@ public class AdGameFacade {
         for (GooseLevel gooseLevel : all) {
             CagnotteBean cagnotte = new CagnotteBean();
             cagnotte.setLevel(gooseLevel.getLevel().intValue());
-            cagnotte.setValue(gooseLevel.getValue());
+            cagnotte.setValue(((MultiGooseLevel)gooseLevel).getValue());
             res.add(cagnotte);
         }
         return res;

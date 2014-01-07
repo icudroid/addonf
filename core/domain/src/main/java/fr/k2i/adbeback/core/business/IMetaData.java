@@ -19,6 +19,7 @@ public interface IMetaData {
         String VIEWED_AD =                              "viewed_ad";
         String CITY =                                   "city";
         String OTP =                                    "one_time_pwd";
+        String GOOSE_LEVEL =                            "goose_level";
     }
 
     interface ColumnMetadata {
@@ -143,6 +144,14 @@ public interface IMetaData {
             public interface Discrimator {
                 String DISCRIMINATOR =                  "classe";
                 String BRAND =                          "brand";
+            }
+        }
+
+        public interface GooseLevel {
+            public interface Discrimator {
+                String DISCRIMINATOR =                  "classe";
+                String SINGLE =                         "single";
+                String MULTI =                          "multi";
             }
         }
     }

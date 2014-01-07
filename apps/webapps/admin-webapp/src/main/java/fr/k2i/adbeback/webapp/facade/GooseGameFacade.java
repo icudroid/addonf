@@ -34,14 +34,9 @@ public class GooseGameFacade {
 
     @Transactional
     public GooseLevelGame generateSingleLevel(Integer nbCase,Integer numLevel){
-        GooseLevel level = new GooseLevel();
+        SingleGooseLevel level = new SingleGooseLevel();
         level.setLevel(numLevel);
-        level.setMinValue(0);
-        level.setMultiple(false);
         level.setNbMaxAdByPlay(nbCase);
-        level.setStrong(null);
-        level.setValue(0);
-
 
         level.startCase(new StartLevelGooseCase());
 
@@ -60,10 +55,9 @@ public class GooseGameFacade {
 
     @Transactional
     public GooseLevelGame generateMultiLevel(Integer strong,Integer numLevel,Integer minAmount){
-        GooseLevel level = new GooseLevel();
+        MultiGooseLevel level = new MultiGooseLevel();
         level.setLevel(numLevel);
         level.setMinValue(minAmount);
-        level.setMultiple(true);
         level.setNbMaxAdByPlay(6);
         level.setStrong(strong);
         level.setValue(minAmount);
@@ -95,7 +89,7 @@ public class GooseGameFacade {
 
     @Transactional
     public List<GooseLevelGame> search(Integer level, Boolean multiple) {
-        List<GooseLevel> levels =  gooseLevelDao.findLevel(level,multiple);
+        List<? extends GooseLevel> levels =  gooseLevelDao.findLevel(level,multiple);
         List<GooseLevelGame> gooseLevelGames = new ArrayList<GooseLevelGame>();
         for (GooseLevel gooseLevel : levels) {
             gooseLevelGames.add(new GooseLevelGame(gooseLevel));

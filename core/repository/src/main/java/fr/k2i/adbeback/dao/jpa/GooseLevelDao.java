@@ -1,16 +1,12 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import fr.k2i.adbeback.core.business.goosegame.GooseLevel_;
-import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.mysema.query.jpa.impl.JPAQuery;
+import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.QMultiGooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.QSingleGooseLevel;
 import org.springframework.stereotype.Repository;
 
-import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
-
 import javax.persistence.Query;
-import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -35,20 +31,37 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
 
 
     @Override
-    public List<GooseLevel> findLevel(Integer level, Boolean multiple) {
-        CriteriaBuilderHelper<GooseLevel> helper = new CriteriaBuilderHelper(getEntityManager(),GooseLevel.class);
+    public List<? extends GooseLevel> findLevel(Integer level, Boolean multiple) {
 
-
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.get(GooseLevel_.multiple), multiple)
-        );
-
-
-        if(level!=null){
-            helper.criteriaHelper.and(helper.criteriaHelper.equal(helper.rootHelper.get(GooseLevel_.level), level));
+        if(multiple){
+            QMultiGooseLevel multiGooseLevel = QMultiGooseLevel.multiGooseLevel;
+            JPAQuery query = new JPAQuery(getEntityManager());
+            query.from(multiGooseLevel)
+                    .where(
+                            multiGooseLevel.level.eq(level)
+                    );
+            return query.list(multiGooseLevel);
+        }else{
+            QSingleGooseLevel singleGooseLevel = QSingleGooseLevel.singleGooseLevel;
+            JPAQuery query = new JPAQuery(getEntityManager());
+            query.from(singleGooseLevel)
+                    .where(
+                            singleGooseLevel.level.eq(level)
+                    );
+            return query.list(singleGooseLevel);
         }
+    }
 
-        return helper.getResultList();
+    @Override
+    public Long findForNbAds(Integer nbAds) {
+        QSingleGooseLevel gooseLevel = QSingleGooseLevel.singleGooseLevel;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(gooseLevel)
+                .where(
+                       gooseLevel.minScore.eq(nbAds)
+                );
+        return query.singleResult(gooseLevel.id);
+
     }
 
     public void modifyLevelMinAmount(Long levelId, Integer minAmount) {

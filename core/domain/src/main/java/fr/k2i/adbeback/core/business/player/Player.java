@@ -31,6 +31,7 @@ import javax.persistence.Version;
 
 
 import fr.k2i.adbeback.core.business.ad.ViewedAd;
+import lombok.Data;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.security.core.GrantedAuthority;
@@ -53,108 +54,82 @@ import fr.k2i.adbeback.core.business.goosegame.GooseWin;
  */
 @Entity
 @Table(name = "player")
-public class Player extends BaseObject implements Serializable, UserDetails {
-	private static final long serialVersionUID = 3484284128832463706L;
-	
-	private Long id;
+@Data
+public class Player extends BaseObject implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(nullable = false, length = 50, unique = true)
     private String username;                    // required
+    @Column(nullable = false)
     private String password;                    // required
+    @Transient
     private String confirmPassword;
+
+    @Column(name = "first_name", nullable = true, length = 50)
     private String firstName;                   // required
+
+    @Column(name = "last_name", nullable = true, length = 50)
     private String lastName;                    // required
+
+    @Column(nullable = false, unique = true)
     private String email;                       // required; unique
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
     private String website;
+
+    @Embedded
     private Address address = new Address();
+
+    @Version
     private Integer version;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private Set<Role> roles = new HashSet<Role>();
+
+    @Column(name = "account_enabled")
     private boolean enabled;
+
+    @Column(name = "account_expired", nullable = false)
     private boolean accountExpired;
+
+    @Column(name = "account_locked", nullable = false)
     private boolean accountLocked;
+
+    @Column(name = "credentials_expired", nullable = false)
     private boolean credentialsExpired;
+
+    @Enumerated(EnumType.STRING)
     private Sex sex;
+
+    @Temporal(TemporalType.DATE)
     private Date birthday;
     private Boolean newsletter;
-    
-    /*private List<ViewedMedia> medias = new ArrayList<ViewedMedia>();*/
+
+    @OneToMany(mappedBy="player",cascade=CascadeType.ALL)
     private List<AbstractAdGame> games = new ArrayList<AbstractAdGame>();
+
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
+    @OrderBy("windate DESC")
     private List<GooseWin> wins = new ArrayList<GooseWin>();
 
-
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="PLAYER_ID")
     private List<GooseToken> gooseTokens;
 
     private Integer validatedLevel;
 
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
     private List<ViewedAd> viewedAds = new ArrayList<ViewedAd>();
 
-
-    public Integer getValidatedLevel() {
-        return validatedLevel;
-    }
-
-    public void setValidatedLevel(Integer validatedLevel) {
-        this.validatedLevel = validatedLevel;
-    }
-
-    @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
-    public List<ViewedAd> getViewedAds() {
-        return viewedAds;
-    }
-
-    public void setViewedAds(List<ViewedAd> viewedAds) {
-        this.viewedAds = viewedAds;
-    }
-
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="PLAYER_ID")
-    public List<GooseToken> getGooseTokens() {
-        return gooseTokens;
-    }
-
-    public void setGooseTokens(List<GooseToken> gooseToken) {
-        this.gooseTokens = gooseToken;
-    }
-
-    /*
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "TOKEN_ID")
-	public GooseToken getGooseToken() {
-		return gooseToken;
-	}
-
-	public void setGooseToken(GooseToken gooseToken) {
-		this.gooseToken = gooseToken;
-	}
-*/
-
-/*	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="PLAYER_ID")
-    public List<ViewedMedia> getMedias() {
-		return medias;
-	}
-
-	public void setMedias(List<ViewedMedia> medias) {
-		this.medias = medias;
-	}*/
-
-	@OneToMany(mappedBy="player",cascade=CascadeType.ALL)
-	public List<AbstractAdGame> getGames() {
-		return games;
-	}
-
-	public void setGames(List<AbstractAdGame> games) {
-		this.games = games;
-	}
-
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="player")
-	@OrderBy("windate DESC")
-	public List<GooseWin> getWins() {
-		return wins;
-	}
-
-	public void setWins(List<GooseWin> wins) {
-		this.wins = wins;
-	}
 
 	/**
      * Default constructor - creates a new instance with no values set.
@@ -171,81 +146,9 @@ public class Player extends BaseObject implements Serializable, UserDetails {
         this.username = username;
     }
 
-    
-//    @SequenceGenerator(name="Player_Gen", sequenceName="Player_Sequence")
-    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="Player_Gen")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
-    public Long getId() {
-        return id;
-    }
-
-    @Column(nullable = false, length = 50, unique = true)
-    public String getUsername() {
-        return username;
-    }
-
-    @Column(nullable = false)
-    public String getPassword() {
-        return password;
-    }
-
-    @Transient
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-
-    @Column(name = "first_name", nullable = true, length = 50)
-    public String getFirstName() {
-        return firstName;
-    }
-
-    @Column(name = "last_name", nullable = true, length = 50)
-    public String getLastName() {
-        return lastName;
-    }
-
-    @Column(nullable = false, unique = true)
-    public String getEmail() {
-        return email;
-    }
-
-    @Column(name = "phone_number")
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-
-    public String getWebsite() {
-        return website;
-    }
-
-    /**
-     * Returns the full name.
-     *
-     * @return firstName + ' ' + lastName
-     */
     @Transient
     public String getFullName() {
         return firstName + ' ' + lastName;
-    }
-
-    @Embedded
-    public Address getAddress() {
-        return address;
-    }
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    public Set<Role> getRoles() {
-        return roles;
     }
 
     /**
@@ -287,21 +190,6 @@ public class Player extends BaseObject implements Serializable, UserDetails {
         return authorities;
     }
 
-    @Version
-    public Integer getVersion() {
-        return version;
-    }
-
-    @Column(name = "account_enabled")
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Column(name = "account_expired", nullable = false)
-    public boolean isAccountExpired() {
-        return accountExpired;
-    }
-
     /**
      * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonExpired()
      * @return true if account is still active
@@ -311,10 +199,6 @@ public class Player extends BaseObject implements Serializable, UserDetails {
         return !isAccountExpired();
     }
 
-    @Column(name = "account_locked", nullable = false)
-    public boolean isAccountLocked() {
-        return accountLocked;
-    }
 
     /**
      * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonLocked()
@@ -323,11 +207,6 @@ public class Player extends BaseObject implements Serializable, UserDetails {
     @Transient
     public boolean isAccountNonLocked() {
         return !isAccountLocked();
-    }
-
-    @Column(name = "credentials_expired", nullable = false)
-    public boolean isCredentialsExpired() {
-        return credentialsExpired;
     }
 
     /**
@@ -339,154 +218,21 @@ public class Player extends BaseObject implements Serializable, UserDetails {
         return !credentialsExpired;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setAccountExpired(boolean accountExpired) {
-        this.accountExpired = accountExpired;
-    }
-
-    public void setAccountLocked(boolean accountLocked) {
-        this.accountLocked = accountLocked;
-    }
-
-    public void setCredentialsExpired(boolean credentialsExpired) {
-        this.credentialsExpired = credentialsExpired;
-    }
-
-    @Enumerated(EnumType.STRING)
-	public Sex getSex() {
-		return sex;
-	}
-
-	public void setSex(Sex sex) {
-		this.sex = sex;
-	}
-
-	@Temporal(TemporalType.DATE)
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
-	public Boolean getNewsletter() {
-		return newsletter;
-	}
-
-	public void setNewsletter(Boolean newsletter) {
-		this.newsletter = newsletter;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Player)) {
-            return false;
-        }
-
-        final Player user = (Player) o;
-
-        return !(username != null ? !username.equals(user.getUsername()) : user.getUsername() != null);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int hashCode() {
-        return (username != null ? username.hashCode() : 0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String toString() {
-        ToStringBuilder sb = new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-                .append("username", this.username)
-                .append("enabled", this.enabled)
-                .append("accountExpired", this.accountExpired)
-                .append("credentialsExpired", this.credentialsExpired)
-                .append("accountLocked", this.accountLocked);
-
-        if (roles != null) {
-            sb.append("Granted Authorities: ");
-
-            int i = 0;
-            for (Role role : roles) {
-                if (i > 0) {
-                    sb.append(", ");
-                }
-                sb.append(role.toString());
-                i++;
-            }
-        } else {
-            sb.append("No Granted Authorities");
-        }
-        return sb.toString();
-    }
-
     public void addGooseToken(GooseToken gooseToken) {
         if(gooseTokens==null){
             gooseTokens = new ArrayList<GooseToken>();
         }
         gooseToken.setPlayer(this);
         gooseTokens.add(gooseToken);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "username='" + username + '\'' +
+                ", enabled=" + enabled +
+                ", roles=" + roles +
+                '}';
     }
 }

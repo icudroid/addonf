@@ -13,6 +13,9 @@ import java.util.Set;
 
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.IMultiGooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.ISingleGooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.SingleGooseLevel;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +72,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
         GooseLevel level = gooseLevelDao.get(gooseLevel);
         AbstractAdGame game = null;
 
-        if(level.isMultiple()){
+        if(level instanceof IMultiGooseLevel){
             game = new AdGame();
         }else{
             game = new AdGameMedia();

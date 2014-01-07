@@ -1,6 +1,8 @@
 package fr.k2i.adbeback.webapp.bean;
 
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.IMultiGooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.MultiGooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.NoneGooseCase;
 
 import java.io.Serializable;
@@ -32,15 +34,27 @@ public class GooseLevelGame implements Serializable{
     }
 
     public Integer getStrong(){
-        return level.getStrong();
+        if(level instanceof IMultiGooseLevel){
+            return ((MultiGooseLevel)level).getStrong();
+        }else{
+            return null;
+        }
     }
 
     public Integer getAmount(){
-        return level.getValue();
+        if(level instanceof IMultiGooseLevel){
+            return ((MultiGooseLevel)level).getValue();
+        }else{
+            return null;
+        }
     }
 
     public Integer getMinAmountWin(){
-        return level.getMinValue();
+        if(level instanceof IMultiGooseLevel){
+            return ((MultiGooseLevel)level).getMinValue();
+        }else{
+            return null;
+        }
     }
 
     public List<GooseCase> getGooseCases() {
@@ -60,15 +74,21 @@ public class GooseLevelGame implements Serializable{
     }
 
     public void setStrong(Integer strong){
-        level.setStrong(strong);
+        if(level instanceof IMultiGooseLevel){
+            ((MultiGooseLevel)level).setStrong(strong);
+        }
     }
 
     public void setAmount(Integer amount){
-        level.setValue(amount);
+        if(level instanceof IMultiGooseLevel){
+            ((MultiGooseLevel)level).setValue(amount);
+        }
     }
 
     public void setMinAmountWin(Integer minAmount){
-        level.setMinValue(minAmount);
+        if(level instanceof IMultiGooseLevel){
+            ((MultiGooseLevel)level).setMinValue(minAmount);
+        }
     }
 
     private int calculateStrong(int size){

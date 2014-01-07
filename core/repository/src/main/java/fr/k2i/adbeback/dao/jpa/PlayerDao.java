@@ -4,11 +4,14 @@ import java.util.List;
 
 import javax.persistence.Table;
 
+import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.goosegame.GooseCase_;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel_;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken_;
+import fr.k2i.adbeback.core.business.media.QMedia;
 import fr.k2i.adbeback.core.business.player.Player_;
+import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -89,12 +92,23 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
     /**
      * {@inheritDoc}
      */
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        QPlayer player = QPlayer.player;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(player)
+                .where(
+                        player.username.eq(username)
+                );
+
+/*
         CriteriaBuilderHelper<Player> helper = new CriteriaBuilderHelper(getEntityManager(),Player.class);
         helper.criteriaHelper.and(
                 helper.criteriaHelper.equal(helper.rootHelper.get(Player_.username), username)
         );
-        List users = helper.getResultList();
+*/
+        //List users = helper.getResultList();
+        List<Player> users = query.list(player);
 
         if (users == null || users.isEmpty()) {
             throw new UsernameNotFoundException("user '" + username + "' not found...");

@@ -13,7 +13,6 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         $scope.videoElt = angular.element("video");
         $scope.index = 0;
         $scope.base = addonf.base;
-        $scope.level = 3;
         $scope.canDownload = false;
 
         $scope.noResponse = function(){
@@ -56,7 +55,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
 
 
-        Game.createGame({level:$scope.level},function(data){
+        Game.createGame({},function(data){
 
             $scope.index = 0;
             $scope.adGame = data;

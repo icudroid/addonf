@@ -1,5 +1,7 @@
 package fr.k2i.adbeback.webapp.config;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +15,23 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.util.StringUtils;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Configuration
 @Order(Ordered.LOWEST_PRECEDENCE - 8)
@@ -35,10 +53,53 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     }
 
 
+    public SimpleUrlAuthenticationSuccessHandler ajaxLoginSuccessHandler(){
+        return new SimpleUrlAuthenticationSuccessHandler(){
+            protected final Log logger = LogFactory.getLog(this.getClass());
+
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                Authentication authentication) throws ServletException, IOException {
+
+                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    response.setContentType("application/json");
+                    response.getWriter().print("{\"success\":true}");
+                    response.getWriter().flush();
+                } else {
+                    super.onAuthenticationSuccess(request, response, authentication);
+                }
+
+            }
+
+        };
+    }
+
+
+
+    public SimpleUrlAuthenticationFailureHandler ajaxLoginFailureHandler(){
+        return new SimpleUrlAuthenticationFailureHandler(){
+            protected final Log logger = LogFactory.getLog(this.getClass());
+
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request,
+                                                HttpServletResponse response, AuthenticationException exception)
+                    throws IOException, ServletException {
+                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    response.setContentType("application/json");
+                    response.getWriter().print("{\"success\":false}");
+                    response.getWriter().flush();
+                } else {
+                    super.onAuthenticationFailure(request, response, exception);
+                }
+            }
+
+        };
+    }
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.authorizeRequests()
                     .antMatchers("/").permitAll()
                     .antMatchers("/home.html").permitAll()
                     .antMatchers("/signup").permitAll()
@@ -57,34 +118,30 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/search.html").permitAll()
                     .antMatchers("/search").permitAll()
                     .antMatchers("/custom-logout").hasRole("USER")
+                    //manage cart
+                    .antMatchers("/rest/addToCart/*").permitAll()
+                    .antMatchers("/rest/removeFromCart/*").permitAll()
+                    .antMatchers("/rest/cart").permitAll()
+                    .antMatchers("/rest/cart/empty").permitAll()
+                    .antMatchers("/partial/*.html").permitAll()
+                    .antMatchers("/**").hasRole("USER");
 
+        http.formLogin()
+                    .loginPage("/login")
+                    .successHandler(ajaxLoginSuccessHandler())
+                    .failureHandler(ajaxLoginFailureHandler())
+                    .permitAll();
 
+        http.logout()
+                    .deleteCookies("remove")
+                    .invalidateHttpSession(false)
+                    .logoutUrl("/custom-logout")
+                    .logoutSuccessUrl("/logout-success");
 
-                //manage cart
-                .antMatchers("/rest/addToCart/*").permitAll()
-                .antMatchers("/rest/removeFromCart/*").permitAll()
-                .antMatchers("/rest/cart").permitAll()
-                .antMatchers("/rest/cart/empty").permitAll()
-                .antMatchers("/partial/*.html").permitAll()
+        http.sessionManagement()
+                    .maximumSessions(1)
+                    .expiredUrl("/login?expired");
 
-
-                .antMatchers("/**").hasRole("USER")
-                //.fullyAuthenticated()
-                    .and()
-                        .formLogin()
-                            .loginPage("/login")
-                            .failureUrl("/login?error")
-                        .permitAll()
-                    .and()
-                        .logout()
-                            .deleteCookies("remove")
-                            .invalidateHttpSession(false)
-                            .logoutUrl("/custom-logout")
-                            .logoutSuccessUrl("/logout-success")
-                    .and()
-                        .sessionManagement()
-                            .maximumSessions(1)
-                            .expiredUrl("/login?expired");
     }
 
 }

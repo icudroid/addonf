@@ -8,47 +8,25 @@ import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
+import lombok.Data;
 
+
+@Data
 @Entity
-@Table(name = "goose_level")
-public class GooseLevel extends BaseObject implements Serializable {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = IMetaData.TableMetadata.GOOSE_LEVEL)
+@DiscriminatorColumn(name = IMetaData.ColumnMetadata.GooseLevel.Discrimator.DISCRIMINATOR, discriminatorType = DiscriminatorType.STRING)
+public abstract class GooseLevel extends BaseObject implements Serializable {
 
-	private static final long serialVersionUID = 3339924782068634755L;
-	private Long id;
-	private Integer level;
-	private Integer value;
-    private Integer nbMaxAdByPlay;
-    //private Integer minScore;
-	private StartLevelGooseCase startCase;
-	private EndLevelGooseCase endCase;
-	private List<GooseCase> gooseCases;
-    private boolean multiple;
-    private Integer strong;
-    private Integer minValue;
+	protected static final long serialVersionUID = 3339924782068634755L;
+	protected Long id;
+	protected Integer level;
+    protected Integer nbMaxAdByPlay;
+	protected StartLevelGooseCase startCase;
+	protected EndLevelGooseCase endCase;
+	protected List<GooseCase> gooseCases;
 
-    public Integer getMinValue() {
-        return minValue;
-    }
-
-    public void setMinValue(Integer minValue) {
-        this.minValue = minValue;
-    }
-
-    public Integer getStrong() {
-        return strong;
-    }
-
-    public void setStrong(Integer strong) {
-        this.strong = strong;
-    }
-
-/*    public Integer getMinScore() {
-        return minScore;
-    }
-
-    public void setMinScore(Integer minScore) {
-        this.minScore = minScore;
-    }*/
 
     public Integer getNbMaxAdByPlay() {
         return nbMaxAdByPlay;
@@ -69,11 +47,8 @@ public class GooseLevel extends BaseObject implements Serializable {
 		this.gooseCases = gooseCases;
 	}
 
-//	@SequenceGenerator(name = "GooseLevel_Gen", sequenceName = "GooseLevel_Sequence")
 	@Id
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GooseLevel_Gen")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
 	public Long getId() {
 		return id;
 	}
@@ -88,14 +63,6 @@ public class GooseLevel extends BaseObject implements Serializable {
 
 	public void setLevel(Integer level) {
 		this.level = level;
-	}
-
-	public Integer getValue() {
-		return value;
-	}
-
-	public void setValue(Integer value) {
-		this.value = value;
 	}
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -119,70 +86,29 @@ public class GooseLevel extends BaseObject implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((endCase == null) ? 0 : endCase.hashCode());
-		result = prime * result
-				+ ((gooseCases == null) ? 0 : gooseCases.hashCode());
-		result = prime * result + ((level == null) ? 0 : level.hashCode());
-		result = prime * result
-				+ ((startCase == null) ? 0 : startCase.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GooseLevel other = (GooseLevel) obj;
-		if (endCase == null) {
-			if (other.endCase != null)
-				return false;
-		} else if (!endCase.equals(other.endCase))
-			return false;
-		if (gooseCases == null) {
-			if (other.gooseCases != null)
-				return false;
-		} else if (!gooseCases.equals(other.gooseCases))
-			return false;
-		if (level == null) {
-			if (other.level != null)
-				return false;
-		} else if (!level.equals(other.level))
-			return false;
-		if (startCase == null) {
-			if (other.startCase != null)
-				return false;
-		} else if (!startCase.equals(other.startCase))
-			return false;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
-		return "GooseLevel [id=" + id + ", level=" + level + ", value=" + value
+		return "GooseLevel [id=" + id + ", level=" + level
 				+ ", startCase=" + startCase + ", endCase=" + endCase
 				;
 	}
 
 
-    public boolean isMultiple() {
-        return multiple;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GooseLevel)) return false;
+
+        GooseLevel that = (GooseLevel) o;
+
+        if (level != null ? !level.equals(that.level) : that.level != null) return false;
+
+        return true;
     }
 
-    public void setMultiple(boolean multiple) {
-        this.multiple = multiple;
+    @Override
+    public int hashCode() {
+        int result = level != null ? level.hashCode() : 0;
+        return result;
     }
 
 

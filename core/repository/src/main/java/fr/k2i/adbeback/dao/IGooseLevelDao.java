@@ -12,6 +12,8 @@ import java.util.List;
 public interface IGooseLevelDao extends IGenericDao<GooseLevel, Long> {
 
 
-    List<GooseLevel> findLevel(Integer level, Boolean multiple);
+    List<? extends GooseLevel> findLevel(Integer level, Boolean multiple);
+
+    Long findForNbAds(Integer nbAds);
 }
 

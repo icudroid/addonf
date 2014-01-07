@@ -45,6 +45,13 @@ public class AdGameWebservice {
     private String pathLogo;
 
 
+
+    @RequestMapping( "/partials/{html}.html")
+    public String partials(@PathVariable String html){
+        return "manage/gooseGame/partials/"+html;
+    }
+
+
     @RequestMapping(value = "/dln", method = RequestMethod.GET)
     public @ResponseBody
     void dnl(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -54,10 +61,10 @@ public class AdGameWebservice {
         }
     }
 
-    @RequestMapping(value = "/rest/createGame/{level}", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
     public @ResponseBody
-    AdGameBean createGame(@PathVariable Long level,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return adGameFacade.createAdGame(playerFacade.getCurrentPlayer().getId(),level, request);
+    AdGameBean createGame(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return adGameFacade.createAdGame(playerFacade.getCurrentPlayer().getId(), request);
     }
 
 
