@@ -3,15 +3,18 @@ $(function(){
 
     var currentSample = null;
 
+    var stopMusic = function(){
+        $("div > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
+    };
+
     $(".playMusic").click(function(e){
-
-
 
         if($(this).find("i").hasClass("fa-pause") && currentSample!=null){
             $("div > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
             currentSample.pause();
         }else{
             if(currentSample!=null){
+                currentSample.removeEventListener('ended',stopMusic);
                 $("div > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
                 currentSample.pause();
             }
@@ -22,13 +25,8 @@ $(function(){
             currentSample = new Audio();
             currentSample.src = url;
             currentSample.play();
+            currentSample.addEventListener('ended', stopMusic);
         }
-
-
-
-
-
-
 
         return false;
     });

@@ -1,0 +1,18 @@
+.layout-blue {
+	@containerBg: lighten(#d8e1e6, 6%);
+
+	body,
+	#content,
+	.container-fluid,
+	.layout-app .row-app,
+	.layout-app .col-separator-h:after {
+		background: @containerBg;
+	}
+
+	#footer {
+		background: lighten(@containerBg, 3%);
+	}
+	.bg-gray {
+		background: lighten(@containerBg, 6%) !important;
+	}
+}

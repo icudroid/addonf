@@ -4,7 +4,7 @@ $(function(){
         $('#login-error').show();
     };
 
-    $("input[name='username']").keyup(function(){
+    $("input[name='username']").bind("keyup change",function(){
        var cars = $(this).val().length;
         if(cars>4){
             $("#check-id").show();
@@ -18,7 +18,7 @@ $(function(){
     });
 
 
-    $("input[name='password']").keyup(function(){
+    $("input[name='password']").bind("keyup change",function(){
         var cars = $(this).val().length;
 
         if(cars>5){

@@ -1,0 +1,264 @@
+@menuSidebarWidth: 260px;
+@menuSidebarItemHeight: 48px;
+@menuSidebarBg: #27292a;
+@menuSidebarLogoWrapper: 150px;
+@menuSidebarBrandWrapper: 59px;
+@menuSidebarListTop: @menuSidebarLogoWrapper + @menuSidebarBrandWrapper;
+
+#menu {
+
+	img { border-color: lighten(@inverseColor, 10%); }
+	a { color: #fff; }
+	.text-faded { color: lighten(@inverseColor, 20%) !important; }
+	.bg-primary .text-faded { color: #fff !important; }
+	
+	width: @menuSidebarWidth;
+	background: @menuSidebarBg;
+	
+	#sidebar-fusion-wrapper {
+		#logoWrapper {
+			position: relative;
+			overflow: hidden;
+			z-index: 3;
+			background: #313233;
+			height: @menuSidebarLogoWrapper;
+			width: @menuSidebarWidth;
+			#logo {
+				display: block;
+				padding: 25px 0;
+				text-align: center;
+				img { border: none; max-width: 100%; }
+				a {
+					font-size: 20px;
+					color: #686a6a;
+					i:hover {color:#fff;}
+				}
+				.innerAll {
+					padding: 15px;
+				}
+			}
+		}
+		#brandWrapper {
+			position: relative;
+			z-index: 3;
+			background: #27292a;
+			height: @menuSidebarBrandWrapper;
+			width: @menuSidebarWidth;
+			padding: 0 15px;
+			> a {
+				line-height: @menuSidebarBrandWrapper;
+				> span.text {
+					font-size: 24px;
+					font-weight: 700;
+					padding-left: 3px;
+					padding-right: 8px;
+					position: relative;
+					top: -1px;
+				}
+				&.color {
+					position: relative;
+					top: -2px;
+					display: inline-block;
+					width: 10px;
+					height: 10px;
+					border: 1px solid #fff;
+					.rounded(4px,4px,4px,4px);
+
+					&.color-inverse {
+						background: #333;
+						border: 1px solid #777;
+						&.active {
+							border-color: darken(#fff, 50%);
+						}
+					}
+					&.color-blue {
+						background: lighten(#374a59, 5%);
+						border: 1px solid lighten(#374a59, 10%);
+						&.active { border-color: lighten(#374a59, 30%); }
+					}
+					&.color-white {
+						background: fade(#fff, 90%);
+					}
+				}
+			}
+		}
+	}
+
+	> div {
+		position: relative;
+		overflow: hidden;
+		height: 100%;
+	
+		ul {
+			padding: 0;
+			width: @menuSidebarWidth;
+			background: @menuSidebarBg;
+			list-style: none;
+			overflow: hidden;
+			li {
+				height: @menuSidebarItemHeight;
+				border-bottom: 1px solid lighten(@menuSidebarBg, 2%);
+				padding: 0;
+				position: relative;
+				> a {
+					padding: 0 0 0 20px;
+					display: block;
+					color: #999999;
+					font-weight: 600;
+					text-decoration: none;
+					height: @menuSidebarItemHeight - 1;
+					line-height: @menuSidebarItemHeight - 1;
+					position: relative;
+					font-size: 14px;
+					> span {
+						&.badge {
+							display: inline-block;
+							position: absolute;
+							top: 14px;
+							right: 20px;
+							left: auto;
+							padding: 3px 5px;
+							font-size: 11px;
+							color: @inverseColor;
+							border-color: @inverseColor;
+							font-weight: 700;
+							background: #999;
+							&.badge-inverse {
+								color: #fff;
+								border-color: @primaryColor;
+								background: @menuSidebarBg;
+							}
+						}
+					}
+					> i {
+						display: inline-block;
+						height: @menuSidebarItemHeight;
+						vertical-align: middle;
+						width: 33px;
+						&:before { 
+							color: #999999;
+							color: #414243;
+							position: relative;
+							text-align: left;
+							top: -2px;
+							left: auto;
+							width: 40px;
+							font-size: 20px;
+							height: @menuSidebarItemHeight;
+							line-height: @menuSidebarItemHeight;
+						}
+					}
+					&:hover {
+						background: darken(@inverseColor,5%);
+						color: #fff;
+						> i:before { color: @primaryColor; }
+						span.badge {
+							border-color: @primaryColor;
+							background: #2c2c2c;
+							color: #fff;
+						}
+					}
+					&[data-toggle="collapse"] {
+						position: relative;
+						> span.badge {
+							right: 45px;
+						}
+						&:after {
+							display: inline-block;
+							font-family: "picto-foundry-general";
+							font-style: normal;
+							font-weight: normal;
+							font-variant: normal;
+							text-transform: none;
+							line-height: 1;
+							-webkit-font-smoothing: antialiased;
+							content: "\f100";
+							color: #fff;
+							font-size: 12px;
+							position: absolute;
+							right: 25px;
+							top: 19px;
+						}
+					}
+				}
+				&.active.hasSubmenu {
+					height: auto;
+					> a[data-toggle="collapse"]:after {
+						content: "\f16f";
+						top: 24px;
+					}
+				}
+				.innerAll { padding: 20px; }
+				.innerLR { padding-left: 20px; padding-right: 20px; }
+				.innerB { padding-bottom: 20px; }
+				.innerT { padding-top: 20px; }
+			}
+		}
+		> ul {
+			position: absolute;
+			top: @menuSidebarListTop;
+			left: 0;
+			z-index: 2;
+			> li {
+				&.active {
+					> a {
+						background: @primaryColor;
+						color: #ffffff;
+						> i:before { color:#fff; }
+						> span.badge-inverse {
+							border-color: @menuSidebarBg;
+						}
+					}
+					span.badge {
+						border-color: @primaryColor;
+						background: #2c2c2c;
+						color: #fff;
+					}
+				}
+				&.reset {
+					height: auto;
+					opacity: 1;
+				}
+
+				.btn-inverse:hover {
+					color: #fff;
+					i { color: @primaryColor; }
+				}
+
+				> ul {
+					background: #313233;
+					> li {
+						&.active {
+							> a {
+								background: darken(@inverseColor,5%);
+								> i:before { color: @primaryColor; }
+								span.badge {
+									border-color: @primaryColor;
+									background: #2c2c2c;
+									color: #fff;
+								}
+							}
+						}
+						a {
+							padding: 0 0 0 16px * 2;
+						}
+						> ul {
+							background: lighten(#313233, 10%);
+							> li {
+								a {
+									padding: 0 0 0 16px * 3;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.menu-left-visible .menu-left-hidden-xs {
+		display: none !important;
+	}
+}
