@@ -31,6 +31,9 @@ public class HomeController {
     @Value(value ="${addonf.static.url}" )
     private String staticUrl;
 
+    @Value(value ="${addonf.bestdl.home.max:9}" )
+    private Integer maxHomeBestDl;
+
 
     @RequestMapping("/")
     public String home(Map<String, Object> model,HttpServletRequest request) throws Exception {
@@ -41,7 +44,7 @@ public class HomeController {
         }
         model.put("cart", cart);
         model.put("pushes", mediaFacade.getHomePush());
-        model.put("bests", mediaFacade.getBestMusicDownload(null));
+        model.put("bests", mediaFacade.getBestMusicDownload(null,maxHomeBestDl));
         model.put("categories",genreRepository.findAll());
         model.put("staticUrl",staticUrl);
         return "home";

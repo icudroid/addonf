@@ -1,9 +1,8 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
-import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
-import fr.k2i.adbeback.core.business.goosegame.QMultiGooseLevel;
-import fr.k2i.adbeback.core.business.goosegame.QSingleGooseLevel;
+import com.mysema.query.types.expr.BooleanExpression;
+import fr.k2i.adbeback.core.business.goosegame.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -33,23 +32,26 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
     @Override
     public List<? extends GooseLevel> findLevel(Integer level, Boolean multiple) {
 
-        if(multiple){
-            QMultiGooseLevel multiGooseLevel = QMultiGooseLevel.multiGooseLevel;
-            JPAQuery query = new JPAQuery(getEntityManager());
-            query.from(multiGooseLevel)
-                    .where(
-                            multiGooseLevel.level.eq(level)
-                    );
-            return query.list(multiGooseLevel);
-        }else{
-            QSingleGooseLevel singleGooseLevel = QSingleGooseLevel.singleGooseLevel;
-            JPAQuery query = new JPAQuery(getEntityManager());
-            query.from(singleGooseLevel)
-                    .where(
-                            singleGooseLevel.level.eq(level)
-                    );
-            return query.list(singleGooseLevel);
-        }
+        QGooseLevel gooseLevel = QGooseLevel.gooseLevel;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(gooseLevel);
+
+
+            BooleanExpression expression = null;
+
+            if(multiple){
+                expression = gooseLevel.instanceOf(MultiGooseLevel.class);
+            }else{
+                expression = gooseLevel.instanceOf(SingleGooseLevel.class);
+            }
+
+            if(level!=null){
+                expression.and(gooseLevel.level.eq(level));
+            }
+
+            query.where(expression);
+
+        return query.list(gooseLevel);
     }
 
     @Override

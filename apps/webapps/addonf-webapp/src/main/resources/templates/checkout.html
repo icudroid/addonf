@@ -1,10 +1,50 @@
 <!DOCTYPE html>
 <html
        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/checkout_layout">
-<head>
-<title th:text="${title}">Title</title>
+      layout:decorator="layout/home_layout">
+<head layout:fragment="customHead">
 
+    <title>MTZik</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+    <link th:href="@{/img/favicon.png}" rel="icon" />
+
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/jquery-ui/css/jquery-ui.min.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/cart.css}"/>
+
+
+    <script th:src="@{/coral/assets/components/library/jquery/jquery.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/jquery-ui/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/modernizr/modernizr.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/less-js/less.min.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
+    <script th:src="@{/coral/assets/components/library/jquery-ui/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js}"></script>
+
+
+    <script th:inline="javascript">
+        var addonf = {};
+        addonf.base = [[@{/}]];
+            addonf.static = [[${staticUrl}]];
+            addonf.token = [[${_csrf.token}]];
+    </script>
+
+    <script src="audio.js" th:src="@{/js/addonf/audio.js}"></script>
+    <script src="login.js" th:src="@{/js/addonf/login.js}"></script>
+    <script src="audio.js" th:src="@{/js/addonf/search.js}"></script>
+
+    <style type="text/css">
+        .ui-front{
+            z-index: 1500;
+        }
+    </style>
 </head>
 
 
@@ -20,8 +60,10 @@
             <div class="col-md-4">
                 <div class="box-generic padding-none">
                     <h4 class="innerAll border-bottom margin-none" th:text="#{addonf.checkout.signup.title}">Checkout as a guest or register</h4>
-                    <div class="innerAll inner-2x border-bottom">
-                        <a th:href="@{/signup.html}" class="btn btn-primary btn-sm pull-right">Continue</a>
+                    <div class="innerAll inner-2x border-bottom text-center">
+                        <form th:action="@{/signup}" >
+                            <button type="submit" class="btn btn-primary btn-sm" th:text="#{addonf.checkout.signup.btn}">Signup</button>
+                        </form>
                     </div>
                     <div class="innerAll inner-2x">
                         <p th:text="#{addonf.checkout.enroll.why}">Register with us and get:</p>
@@ -38,19 +80,26 @@
             <div class="col-md-4">
                 <div class="box-generic padding-none">
                     <h4 class="innerAll border-bottom margin-none" th:text="#{addonf.checkout.login.title}">Login</h4>
-                    <form action="" class="margin-none">
+                    <form action="#" class="margin-none" id="login-4-game">
                         <div class="innerAll bg-gray border-bottom">
                             <p class="margin-none" th:text="#{addonf.checkout.can.signin.below}">Already a member? Sign in below.</p>
                         </div>
                         <div class="innerAll inner-2x border-bottom">
-                            <label for="login" th:text="#{addonf.checkout.login}">Your email or Username</label>
-                            <input id="login" type="text" th:placeholder="#{addonf.checkout.username.placeholder}" placeholder="Type your username" class="form-control" />
-                            <div class="separator"></div>
-                            <label for="password" th:text="#{addonf.checkout.pwd}">Your Password</label>
-                            <input id="password" type="password" th:placeholder="#{addonf.checkout.password.placeholder}" placeholder="Type your password" class="form-control"/>
+                            <div class="form-group has-error" id="error-login" style="display: none;">
+                                <p class="has-error help-block" th:text="#{addonf.checkout.login.error}">Error login</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="login" th:text="#{addonf.checkout.login}" class="control-label">Your email or Username</label>
+                                <input name="username" id="login" type="text" th:placeholder="#{addonf.checkout.username.placeholder}" placeholder="Type your username" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="password" th:text="#{addonf.checkout.pwd}" class="control-label">Your Password</label>
+                                <input name="password" id="password" type="password" th:placeholder="#{addonf.checkout.password.placeholder}" placeholder="Type your password" class="form-control"/>
+                            </div>
                         </div>
                         <div class="innerAll">
-                            <button class="btn btn-primary btn-sm" th:text="#{addonf.checkout.login.btn}">Login</button>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button type="submit" class="btn btn-primary btn-sm" th:text="#{addonf.checkout.login.btn}">Login</button>
                             &nbsp; <a th:href="@{/forgottenPwd.html}" th:text="#{addonf.checkout.forgotten.pwd}">Forgot password</a>
                         </div>
                     </form>
@@ -104,5 +153,34 @@
 
     </div>
 
+
+    <div layout:fragment="customJsInclude">
+        <!-- Global -->
+        <script>
+            var basePath = '',
+                    commonPath = '../assets/',
+                    rootPath = '../',
+                    DEV = false,
+                    componentsPath = '../assets/components/';
+
+            var primaryColor = '#eb6a5a',
+                    dangerColor = '#b55151',
+                    successColor = '#609450',
+                    warningColor = '#ab7a4b',
+                    inverseColor = '#45484d';
+
+            var themerPrimaryColor = primaryColor;
+        </script>
+
+
+        <script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/shop/core/js/shop.animations.init.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/admin/forms/elements/uniform/assets/lib/js/jquery.uniform.min.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/admin/forms/elements/uniform/assets/custom/js/uniform.init.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/admin/tables/classic/assets/js/tables-classic.init.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/admin/forms/elements/bootstrap-select/assets/lib/js/bootstrap-select.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/admin/forms/elements/bootstrap-select/assets/custom/js/bootstrap-select.init.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/front/core/assets/js/front.core.init.js}"></script>
+    </div>
 </body>
 </html>

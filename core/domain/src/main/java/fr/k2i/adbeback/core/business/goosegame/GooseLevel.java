@@ -65,7 +65,7 @@ public abstract class GooseLevel extends BaseObject implements Serializable {
 		this.level = level;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
 	@JoinColumn(name = "START_ID")
 	public StartLevelGooseCase getStartCase() {
 		return startCase;
@@ -75,7 +75,7 @@ public abstract class GooseLevel extends BaseObject implements Serializable {
 		this.startCase = startCase;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
 	@JoinColumn(name = "END_ID")
 	public EndLevelGooseCase getEndCase() {
 		return endCase;
@@ -113,22 +113,29 @@ public abstract class GooseLevel extends BaseObject implements Serializable {
 
 
     public void startCase(StartLevelGooseCase start) {
-        start.setLevel(this);
+        startCase = start;
+        startCase.setLevel(this);
         if(gooseCases == null){
             gooseCases = new ArrayList<GooseCase>();
-            gooseCases.add(start);
         }
+        gooseCases.add(startCase);
 
     }
 
     public void endCase(EndLevelGooseCase endLevelGooseCase) {
-        endLevelGooseCase.setLevel(this);
         endCase = endLevelGooseCase;
-        gooseCases.add(endLevelGooseCase);
+        endCase.setLevel(this);
+        if(gooseCases == null){
+            gooseCases = new ArrayList<GooseCase>();
+        }
+        gooseCases.add(endCase);
     }
 
     public void addCase(GooseCase acase) {
         acase.setLevel(this);
+        if(gooseCases == null){
+            gooseCases = new ArrayList<GooseCase>();
+        }
         gooseCases.add(acase);
     }
 }

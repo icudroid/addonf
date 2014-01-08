@@ -33,8 +33,8 @@ public class MediaFacade {
 
 
     @Transactional
-    public List<MediaBean> getBestMusicDownload(Long idGenre) throws Exception {
-        return construstBeanList(mediaDao.searchBestMusicDownload(idGenre));
+    public List<MediaBean> getBestMusicDownload(Long idGenre,int max) throws Exception {
+        return construstBeanList(mediaDao.searchBestMusicDownload(idGenre,max));
     }
 
 
@@ -49,7 +49,7 @@ public class MediaFacade {
             }
             return medias;
         }else {
-            return getBestMusicDownload(null);
+            return getBestMusicDownload(null,6);
         }
     }
 

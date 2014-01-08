@@ -21,8 +21,6 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
     @Transactional
     List<Music> findMusicBy(String str, Long idGenre) throws Exception;
 
-    @Transactional
-    List<Music> searchBestMusicDownload(Long idGenre) throws Exception;
 
     @Transactional
     List<Music> searchNewMusic(Long idGenre, String str, int max)
@@ -42,5 +40,8 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     Page<Music> findMusicByTile(String req, Pageable pageable);
+
+    @Transactional
+    List<Music> searchBestMusicDownload(Long idGenre, int max) throws Exception;
 }
 

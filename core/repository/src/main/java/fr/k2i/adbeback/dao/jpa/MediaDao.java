@@ -184,11 +184,11 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
     @Transactional
     @Override
-	public List<Music> searchBestMusicDownload(Long idGenre) throws Exception {
+	public List<Music> searchBestMusicDownload(Long idGenre,int max) throws Exception {
 
         List<Object[]> results = (List<Object[]>) getEntityManager()
                 .createQuery("SELECT m.id AS id, COUNT(m.id) AS total FROM Music AS m GROUP BY m.id ORDER BY COUNT (m.id) DESC")
-                .setMaxResults(25)
+                .setMaxResults(max)
                 .getResultList();
 
 
