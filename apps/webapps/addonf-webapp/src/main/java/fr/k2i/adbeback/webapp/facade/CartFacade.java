@@ -34,6 +34,7 @@ public class CartFacade {
         line.setIdMedia(idMedia);
         line.setTitle(media.getTitle());
         line.setAdNeeded(media.getNbAdsNeeded());
+        line.setJacket(media.getJacket());
 
         return line;
     }

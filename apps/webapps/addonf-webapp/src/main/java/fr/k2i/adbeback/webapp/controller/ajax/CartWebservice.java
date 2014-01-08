@@ -26,6 +26,9 @@ public class CartWebservice {
 
 	public static final String CART = "cart";
 
+    @Value(value ="${addonf.static.url}" )
+    private String staticUrl;
+
     @Value(value = "${addonf.max.in.cart:3}")
     private Integer maxMusicInCart;
 
@@ -47,6 +50,7 @@ public class CartWebservice {
     String cartTable(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response) throws Exception {
         CartBean cart = getCart(request, response);
         model.put("cart",cart);
+        model.put("staticUrl",staticUrl);
         return "layout/fragment/cartTable";
     }
 

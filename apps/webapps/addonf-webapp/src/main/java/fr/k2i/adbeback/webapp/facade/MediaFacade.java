@@ -2,8 +2,8 @@ package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.media.*;
 import fr.k2i.adbeback.core.business.push.HomePush;
+import fr.k2i.adbeback.dao.IHomePushDao;
 import fr.k2i.adbeback.dao.IMediaDao;
-import fr.k2i.adbeback.dao.jpa.HomePushRepository;
 import fr.k2i.adbeback.webapp.bean.PersonBean;
 import fr.k2i.adbeback.webapp.bean.media.AlbumBean;
 import fr.k2i.adbeback.webapp.bean.media.MediaBean;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,9 +27,9 @@ public class MediaFacade {
     @Autowired
     private IMediaDao mediaDao;
 
-
     @Autowired
-    private HomePushRepository homePushRepository;
+    private IHomePushDao homePushDao;
+
 
 
     @Transactional
@@ -41,8 +40,7 @@ public class MediaFacade {
 
     @Transactional
     public List<MediaBean> getHomePush() throws Exception {
-        Date now = new Date();
-        List<HomePush> pushes = homePushRepository.findByStartDateLessThanAndEndDateGreaterThan(now, now);
+        List<HomePush> pushes = homePushDao.findActualPushHome();
 
         if(pushes!=null && !pushes.isEmpty()){
             List<MediaBean> medias = new ArrayList<MediaBean>();

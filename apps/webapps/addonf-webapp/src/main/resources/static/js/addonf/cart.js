@@ -20,6 +20,7 @@ $(function(){
             'data': {_csrf:addonf.token},
             'success': function(data){
                 // refresh cart
+                $("#sum").html(data.minScore);
                 $.ajax({
                     'type': 'GET',
                     'url': addonf.base+'partial/cart.html',
@@ -46,10 +47,11 @@ $(function(){
         });
     };
 
-    $(".addToCart").click(function(e){
+    $(".addToCart").unbind("click").click(function(e){
         cartMethode("add", $(this).data("music"));
 
         var cart = $('.cart');
+        cart.addClass("open");
         var imgtodrag = $(this).parent().parent().find("img").eq(0);
         if (imgtodrag) {
             var imgclone = imgtodrag.clone()
@@ -70,13 +72,9 @@ $(function(){
                     'left': cart.offset().left + 10,
                     'width': 75,
                     'height': 75
-                }, 1000, 'easeInOutExpo');
-
-            setTimeout(function () {
-                cart.effect("shake", {
-                    times: 2
-                }, 200);
-            }, 1500);
+                }, 1000, 'easeInOutExpo',function(){
+                    cart.effect("shake",200);
+                });
 
             imgclone.animate({
                 'width': 0,
