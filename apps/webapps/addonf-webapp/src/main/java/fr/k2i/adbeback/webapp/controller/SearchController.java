@@ -33,7 +33,7 @@ import java.util.Map;
  * Goal:
  */
 @Controller
-public class SearchController {
+public class SearchController{
     @Value(value ="${addonf.static.url}" )
     private String staticUrl;
 

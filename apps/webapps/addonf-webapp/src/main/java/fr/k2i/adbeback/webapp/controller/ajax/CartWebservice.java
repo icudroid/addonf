@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Set;
-
+import static fr.k2i.adbeback.webapp.facade.AdGameFacade.*;
 /**
  * Controller to signup new users.
  *
@@ -23,8 +23,6 @@ import java.util.Set;
 public class CartWebservice {
     @Autowired
     private CartFacade cartFacade;
-
-	public static final String CART = "cart";
 
     @Value(value ="${addonf.static.url}" )
     private String staticUrl;

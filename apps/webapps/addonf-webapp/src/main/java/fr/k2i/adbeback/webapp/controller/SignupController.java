@@ -38,7 +38,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/signup*")
-public class SignupController {
+public class SignupController extends AbstractController{
 
 
     protected final Log log = LogFactory.getLog(getClass());
@@ -71,12 +71,6 @@ public class SignupController {
     @ModelAttribute(value = "player")
     @RequestMapping(method = RequestMethod.GET)
     public Player showForm(Map<String, Object> model,HttpServletRequest request) {
-        CartBean cart = (CartBean) request.getSession().getAttribute("cart");
-        if(cart==null){
-            cart = new CartBean();
-            request.getSession().setAttribute("cart",cart);
-        }
-        model.put("cart", cart);
         model.put("civilities", Sex.values());
         return new Player();
     }

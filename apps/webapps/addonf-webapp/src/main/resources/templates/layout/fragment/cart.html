@@ -2,7 +2,7 @@
 
 <li class="center innerAll" th:text="#{addonf.cart}" >Your Shopping Cart</li>
 
-<li class="product-list" th:each="line : ${cart.lines}">
+<li class="product-list" th:each="line : ${session.cart.lines}">
     <a href="#" class="removeFromCart" th:attr="data-music=${line.idMedia}"><i class="fa fa-times"></i></a><a th:href="@{/product.html(musicId=${line.idMedia})}" th:utext="#{addonf.cart.line(${line.title},${line.adNeeded})}">Coral Bootstrap T...  <span>3</span> </a>
 </li>
 

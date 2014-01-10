@@ -16,26 +16,12 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class CartController{
-
-    @Value(value ="${addonf.static.url}" )
-    private String staticUrl;
+public class CartController extends AbstractController{
 
 
     @RequestMapping("/cart.html")
     public String cart(Map<String, Object> model,HttpServletRequest request) throws Exception {
-        setCartBeanAndModel(model, request);
         return "cart";
-    }
-
-    private void setCartBeanAndModel(Map<String, Object> model, HttpServletRequest request) {
-        CartBean cart = (CartBean) request.getSession().getAttribute("cart");
-        if(cart==null){
-            cart = new CartBean();
-            request.getSession().setAttribute("cart",cart);
-        }
-        model.put("cart", cart);
-        model.put("staticUrl",staticUrl);
     }
 
 

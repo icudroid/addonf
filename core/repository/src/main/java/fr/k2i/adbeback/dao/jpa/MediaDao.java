@@ -223,6 +223,19 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 		return helper.getResultList();
 	}
 
+    @Override
+    public List<Media> getByIds(List<Long> mediaIds) {
+        QMedia media = QMedia.media;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(media)
+                .where(
+                        media.id.in(mediaIds)
+                );
+
+        return query.list(media);
+
+    }
+
 
     @Transactional
 	@Override

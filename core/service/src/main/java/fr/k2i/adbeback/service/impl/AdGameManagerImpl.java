@@ -68,8 +68,8 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
     @Transactional
-	public AbstractAdGame generate(Long idPlayer, Long gooseLevel) throws Exception {
-        GooseLevel level = gooseLevelDao.get(gooseLevel);
+	public AbstractAdGame generate(Long idPlayer, GooseLevel level) throws Exception {
+
         AbstractAdGame game = null;
 
         if(level instanceof IMultiGooseLevel){

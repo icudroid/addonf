@@ -43,9 +43,15 @@
     <script src="login.js" th:src="@{/js/addonf/login.js}"></script>
     <script src="audio.js" th:src="@{/js/addonf/search.js}"></script>
 
-    <script src="jquery.fullscreen.js" th:src="@{/js/external/jquery.fullscreen.js}"></script>
-    <script src="play.js" th:src="@{/js/addonf/play.js}"></script>
 
+
+    <script type="text/javascript">
+        $(function(){
+            $("#download").click(function(){
+                window.location.href = addonf.base;
+            });
+        });
+    </script>
 
     <style type="text/css">
         .ui-front{
@@ -58,59 +64,19 @@
 <body>
 
     <div layout:fragment="content" id="content">
-        <div class="container">
-            <a th:href="@{/catalog.html}" class="btn btn-default btn-sm" th:utext="#{addonf.backTo.shopping}"><i class="fa fa-arrow-left fa-fw"></i> Back to Shopping</a>
-            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/game.html}" class="btn btn-primary btn-sm" th:utext="#{addonf.cart.goGame}"><i class="fa fa-fw fa-check"></i> Play and Win</a>
-            <a sec:authorize="isAnonymous()" th:href="@{/checkout.html}" class="btn btn-primary btn-sm" th:utext="#{addonf.backTo.checkout}"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
-        </div>
 
-    <div class="container">
-        <div class="heading-buttons">
-            <h3 th:utext="#{addonf.backTo.shopping.cart}">Shopping Cart <i class="fa fa-fw fa-shopping-cart text-faded"></i></h3>
-        </div>
-
-        <div class="separator bottom"></div>
-
-        <!-- Shopping cart -->
-        <div class="overflow-x" id="cartTable">
-            <table th:substituteby="/layout/fragment/cartTable" />
-        </div>
-
-    </div>
-
-    <div class="bg-gray border-top innerTB inner-2x">
-        <div class="container innerTB inner-2x">
-            <!-- Row -->
-            <div class="row">
-
-                <!-- Column -->
-                <div class="col-md-6">
-
-                </div>
-                <!-- Column END -->
-
-                <!-- Column -->
-                <div class="col-md-3">
-                </div>
-                <!-- // Column END -->
-
-                <div class="col-md-3">
-                    <div class="box-generic padding-none text-center">
-                        <p class="lead margin-none strong innerAll border-bottom" th:utext="#{addonf.cart.total(${session.cart.minScore})}">Total: &euro;1,195.95</p>
-                        <div class="innerAll">
-                            <a id="play" sec:authorize="hasRole('ROLE_USER')" href="javascript:;" class="btn btn-block btn-primary" th:utext="#{addonf.cart.goGame}"><i class="fa fa-fw fa-check"></i> Play and Win</a>
-                            <a sec:authorize="isAnonymous()" th:href="@{/checkout.html}" class="btn btn-block btn-primary" th:utext="#{addonf.backTo.checkout}"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
-                        </div>
-                    </div>
-                </div>
-
+        <div class="page-title">
+            <div class="container">
+                <h1 class="text-center" th:utext="#{addonf.download.title}">
+                    Bravo, Vous pouvez télécharger gratuitement votre musique
+                </h1>
             </div>
-            <!-- // Row END -->
+        </div>
+
+        <div class="container text-center">
+            <a id="download" target="_blank" th:href="@{/dln}" class="btn btn-primary strong" style="font-size: 26px;" th:inline="text"><i class="fa fa-download fa-4"></i>&nbsp;[[#{addonf.download}]]</a>
         </div>
     </div>
-
-    </div>
-
 
 
     <div layout:fragment="customJsInclude">

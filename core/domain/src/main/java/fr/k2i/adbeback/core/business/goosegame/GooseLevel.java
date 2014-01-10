@@ -22,6 +22,7 @@ public abstract class GooseLevel extends BaseObject implements Serializable {
 	protected static final long serialVersionUID = 3339924782068634755L;
 	protected Long id;
 	protected Integer level;
+    protected boolean limitedTime;
     protected Integer nbMaxAdByPlay;
 	protected StartLevelGooseCase startCase;
 	protected EndLevelGooseCase endCase;

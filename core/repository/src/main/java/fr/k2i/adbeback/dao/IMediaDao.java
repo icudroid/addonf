@@ -43,5 +43,8 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     List<Music> searchBestMusicDownload(Long idGenre, int max) throws Exception;
+
+    @Transactional
+    List<Media> getByIds(List<Long> mediaIds);
 }
 

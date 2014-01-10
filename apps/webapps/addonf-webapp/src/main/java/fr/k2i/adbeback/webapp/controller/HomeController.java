@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.SessionScope;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -21,15 +22,13 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class HomeController {
+public class HomeController extends AbstractController{
     @Autowired
     private MediaFacade mediaFacade;
 
     @Autowired
     private GenreRepository genreRepository;
 
-    @Value(value ="${addonf.static.url}" )
-    private String staticUrl;
 
     @Value(value ="${addonf.bestdl.home.max:9}" )
     private Integer maxHomeBestDl;
@@ -37,23 +36,10 @@ public class HomeController {
 
     @RequestMapping("/")
     public String home(Map<String, Object> model,HttpServletRequest request) throws Exception {
-        CartBean cart = (CartBean) request.getSession().getAttribute("cart");
-        if(cart==null){
-            cart = new CartBean();
-            request.getSession().setAttribute("cart",cart);
-        }
-        model.put("cart", cart);
         model.put("pushes", mediaFacade.getHomePush());
         model.put("bests", mediaFacade.getBestMusicDownload(null,maxHomeBestDl));
         model.put("categories",genreRepository.findAll());
-        model.put("staticUrl",staticUrl);
         return "home";
-    }
-
-
-    @RequestMapping("/game")
-    public String game(Map<String, Object> model) {
-        return "game";
     }
 
     @RequestMapping("/logout-success")

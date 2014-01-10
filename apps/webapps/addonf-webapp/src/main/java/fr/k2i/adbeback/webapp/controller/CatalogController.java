@@ -19,10 +19,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class CatalogController {
-
-    @Value(value ="${addonf.static.url}" )
-    private String staticUrl;
+public class CatalogController extends AbstractController{
 
     @Autowired
     private MediaFacade mediaFacade;
@@ -30,14 +27,7 @@ public class CatalogController {
 
     @RequestMapping("/catalog.html")
     public String checkout(Map<String, Object> model,HttpServletRequest request) throws Exception {
-        CartBean cart = (CartBean) request.getSession().getAttribute("cart");
-        if(cart==null){
-            cart = new CartBean();
-            request.getSession().setAttribute("cart",cart);
-        }
-        model.put("cart", cart);
-        model.put("staticUrl",staticUrl);
-        return "catalog";
+          return "catalog";
     }
 
 

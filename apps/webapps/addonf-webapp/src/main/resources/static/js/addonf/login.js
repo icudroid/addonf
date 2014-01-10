@@ -33,7 +33,7 @@ $(function(){
     });
 
 
-    $("form.form-signin").submit('click', function(e) {
+    $("form.form-signin").submit(function(e) {
         $("#login-waiting").show();
         $.ajax({url: addonf.base+"login",
             type: "POST",
@@ -53,25 +53,5 @@ $(function(){
     });
 
 
-    $("form#login-4-game").submit('click', function(e) {
-        $("#login-waiting").show();
-        $.ajax({url: addonf.base+"login",
-            type: "POST",
-            dataType : "json",
-            data: $(this).serialize(),
-            success: function(data, status) {
-                $("#login-waiting").hide();
-                if (data.success) {
-                    //go game
-                    window.location.href = addonf.base+"game.html";
-                } else {
-                    //show errors
-                    $("#error-login").show();
-                }
-            },
-            error: loginFailed
-        });
-        return false;
-    });
 });
 

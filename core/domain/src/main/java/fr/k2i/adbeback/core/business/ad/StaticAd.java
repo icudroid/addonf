@@ -17,14 +17,4 @@ import javax.persistence.Entity;
 @DiscriminatorValue(IMetaData.ColumnMetadata.Ad.Discrimator.STATIC_AD)
 public class StaticAd extends Ad{
 
-    @Column(name = IMetaData.ColumnMetadata.Ad.IMG)
-    protected String image;
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 }

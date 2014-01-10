@@ -17,14 +17,4 @@ import javax.persistence.Entity;
 @DiscriminatorValue(IMetaData.ColumnMetadata.Ad.Discrimator.AUDIO_AD)
 public class AudioAd extends Ad{
 
-    @Column(name = IMetaData.ColumnMetadata.Ad.AUDIO)
-    protected String audio;
-
-    public String getAudio() {
-        return audio;
-    }
-
-    public void setAudio(String audio) {
-        this.audio = audio;
-    }
 }

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html
        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/home_layout">
+      layout:decorator="layout/home_layout"
+      ng-app="adgameApp">>
 <head layout:fragment="customHead">
 
     <title>MTZik</title>
@@ -39,6 +40,10 @@
     <script src="audio.js" th:src="@{/js/addonf/audio.js}"></script>
     <script src="login.js" th:src="@{/js/addonf/login.js}"></script>
     <script src="audio.js" th:src="@{/js/addonf/search.js}"></script>
+
+    <script src="jquery.fullscreen.js" th:src="@{/js/external/jquery.fullscreen.js}"></script>
+    <script src="play.js" th:src="@{/js/addonf/play.js}"></script>
+
 
     <style type="text/css">
         .ui-front{
@@ -99,7 +104,7 @@
                         </div>
                         <div class="innerAll">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                            <button type="submit" class="btn btn-primary btn-sm" th:text="#{addonf.checkout.login.btn}">Login</button>
+                            <a  id="login-4-game-btn" class="btn btn-primary btn-sm" th:text="#{addonf.checkout.login.btn}">Login</a>
                             &nbsp; <a th:href="@{/forgottenPwd.html}" th:text="#{addonf.checkout.forgotten.pwd}">Forgot password</a>
                         </div>
                     </form>
@@ -139,7 +144,7 @@
 
                 <div class="col-md-3">
                     <div class="box-generic padding-none text-center">
-                        <p class="lead margin-none strong innerAll border-bottom" th:utext="#{addonf.cart.total(${cart.minScore})}">Total: &euro;1,195.95</p>
+                        <p class="lead margin-none strong innerAll border-bottom" th:utext="#{addonf.cart.total(${session.cart.minScore})}">Total: &euro;1,195.95</p>
                         <div class="innerAll">
                             <a th:href="@{/cart.html}" class="btn btn-block btn-primary" th:utext="#{addonf.checkout.goCart}"><i class="fa fa-fw fa-edit"></i> Change your order</a>
                         </div>

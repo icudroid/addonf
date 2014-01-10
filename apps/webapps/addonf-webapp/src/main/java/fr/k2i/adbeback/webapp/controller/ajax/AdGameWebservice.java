@@ -1,9 +1,6 @@
 package fr.k2i.adbeback.webapp.controller.ajax;
 
-import fr.k2i.adbeback.webapp.bean.AdGameBean;
-import fr.k2i.adbeback.webapp.bean.LimiteTimeAdGameBean;
-import fr.k2i.adbeback.webapp.bean.PlayerGooseGame;
-import fr.k2i.adbeback.webapp.bean.ResponseAdGameBean;
+import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
 import fr.k2i.adbeback.webapp.facade.PlayerFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,16 +52,17 @@ public class AdGameWebservice {
     @RequestMapping(value = "/dln", method = RequestMethod.GET)
     public @ResponseBody
     void dnl(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if(true == ((Boolean)request.getSession().getAttribute(CAN_BE_DOWNLOAD))){
-            Long idGame = (Long) request.getSession().getAttribute(ID_ADGAME);
-            adGameFacade.getMedias(idGame, response);
-        }
+        Long idGame = (Long) request.getSession().getAttribute(ID_ADGAME);
+
+        adGameFacade.emptyGameSession(request);
+
+        adGameFacade.getMedias(idGame, response);
     }
 
     @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
     public @ResponseBody
     AdGameBean createGame(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return adGameFacade.createAdGame(playerFacade.getCurrentPlayer().getId(), request);
+        return adGameFacade.createAdGame(request);
     }
 
 

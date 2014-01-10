@@ -16,15 +16,4 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.Ad.Discrimator.VIDEO_AD)
 public class VideoAd extends Ad{
-
-    @Column(name = IMetaData.ColumnMetadata.Ad.VIDEO)
-    protected String video;
-
-    public String getVideo() {
-        return video;
-    }
-
-    public void setVideo(String video) {
-        this.video = video;
-    }
 }

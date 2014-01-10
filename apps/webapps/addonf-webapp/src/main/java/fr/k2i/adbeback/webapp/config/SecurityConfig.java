@@ -101,29 +101,33 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                     .antMatchers("/").permitAll()
+
                     .antMatchers("/home.html").permitAll()
                     .antMatchers("/signup").permitAll()
                     .antMatchers("/login").permitAll()
                     .antMatchers("/logout-success").permitAll()
+
                     .antMatchers("/lib/**").permitAll()
                     .antMatchers("/coral/**").permitAll()
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/js/**").permitAll()
                     .antMatchers("/img/**").permitAll()
                     .antMatchers("/template/**").permitAll()
+
                     .antMatchers("/checkout.html").permitAll()
                     .antMatchers("/cart.html").permitAll()
                     .antMatchers("/product.html").permitAll()
                     .antMatchers("/catalog.html").permitAll()
                     .antMatchers("/search.html").permitAll()
                     .antMatchers("/search").permitAll()
-                    .antMatchers("/custom-logout").hasRole("USER")
+
                     //manage cart
                     .antMatchers("/rest/addToCart/*").permitAll()
                     .antMatchers("/rest/removeFromCart/*").permitAll()
                     .antMatchers("/rest/cart").permitAll()
                     .antMatchers("/rest/cart/empty").permitAll()
                     .antMatchers("/partial/*.html").permitAll()
+
                     .antMatchers("/**").hasRole("USER");
 
         http.formLogin()

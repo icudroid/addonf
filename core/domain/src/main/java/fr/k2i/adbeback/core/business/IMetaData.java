@@ -64,12 +64,11 @@ public interface IMetaData {
             String PRODUCT =                            "product_id";
             String RULE_JOIN =                          "ad_id";
             String TYPE =                               "type";
-            String VIDEO =                              "video";
-            String AUDIO =                              "audio";
-            String IMG =                                "img";
             String INITIAL_AMOUNT =                     "initial_amount";
             String START_DATE =                         "start_date";
             String END_DATE =                           "end_date";
+            String DURATION =                           "duration";
+            String AD_FILE =                            "ad_file";
 
             public interface Discrimator {
                 String DISCRIMINATOR =                  "classe";

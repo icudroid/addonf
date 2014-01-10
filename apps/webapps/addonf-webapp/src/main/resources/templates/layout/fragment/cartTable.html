@@ -12,7 +12,7 @@
         <tbody>
 
         <!-- Cart item -->
-        <tr class="selectable" th:each="line : ${cart.lines}">
+        <tr class="selectable" th:each="line : ${session.cart.lines}">
             <td class="product">
                 <div class="media">
                     <a th:href="@{/product.html(musicId=${line.idMedia})}" class="media-object pull-left hidden-xs">

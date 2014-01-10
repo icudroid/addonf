@@ -25,7 +25,6 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
 	protected StatusGame statusGame = StatusGame.Playing;
 	protected Player player;
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {

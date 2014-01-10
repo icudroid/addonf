@@ -1,5 +1,8 @@
 package fr.k2i.adbeback.webapp.facade;
 
+import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.ad.AudioAd;
+import fr.k2i.adbeback.core.business.ad.StaticAd;
 import fr.k2i.adbeback.core.business.ad.VideoAd;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileSystemUtils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +44,7 @@ import java.util.*;
 public class AdGameFacade {
 
 
+    public static final String LIMITED_TIME = "limitedTime";
     public static final String CORRECT_ANSWER = "correct";
     public static final String USER_ANSWER = "answer";
     public static final String USER_SCORE = "score";
@@ -53,8 +58,7 @@ public class AdGameFacade {
     public static final String PLAYER_GOOSE_GAME = "gooseGameCases";
     public static final String PLAYER_TOKEN = "token";
 
-    public static final String CAN_BE_DOWNLOAD = "donwload";
-    private static final String CART = "cart";
+    public static final String CART = "cart";
 
     @Autowired
     private IGooseGameDao gooseGameDao;
@@ -77,6 +81,10 @@ public class AdGameFacade {
     @Autowired
     private IGooseTokenDao gooseTokenDao;
 
+
+    @Autowired
+    private IMediaDao mediaDao;
+
     @Value("${addonf.tmp.location:/tmp/}")
     private String tmpPath;
 
@@ -89,14 +97,24 @@ public class AdGameFacade {
 
 
 
+
+
     @Transactional
-    public AdGameBean createAdGame(Long idPlayer,HttpServletRequest request) throws Exception {
+    public AdGameBean createAdGame(HttpServletRequest request) throws Exception {
+
+        Player player = playerFacade.getCurrentPlayer();
 
         CartBean cart = (CartBean) request.getSession().getAttribute(CART);
 
-        Long gooseLevel = gooseLevelDao.findForNbAds(cart.getMinScore());
+        SingleGooseLevel gooseLevel = gooseLevelDao.findForNbAds(cart.getMinScore());
 
-        AbstractAdGame generateAdGame = adGameManager.generate(idPlayer,gooseLevel);
+        AbstractAdGame generateAdGame = adGameManager.generate(player.getId(),gooseLevel);
+
+        if(generateAdGame instanceof AdGameMedia){
+            ((AdGameMedia) generateAdGame).setMedias(mediaDao.getByIds(cart.getMediaIds()));
+        }
+
+
         List<String> adsVideo = new ArrayList<String>();
 
         Map<Integer, Long> correctResponse = new HashMap<Integer, Long>();
@@ -140,8 +158,22 @@ public class AdGameFacade {
             }
             adBean.setPossibilities(possibilities);
             adBean.setQuestion(adChoise.getQuestion());
+
+
+            Ad ad = adChoise.getCorrect().getAd();
+            if(ad instanceof VideoAd){
+                adBean.setType(AdBean.TypeAd.VIDEO);
+            }else if(ad instanceof StaticAd){
+                adBean.setType(AdBean.TypeAd.STATIC);
+                adBean.setDuration(ad.getDuration());
+            }else if(ad instanceof AudioAd){
+                adBean.setType(AdBean.TypeAd.AUDIO);
+            }
+
+            adsVideo.add(ad.getAdFile());
+
             //adBean.setUrl(adChoise.getCorrect().getAd().getVideo());
-            adsVideo.add(((VideoAd)adChoise.getCorrect().getAd()).getVideo());
+
 
             correctResponse.put(num, adChoise.getCorrect().getId());
             game.add(adBean);
@@ -149,23 +181,25 @@ public class AdGameFacade {
         res.setGame(game);
         //res.setMinScore(generateAdGame.getMinScore());
         //res.setTimeLimite((long) (generateAdGame.getMinScore() * 20));
-        res.setTimeLimite(Long.valueOf(30));
+        if(gooseLevel.isLimitedTime()){
+            res.setTimeLimite(Long.valueOf(30));
+        }else{
+            res.setTimeLimite(-1L);
+        }
+
         res.setTotalAds(choises.size());
 
-
-        Player player = playerFacade.getCurrentPlayer();
-
-        GooseToken gooseToken =  playerDao.getPlayerGooseToken(idPlayer, gooseLevel);
-        GooseLevel level = gooseLevelDao.get(gooseLevel);
-        boolean multiple = (level instanceof IMultiGooseLevel);
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(player.getId(), gooseLevel.getId());
+        //GooseLevel level = gooseLevelDao.get(gooseLevel);
+        boolean multiple = (gooseLevel instanceof IMultiGooseLevel);
 
         if(gooseToken==null){
 
             gooseToken = new GooseToken();
-            gooseToken.setGooseCase(level.getStartCase());
+            gooseToken.setGooseCase(gooseLevel.getStartCase());
             player.addGooseToken(gooseToken);
         }else if(!multiple){
-            gooseToken.setGooseCase(level.getStartCase());
+            gooseToken.setGooseCase(gooseLevel.getStartCase());
         }
 
         res.setMultiple(multiple);
@@ -174,7 +208,7 @@ public class AdGameFacade {
         Integer number = gooseCase.getNumber();
 
         List<PlayerGooseGame> pgg = new ArrayList<PlayerGooseGame>();
-        List<GooseCase> cases = gooseGameManager.getCases(level, number,  7);
+        List<GooseCase> cases = gooseGameManager.getCases(gooseLevel, number,  7);
         for (GooseCase c : cases) {
             Integer type = c.ihmValue();
             pgg.add(new PlayerGooseGame(c.getNumber().equals(number), c.getNumber(), type));
@@ -183,8 +217,14 @@ public class AdGameFacade {
         res.setGooseGames(pgg);
         res.setUserToken(gooseCase.getNumber());
 
+        if(gooseLevel instanceof ISingleGooseLevel){
+            res.setMinScore(((SingleGooseLevel)gooseLevel).getMinScore());
+        }
+
         Map<Integer, Long> answers = new HashMap<Integer, Long>();
         HttpSession session = request.getSession();
+
+        session.setAttribute(LIMITED_TIME,gooseLevel.isLimitedTime());
         session.setAttribute(PLAYER_GOOSE_GAME, pgg);
         session.setAttribute(USER_ANSWER, answers);
         session.setAttribute(CORRECT_ANSWER, correctResponse);
@@ -194,7 +234,7 @@ public class AdGameFacade {
         session.setAttribute(ADS_VIDEO, adsVideo);
         session.setAttribute(GAME_RESULT, null);
         session.setAttribute(PLAYER_TOKEN, gooseCase);
-        session.setAttribute(GOOSE_LEVEL, gooseLevel);
+        session.setAttribute(GOOSE_LEVEL, gooseLevel.getId());
         session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
 
         return res;
@@ -203,9 +243,10 @@ public class AdGameFacade {
     @Transactional
     public ResponseAdGameBean userResponse(HttpServletRequest request, Integer index, Long responseId) throws Exception {
         ResponseAdGameBean res = new ResponseAdGameBean();
-
         Long end = (Long) request.getSession().getAttribute(GAME_END_TIME);
-        if(end < new Date().getTime()){
+        Boolean limited = (Boolean) request.getSession().getAttribute(LIMITED_TIME);
+
+        if(limited && end < new Date().getTime()){
             res.setStatus(StatusGame.WinLimitTime);
             LimiteTimeAdGameBean gameResult = computeResultGame(request);
             request.getSession().setAttribute(GAME_RESULT,gameResult);
@@ -220,14 +261,17 @@ public class AdGameFacade {
 
             Integer nbErrs = (Integer) request.getSession().getAttribute(NB_ERRORS);
 
-            if (answers.get(index) == null && correctId.equals(responseId)) {
+            GooseCase gooseCase = null;
+
+            if (answers.get(index) == null && correctId!=null && correctId.equals(responseId)) {
                 res.setCorrect(true);
                 score++;
                 res.setScore(score);
                 request.getSession().setAttribute(USER_SCORE, score);
                 answers.put(index, responseId);
 
-                goHeadToken(request);
+                gooseCase = goHeadToken(request);
+
 
             } else {
                 res.setCorrect(false);
@@ -243,13 +287,24 @@ public class AdGameFacade {
             }*/
             }
 
-            if (index < correctResponse.size()-1) {
+            if (index < correctResponse.size()-1  && !(gooseCase instanceof EndLevelGooseCase)) {
                 res.setStatus(StatusGame.Playing);
             } else {
-                res.setStatus(StatusGame.WinLimitTime);
+                fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;
+                if(gooseCase instanceof EndLevelGooseCase){
+                    res.setStatus(StatusGame.WinLimitTime);
+                    statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
+                    CartBean cart = (CartBean) request.getSession().getAttribute(CART);
+                    cart.empty();
+                }else{
+                    res.setStatus(StatusGame.Lost);
+                    statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
+                }
                 LimiteTimeAdGameBean gameResult = computeResultGame(request);
                 request.getSession().setAttribute(GAME_RESULT,gameResult);
-                adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Win);
+
+                adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers, statusGame);
+                //emptyGameSession(request);
             }
         }
 
@@ -348,7 +403,7 @@ public class AdGameFacade {
     }
 
     @Transactional
-    private void goHeadToken(HttpServletRequest request) throws Exception {
+    private GooseCase goHeadToken(HttpServletRequest request) throws Exception {
 
         Player player = playerFacade.getCurrentPlayer();
 
@@ -369,7 +424,7 @@ public class AdGameFacade {
             //do fait rien car il est en prison
             GooseCase startCase = (GooseCase) request.getSession().getAttribute(PLAYER_TOKEN);
             if(gooseCase.getNumber().equals(startCase.getNumber())){
-               return;
+               return gooseCase;
             }
         }
 
@@ -385,35 +440,43 @@ public class AdGameFacade {
                 byNumber = gooseGameManager.getCaseByNumber(gooseCase.getNumber()+nbGo,level);
             }
 
-            if (byNumber instanceof WinGooseCase) {
-                request.getSession().setAttribute(CAN_BE_DOWNLOAD,true);
-            }
-
             token.setGooseCase(byNumber);
             gooseTokenDao.save(token);
             playerDao.save(player);
+            return byNumber;
         }
 
+        return gooseCase;
     }
 
-    private void emptyGameSession(HttpServletRequest request) {
-        //To change body of created methods use File | Settings | File Templates.
+    public void emptyGameSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute(LIMITED_TIME);
+        session.removeAttribute(PLAYER_GOOSE_GAME);
+        session.removeAttribute(USER_ANSWER);
+        session.removeAttribute(CORRECT_ANSWER);
+        session.removeAttribute(USER_SCORE);
+        session.removeAttribute(NB_ERRORS);
+        session.removeAttribute(ADS_VIDEO);
+        session.removeAttribute(GAME_RESULT);
+        session.removeAttribute(PLAYER_TOKEN);
+        session.removeAttribute(GOOSE_LEVEL);
+        session.removeAttribute(GAME_END_TIME);
+        session.removeAttribute(ID_ADGAME);
     }
 
     @Transactional
     public ResponseAdGameBean noUserResponse(HttpServletRequest request, Integer index) throws Exception {
         ResponseAdGameBean res = new ResponseAdGameBean();
-
         Long end = (Long) request.getSession().getAttribute(GAME_END_TIME);
-        if(end < new Date().getTime()){
+        Boolean limited = (Boolean) request.getSession().getAttribute(LIMITED_TIME);
+
+        if(limited && end < new Date().getTime()){
             res.setStatus(StatusGame.WinLimitTime);
             LimiteTimeAdGameBean gameResult = computeResultGame(request);
             request.getSession().setAttribute(GAME_RESULT,gameResult);
         }else{
             Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
-            score++;
-            res.setCorrect(true);
-            goHeadToken(request);
             Map<Integer, Long> answers = (Map<Integer, Long>) request.getSession()
                     .getAttribute(USER_ANSWER);
             Map<Integer, Long> correctResponse = (Map<Integer, Long>) request
@@ -429,7 +492,7 @@ public class AdGameFacade {
 
             if (nbErrs > 6) {
                 res.setStatus(StatusGame.Lost);
-                emptyGameSession(request);
+                //emptyGameSession(request);
                 adGameManager.saveResponses((Long) request.getSession()
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
             } else if (index +1 < correctResponse.size()) {
@@ -440,7 +503,7 @@ public class AdGameFacade {
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Win);
             }else{
                 res.setStatus(StatusGame.Lost);
-                emptyGameSession(request);
+                //emptyGameSession(request);
                 adGameManager.saveResponses((Long) request.getSession()
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
             }
@@ -511,7 +574,7 @@ public class AdGameFacade {
 
     public void getMedias(Long idAdGame, HttpServletResponse response) throws IOException {
         AbstractAdGame abstractAdGame = adGameManager.get(idAdGame);
-        if (abstractAdGame instanceof AdGameMedia) {
+        if (abstractAdGame instanceof AdGameMedia  && fr.k2i.adbeback.core.business.game.StatusGame.Win.equals(abstractAdGame.getStatusGame())) {
             AdGameMedia adGame = (AdGameMedia) abstractAdGame;
             List<Media> medias = adGame.getMedias();
 
@@ -573,6 +636,9 @@ public class AdGameFacade {
                     file =  new File(videoPath+media.getFile());
                 }
 
+
+                response.setContentType("audio/mpeg");
+                response.setHeader("Content-Disposition","inline; filename=\""+media.getTitle()+"."+new Filename(media.getFile()).extension()+"\"");
                 response.setContentLength((int) file.length());
                 ServletOutputStream outputStream = response.getOutputStream();
                 FileInputStream fileInputStream = new FileInputStream(file);
@@ -584,9 +650,36 @@ public class AdGameFacade {
                 }
                 fileInputStream.close();
 
-                file.delete();
             }
 
         }
+    }
+}
+
+
+class Filename {
+    private String fullPath;
+    private char pathSeparator, extensionSeparator;
+
+    public Filename(String str) {
+        fullPath = str;
+        pathSeparator = File.pathSeparatorChar;
+        extensionSeparator = '.';
+    }
+
+    public String extension() {
+        int dot = fullPath.lastIndexOf(extensionSeparator);
+        return fullPath.substring(dot + 1);
+    }
+
+    public String filename() { // gets filename without extension
+        int dot = fullPath.lastIndexOf(extensionSeparator);
+        int sep = fullPath.lastIndexOf(pathSeparator);
+        return fullPath.substring(sep + 1, dot);
+    }
+
+    public String path() {
+        int sep = fullPath.lastIndexOf(pathSeparator);
+        return fullPath.substring(0, sep);
     }
 }

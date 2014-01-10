@@ -5,6 +5,7 @@ import java.util.Map;
 
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.StatusGame;
+import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 
 
 /**
@@ -21,7 +22,7 @@ public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
      * @return
 	 * @throws Exception
 	 */
-	AbstractAdGame generate(Long idPlayer, Long gooseLevel)throws Exception;
+	AbstractAdGame generate(Long idPlayer, GooseLevel gooseLevel)throws Exception;
 	
 
 	/**

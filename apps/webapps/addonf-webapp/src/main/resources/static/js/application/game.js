@@ -12,8 +12,10 @@ var adgameApp = angular.module('adgameApp', [
 adgameApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-            when('/start', {templateUrl: 'partials/game.html',   controller: 'GameCtrl'}).
-            when('/end', {templateUrl: 'partials/end.html', controller: 'EndCtrl'}).
+            when('/start', {templateUrl: addonf.base+'partials/game.html',   controller: 'GameCtrl'}).
+            when('/end', {templateUrl: addonf.base+'partials/end.html', controller: 'EndCtrl'}).
+            when('/resume', {templateUrl: addonf.base+'partials/resume.html', controller: 'ResumeCtrl'}).
+
             otherwise({redirectTo: '/start'});
     }]);
 

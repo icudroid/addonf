@@ -1,5 +1,5 @@
 package fr.k2i.adbeback.webapp.bean;
 
 public enum StatusGame {
-	Playing, Win, Lost,WinLimitTime; 
+	Playing, Win, Lost, WinLimitTime;
 }

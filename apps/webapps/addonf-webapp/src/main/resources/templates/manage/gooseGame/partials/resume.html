@@ -52,15 +52,16 @@
 
     <div class="page-title">
         <div class="container">
-            <h1 class="text-center" th:utext="#{addonf.lost.title}">
-                Vous n'avez pas gagné !!!
+            <h1 class="text-center" th:utext="#{addonf.resume.title}">
+                Vous ne devez pas quitter le mode pleine écran !!!
             </h1>
         </div>
     </div>
 
     <div class="container text-center">
-        <a class="btn btn-primary strong" style="font-size: 26px;" th:inline="text" href="#/start">[[#{addonf.restart}]]</a>
+        <button class="btn btn-primary strong" style="font-size: 26px;" th:inline="text" ng-click="restart()">[[#{addonf.resume}]]</button>
     </div>
+
 
 </div>
 

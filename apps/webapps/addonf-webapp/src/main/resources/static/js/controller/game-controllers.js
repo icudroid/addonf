@@ -7,81 +7,53 @@ var adgameControllers = angular.module('adgameControllers', ['ngRoute','ui.boots
 adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeout', '$route', '$location',
     function($scope, Game, $interval, $timeout, $route, $location) {
 
+        $scope.left = 0;
         $scope.responded = false;
-        $scope.dynamic = 100;
         $scope.correct = "noreponse";
+
         $scope.videoElt = angular.element("video");
+
         $scope.index = 0;
         $scope.base = addonf.base;
-        $scope.canDownload = false;
+        $scope.score = 0;
 
-        $scope.noResponse = function(){
-
-                Game.noResponse({index:$scope.index},function(data){
-                    $scope.score = data.score;
-
-                    $scope.responded = true;
-
-                    if(data.correct){
-                        $scope.correct = "ok";
-                    }else{
-                        $scope.correct = "ko";
-                    }
-
-                    $timeout.cancel($scope.hideResult);
-                    $scope.hideResult = $timeout(function() {
-                        $scope.responded = false;
-                    },3000);
-
-                    if(data.status == "WinLimitTime"){
-                        $location.path('/end');
-                    }
-                });
-
-            $scope.$apply(function ($scope) {
-                $scope.index++;
-                if( $scope.adGame.game.length > $scope.index){
-                    $scope.current = $scope.adGame.game[$scope.index];
-                    $scope.ad = $scope.base + "video/"+$scope.index+"?"+new Date().getTime();
-                    $scope.videoElt[0].load();
-                    $scope.videoElt[0].play();
-                }else{
-                    $interval.cancel($scope.counter);
-                }
-            });
-
-        };
+        $scope.timeoutStatic;
 
 
+        angular.element(document).bind("fullscreenchange", function(e) {
+            if($(document).fullScreen()===false){
+                $location.path('/resume');
+            }
+        });
 
 
         Game.createGame({},function(data){
 
             $scope.index = 0;
             $scope.adGame = data;
+            $scope.max =  $scope.adGame.minScore;
             $scope.current = $scope.adGame.game[$scope.index];
             $scope.gooseCases =  $scope.adGame.gooseGames;
             $scope.token =  $scope.adGame.userToken;
 
-
             $scope.score = 0;
             $scope.ad = $scope.base + "video/"+$scope.index+"?"+new Date().getTime();
-            $scope.videoElt[0].load();
-            $scope.videoElt[0].play();
+
+            switch ($scope.current.type){
+                case 'AUDIO':
+
+                    break;
+                case 'VIDEO':
+                    $scope.videoElt[0].load();
+                    $scope.videoElt[0].play();
+                    break;
+                case 'STATIC':
+                    $scope.timeoutStatic = $timeout($scope.noResponse,$scope.duration);
+                    break;
+            }
 
             $scope.videoElt.on("ended",$scope.noResponse);
 
-            $scope.start = new Date().getTime();
-            $scope.end = $scope.start + 30000;
-
-            $scope.counter = $interval(function(){
-                var time = new Date().getTime();
-                if(time>$scope.end){
-                    $interval.cancel($scope.counter);
-                    $scope.noResponse();
-                }
-                $scope.dynamic = 100 * (time - $scope.start) / ($scope.end - $scope.start ) ;
-            },500);
 
             $timeout(function() {
                 $scope.responded = false;
@@ -89,49 +61,80 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         });
 
 
+        $scope.doMargin = function(index){
+            return (index==1)?"margin-top:2%;margin-bottom:2%;":"";
+        };
 
 
-        $scope.userResponse = function(userResponse){
-            Game.doResponse({index:$scope.index,responseId:userResponse.id},function(data){
-                $scope.score = data.score;
+        var doResponse = function($scope, data){
+            $scope.score = data.score;
+            $scope.left = (($scope.score*100)/$scope.adGame.minScore);
+            $scope.responded = true;
+            $scope.token =  data.userToken;
 
-                $scope.responded = true;
+            if(data.correct){
+                $scope.correct = "ok";
+            }else{
+                $scope.correct = "ko";
+            }
 
-                $scope.token =  data.userToken;
+            $timeout.cancel($scope.hideResult);
+            $scope.hideResult = $timeout(function() {
+                $scope.responded = false;
+            },3000);
 
-                if(!$scope.adGame.multiple && $scope.gooseCases[$scope.index].num ==  $scope.token &&  $scope.gooseCases[$scope.index].type==7){
-                    //download ask music
-                    $scope.canDownload = true;
-                }
+            if(data.status == "Lost"){
+                $location.path('/end');
+            }
+
+            if(data.status == "WinLimitTime"){
+                window.location.href = addonf.base+"downloadMusics.html";
+            }
+        }
 
 
-                if(data.correct){
-                    $scope.correct = "ok";
-                }else{
-                    $scope.correct = "ko";
-                }
-
-                $timeout.cancel($scope.hideResult);
-                $timeout(function() {
-                    $scope.responded = false;
-                },3000);
-
-                if(data.status == "WinLimitTime"){
-                    $location.path('/end');
-                }
-
-            });
+        var doNext = function($scope){
             $scope.index++;
             if( $scope.adGame.game.length > $scope.index){
                 $scope.current = $scope.adGame.game[$scope.index];
-                $scope.videoElt[0].load();
                 $scope.ad = $scope.base + "video/"+$scope.index+"?"+new Date().getTime();
-                $scope.videoElt[0].load();
-                $scope.videoElt[0].play();
-            }else{
-                $interval.cancel($scope.counter);
-            }
 
+                switch ($scope.current.type){
+                    case 'AUDIO':
+
+                        break;
+                    case 'VIDEO':
+                        $scope.videoElt[0].load();
+                        $scope.videoElt[0].play();
+                        break;
+                    case 'STATIC':
+                        $scope.timeoutStatic = $timeout($scope.noResponse,$scope.duration);
+                        break;
+                }
+
+            }
+        }
+
+
+        $scope.noResponse = function(){
+            Game.noResponse({index:$scope.index},function(data){
+                doResponse($scope,data)
+            });
+
+            $scope.$apply(function ($scope) {
+                doNext($scope);
+            });
+
+        };
+
+
+        $scope.userResponse = function(userResponse){
+            $timeout.cancel($scope.timeoutStatic);
+
+            Game.doResponse({index:$scope.index,responseId:userResponse.id},function(data){
+                doResponse($scope,data)
+            });
+            doNext($scope);
         };
 
 
@@ -156,6 +159,15 @@ adgameControllers.controller('EndCtrl', ['$scope', 'Game', '$timeout', '$route',
 
 
 
+adgameControllers.controller('ResumeCtrl', ['$scope', 'Game', '$timeout', '$route','$location',
+    function($scope, Game, $timeout, $route,$location) {
+        $scope.base = addonf.base;
+
+        $scope.restart = function(){
+            $(document).fullScreen(true);
+            $location.path('/start');
+        };
+}]);
 
 /* Controllers */
 

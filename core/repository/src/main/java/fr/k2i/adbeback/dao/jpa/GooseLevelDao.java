@@ -55,14 +55,14 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
     }
 
     @Override
-    public Long findForNbAds(Integer nbAds) {
+    public SingleGooseLevel findForNbAds(Integer nbAds) {
         QSingleGooseLevel gooseLevel = QSingleGooseLevel.singleGooseLevel;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(gooseLevel)
                 .where(
                        gooseLevel.minScore.eq(nbAds)
                 );
-        return query.singleResult(gooseLevel.id);
+        return query.singleResult(gooseLevel);
 
     }
 
