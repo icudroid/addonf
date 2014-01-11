@@ -7,6 +7,10 @@ import fr.k2i.adbeback.core.business.media.Productor;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.jpa.GenreRepository;
 import fr.k2i.adbeback.webapp.bean.CartBean;
+import fr.k2i.adbeback.webapp.bean.search.ArtistBean;
+import fr.k2i.adbeback.webapp.bean.search.MusicBean;
+import fr.k2i.adbeback.webapp.bean.search.ProductorBean;
+import fr.k2i.adbeback.webapp.facade.MediaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -42,6 +46,9 @@ public class SearchController{
     @Autowired
     private GenreRepository genreRepository;
 
+    @Autowired
+    private MediaFacade mediaFacade;
+
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public @ResponseBody Page<String> ajaxSearch(@RequestParam(value = "q") String req) throws Exception {
@@ -69,18 +76,10 @@ public class SearchController{
         model.put("cart", cart);
         model.put("staticUrl",staticUrl);
         model.put("categories",genreRepository.findAll());
-
+        model.put("query", req);
 
         if(!StringUtils.isEmpty(req)){
-            Pageable pageable = new PageRequest(0,10);
-
-            Page<Artist> artist = mediaDao.findArtistByFullName(req, pageable);
-            Page<Productor> productors = mediaDao.findProductorByFullName(req, pageable);
-            Page<Music> musics = mediaDao.findMusicByTile(req, pageable);
-
-            model.put("artist",artist);
-            model.put("productors",productors);
-            model.put("musics",musics);
+            mediaFacade.search(req,model);
             model.put("nosearch",false);
         }else{
             model.put("nosearch",true);
@@ -88,6 +87,9 @@ public class SearchController{
 
         return "search";
     }
+
+
+
 }
 
 

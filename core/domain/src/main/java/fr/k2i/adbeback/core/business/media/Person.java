@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.media;
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,10 +17,9 @@ public abstract class Person extends BaseObject implements Serializable {
 	protected String lastName; // required
 	protected String website;
 	protected Integer version;
+    protected String photo;
 
-//	@SequenceGenerator(name = "Person_Gen", sequenceName = "Person_Sequence")
 	@Id
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Person_Gen")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return id;
@@ -29,7 +29,15 @@ public abstract class Person extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	public String getFirstName() {
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getFirstName() {
 		return firstName;
 	}
 
@@ -70,7 +78,7 @@ public abstract class Person extends BaseObject implements Serializable {
 
     @Transient
     public String getFullName() {
-        return firstName+((firstName!=null)?" ":"")+lastName;
+        return firstName+((!StringUtils.isEmpty(firstName))?" ":"")+lastName;
     }
 
 	@Override

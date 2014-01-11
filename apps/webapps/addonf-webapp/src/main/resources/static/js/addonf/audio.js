@@ -4,18 +4,18 @@ $(function(){
     var currentSample = null;
 
     var stopMusic = function(){
-        $("div > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
+        $("a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
     };
 
     $(".playMusic").click(function(e){
 
         if($(this).find("i").hasClass("fa-pause") && currentSample!=null){
-            $("div > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
+            $("a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
             currentSample.pause();
         }else{
             if(currentSample!=null){
                 currentSample.removeEventListener('ended',stopMusic);
-                $("div > a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
+                $("a.btn > i.fa-pause").removeClass("fa-pause").addClass("fa-play");
                 currentSample.pause();
             }
             var music = $(this).data("music");

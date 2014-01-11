@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,5 +47,11 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     List<Media> getByIds(List<Long> mediaIds);
+
+    @Transactional
+    Date getLastReleaseForProductor(Productor productor);
+
+    @Transactional
+    Date getLastReleaseForArtist(Artist artist);
 }
 

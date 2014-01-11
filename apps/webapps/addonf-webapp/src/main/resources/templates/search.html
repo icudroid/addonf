@@ -2,31 +2,192 @@
 <html
        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="layout/home_layout">
-<head>
-<title th:text="${title}">Title</title>
+<head layout:fragment="customHead">
+    <title>MTZik</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+    <link th:href="@{/img/favicon.png}" rel="icon" />
+
+
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/jquery-ui/css/jquery-ui.min.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+
+    <script th:src="@{/coral/assets/components/library/jquery/jquery.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/jquery-ui/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/modernizr/modernizr.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/less-js/less.min.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
+
+
+    <script th:inline="javascript">
+        var addonf = {};
+        addonf.base = [[@{/}]];
+            addonf.static = [[${staticUrl}]];
+            addonf.token = [[${_csrf.token}]];
+    </script>
+
+    <script src="audio.js" th:src="@{/js/addonf/audio.js}"></script>
+    <script src="login.js" th:src="@{/js/addonf/login.js}"></script>
+    <script src="audio.js" th:src="@{/js/addonf/search.js}"></script>
+
+    <style type="text/css">
+        .ui-front{
+            z-index: 1500;
+        }
+    </style>
+
 </head>
 
 
 <body>
     <div layout:fragment="content" id="content">
+
          <div th:if="${nosearch == true}" class="container">
-            <div class="row innerTB">
-                <div class="col-md-9">
-                    <h5 class="text-faded"  th:text="#{addonf.search.no.query}">No query</h5>
-                </div>
-                <div th:substituteby="/layout/fragment/categories"></div>
-            </div>
+             <h5 class="text-faded"  th:utext="#{addonf.search.no.query}">No query</h5>
          </div>
+
         <div th:if="${nosearch ==false}" class="container">
-            <div class="row innerTB">
-                <div class="col-md-9">
-                    <h5 class="text-faded">Artists</h5>
-                    <h5 class="text-faded">Labels</h5>
-                    <h5 class="text-faded">Musics</h5>
+                    <h3 th:utext="#{addonf.search.for(${query})}"></h3>
+                    <div th:if="${artists.getTotalElements() > 0}">
+                        <h4 class="text-faded" th:utext="#{addonf.serach.result.artists(${artists.getTotalElements()})}">Artists</h4>
+                        <div class="row">
+                            <div class="col-md-4" th:each="artist : ${artists.getContent()}">
+                                <div class="row box-generic padding-none">
+                                    <div class="col-md-4">
+                                        <img class="img-thumbnail" style="height: 62px;width:100%;" th:if="${artist.photo !=null}" th:src="@{${staticUrl}+'artist/'+${artist.photo}}" />
+                                        <img class="img-thumbnail" style="height: 62px;width:100%;" th:if="${artist.photo ==null}" th:src="@{${staticUrl}+'artist/default.png'}" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <a th:href="@{'/artist/'+${artist.id}}" th:utext="${artist.fullName}">name</a>
+                                        <p th:with="df=#{date.format}" th:utext="#{addonf.search.result.last.music.date(${#dates.format(artist.lastRelease,df)})}">Sortie le plus récente: 2014-01-08</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a th:if="${artists.hasNextPage()}" th:utext="#{addonf.search.result.more.artists.result}" th:href="@{/search/artists(q=${param.q})}">Voir plus d'artistes</a>
+                    </div>
+
+                    <div class="separator"></div>
+
+
+
+                    <div  th:if="${productors.getTotalElements() > 0}">
+                        <h4 class="text-faded" th:utext="#{addonf.serach.productors.artists(${productors.getTotalElements()})}">Labels</h4>
+                        <div class="row">
+                            <div class="col-md-4" th:each="productor : ${productors.getContent()}">
+                                <div class="row box-generic padding-none">
+                                    <div class="col-md-4">
+                                        <img style="height: 62px;width:100%;" th:if="${productor.photo !=null}" th:src="@{${staticUrl}+'productor/'+${productor.photo}}" />
+                                        <img style="height: 62px;width:100%;" th:if="${productor.photo ==null}" th:src="@{${staticUrl}+'productor/default.png'}" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <a th:href="@{'/productor/'+${productor.id}}" th:utext="${productor.fullName}">name</a>
+                                        <p th:with="df=#{date.format}" th:utext="#{addonf.search.result.last.music.date(${#dates.format(productor.lastRelease,df)})}">Sortie le plus récente: 2014-01-08</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a th:if="${productors.hasNextPage()}" th:utext="#{addonf.search.result.more.productor.result}" th:href="@{/search/labels(q=${param.q})}">Voir plus de Labels</a>
+                    </div>
+
+                    <div class="separator"></div>
+
+                    <div th:if="${musics.getTotalElements() > 0}">
+                        <h4 class="text-faded" th:utext="#{addonf.search.productors.musics(${musics.getTotalElements()})}">Musiques</h4>
+                        <table class="table table-bordered table-primary">
+                            <tr>
+                                <th th:utext="#{addonf.search.result.music.head.title}">Titre</th>
+                                <th th:utext="#{addonf.search.result.music.head.artists}">Artists</th>
+                                <th th:utext="#{addonf.search.result.music.head.productors}">Label</th>
+                                <th th:utext="#{addonf.search.result.music.head.genre}">Genre</th>
+                                <th th:utext="#{addonf.search.result.music.head.releaseDate}">Sortie le</th>
+                                <th class="center" style="width: 87px;"></th>
+                            </tr>
+                            <tr th:each="music : ${musics.getContent()}">
+                                <td>
+                                    <div class="media">
+                                        <a th:href="@{/product.html(musicId=${music.id})}" class="media-object pull-left hidden-xs">
+                                            <img width="50" height="50" style="width: 50px; height: 50px;" class="thumb"  th:src="@{${staticUrl}+'jacket/'+${music.jacket}}" alt="" />
+                                        </a>
+                                        <div class="media-body" style="padding-top:16px;">
+                                            <h5 class="text-uppercase" th:utext="${music.title}">Product name goes here</h5>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span th:each="artist,iterStat : ${music.artists}">
+                                        <a th:href="@{/artistPage.html(artistId=${artist.id})}" th:utext="${artist.fullName}">TOTO</a>
+                                        <span th:if="${!iterStat.last}">, </span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:each="productor,iterStat : ${music.productors}">
+                                        <a th:href="@{/majorPage.html(majorId=${productor.id})}" th:utext="${productor.fullName}">EMI</a>
+                                        <span th:if="${!iterStat.last}">, </span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:each="genre,iterStat : ${music.genres}">
+                                        <span th:utext="#{'addonf.reference.'+${genre.codeGenre}}"></span>
+                                        <span th:if="${!iterStat.last}">, </span>
+                                    </span>
+                                </td>
+                                <td th:with="df=#{date.format}" th:utext="${#dates.format(music.releaseDate,df)}">></td>
+                                <td class="center">
+                                    <a href="#" class="btn btn-primary btn-circle pull-right addToCart" th:attr="data-music=${music.id}"><i class="fa fa-shopping-cart"></i></a>
+                                    <a href="#" class="btn btn-primary btn-circle pull-right playMusic" th:attr="data-music=${music.id}" style="margin-right: 2px;"><i class="fa fa fa-play"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <a th:if="${musics.hasNextPage()}" th:utext="#{addonf.search.result.more.music.result}" th:href="@{/search/music(q=${param.q})}">Voir plus de Musiques</a>
+                    </div>
                 </div>
-                <div th:substituteby="/layout/fragment/categories"></div>
-            </div>
-        </div>
+
     </div>
+
+
+    <div layout:fragment="customJsInclude">
+        <!-- Global -->
+        <script>
+            var basePath = '',
+                    commonPath = '../assets/',
+                    rootPath = '../',
+                    DEV = false,
+                    componentsPath = '../assets/components/';
+
+            var primaryColor = '#eb6a5a',
+                    dangerColor = '#b55151',
+                    successColor = '#609450',
+                    warningColor = '#ab7a4b',
+                    inverseColor = '#45484d';
+
+            var themerPrimaryColor = primaryColor;
+        </script>
+
+
+
+        <script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/shop/core/js/shop.animations.init.js}"></script>
+        <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/shop/owl-carousel/featured/front.shop.owl-carousel.featured.js}"></script>
+        <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
+        <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
+        <script th:src="@{/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
+        <script th:src="@{/coral/assets/components/plugins/parallax/parallax/parallax.init.js}"></script>
+        <script th:src="@{/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
+        <script th:src="@{/coral/assets/components/modules/front/core/assets/js/front.core.init.js}"></script>
+    </div>
+
 </body>
 </html>

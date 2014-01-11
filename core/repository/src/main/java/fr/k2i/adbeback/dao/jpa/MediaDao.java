@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -78,9 +79,14 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         List<Tuple> list = query.list(person.lastName, person.firstName);
 
         List<String> content = new ArrayList<String>();
-
         for (Tuple tuple : list) {
-            content.add(tuple.get(person.firstName)+((tuple.get(person.firstName)!=null)?" ":"")+tuple.get(person.lastName));
+            String r = "";
+            if(tuple.get(person.firstName).isEmpty()){
+                r =tuple.get(person.lastName);
+            }else{
+                r = tuple.get(person.firstName)+" "+tuple.get(person.lastName);
+            }
+            content.add(r);
         }
 
         return new PageImpl<String>(content,pageable,query.count());
@@ -125,6 +131,35 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
         return new PageImpl<Productor>(query.list(productor),pageable,query.count());
     }
+
+
+    @Transactional
+    @Override
+    public Date getLastReleaseForProductor(Productor productor) {
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(music)
+                .where(
+                        music.productors.contains(productor)
+                   );
+
+        return query.uniqueResult(music.releaseDate.max());
+    }
+
+
+    @Transactional
+    @Override
+    public Date getLastReleaseForArtist(Artist artist) {
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(music)
+                .where(
+                        music.artists.contains(artist)
+                );
+
+        return query.uniqueResult(music.releaseDate.max());
+    }
+
 
     @Transactional
     @Override
