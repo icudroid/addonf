@@ -37,37 +37,43 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                    .antMatchers("/").permitAll()
-                    .antMatchers("/home.html").permitAll()
-                    .antMatchers("/signup.html").permitAll()
-                    .antMatchers("/confirmEnroll/**").permitAll()
-                    .antMatchers("/getTowns/**").permitAll()
-                    .antMatchers("/login").permitAll()
-                    .antMatchers("/logout-success").permitAll()
-                    .antMatchers("/lib/**").permitAll()
-                    .antMatchers("/css/**").permitAll()
-                    .antMatchers("/js/**").permitAll()
-                    .antMatchers("/template/**").permitAll()
-                    .antMatchers("/custom-logout").hasRole("ANNONCEUR")
-                    .antMatchers("/**").hasRole("ANNONCEUR")
-                //.fullyAuthenticated()
-                    .and()
-                        .formLogin()
-                            .loginPage("/login")
-                            .failureUrl("/login?error")
-                        .permitAll()
-                    .and()
-                        .logout()
-                            .deleteCookies("remove")
-                            .invalidateHttpSession(false)
-                            .logoutUrl("/custom-logout")
-                            .logoutSuccessUrl("/logout-success")
-                    .and()
-                        .sessionManagement()
-                            .maximumSessions(1)
-                            .expiredUrl("/login?expired");
+
+        http.authorizeRequests()
+                .antMatchers("/").permitAll()
+
+                .antMatchers("/home.html").permitAll()
+                .antMatchers("/signup.html").permitAll()
+                .antMatchers("/confirmEnroll/**").permitAll()
+                .antMatchers("/getTowns/**").permitAll()
+                .antMatchers("/login").permitAll()
+
+
+                .antMatchers("/logout-success").permitAll()
+                .antMatchers("/lib/**").permitAll()
+                .antMatchers("/coral/**").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/img/**").permitAll()
+                .antMatchers("/template/**").permitAll()
+
+                .antMatchers("/custom-logout").hasRole("ANNONCEUR")
+                .antMatchers("/**").hasRole("ANNONCEUR");
+
+        http.formLogin()
+                .loginPage("/login")
+                .failureUrl("/login?error")
+                .permitAll();
+
+        http.logout()
+                .deleteCookies("remove")
+                .invalidateHttpSession(false)
+                .logoutUrl("/custom-logout")
+                .logoutSuccessUrl("/logout-success");
+
+        http.sessionManagement()
+                .maximumSessions(1)
+                .expiredUrl("/login?expired");
+
     }
 
 }
