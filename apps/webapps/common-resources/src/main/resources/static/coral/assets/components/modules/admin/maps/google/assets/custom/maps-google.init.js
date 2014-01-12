@@ -184,8 +184,47 @@ function initGoogleMaps()
 	 */
 	if ($('#google-map-geocoding').length)
 	{
-		$('#google-map-geocoding').gmap({'zoom': 2 }).bind('init', function(event, map) { 
-			$(map).click( function(event) {
+		$('#google-map-geocoding').gmap({
+			'zoomControl' : true,
+	        'zoomControlOpt': {
+	            'style' : 'SMALL',
+	            'position' : 'TOP_LEFT'
+	        },
+	        'panControl' : false,
+	        'streetViewControl' : false,
+	        'mapTypeControl': false,
+	        'overviewMapControl': false,
+	        'scrollwheel': false,
+	        'mapTypeId': google.maps.MapTypeId.ROADMAP
+		}).bind('init', function(event, map) 
+		{ 
+			var gmgLatLng = new google.maps.LatLng(53.29463136870075, -6.15019965916872);
+			$('#google-map-geocoding').gmap('addMarker', {
+				'position': gmgLatLng,
+				'draggable': true,
+				'bounds': false
+			}, function(map, marker) {
+				$('#modals').append('<div id="dialog'+marker.__gm_id+'" class="hide">' + 
+						'<label for="country">Country</label>'+ 
+						'<input id="country'+marker.__gm_id+'" type="text" class="form-control" name="country" value=""/>' + 
+						'<div class="separator bottom"></div><label for="state">State</label>' + 
+						'<input id="state'+marker.__gm_id+'" type="text" class="form-control" name="state" value=""/>' + 
+						'<div class="separator bottom"></div><label for="address">Address</label>' + 
+						'<input id="address'+marker.__gm_id+'" type="text" class="form-control" name="address" value=""/>' + 
+						'<div class="separator bottom"></div><label for="comment">Comment</label>' + 
+						'<textarea id="comment" name="comment" class="form-control" rows="5"></textarea>' + 
+				'</div>');
+			}).dragend( function(event) {
+				findLocation(event.latLng, this);
+			}).click( function(event) {
+				findLocation(event.latLng, this);
+			});
+
+			$('#google-map-geocoding').gmap('option', 'center', gmgLatLng );
+			$('#google-map-geocoding').gmap('option', 'zoom', 16 );
+
+			$(map).click( function(event) 
+			{
 				$('#google-map-geocoding').gmap('addMarker', {
 					'position': event.latLng, 
 					'draggable': true, 
@@ -206,7 +245,7 @@ function initGoogleMaps()
 					findLocation(event.latLng, this);
 				}).click( function() {
 					openDialog(this);
-				})
+				});
 			});
 		});
 
@@ -255,16 +294,29 @@ function initGoogleMaps()
 	 */
 	if ($('#google-map-json').length)
 	{
-		$('#google-map-json').gmap().bind('init', function() { 
+		$('#google-map-json').gmap({
+			'zoomControl' : true,
+	        'zoomControlOpt': {
+	            'style' : 'SMALL',
+	            'position' : 'TOP_LEFT'
+	        },
+	        'panControl' : false,
+	        'streetViewControl' : false,
+	        'mapTypeControl': false,
+	        'overviewMapControl': false,
+	        'scrollwheel': false,
+	        'mapTypeId': google.maps.MapTypeId.ROADMAP
+		}).bind('init', function() { 
 			$.getJSON( componentsPath + 'modules/admin/maps/google/assets/lib/jquery-ui-map/data/demo.json', function(data) { 
 				$.each( data.markers, function(i, marker) {
 					$('#google-map-json').gmap('addMarker', { 
-						'position': new google.maps.LatLng(marker.latitude, marker.longitude), 
-						'bounds': true 
+						'position': new google.maps.LatLng(marker.latitude, marker.longitude) 
 					}).click(function() {
 						$('#google-map-json').gmap('openInfoWindow', { 'content': marker.content }, this);
 					});
 				});
+				$('#google-map-json').gmap('option', 'center', new google.maps.LatLng(data.markers[1].latitude, data.markers[1].longitude) );
+				$('#google-map-json').gmap('option', 'zoom', 16 );
 			});
 		});
 	}
@@ -357,19 +409,37 @@ function initGoogleMaps()
 		var mfsr_height = 	$(window).height() - 
 							$('#footer').height() - 
 							$('.navbar.main').height() - 
-							$('#menu-top').height();
+							$('#menu-top').height(),
+
+			mfsr_module = mfsr.data('module') || 'admin',
+			mfsr_url = rootPath + mfsr_module + '/ajax/maps_google_realestate.json',
+			mfsr_info_width = 'auto';
+
+			switch (mfsr_module) {
+				default:
+				case 'admin':
+					mfsr_info_width = 240;
+					break;
+				case 'realestate':
+					mfsr_info_width = 330;
+					break;
+			}
 
 		function msfr_info ( marker ) 
 		{
 			var content = $('<div/>');
-				content.addClass('innerAll inner-2x').html('<h4></h4><div></div>');
-				content.find(':header').text(marker.title);
+				content.addClass('innerAll inner-2x').html('<div></div>');
+				
+				if (mfsr_module == 'admin')
+					content.prepend('<h4></h4>').find(':header').text(marker.title);
+				
 				content.find('> div').addClass('msfr_info_content').html(marker.content);
 
 			return content.html();
 		}
 
-		mfsr.height(mfsr_height);
+		if (mfsr_module == 'admin')
+			mfsr.height(mfsr_height);
 
 		mfsr.gmap({
 			'zoomControl' : true,
@@ -387,7 +457,7 @@ function initGoogleMaps()
 		})
 		.bind('init', function() 
 		{ 
-			$.getJSON( rootPath + 'admin/ajax/maps_google_realestate.json', function(data) 
+			$.getJSON( mfsr_url, function(data) 
 			{ 
 				$.each( data.markers, function(i, marker) 
 				{
@@ -401,12 +471,12 @@ function initGoogleMaps()
 						})
 						.click(function() 
 						{
-							mfsr.gmap('openInfoWindow', { 'content': msfr_info(marker), 'maxWidth': 240 }, this);
+							mfsr.gmap('openInfoWindow', { 'content': msfr_info(marker), 'maxWidth': mfsr_info_width }, this);
 						});
 
 						if (i == 1)
 						{
-							mfsr.gmap('openInfoWindow', { 'content': msfr_info(marker), 'maxWidth': 240 }, mfsr.gmap('get', 'markers')[1]);
+							mfsr.gmap('openInfoWindow', { 'content': msfr_info(marker), 'maxWidth': mfsr_info_width }, mfsr.gmap('get', 'markers')[i]);
 							mfsr.gmap('option', 'center', new google.maps.LatLng(marker.latitude, marker.longitude) );
 						}
 					}, 

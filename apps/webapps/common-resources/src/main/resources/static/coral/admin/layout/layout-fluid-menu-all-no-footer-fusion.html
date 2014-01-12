@@ -5,7 +5,7 @@
 <!--[if gt IE 8]> <html class="ie app"> <![endif]-->
 <!--[if !IE]><!--><html class="app"><!-- <![endif]-->
 <head>
-	<title>CORAL Template (v1.9.1)</title>
+	<title>CORAL Template (v1.9.3)</title>
 	
 	<!-- Meta -->
 	<meta charset="utf-8">
@@ -31,12 +31,12 @@
     <![endif]-->
 
 
-	<script src="../../assets/components/library/jquery/jquery.min.js?v=v1.9.1"></script>
-<script src="../../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.1"></script>
-<script src="../../assets/components/library/modernizr/modernizr.js?v=v1.9.1"></script>
-<script src="../../assets/components/plugins/less-js/less.min.js?v=v1.9.1"></script>
-<script src="../../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.1"></script>
-<script src="../../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.1"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
+	<script src="../../assets/components/library/jquery/jquery.min.js?v=v1.9.3"></script>
+<script src="../../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.3"></script>
+<script src="../../assets/components/library/modernizr/modernizr.js?v=v1.9.3"></script>
+<script src="../../assets/components/plugins/less-js/less.min.js?v=v1.9.3"></script>
+<script src="../../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.3"></script>
+<script src="../../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.3"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
 	
 </head>
 <body class="">
@@ -50,28 +50,42 @@
 			
 <div id="sidebar-fusion-wrapper">
 	<div id="brandWrapper">
+		<a href="../index.html?lang=en" class="animated fadeInDown display-block-inline pull-left logo"><img src="../../assets/images/logo/app-logo-style-default.png" alt=""></a>
 		<a href="../index.html?lang=en"><span class="text">Coral</span></a>
-		<a href="" data-toggle="navbar-color" class="color color-blue active"></a>
-		<a href="" data-toggle="navbar-color" class="color color-white"></a>
-		<a href="" data-toggle="navbar-color" class="color color-inverse"></a>
 	</div>
 	<div id="logoWrapper">
 		<div id="logo">
-			<a href="../index.html?lang=en" class="animated fadeInDown display-block-inline"><img src="../../assets/images/logo/app-logo-style-default.png" alt=""></a>
-			<div class="innerAll">
-				<!-- <a href=""><i class="fa fa-fw icon-comment-fill-1"></i></a> &nbsp;
-				<a href=""><i class="fa fa-fw icon-phone-fill"></i></a> &nbsp;
-				<a href=""><i class="fa fa-fw icon-time-clock"></i></a> -->
-				<select name="" id="menu_switch" data-style="btn-inverse" id="" class="selectpicker dropdown-menu-light" data-container="body">
+			
+			<a href="../index.html?lang=en" class="btn btn-sm btn-inverse"><i class="fa fa-fw icon-home-fill-1"></i></a>
+			<a href="../email.html?lang=en" class="btn btn-sm btn-inverse"><i class="fa fa-fw fa-envelope"></i><span class="badge pull-right badge-primary">2</span></a>
+
+			<div id="toggleNavbarColor" data-toggle="navbar-color">
+				<a href="" class="not-animated color color-blue active"></a>
+				<a href="" class="not-animated color color-white"></a>
+				<a href="" class="not-animated color color-inverse"></a>
+			</div>
+
+			<div class="innerTB">
+				<select name="" id="menu_switch" data-style="btn-inverse" id="" class="selectpicker margin-none dropdown-menu-light" data-container="body">
 					<option value="navigation_current_page">Modules</option>
-										<option value="navigation_components">Components</option>					<!-- <option value="navigation_examples">Menu &amp; Layout</option> -->
-				</select>
+										<option value="navigation_components">Components</option>				</select>
 			</div>
 		</div>
 	</div>
+
+	<!-- <div id="logoWrapper">
+		<div id="logo">
+			<a href="../index.html?lang=en" class="animated fadeInDown display-block-inline"><img src="../../assets/images/logo/app-logo-style-default.png" alt=""></a>
+			<div class="innerAll">
+				<select name="" id="menu_switch" data-style="btn-inverse" id="" class="selectpicker dropdown-menu-light" data-container="body">
+					<option value="navigation_current_page">Modules</option>
+										<option value="navigation_components">Components</option>				</select>
+			</div>
+		</div>
+	</div> -->
 	
 	
-		<ul class="list-unstyled hide" id="navigation_components">
+		<ul class="menu list-unstyled hide" id="navigation_components">
 		<li class=""><a href="../ui.html?lang=en"><i class="fa fa-circle-o"></i> UI Elements</a></li>
 <li class=""><a href="../icons.html?lang=en"><i class="fa fa-circle-o"></i> Icons</a></li>
 <li class=""><a href="../typography.html?lang=en"><i class="fa fa-circle-o"></i> Typography</a></li>
@@ -106,25 +120,8 @@
 <li class=""><a href="../twitter.html?lang=en"><i class="fa fa-circle-o"></i> Twitter API</a></li>
 <li class=""><a href="../infinite_scroll.html?lang=en"><i class="fa fa-circle-o"></i> Infinite Scroll</a></li>	</ul>
 	
-	<ul class="list-unstyled" id="navigation_current_page">
+	<ul class="menu list-unstyled" id="navigation_current_page">
 
-		<li class="hasSubmenu">
-			<a href="#sidebar-fusion-example" data-toggle="collapse"><span class="badge pull-right badge-primary">7</span><i class="fa fa-stack-exchange"></i><span>Submenus</span></a>
-			<ul id="sidebar-fusion-example" class="collapse">
-				<li class="active"><a href=""><i class="fa fa-flash"></i><span>Active</span></a></li>
-				<li><a href=""><i class="fa fa-male"></i><span>Menu item</span></a></li>
-				<li><a href=""><i class="fa fa-comments-o"></i><span>Menu item</span></a></li>
-				<li class="hasSubmenu">
-					<a href="#submenu" data-toggle="collapse"><span class="badge pull-right badge-primary">30</span><i class="fa fa-envelope"></i><span>2nd level</span></a>
-					<ul class="collapse" id="submenu">
-						<li><a href=""><span>Menu item</span></a></li>
-						<li><a href=""><span>Menu item</span></a></li>
-						<li><a href=""><span>Menu item</span></a></li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-	
 		<li class="hasSubmenu">
 	<a href="#sidebar-fusion-dashboard" data-toggle="collapse"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
 	<ul id="sidebar-fusion-dashboard" class="collapse">
@@ -140,7 +137,6 @@
 		<li><a href="../index.html?lang=en"><i class="fa fa-flash"></i> Activity</a></li>
 		<li><a href="../social_account.html?lang=en"><i class="fa fa-male"></i> Account</a></li>
 		<li><a href="../social_messages.html?lang=en"><i class="fa fa-comments-o"></i> Messages</a></li>
-		<li><a href="../email.html?lang=en"><span class="badge pull-right badge-primary">30</span><i class="fa fa-envelope"></i> Inbox</a></li>
 		<li><a href="../social.html?lang=en"><i class="fa fa-folder"></i> Widgets</a></li>
 		<li><a href="../timeline.html?lang=en"><i class="fa fa-clock-o"></i> Timelines</a></li>
 		<li><a href="../contacts.html?lang=en"><i class="fa fa-phone"></i> Contacts</a></li>
@@ -148,12 +144,17 @@
 	</ul>
 </li>
 
+<li><a href="../email.html?lang=en"><span class="badge pull-right badge-inverse">30</span><i class="fa fa-envelope"></i><span>Email App</span></a></li>
+
 <li class="hasSubmenu">
-	<a href="#sidebar-fusion-realestate" data-toggle="collapse"><i class="fa fa-home"></i><span>Real estate</span></a>
+	<a href="#sidebar-fusion-realestate" data-toggle="collapse"><i class="fa fa-home"></i><span>Real Estate</span></a>
 	<ul id="sidebar-fusion-realestate" class="collapse">
 		<li><a href="../realestate_listing_map.html?lang=en"><i class="fa fa-map-marker"></i><span>Property map</span> &nbsp; <span class="label label-primary">new</span></a></li>
 		<li><a href="../realestate_listing_grid.html?lang=en"><i class="fa fa-th"></i><span>Property grid</span></a></li>
 		<li><a href="../realestate_listing_list.html?lang=en"><i class="fa fa-list"></i><span>Property list</span></a></li>
+		<li><a href="../realestate_property.html?lang=en"><i class="fa fa-info"></i><span>Property details</span></a></li>
+		<li><a href="../realestate_compare.html?lang=en"><i class="fa icon-scale-2"></i><span>Property compare</span></a></li>
+		<li><a href="../realestate_property_edit.html?lang=en"><i class="fa fa-edit"></i><span>Property edit</span></a></li>
 	</ul>
 </li>
 
@@ -261,6 +262,23 @@
 <li><a href="../survey.html?lang=en" class="glyphicons turtle"><i></i><span>Surveys</span></a></li>
 
 <li><a href="../error.html?lang=en" class="glyphicons warning_sign"><i></i><span>Error</span></a></li>
+		<li class="hasSubmenu">
+			<a href="#sidebar-fusion-example" data-toggle="collapse"><span class="badge pull-right badge-primary">7</span><i class="fa fa-stack-exchange"></i><span>Submenus</span></a>
+			<ul id="sidebar-fusion-example" class="collapse">
+				<li class="active"><a href=""><i class="fa fa-flash"></i><span>Active</span></a></li>
+				<li><a href=""><i class="fa fa-male"></i><span>Menu item</span></a></li>
+				<li><a href=""><i class="fa fa-comments-o"></i><span>Menu item</span></a></li>
+				<li class="menu hasSubmenu">
+					<a href="#submenu" data-toggle="collapse"><span class="badge pull-right badge-primary">30</span><i class="fa fa-envelope"></i><span>2nd level</span></a>
+					<ul class="collapse menu" id="submenu">
+						<li><a href=""><span>Menu item</span></a></li>
+						<li><a href=""><span>Menu item</span></a></li>
+						<li><a href=""><span>Menu item</span></a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
 	</ul>
 </div>
 
@@ -570,15 +588,15 @@
 	var themerPrimaryColor = primaryColor;
 	</script>
 	
-	<script src="../../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.1"></script>
-<script src="../../assets/components/plugins/nicescroll/jquery.nicescroll.min.js?v=v1.9.1"></script>
-<script src="../../assets/components/plugins/breakpoints/breakpoints.js?v=v1.9.1"></script>
-<script src="../../assets/components/core/js/animations.init.js?v=v1.9.1"></script>
-<script src="../../assets/components/core/js/sidebar.main.init.js?v=v1.9.1"></script>
-<script src="../../assets/components/core/js/sidebar.collapse.init.js?v=v1.9.1"></script>
-<script src="../../assets/components/modules/admin/forms/elements/bootstrap-select/assets/lib/js/bootstrap-select.js?v=v1.9.1"></script>
-<script src="../../assets/components/modules/admin/forms/elements/bootstrap-select/assets/custom/js/bootstrap-select.init.js?v=v1.9.1"></script>
-<script src="../../assets/components/core/js/sidebar.kis.init.js?v=v1.9.1"></script>
-<script src="../../assets/components/core/js/core.init.js?v=v1.9.1"></script>	
+	<script src="../../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.3"></script>
+<script src="../../assets/components/plugins/nicescroll/jquery.nicescroll.min.js?v=v1.9.3"></script>
+<script src="../../assets/components/plugins/breakpoints/breakpoints.js?v=v1.9.3"></script>
+<script src="../../assets/components/core/js/animations.init.js?v=v1.9.3"></script>
+<script src="../../assets/components/core/js/sidebar.main.init.js?v=v1.9.3"></script>
+<script src="../../assets/components/core/js/sidebar.collapse.init.js?v=v1.9.3"></script>
+<script src="../../assets/components/modules/admin/forms/elements/bootstrap-select/assets/lib/js/bootstrap-select.js?v=v1.9.3"></script>
+<script src="../../assets/components/modules/admin/forms/elements/bootstrap-select/assets/custom/js/bootstrap-select.init.js?v=v1.9.3"></script>
+<script src="../../assets/components/core/js/sidebar.kis.init.js?v=v1.9.3"></script>
+<script src="../../assets/components/core/js/core.init.js?v=v1.9.3"></script>	
 </body>
 </html>

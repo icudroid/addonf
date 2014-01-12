@@ -1,7 +1,9 @@
-@menuSidebarWidth: 260px;
+// @menuSidebarWidth: 260px;
+@menuSidebarWidth: 252px;
 @menuSidebarItemHeight: 48px;
 @menuSidebarBg: #27292a;
 @menuSidebarLogoWrapper: 150px;
+@menuSidebarLogoWrapper: 120px;
 @menuSidebarBrandWrapper: 59px;
 @menuSidebarListTop: @menuSidebarLogoWrapper + @menuSidebarBrandWrapper;
 
@@ -16,25 +18,61 @@
 	background: @menuSidebarBg;
 	
 	#sidebar-fusion-wrapper {
+		// #logoWrapper {
+		// 	position: relative;
+		// 	overflow: hidden;
+		// 	z-index: 3;
+		// 	background: #313233;
+		// 	height: @menuSidebarLogoWrapper;
+		// 	width: @menuSidebarWidth;
+		// 	#logo {
+		// 		display: block;
+		// 		padding: 25px 0;
+		// 		text-align: center;
+		// 		img { border: none; max-width: 100%; }
+		// 		a {
+		// 			font-size: 20px;
+		// 			color: #686a6a;
+		// 			i:hover {color:#fff;}
+		// 		}
+		// 		.innerAll {
+		// 			padding: 15px;
+		// 		}
+		// 	}
+		// }
 		#logoWrapper {
-			position: relative;
-			overflow: hidden;
-			z-index: 3;
-			background: #313233;
 			height: @menuSidebarLogoWrapper;
-			width: @menuSidebarWidth;
+			background: #313233;
 			#logo {
-				display: block;
-				padding: 25px 0;
-				text-align: center;
-				img { border: none; max-width: 100%; }
-				a {
-					font-size: 20px;
-					color: #686a6a;
-					i:hover {color:#fff;}
+				position: relative;
+				padding: 22px 15px 0 15px;
+				.btn { 
+					position: relative; 
+					overflow: visible;
+					.badge {
+						position: absolute;
+						top: -5px;
+						right: -7px;
+						padding: 3px 5px;
+						font-size: 10px;
+						border: none;
+					}
 				}
-				.innerAll {
-					padding: 15px;
+				#toggleNavbarColor {
+					position: absolute;
+					right: 20px;
+					top: 10px;
+					a {
+						&.color {
+							display: inline-block;
+							width: 7px;
+							height: 7px;
+
+							&.color-inverse { background: #222; }
+							&.color-blue { background: lighten(#374a59, 5%); }
+							&.color-white { background: fade(#fff, 80%); }
+						}
+					}
 				}
 			}
 		}
@@ -45,6 +83,13 @@
 			height: @menuSidebarBrandWrapper;
 			width: @menuSidebarWidth;
 			padding: 0 15px;
+			.logo {
+				img { border: none; max-width: 100%; padding: 0; }
+				width: 33px;
+				position: relative;
+				top: -2px;
+				margin-right: 7px;
+			}
 			> a {
 				line-height: @menuSidebarBrandWrapper;
 				> span.text {
@@ -55,31 +100,6 @@
 					position: relative;
 					top: -1px;
 				}
-				&.color {
-					position: relative;
-					top: -2px;
-					display: inline-block;
-					width: 10px;
-					height: 10px;
-					border: 1px solid #fff;
-					.rounded(4px,4px,4px,4px);
-
-					&.color-inverse {
-						background: #333;
-						border: 1px solid #777;
-						&.active {
-							border-color: darken(#fff, 50%);
-						}
-					}
-					&.color-blue {
-						background: lighten(#374a59, 5%);
-						border: 1px solid lighten(#374a59, 10%);
-						&.active { border-color: lighten(#374a59, 30%); }
-					}
-					&.color-white {
-						background: fade(#fff, 90%);
-					}
-				}
 			}
 		}
 	}
@@ -88,14 +108,13 @@
 		position: relative;
 		overflow: hidden;
 		height: 100%;
-	
 		ul {
 			padding: 0;
 			width: @menuSidebarWidth;
 			background: @menuSidebarBg;
 			list-style: none;
 			overflow: hidden;
-			li {
+			> li {
 				height: @menuSidebarItemHeight;
 				border-bottom: 1px solid lighten(@menuSidebarBg, 2%);
 				padding: 0;
@@ -218,6 +237,20 @@
 				&.reset {
 					height: auto;
 					opacity: 1;
+					ul {
+						width: auto;
+						background: none;
+						li {
+							height: auto;
+							border: none;
+							> a {
+								padding: 7px;
+								height: auto;
+								line-height: normal;
+								.rounded(4px,4px,4px,4px);
+							}
+						}
+					}
 				}
 
 				.btn-inverse:hover {

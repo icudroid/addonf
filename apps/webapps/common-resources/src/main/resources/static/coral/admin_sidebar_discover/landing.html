@@ -5,7 +5,7 @@
 <!--[if gt IE 8]> <html class="ie "> <![endif]-->
 <!--[if !IE]><!--><html class=""><!-- <![endif]-->
 <head>
-	<title>CORAL Template (v1.9.1)</title>
+	<title>CORAL Template (v1.9.3)</title>
 	
 	<!-- Meta -->
 	<meta charset="utf-8">
@@ -31,12 +31,12 @@
     <![endif]-->
 
 
-	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.1"></script>
-<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.1"></script>
-<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.1"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
+	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.3"></script>
+<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.3"></script>
+<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.3"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
 	
 </head>
 <body class="">
@@ -50,7 +50,7 @@
 		<div id="content">
 
 						
-									<div class="navbar hidden-print navbar-primary box main navbar-default" role="navigation">
+				<div class="navbar hidden-print navbar-primary box main navbar-default" role="navigation">
 	<div class="container">
 
 		<div class="navbar-header">
@@ -73,6 +73,7 @@
 							<a href="dashboard_analytics.html?lang=en" class="glyphicons dashboard"><i></i><span>Dashboard</span></a>
 							<ul class="dropdown-menu">
 								<li><a href="dashboard_analytics.html?lang=en"><i class="fa fa-bar-chart-o"></i><span>Analytics</span></a></li>
+								<li><a href="dashboard_users.html?lang=en"><i class="fa fa-user"></i><span>Users</span></a></li>
 								<li><a href="dashboard_overview.html?lang=en"><i class="fa fa-dashboard"></i><span>Overview</span></a></li>
 							</ul>
 						</li>
@@ -86,20 +87,33 @@
 								<li><a href="email.html?lang=en"><span class="badge pull-right badge-inverse">30</span><i class="fa fa-envelope"></i><span>Inbox</span></a></li>
 								<li><a href="social.html?lang=en"><i class="fa fa-folder"></i><span>Widgets</span></a></li>
 								<li><a href="timeline.html?lang=en"><i class="fa fa-clock-o"></i><span>Timelines</span></a></li>
-								<li><a href="contacts.html?lang=en" class="glyphicons iphone"><i></i><span>Contacts</span></a></li>
+								<li><a href="contacts_2.html?lang=en" class="glyphicons iphone"><i></i><span>Contacts #2</span></a></li>
+								<li><a href="contacts.html?lang=en" class="glyphicons iphone"><i></i><span>Contacts #1</span></a></li>
+								<li><a href="ratings.html?lang=en" class="glyphicons star"><i></i><span>Ratings</span></a></li>
 							</ul>
 						</li>
 
 						<li class="dropdown dropdown-light dropdown-submenu">
-							<a href="realestate_listing_map.html?lang=en"><i class="fa fa-home"></i><span>Real estate</span></a>
+							<a href="realestate_listing_map.html?lang=en"><i class="fa fa-home"></i><span>Real Estate</span></a>
 							<ul class="dropdown-menu">
 								<li><a href="realestate_listing_map.html?lang=en"><i class="fa fa-map-marker"></i><span>Property map</span> &nbsp; <span class="label label-primary">new</span></a></li>
 								<li><a href="realestate_listing_grid.html?lang=en"><i class="fa fa-th"></i><span>Property grid</span></a></li>
 								<li><a href="realestate_listing_list.html?lang=en"><i class="fa fa-list"></i><span>Property list</span></a></li>
+								<li><a href="realestate_property.html?lang=en"><i class="fa fa-info"></i><span>Property details</span></a></li>
+								<li><a href="realestate_compare.html?lang=en"><i class="fa icon-scale-2"></i><span>Property compare</span></a></li>
+								<li><a href="realestate_property_edit.html?lang=en"><i class="fa fa-edit"></i><span>Property edit</span></a></li>
 							</ul>
 						</li>
 
-						<li><a href="events.html?lang=en" class="glyphicons google_maps"><i></i> Events</a></li>
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="maps_vector.html?lang=en" class="glyphicons google_maps"><i></i><span>Maps</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="maps_vector.html?lang=en" class="glyphicons google_maps"><i></i><span>Vector Maps</span></a></li>
+								<li><a href="maps_google.html?lang=en" class="glyphicons google_maps"><i></i><span>Google Maps</span></a></li>
+							</ul>
+						</li>
+
+						<li><a href="events.html?lang=en"><i class="fa fa-ticket"></i><span>Events</span></a></li>
 
 						<li class="dropdown dropdown-light dropdown-submenu">
 							<a href="news.html?lang=en" class="glyphicons notes"><i></i> Content</a>
@@ -173,10 +187,9 @@
 							</ul>
 						</li>
 
-						<li class="dropdown dropdown-light dropdown-submenu">
-							<a href="maps_vector.html?lang=en" class="glyphicons plus"><i></i><span>Other</span></a>
+						<li class="dropdown dropdown-light dropdown-submenu active">
+							<a href="profile_resume.html?lang=en" class="glyphicons plus"><i></i><span>Other</span></a>
 							<ul class="dropdown-menu dropdown-menu-bottom">
-								<li><a href="maps_vector.html?lang=en" class="glyphicons google_maps"><i></i><span>Maps</span></a></li>
 								<li><a href="profile_resume.html?lang=en"><i class="fa fa-download"></i>Profile / CV</a></li>
 								<li><a href="login.html?lang=en"><i class="fa fa-lock"></i><span>Login</span></a></li>
 								<li><a href="signup.html?lang=en"><i class="fa fa-pencil"></i>Signup</a></li>
@@ -202,9 +215,59 @@
 				<button class="btn btn-sm btn-navbar-right btn-primary btn-stroke"><i class="fa fa-fw fa-arrow-right"></i><span class="menu-left-hidden-xs"> Modules</span></button>
 			</div>
 
-			<div class="user-action pull-right">
-        		<a href="index.html?lang=en" target="_blank" class="btn btn-primary" type="button">View demo <i class="fa fa-fw fa-caret-right"></i></a>
+			<div class="col-md-3 visible-md visible-lg pull-right padding-none">
+		    	<div class="input-group">
+		      		<input type="text" class="form-control input-sm" placeholder="Search stories ...">
+		      		<span class="input-group-btn">
+		        		<button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+		      		</span>
+		    	</div><!-- /input-group -->
 		  	</div>
+
+		  	<div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs hidden-xs">
+				<div class="dropdown dropdown-icons padding-none">
+					<a data-toggle="dropdown" href="#" class="btn btn-primary btn-circle dropdown-toggle"><i class="fa fa-user"></i> </a>
+					<ul class="dropdown-menu">
+						<li data-toggle="tooltip" data-title="Photo Gallery" data-placement="left" data-container="body"><a href="gallery_photo.html?lang=en"><i class="fa fa-camera"></i></a></li>
+						<li data-toggle="tooltip" data-title="Tasks" data-placement="left" data-container="body"><a href="tasks.html?lang=en"><i class="fa fa-code-fork"></i></a></li>
+						<li data-toggle="tooltip" data-title="Employees" data-placement="left" data-container="body"><a href="employees.html?lang=en"><i class="fa fa-group"></i></a></li>
+						<li data-toggle="tooltip" data-title="Contacts" data-placement="left" data-container="body"><a href="contacts_2.html?lang=en"><i class="fa fa-phone-square"></i></a></li>
+					</ul>
+				</div>
+			</div>
+
+			<ul class="notifications pull-right hidden-xs">
+				<li class="dropdown notif">
+					<a href="" class="dropdown-toggle"  data-toggle="dropdown"><i class="notif-block fa fa-comments-o"></i><span class="badge badge-primary">7</span></a>
+					<ul class="dropdown-menu chat media-list">
+						<li class="media">
+					        <a class="pull-left" href="#"><img class="media-object thumb" src="../assets/images/people/100/15.jpg" alt="50x50" width="50"/></a>
+							<div class="media-body">
+					        	<span class="label label-default pull-right">5 min</span>
+					            <h5 class="media-heading">Adrian D.</h5>
+					            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+					        </div>
+						</li>
+				      	<li class="media">
+				          	<a class="pull-left" href="#"><img class="media-object thumb" src="../assets/images/people/100/16.jpg" alt="50x50" width="50"/></a>
+							<div class="media-body">
+					          	<span class="label label-default pull-right">2 days</span>
+					            <h5 class="media-heading">Jane B.</h5>
+					            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+					        </div>
+				        </li>
+					    <li class="media">
+				          	<a class="pull-left" href="#"><img class="media-object thumb" src="../assets/images/people/100/17.jpg" alt="50x50" width="50"/></a>
+					      	<div class="media-body">
+								<span class="label label-default pull-right">3 days</span>
+					            <h5 class="media-heading">Andrew M.</h5>
+					            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+					        </div>
+				        </li>
+				        <li><a href="#" class="btn btn-primary"><i class="fa fa-list"></i> <span>View all messages</span></a></li>
+			      	</ul>
+				</li>
+			</ul>
 			<div class="clearfix"></div>
 		</div>
 	</div>
@@ -212,7 +275,7 @@
 <!-- // END navbar -->
 
 
-				
+
 						
 			
 			<div class="layout-app">
@@ -274,7 +337,7 @@
 		<div id="footer" class="hidden-print">
 			
 			<!--  Copyright Line -->
-			<div class="copy">&copy; 2012 - 2014 - <a href="http://www.mosaicpro.biz">MosaicPro</a> - All Rights Reserved. <a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.9.1 / <a target="_blank" href="http://demo.mosaicpro.biz/coral/CHANGELOG.txt">changelog</a></div>
+			<div class="copy">&copy; 2012 - 2014 - <a href="http://www.mosaicpro.biz">MosaicPro</a> - All Rights Reserved. <a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.9.3 / <a target="_blank" href="../assets/../../CHANGELOG.txt">changelog</a></div>
 			<!--  End Copyright Line -->
 	
 		</div>
@@ -303,13 +366,13 @@
 	var themerPrimaryColor = primaryColor;
 	</script>
 	
-	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/nicescroll/jquery.nicescroll.min.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/breakpoints/breakpoints.js?v=v1.9.1"></script>
-<script src="../assets/components/core/js/animations.init.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/owl-carousel/owl.carousel.min.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/admin/pages/landing/landing.init.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/appear/jquery.appear.js?v=v1.9.1"></script>
-<script src="../assets/components/core/js/core.init.js?v=v1.9.1"></script>	
+	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/nicescroll/jquery.nicescroll.min.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/breakpoints/breakpoints.js?v=v1.9.3"></script>
+<script src="../assets/components/core/js/animations.init.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/owl-carousel/owl.carousel.min.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/admin/pages/landing/landing.init.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/appear/jquery.appear.js?v=v1.9.3"></script>
+<script src="../assets/components/core/js/core.init.js?v=v1.9.3"></script>	
 </body>
 </html>

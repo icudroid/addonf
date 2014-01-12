@@ -255,6 +255,17 @@
 				&:hover { background: #f5f5f5; }
 			}
 		}
+
+		&.layout-blue {
+			.list-group-1 > li {
+				&:before { background: lighten(@containerBgBlue, 2%); }
+				&.active:before { background: darken(@primaryColor, 5%); }
+			}
+			.email-item-list .list-group-item {
+				&:before { background: lighten(@containerBgBlue, 2%); }
+				&.active:before { background: @containerBgBlue; }
+			}
+		}
 	}
 }
 

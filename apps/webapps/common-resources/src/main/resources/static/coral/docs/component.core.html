@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>CORAL Template (v1.9.1)</title>
+	<title>CORAL Template (v1.9.3)</title>
 	
 	<!-- Meta -->
 	<meta charset="UTF-8" />
@@ -25,13 +25,13 @@
 
 	
 	
-	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.1"></script>
-<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.1"></script>
-<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.1"></script>
-<script src="../assets/components/library/angular/angular.min.js?v=v1.9.1"></script>
+	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.3"></script>
+<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.3"></script>
+<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.3"></script>
+<script src="../assets/components/library/angular/angular.min.js?v=v1.9.3"></script>
 </head>
 <body id="docs">
 <!-- Fixed navbar -->
@@ -6221,13 +6221,15 @@ td.visible-print {
 @inverseColor: #424242;
 @infoColor: #4193d0;
 @defaultColor: darken(#efefef, 5%);
+@secondaryColor: @infoColor;
 
 // Other Colors 
 @purpleColor: #9D8AC7;
 @mustardColor: #d4d171;
 @lightredColor: #e15258;
 
-
+// skins
+@containerBgBlue: lighten(#d8e1e6, 6%);
 
 
 // General
@@ -6269,7 +6271,8 @@ td.visible-print {
 // -------------------------
 
 @spacing: 10px;
-@layoutAppSeparator: 13px;
+@layoutAppSeparator: 12px;
+@layoutAppSeparatorTablet: 6px;
 
 // DON'T MODIFY UNLESS YOU KNOW WHAT YOU'RE DOING
 // -------------------------
@@ -6416,7 +6419,7 @@ body {
 	font-family: 'Open Sans', sans-serif; 
 	// background: @bodyBg;
 	background: @containerBg;
-	font-size: 13px;
+	font-size: 14px;
 	color: @bodyText;
 	position: relative;
 	height:100%;
@@ -6460,6 +6463,9 @@ h1, h2, h3, h4, h5, h6 {
 		/*padding: 0 5px;*/
 		/*font-style: italic;*/
 	}
+}
+h4, .h4 {
+	font-size: 17px;
 }
 h1 span, h2 span, h3 span {
 	font-size: 50%;
@@ -6877,12 +6883,12 @@ h1,h2,h3,h4,h5,h6 {
 // Grid
 // -------------------------
 
-.row { margin: 0 -5px; }
+.row { margin: 0 -@layoutAppSeparator/2; }
 .row-merge { margin: 0; }
 div[class*=&quot;col-xs-&quot;],
 div[class*=&quot;col-sm-&quot;],
 div[class*=&quot;col-md-&quot;],
-div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
+div[class*=&quot;col-lg-&quot;] { padding: 0 @layoutAppSeparator/2; }
 
 .layout-app {
 	margin: @layoutAppSeparator @layoutAppSeparator 0;
@@ -6919,7 +6925,7 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 		}
 	}
 	.col-separator-h {
-		height: 1px;
+		height: @layoutAppSeparatorTablet;
 		border-left: none;
 		border-right: none;
 		position: relative;
@@ -6980,6 +6986,14 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 }
 
 @media (max-width: 991px) {
+	
+	.row-merge {
+		&gt; [class*=&quot;col-md-&quot;] ~ [class*=&quot;col-md-&quot;] {
+			position: relative;
+			&amp;:after { position: absolute; top: 0; bottom: auto; left: 0; right: 0; width: auto; height: 1px; background: @contentBorder; content: &quot;&quot;; }
+		}
+	}
+
 	html, html.app {
 		.row-app {
 			&gt; [class*=&quot;col-sm-&quot;] {
@@ -7025,10 +7039,13 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 
 @media (max-width: 991px) {
 	html.app .layout-app {
-		[class*=&quot;col-sm-12&quot;] {
+		[class*=&quot;col-sm-12&quot;],
+		[class*=&quot;col-md-12&quot;] {
 			&gt; .col-separator {
 				left: 0;
 				right: 0;
+
+				.col-separator { margin-right: 0; }
 			}
 			~ [class*=&quot;col-sm-12&quot;] {
 				margin-top: @layoutAppSeparator;
@@ -7049,13 +7066,38 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 }
 
 @media (max-width: 1199px) {
+
+	.layout-app {
+		[class*=&quot;col-lg-4&quot;] {
+			&amp;[class*=&quot;col-sm-&quot;] {
+				.col-separator { margin-right: @layoutAppSeparatorTablet; }
+				.col-separator-last-sm { margin-right: 0; }
+			}
+			&amp;[class*=&quot;col-sm-12&quot;] {
+				.col-separator { margin-right: 0; }
+			}
+		}
+	}
+
 	html, 
 	html.app {
+		
+		.row { margin: 0 -@layoutAppSeparatorTablet/2; }
+		.row-merge { margin: 0; }
+		.layout-app &gt; .row-app { margin: 0; }
+
+		div[class*=&quot;col-xs-&quot;],
+		div[class*=&quot;col-sm-&quot;],
+		div[class*=&quot;col-md-&quot;],
+		div[class*=&quot;col-lg-&quot;] { padding: 0 @layoutAppSeparatorTablet/2; }
+
 		[class*=&quot;col-sm-12&quot;],
 		[class*=&quot;col-md-12&quot;] {
 			&gt; .col-separator {
 				margin-left: 0;
 				margin-right: 0;
+				.col-separator { margin-right: @layoutAppSeparatorTablet; }
+				.col-separator-last { margin-right: 0; }
 			}
 		}
 		.row-app {
@@ -7285,9 +7327,12 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 .text-white { color: #fff; }
 .text-info { color: @infoColor; }
 .text-small { font-size: 12px; }
+.text-larger { font-size: 14px; }
 .text-medium { font-size: 30px; line-height: 30px; }
 .text-condensed { letter-spacing: -2px; }
 .text-weight-normal { font-weight: 400; }
+.text-muted-dark { color: lighten(#7c7c7c, 15%); }
+.text-muted-darker { color: lighten(#7c7c7c, 5%); }
 .display-block { display: block; }
 .display-block-inline { display: inline-block; }
 .img-responsive { width: 100%; }
@@ -7312,6 +7357,8 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 }
 .inner-2x {
 	&amp;.innerAll { padding: @spacing * 2 !important; }
+	&amp;.padding-bottom-none { padding-bottom: 0 !important; }
+	&amp;.padding-right-none { padding-right: 0 !important; }
 }
 
 .nicescroll-rails { display: none; }
@@ -7328,11 +7375,31 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 												<div id="file-fbd4712aef81b17fe1bea46175e669f2" class="collapse">
 													<pre class="prettyprint">.profile-avatar {
 	position: relative;
+	.media &gt; .pull-left {
+		&gt; i {
+			position: absolute;
+			top: 0;
+			right: 5px;
+			border: 1px solid #fff;
+			.rounded(50%,50%,50%,50%);
+			padding: 0;
+			width: 12px;
+			height: 12px;
+			display: block;
+		}
+		img {
+			padding: 2px;
+		}
+	}
+	.media {
+		overflow: visible;
+	}
 	.btn-avatar {
 		position: absolute; 
-		top:0px;
+		top:20px;
 		right:20px;
 		text-align: center;
+		z-index: 2;
 		.btn {
 			position: relative;
 			display: inline-block;
@@ -7353,6 +7420,60 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 	height: 100%;
 	background: @inverseColor;
 	z-index: 1;
+	.profile-avatar {
+		ul.reset {
+			height: auto;
+			border: none;
+			li {
+				&amp;.btn-avatar {
+					position: absolute;
+					a {
+						padding: 1px 5px !important;
+						font-size: 12px !important;
+						line-height: 1.5 !important;
+						background: none;
+						i {
+							height: auto;
+							width: auto;
+							color: #fff;
+							&amp;:before { line-height: inherit; height: auto; font-size: inherit; top: -1px; width: inherit; color: inherit; }
+						}
+						&amp;:hover {
+							background: #fff;
+							i { color: @primaryColor; }
+						}
+					}
+				}
+				height: auto;
+			}
+		}
+		.dropdown {
+			&amp;.open {
+				.dropdown-toggle {
+					background: #fff;
+					i { color: @primaryColor; }
+				}
+			}
+			ul.dropdown-menu {
+				background: #fff;
+				width: 70px;
+				min-width: 70px;
+				overflow: hidden;
+				.rounded(3px,3px,3px,3px);
+				li {
+					border-bottom: 1px solid #efefef;
+					a {
+						.rounded();
+						padding: 3px 5px;
+						color: #000;
+						font-weight: 300;
+						font-size: 13px;
+						&amp;:hover { color: #000; }
+					}
+				}
+			}
+		}
+	}
 }
 
 @media (max-width: 767px) {
@@ -7428,6 +7549,9 @@ div[class*=&quot;col-lg-&quot;] { padding: 0 5px; }
 .dropdown-menu-light .dropdown-menu,
 .dropdown-menu.dropdown-menu-light {
 	border: 1px solid #efefef;
+	li.active a {
+		background: #fafafa;
+	}
 }
 .dropdown {
 	position: relative;
@@ -9486,35 +9610,35 @@ div.pp_overlay { background: #fff; }</pre>
 								<div class="widget-body">
 									<div class="tab-content">
 										<div class="tab-pane active" id="overview-scripts-header">
-											<pre class="prettyprint">&lt;script src=&quot;assets/components/library/jquery/jquery.min.js?v=v1.9.1&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.1&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;assets/components/library/modernizr/modernizr.js?v=v1.9.1&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;assets/components/plugins/less-js/less.min.js?v=v1.9.1&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.1&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.1&quot;&gt;&lt;/script&gt;</pre>
+											<pre class="prettyprint">&lt;script src=&quot;assets/components/library/jquery/jquery.min.js?v=v1.9.3&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.3&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;assets/components/library/modernizr/modernizr.js?v=v1.9.3&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;assets/components/plugins/less-js/less.min.js?v=v1.9.3&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.3&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.3&quot;&gt;&lt;/script&gt;</pre>
 										</div>
 										<div class="tab-pane" id="files-scripts-header">
-																							<p><a href="#file-f157b08a5396c7d02e537f8ee1c24cf3" data-toggle="collapse">assets/components/library/jquery/jquery.min.js?v=v1.9.1</a></p>
+																							<p><a href="#file-f157b08a5396c7d02e537f8ee1c24cf3" data-toggle="collapse">assets/components/library/jquery/jquery.min.js?v=v1.9.3</a></p>
 												<div id="file-f157b08a5396c7d02e537f8ee1c24cf3" class="collapse">
 													<pre class="prettyprint"></pre>
 												</div>
-																								<p><a href="#file-69e0c90bab9c785a6f9eb44355291528" data-toggle="collapse">assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.1</a></p>
+																								<p><a href="#file-69e0c90bab9c785a6f9eb44355291528" data-toggle="collapse">assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.3</a></p>
 												<div id="file-69e0c90bab9c785a6f9eb44355291528" class="collapse">
 													<pre class="prettyprint"></pre>
 												</div>
-																								<p><a href="#file-f13d9ca44ab84bf7d6ae94942398c652" data-toggle="collapse">assets/components/library/modernizr/modernizr.js?v=v1.9.1</a></p>
+																								<p><a href="#file-f13d9ca44ab84bf7d6ae94942398c652" data-toggle="collapse">assets/components/library/modernizr/modernizr.js?v=v1.9.3</a></p>
 												<div id="file-f13d9ca44ab84bf7d6ae94942398c652" class="collapse">
 													<pre class="prettyprint"></pre>
 												</div>
-																								<p><a href="#file-d08cc1b0306c156dd4111b54a34f4bb8" data-toggle="collapse">assets/components/plugins/less-js/less.min.js?v=v1.9.1</a></p>
+																								<p><a href="#file-d08cc1b0306c156dd4111b54a34f4bb8" data-toggle="collapse">assets/components/plugins/less-js/less.min.js?v=v1.9.3</a></p>
 												<div id="file-d08cc1b0306c156dd4111b54a34f4bb8" class="collapse">
 													<pre class="prettyprint"></pre>
 												</div>
-																								<p><a href="#file-79965dcff4177abbba8b02aed152cbc7" data-toggle="collapse">assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.1</a></p>
+																								<p><a href="#file-79965dcff4177abbba8b02aed152cbc7" data-toggle="collapse">assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.3</a></p>
 												<div id="file-79965dcff4177abbba8b02aed152cbc7" class="collapse">
 													<pre class="prettyprint"></pre>
 												</div>
-																								<p><a href="#file-6fa2c1de47418f7007fd09326c830827" data-toggle="collapse">assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.1</a></p>
+																								<p><a href="#file-6fa2c1de47418f7007fd09326c830827" data-toggle="collapse">assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.3</a></p>
 												<div id="file-6fa2c1de47418f7007fd09326c830827" class="collapse">
 													<pre class="prettyprint"></pre>
 												</div>
@@ -9536,15 +9660,15 @@ div.pp_overlay { background: #fff; }</pre>
 								<div class="widget-body">
 									<div class="tab-content">
 										<div class="tab-pane active" id="overview-scripts">
-											<pre class="prettyprint">&lt;script src=&quot;assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.1&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;assets/components/core/js/core.init.js?v=v1.9.1&quot;&gt;&lt;/script&gt;</pre>
+											<pre class="prettyprint">&lt;script src=&quot;assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.3&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;assets/components/core/js/core.init.js?v=v1.9.3&quot;&gt;&lt;/script&gt;</pre>
 										</div>
 										<div class="tab-pane" id="files-scripts">
-																							<p><a href="#file-a512ce70018511dd09d357f0974acf56" data-toggle="collapse">assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.1</a></p>
+																							<p><a href="#file-a512ce70018511dd09d357f0974acf56" data-toggle="collapse">assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.3</a></p>
 												<div id="file-a512ce70018511dd09d357f0974acf56" class="collapse">
 													<pre class="prettyprint"></pre>
 												</div>
-																								<p><a href="#file-fe75a5fc91fe70b53260de7f9f053673" data-toggle="collapse">assets/components/core/js/core.init.js?v=v1.9.1</a></p>
+																								<p><a href="#file-fe75a5fc91fe70b53260de7f9f053673" data-toggle="collapse">assets/components/core/js/core.init.js?v=v1.9.3</a></p>
 												<div id="file-fe75a5fc91fe70b53260de7f9f053673" class="collapse">
 													<pre class="prettyprint"></pre>
 												</div>
@@ -9577,13 +9701,13 @@ div.pp_overlay { background: #fff; }</pre>
 	var themerPrimaryColor = primaryColor;
 	</script>
 
-	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/slimscroll/jquery.slimscroll.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/docs/docs/assets/angular/app/ng.app.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/docs/assets/angular/filters/ng.filter.isarray.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/docs/assets/angular/controllers/ng.ctrl.components.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/docs/docs/assets/angular/directives/ng.docs.directive.components.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/prettyprint/assets/js/prettify.js?v=v1.9.1"></script>
-<script src="../assets/components/core/js/core.init.js?v=v1.9.1"></script>
+	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/slimscroll/jquery.slimscroll.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/docs/docs/assets/angular/app/ng.app.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/docs/assets/angular/filters/ng.filter.isarray.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/docs/assets/angular/controllers/ng.ctrl.components.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/docs/docs/assets/angular/directives/ng.docs.directive.components.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/prettyprint/assets/js/prettify.js?v=v1.9.3"></script>
+<script src="../assets/components/core/js/core.init.js?v=v1.9.3"></script>
 </body>
 </html>

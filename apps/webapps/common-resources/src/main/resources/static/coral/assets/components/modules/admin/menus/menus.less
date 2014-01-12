@@ -1,10 +1,30 @@
 .profile-avatar {
 	position: relative;
+	.media > .pull-left {
+		> i {
+			position: absolute;
+			top: 0;
+			right: 5px;
+			border: 1px solid #fff;
+			.rounded(50%,50%,50%,50%);
+			padding: 0;
+			width: 12px;
+			height: 12px;
+			display: block;
+		}
+		img {
+			padding: 2px;
+		}
+	}
+	.media {
+		overflow: visible;
+	}
 	.btn-avatar {
 		position: absolute; 
-		top:0px;
+		top:20px;
 		right:20px;
 		text-align: center;
+		z-index: 2;
 		.btn {
 			position: relative;
 			display: inline-block;
@@ -25,6 +45,60 @@
 	height: 100%;
 	background: @inverseColor;
 	z-index: 1;
+	.profile-avatar {
+		ul.reset {
+			height: auto;
+			border: none;
+			li {
+				&.btn-avatar {
+					position: absolute;
+					a {
+						padding: 1px 5px !important;
+						font-size: 12px !important;
+						line-height: 1.5 !important;
+						background: none;
+						i {
+							height: auto;
+							width: auto;
+							color: #fff;
+							&:before { line-height: inherit; height: auto; font-size: inherit; top: -1px; width: inherit; color: inherit; }
+						}
+						&:hover {
+							background: #fff;
+							i { color: @primaryColor; }
+						}
+					}
+				}
+				height: auto;
+			}
+		}
+		.dropdown {
+			&.open {
+				.dropdown-toggle {
+					background: #fff;
+					i { color: @primaryColor; }
+				}
+			}
+			ul.dropdown-menu {
+				background: #fff;
+				width: 70px;
+				min-width: 70px;
+				overflow: hidden;
+				.rounded(3px,3px,3px,3px);
+				li {
+					border-bottom: 1px solid #efefef;
+					a {
+						.rounded();
+						padding: 3px 5px;
+						color: #000;
+						font-weight: 300;
+						font-size: 13px;
+						&:hover { color: #000; }
+					}
+				}
+			}
+		}
+	}
 }
 
 @media (max-width: 767px) {
@@ -100,6 +174,9 @@
 .dropdown-menu-light .dropdown-menu,
 .dropdown-menu.dropdown-menu-light {
 	border: 1px solid #efefef;
+	li.active a {
+		background: #fafafa;
+	}
 }
 .dropdown {
 	position: relative;

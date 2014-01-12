@@ -5,7 +5,7 @@
 <!--[if gt IE 8]> <html class="ie "> <![endif]-->
 <!--[if !IE]><!--><html class=""><!-- <![endif]-->
 <head>
-	<title>CORAL Template (v1.9.1)</title>
+	<title>CORAL Template (v1.9.3)</title>
 	
 	<!-- Meta -->
 	<meta charset="utf-8">
@@ -31,12 +31,12 @@
     <![endif]-->
 
 
-	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.1"></script>
-<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.1"></script>
-<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.1"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
+	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.3"></script>
+<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.3"></script>
+<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.3"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
 	
 </head>
 <body class="">
@@ -50,7 +50,7 @@
 		<div id="content">
 
 						
-									<div class="navbar hidden-print navbar-primary box main navbar-default" role="navigation">
+				<div class="navbar hidden-print navbar-primary box main navbar-default" role="navigation">
 	<div class="container">
 
 		<div class="navbar-header">
@@ -73,6 +73,7 @@
 							<a href="dashboard_analytics.html?lang=en" class="glyphicons dashboard"><i></i><span>Dashboard</span></a>
 							<ul class="dropdown-menu">
 								<li><a href="dashboard_analytics.html?lang=en"><i class="fa fa-bar-chart-o"></i><span>Analytics</span></a></li>
+								<li><a href="dashboard_users.html?lang=en"><i class="fa fa-user"></i><span>Users</span></a></li>
 								<li><a href="dashboard_overview.html?lang=en"><i class="fa fa-dashboard"></i><span>Overview</span></a></li>
 							</ul>
 						</li>
@@ -86,20 +87,33 @@
 								<li><a href="email.html?lang=en"><span class="badge pull-right badge-inverse">30</span><i class="fa fa-envelope"></i><span>Inbox</span></a></li>
 								<li><a href="social.html?lang=en"><i class="fa fa-folder"></i><span>Widgets</span></a></li>
 								<li><a href="timeline.html?lang=en"><i class="fa fa-clock-o"></i><span>Timelines</span></a></li>
-								<li><a href="contacts.html?lang=en" class="glyphicons iphone"><i></i><span>Contacts</span></a></li>
+								<li><a href="contacts_2.html?lang=en" class="glyphicons iphone"><i></i><span>Contacts #2</span></a></li>
+								<li><a href="contacts.html?lang=en" class="glyphicons iphone"><i></i><span>Contacts #1</span></a></li>
+								<li><a href="ratings.html?lang=en" class="glyphicons star"><i></i><span>Ratings</span></a></li>
 							</ul>
 						</li>
 
 						<li class="dropdown dropdown-light dropdown-submenu">
-							<a href="realestate_listing_map.html?lang=en"><i class="fa fa-home"></i><span>Real estate</span></a>
+							<a href="realestate_listing_map.html?lang=en"><i class="fa fa-home"></i><span>Real Estate</span></a>
 							<ul class="dropdown-menu">
 								<li><a href="realestate_listing_map.html?lang=en"><i class="fa fa-map-marker"></i><span>Property map</span> &nbsp; <span class="label label-primary">new</span></a></li>
 								<li><a href="realestate_listing_grid.html?lang=en"><i class="fa fa-th"></i><span>Property grid</span></a></li>
 								<li><a href="realestate_listing_list.html?lang=en"><i class="fa fa-list"></i><span>Property list</span></a></li>
+								<li><a href="realestate_property.html?lang=en"><i class="fa fa-info"></i><span>Property details</span></a></li>
+								<li><a href="realestate_compare.html?lang=en"><i class="fa icon-scale-2"></i><span>Property compare</span></a></li>
+								<li><a href="realestate_property_edit.html?lang=en"><i class="fa fa-edit"></i><span>Property edit</span></a></li>
 							</ul>
 						</li>
 
-						<li><a href="events.html?lang=en" class="glyphicons google_maps"><i></i> Events</a></li>
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="maps_vector.html?lang=en" class="glyphicons google_maps"><i></i><span>Maps</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="maps_vector.html?lang=en" class="glyphicons google_maps"><i></i><span>Vector Maps</span></a></li>
+								<li><a href="maps_google.html?lang=en" class="glyphicons google_maps"><i></i><span>Google Maps</span></a></li>
+							</ul>
+						</li>
+
+						<li><a href="events.html?lang=en"><i class="fa fa-ticket"></i><span>Events</span></a></li>
 
 						<li class="dropdown dropdown-light dropdown-submenu">
 							<a href="news.html?lang=en" class="glyphicons notes"><i></i> Content</a>
@@ -174,9 +188,8 @@
 						</li>
 
 						<li class="dropdown dropdown-light dropdown-submenu">
-							<a href="maps_vector.html?lang=en" class="glyphicons plus"><i></i><span>Other</span></a>
+							<a href="profile_resume.html?lang=en" class="glyphicons plus"><i></i><span>Other</span></a>
 							<ul class="dropdown-menu dropdown-menu-bottom">
-								<li><a href="maps_vector.html?lang=en" class="glyphicons google_maps"><i></i><span>Maps</span></a></li>
 								<li><a href="profile_resume.html?lang=en"><i class="fa fa-download"></i>Profile / CV</a></li>
 								<li><a href="login.html?lang=en"><i class="fa fa-lock"></i><span>Login</span></a></li>
 								<li><a href="signup.html?lang=en"><i class="fa fa-pencil"></i>Signup</a></li>
@@ -218,7 +231,7 @@
 						<li data-toggle="tooltip" data-title="Photo Gallery" data-placement="left" data-container="body"><a href="gallery_photo.html?lang=en"><i class="fa fa-camera"></i></a></li>
 						<li data-toggle="tooltip" data-title="Tasks" data-placement="left" data-container="body"><a href="tasks.html?lang=en"><i class="fa fa-code-fork"></i></a></li>
 						<li data-toggle="tooltip" data-title="Employees" data-placement="left" data-container="body"><a href="employees.html?lang=en"><i class="fa fa-group"></i></a></li>
-						<li data-toggle="tooltip" data-title="Contacts" data-placement="left" data-container="body"><a href="contacts.html?lang=en"><i class="fa fa-phone-square"></i></a></li>
+						<li data-toggle="tooltip" data-title="Contacts" data-placement="left" data-container="body"><a href="contacts_2.html?lang=en"><i class="fa fa-phone-square"></i></a></li>
 					</ul>
 				</div>
 			</div>
@@ -262,15 +275,15 @@
 <!-- // END navbar -->
 
 
-				
+
 						
 			<div id="menu-top" class="menu-top-inverse">
 	<div class="container">	<ul class="main pull-left">
 		<li class="dropdown">
 			<a data-toggle="dropdown" class="dropdown-toggle" href=""><i class="fa fa-fw fa-cog"></i> Layout <span class="caret"></span></a>
 			<ul class="dropdown-menu">
-				<li class="active"><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true">Fixed Layout with Top menu</a></li>
-				<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=false">Fluid Layout with Sidebars</a></li>
+				<li class="active"><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true">Fixed Layout with Top menu</a></li>
+				<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=false">Fluid Layout with Sidebars</a></li>
 				<li><a href="layout/layout-fixed-menu-top.html?lang=en">Layout examples</a></li>
 		    </ul>
 		</li>
@@ -325,9 +338,9 @@
 	</ul>
 	<ul class="colors pull-right hidden-xs">
 		
-				<li class="active"><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=style-default" style="background-color: #eb6a5a"><span class="hide">style-default</span></a></li>
-				<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=coral" style="background-color: #7eccc2"><span class="hide">coral</span></a></li>
-				<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=alizarin-crimson" style="background-color: #F06F6F"><span class="hide">alizarin-crimson</span></a></li>
+				<li class="active"><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=style-default" style="background-color: #eb6a5a"><span class="hide">style-default</span></a></li>
+				<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=green" style="background-color: #87c844"><span class="hide">green</span></a></li>
+				<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=coral" style="background-color: #7eccc2"><span class="hide">coral</span></a></li>
 		
 		<li class="dropdown">
 			<a href="" data-toggle="dropdown" class="dropdown-toggle">
@@ -337,25 +350,26 @@
 				<span class="color info"></span>
 			</a>
 			<ul class="dropdown-menu pull-right">
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=blue-gray"><span class="color" style="background-color: #7293CF"></span> blue-gray</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=brown"><span class="color" style="background-color: #d39174"></span> brown</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=purple-gray"><span class="color" style="background-color: #AF86B9"></span> purple-gray</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=purple-wine"><span class="color" style="background-color: #CC6788"></span> purple-wine</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=green-army"><span class="color" style="background-color: #9FB478"></span> green-army</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=black-and-white"><span class="color" style="background-color: #979797"></span> black-and-white</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=amazon"><span class="color" style="background-color: #8BC4B9"></span> amazon</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=amber"><span class="color" style="background-color: #CACA8A"></span> amber</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=android-green"><span class="color" style="background-color: #A9C784"></span> android-green</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=antique-brass"><span class="color" style="background-color: #B3998A"></span> antique-brass</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=antique-bronze"><span class="color" style="background-color: #8D8D6E"></span> antique-bronze</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=artichoke"><span class="color" style="background-color: #B0B69D"></span> artichoke</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=atomic-tangerine"><span class="color" style="background-color: #F19B69"></span> atomic-tangerine</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=bazaar"><span class="color" style="background-color: #98777B"></span> bazaar</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=bistre-brown"><span class="color" style="background-color: #C3A961"></span> bistre-brown</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=bittersweet"><span class="color" style="background-color: #d6725e"></span> bittersweet</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=blueberry"><span class="color" style="background-color: #7789D1"></span> blueberry</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=bud-green"><span class="color" style="background-color: #6fa362"></span> bud-green</a></li>
-								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.1&layout_fixed=true&skin=burnt-sienna"><span class="color" style="background-color: #E4968A"></span> burnt-sienna</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=alizarin-crimson"><span class="color" style="background-color: #F06F6F"></span> alizarin-crimson</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=blue-gray"><span class="color" style="background-color: #7293CF"></span> blue-gray</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=brown"><span class="color" style="background-color: #d39174"></span> brown</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=purple-gray"><span class="color" style="background-color: #AF86B9"></span> purple-gray</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=purple-wine"><span class="color" style="background-color: #CC6788"></span> purple-wine</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=green-army"><span class="color" style="background-color: #9FB478"></span> green-army</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=black-and-white"><span class="color" style="background-color: #979797"></span> black-and-white</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=amazon"><span class="color" style="background-color: #8BC4B9"></span> amazon</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=amber"><span class="color" style="background-color: #CACA8A"></span> amber</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=android-green"><span class="color" style="background-color: #A9C784"></span> android-green</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=antique-brass"><span class="color" style="background-color: #B3998A"></span> antique-brass</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=antique-bronze"><span class="color" style="background-color: #8D8D6E"></span> antique-bronze</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=artichoke"><span class="color" style="background-color: #B0B69D"></span> artichoke</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=atomic-tangerine"><span class="color" style="background-color: #F19B69"></span> atomic-tangerine</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=bazaar"><span class="color" style="background-color: #98777B"></span> bazaar</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=bistre-brown"><span class="color" style="background-color: #C3A961"></span> bistre-brown</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=bittersweet"><span class="color" style="background-color: #d6725e"></span> bittersweet</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=blueberry"><span class="color" style="background-color: #7789D1"></span> blueberry</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=bud-green"><span class="color" style="background-color: #6fa362"></span> bud-green</a></li>
+								<li><a href="?module=admin&page=icons&url_rewrite=&build=&v=v1.9.3&layout_fixed=true&skin=burnt-sienna"><span class="color" style="background-color: #E4968A"></span> burnt-sienna</a></li>
 							</ul>
 		</li>
 	</ul>
@@ -3078,7 +3092,7 @@
 		<div id="footer" class="hidden-print">
 			
 			<!--  Copyright Line -->
-			<div class="copy">&copy; 2012 - 2014 - <a href="http://www.mosaicpro.biz">MosaicPro</a> - All Rights Reserved. <a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.9.1 / <a target="_blank" href="http://demo.mosaicpro.biz/coral/CHANGELOG.txt">changelog</a></div>
+			<div class="copy">&copy; 2012 - 2014 - <a href="http://www.mosaicpro.biz">MosaicPro</a> - All Rights Reserved. <a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.9.3 / <a target="_blank" href="../assets/../../CHANGELOG.txt">changelog</a></div>
 			<!--  End Copyright Line -->
 	
 		</div>
@@ -3107,10 +3121,10 @@
 	var themerPrimaryColor = primaryColor;
 	</script>
 	
-	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/nicescroll/jquery.nicescroll.min.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/breakpoints/breakpoints.js?v=v1.9.1"></script>
-<script src="../assets/components/core/js/animations.init.js?v=v1.9.1"></script>
-<script src="../assets/components/core/js/core.init.js?v=v1.9.1"></script>	
+	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/nicescroll/jquery.nicescroll.min.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/breakpoints/breakpoints.js?v=v1.9.3"></script>
+<script src="../assets/components/core/js/animations.init.js?v=v1.9.3"></script>
+<script src="../assets/components/core/js/core.init.js?v=v1.9.3"></script>	
 </body>
 </html>

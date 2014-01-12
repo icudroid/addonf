@@ -38,4 +38,10 @@
 		}
 	});
 
+	$('.btn-avatar [data-toggle="tab"]').on('show.bs.tab', function(e){
+		e.stopPropagation();
+		$('.btn-avatar [data-toggle="tab"]').parent().removeClass('active');
+	});
+
+
 })(jQuery);

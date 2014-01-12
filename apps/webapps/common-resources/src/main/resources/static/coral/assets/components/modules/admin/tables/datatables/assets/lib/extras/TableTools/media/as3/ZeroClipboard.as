@@ -1,5 +1,5 @@
 ﻿/* Compile using: mxmlc --target-player=10.0.0 ZeroClipboard.as */
-package static.coral.assets.components.modules.admin.tables.datatables.assets.lib.extras.TableTools.media.as3 {
+package {
 	import flash.display.Stage;
 	import flash.display.Sprite;
 	import flash.display.LoaderInfo;

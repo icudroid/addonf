@@ -198,13 +198,6 @@
 		img.pull-left, img.pull-right { display: inline-block; }
 		blockquote { padding: 0; text-align: center; &.pull-right p, &.pull-right small { text-align: center; } }
 	}
-	.row-merge {
-		> [class*="col-md-"] ~ [class*="col-md-"] {
-			width: auto;
-			&:after { display: none; }
-		}
-		&.border-top, & ~ & { border-top: 1px solid #e5e5e5; }
-	}
 }
 @media (max-width: 480px)
 {

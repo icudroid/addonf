@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>CORAL Template (v1.9.1)</title>
+	<title>CORAL Template (v1.9.3)</title>
 	
 	<!-- Meta -->
 	<meta charset="UTF-8" />
@@ -25,13 +25,13 @@
 
 	
 	
-	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.1"></script>
-<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.1"></script>
-<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.1"></script>
-<script src="../assets/components/library/angular/angular.min.js?v=v1.9.1"></script>
+	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.3"></script>
+<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.3"></script>
+<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.3"></script>
+<script src="../assets/components/library/angular/angular.min.js?v=v1.9.3"></script>
 </head>
 <body id="docs">
 <!-- Fixed navbar -->
@@ -108,11 +108,9 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav main-menu">
                 <li class="active"><a href="index.html?lang=en" >Home</a></li>
+                <li><a href="map.html?lang=en">Map &nbsp;<span class="label label-primary">New</span></a></li>
                 <li><a href="listing.html?lang=en">Properties</a></li>
-                <li><a href="">Agents &nbsp;<span class="label label-primary">soon</span></a></li>
-                <li><a href="">Map &nbsp;<span class="label label-primary">soon</span></a></li>
-                <!-- <li><a href="edit-property.html?lang=en">Edit Property</a></li> -->
-                <!-- <li><a href="contact.html?lang=en">Contact Us</a></li> -->
+                <li><a href="agent.html?lang=en">Agent page</a></li>
             </ul>
         </div> 
         <!-- NavBar Collapse -->
@@ -168,11 +166,9 @@
         &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
             &lt;ul class=&quot;nav navbar-nav main-menu&quot;&gt;
                 &lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;index.html?lang=en&quot; &gt;Home&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=&quot;map.html?lang=en&quot;&gt;Map &amp;nbsp;&lt;span class=&quot;label label-primary&quot;&gt;New&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
                 &lt;li&gt;&lt;a href=&quot;listing.html?lang=en&quot;&gt;Properties&lt;/a&gt;&lt;/li&gt;
-                &lt;li&gt;&lt;a href=&quot;&quot;&gt;Agents &amp;nbsp;&lt;span class=&quot;label label-primary&quot;&gt;soon&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-                &lt;li&gt;&lt;a href=&quot;&quot;&gt;Map &amp;nbsp;&lt;span class=&quot;label label-primary&quot;&gt;soon&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-                &lt;!-- &lt;li&gt;&lt;a href=&quot;edit-property.html?lang=en&quot;&gt;Edit Property&lt;/a&gt;&lt;/li&gt; --&gt;
-                &lt;!-- &lt;li&gt;&lt;a href=&quot;contact.html?lang=en&quot;&gt;Contact Us&lt;/a&gt;&lt;/li&gt; --&gt;
+                &lt;li&gt;&lt;a href=&quot;agent.html?lang=en&quot;&gt;Agent page&lt;/a&gt;&lt;/li&gt;
             &lt;/ul&gt;
         &lt;/div&gt; 
         &lt;!-- NavBar Collapse --&gt;
@@ -264,13 +260,13 @@
 	var themerPrimaryColor = primaryColor;
 	</script>
 
-	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/slimscroll/jquery.slimscroll.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/docs/docs/assets/angular/app/ng.app.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/docs/assets/angular/filters/ng.filter.isarray.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/docs/assets/angular/controllers/ng.ctrl.components.js?v=v1.9.1"></script>
-<script src="../assets/components/modules/docs/docs/assets/angular/directives/ng.docs.directive.components.js?v=v1.9.1"></script>
-<script src="../assets/components/plugins/prettyprint/assets/js/prettify.js?v=v1.9.1"></script>
-<script src="../assets/components/core/js/core.init.js?v=v1.9.1"></script>
+	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/slimscroll/jquery.slimscroll.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/docs/docs/assets/angular/app/ng.app.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/docs/assets/angular/filters/ng.filter.isarray.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/docs/assets/angular/controllers/ng.ctrl.components.js?v=v1.9.3"></script>
+<script src="../assets/components/modules/docs/docs/assets/angular/directives/ng.docs.directive.components.js?v=v1.9.3"></script>
+<script src="../assets/components/plugins/prettyprint/assets/js/prettify.js?v=v1.9.3"></script>
+<script src="../assets/components/core/js/core.init.js?v=v1.9.3"></script>
 </body>
 </html>

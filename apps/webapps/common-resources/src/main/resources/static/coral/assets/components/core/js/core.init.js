@@ -56,7 +56,25 @@ if (window.location != window.parent.location)
 	function scrollTo(id)
 	{
 		if ($(id).length)
-			$('html,body').animate({scrollTop: $(id).offset().top},'slow');
+		{
+			var ns = $(id).closest('.hasNiceScroll');
+			if (ns.length)
+			{
+				var nso = ns.getNiceScroll();
+				if (nso.length)
+				{
+					var e = nso[0]
+						idOffset = $(id).offset().top,
+						nsOffset = ns.offset().top,
+						eOffset = e.getScrollTop(),
+						scrollDown = idOffset - nsOffset + eOffset;
+
+					nso[0].doScrollTop(scrollDown);
+				}
+			}
+			else
+				$('html,body').animate({scrollTop: $(id).offset().top},'slow');
+		}
 	}
 
 	window.resizeNiceScroll = function()
@@ -102,6 +120,11 @@ if (window.location != window.parent.location)
 		}
 	});
 
+	$('[data-toggle="scrollTo"]').on('click', function(e){
+		e.preventDefault();
+		scrollTo($(this).attr('href'));
+	});
+
 	$('ul.collapse')
 	.on('show.bs.collapse', function(e)
 	{
@@ -114,7 +137,7 @@ if (window.location != window.parent.location)
 		$(this).closest('li').removeClass('active');
 	});
 
-	$('[data-toggle="navbar-color"]').on('click', function(e){
+	$('[data-toggle="navbar-color"] a').on('click', function(e){
 		e.preventDefault();
 		
 		if ($(this).is('.active'))
@@ -137,7 +160,7 @@ if (window.location != window.parent.location)
 			$('html').removeClass('layout-blue');
 		}
 
-		$(this).parent().find('[data-toggle="navbar-color"].active').removeClass('active');
+		$(this).parent().find('.active').removeClass('active');
 		$(this).addClass('active');
 	});
 
