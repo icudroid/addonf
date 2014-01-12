@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>fr.k2i.adbeback.addonf.webapps</groupId>
-    <artifactId>addonf-webapp</artifactId>
+    <artifactId>mtzik-webapp</artifactId>
     <packaging>jar</packaging>
     <name>WEBAPPS - HOME WEBAPP</name>
 

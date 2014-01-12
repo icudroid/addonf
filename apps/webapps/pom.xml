@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>addonf-webapp</module>
+        <module>mtzik-webapp</module>
         <module>annonceur-webapp</module>
         <module>admin-webapp</module>
         <module>common-resources</module>
