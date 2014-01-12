@@ -1,11 +1,13 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
+import lombok.Data;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 
+@Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.BRAND_RULE)
 public class BrandRule extends AdService {

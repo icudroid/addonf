@@ -74,7 +74,7 @@
         </div>
 
         <div class="container text-center">
-            <a id="download" target="_blank" th:href="@{/dln}" class="btn btn-primary strong" style="font-size: 26px;" th:inline="text"><i class="fa fa-download fa-4"></i>&nbsp;[[#{addonf.download}]]</a>
+            <a id="download" target="_blank" th:href="@{'/dln/'+${filename}}" class="btn btn-primary strong" style="font-size: 26px;" th:inline="text"><i class="fa fa-download fa-4"></i>&nbsp;[[#{addonf.download}]]</a>
         </div>
     </div>
 

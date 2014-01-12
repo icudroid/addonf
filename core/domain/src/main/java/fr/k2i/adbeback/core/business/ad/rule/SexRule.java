@@ -2,10 +2,11 @@ package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.player.Sex;
+import lombok.Data;
 
 import javax.persistence.*;
 
-
+@Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.SEX_RULE)
 public class SexRule extends AdRule {
@@ -14,14 +15,6 @@ public class SexRule extends AdRule {
     @Enumerated(EnumType.STRING)
     @Column(name = IMetaData.ColumnMetadata.AdRule.SEX)
     private Sex sex;
-
-    public Sex getSex() {
-        return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
 
     @Override
     public String toString() {

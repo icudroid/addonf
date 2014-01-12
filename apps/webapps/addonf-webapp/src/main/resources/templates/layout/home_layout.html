@@ -26,9 +26,8 @@
         <!-- Nav Bar Collapse -->
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav main-menu">
-                <li class="active"><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
-                <li><a th:href="@{/news}"  th:text="#{addonf.mainmenu.news}">News</a></li>
-                <li><a th:href="@{/populars}"  th:text="#{addonf.mainmenu.populars}">Populars</a></li>
+                <li><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
+                <li><a th:href="@{/search/music.html}"  th:text="#{addonf.mainmenu.catalog}">Catalog</a></li>
                 <li>
 
                     <form th:action="@{/search.html}" method="get">

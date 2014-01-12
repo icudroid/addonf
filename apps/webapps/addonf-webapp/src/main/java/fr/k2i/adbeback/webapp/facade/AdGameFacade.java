@@ -1,9 +1,14 @@
 package fr.k2i.adbeback.webapp.facade;
 
+import com.mysema.query.jpa.impl.JPAUpdateClause;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.AudioAd;
 import fr.k2i.adbeback.core.business.ad.StaticAd;
 import fr.k2i.adbeback.core.business.ad.VideoAd;
+import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import fr.k2i.adbeback.core.business.ad.rule.AdService;
+import fr.k2i.adbeback.core.business.ad.rule.AmountRule;
+import fr.k2i.adbeback.core.business.ad.rule.QAmountRule;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.media.Media;
@@ -11,6 +16,7 @@ import fr.k2i.adbeback.core.business.media.Music;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.*;
+import fr.k2i.adbeback.dao.jpa.AdRuleRepository;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
 import fr.k2i.adbeback.webapp.bean.*;
@@ -58,7 +64,15 @@ public class AdGameFacade {
     public static final String PLAYER_GOOSE_GAME = "gooseGameCases";
     public static final String PLAYER_TOKEN = "token";
 
+    public static final String AD_CHOISES = "adChoises";
+
     public static final String CART = "cart";
+
+    @Autowired
+    private IAdDao adDao;
+
+    @Autowired
+    private AdRuleRepository adRuleRepository;
 
     @Autowired
     private IGooseGameDao gooseGameDao;
@@ -171,7 +185,6 @@ public class AdGameFacade {
             }
 
             adsVideo.add(ad.getAdFile());
-
             //adBean.setUrl(adChoise.getCorrect().getAd().getVideo());
 
 
@@ -236,6 +249,7 @@ public class AdGameFacade {
         session.setAttribute(PLAYER_TOKEN, gooseCase);
         session.setAttribute(GOOSE_LEVEL, gooseLevel.getId());
         session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
+        session.setAttribute(AD_CHOISES,choises);
 
         return res;
     }
@@ -271,6 +285,12 @@ public class AdGameFacade {
                 answers.put(index, responseId);
 
                 gooseCase = goHeadToken(request);
+
+
+                Map<Integer, AdChoise> choises = (Map<Integer, AdChoise>) request.getSession().getAttribute(AD_CHOISES);
+                AdChoise adChoise = choises.get(index);
+                AdRule adRule = adRuleRepository.findOne(adChoise.getGeneratedBy().getId());
+                adDao.updatetAmountForAd((AdService) adRule);
 
 
             } else {
@@ -652,6 +672,25 @@ public class AdGameFacade {
 
             }
 
+        }
+    }
+
+    public String getFilename(Long idGame) {
+        AbstractAdGame abstractAdGame = adGameManager.get(idGame);
+        if (abstractAdGame instanceof AdGameMedia  && fr.k2i.adbeback.core.business.game.StatusGame.Win.equals(abstractAdGame.getStatusGame())) {
+            AdGameMedia adGame = (AdGameMedia) abstractAdGame;
+            List<Media> medias = adGame.getMedias();
+            if(medias.size()>1){
+                return "musics.zip";
+            }else if(medias.size()==1){
+                Media media = medias.get(0);
+                return media.getTitle()+"."+new Filename(media.getFile()).extension();
+            }else{
+                return "";
+            }
+
+        }else{
+            return "";
         }
     }
 }

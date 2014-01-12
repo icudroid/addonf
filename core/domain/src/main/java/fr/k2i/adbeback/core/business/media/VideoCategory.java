@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("Video")
-public class VideoGenre extends Genre {
+public class VideoCategory extends Category {
 
 	@Override
 	public String toString() {

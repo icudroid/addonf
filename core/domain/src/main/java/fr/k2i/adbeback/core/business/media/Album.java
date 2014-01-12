@@ -33,7 +33,7 @@ public class Album extends Media {
 	@Override
 	public String toString() {
 		return "Album [ id=" + id + ", title=" + title
-				+ ", productors=" + productors + ", genres=" + genres
+				+ ", productors=" + productors + ", genres=" + categories
 				+ ", description=" + description + ", duration=" + duration
 				+ ", jacket=" + jacket + ", releaseDate=" + releaseDate
 				+ ", nbAdsNeeded=" + nbAdsNeeded + ", file=" + file + "]";

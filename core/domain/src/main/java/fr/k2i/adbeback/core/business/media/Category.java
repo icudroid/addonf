@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "genre")
 @DiscriminatorColumn(name = "classe", discriminatorType = DiscriminatorType.STRING)
-public abstract class Genre extends BaseObject implements Serializable {
+public abstract class Category extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 7015318296306104846L;
 	protected Long id;
@@ -61,7 +61,7 @@ public abstract class Genre extends BaseObject implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Genre other = (Genre) obj;
+		Category other = (Category) obj;
 		if (codeGenre == null) {
 			if (other.codeGenre != null)
 				return false;

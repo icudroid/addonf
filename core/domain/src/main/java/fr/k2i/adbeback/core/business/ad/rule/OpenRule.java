@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
+import lombok.Data;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-
+@Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.OPEN_RULE)
 public class OpenRule extends AdService {
@@ -24,20 +25,6 @@ public class OpenRule extends AdService {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.CORRECT_RESPONSE)
     private AdResponse correct;
-	
-	public AdResponse getCorrect() {
-		return correct;
-	}
-	public void setCorrect(AdResponse correct) {
-		this.correct = correct;
-	}
-
-	public List<AdResponse> getResponses() {
-		return responses;
-	}
-	public void setResponses(List<AdResponse> responses) {
-		this.responses = responses;
-	}
 
 
     @Override

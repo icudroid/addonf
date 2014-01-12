@@ -1,12 +1,13 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-
+@Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.AMOUNT_RULE)
 public class AmountRule extends AdRule {
@@ -15,13 +16,6 @@ public class AmountRule extends AdRule {
     @Column(name = IMetaData.ColumnMetadata.AdRule.AMOUNT)
     private Double amount;
 
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
 
     @Override
     public boolean equals(Object o) {

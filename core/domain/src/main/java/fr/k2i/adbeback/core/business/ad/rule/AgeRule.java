@@ -1,12 +1,14 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 
+@Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.AGE_RULE)
 public class AgeRule extends AdRule {
@@ -16,23 +18,6 @@ public class AgeRule extends AdRule {
     private Integer ageMin;
     @Column(name = IMetaData.ColumnMetadata.AdRule.AGE_MAX)
     private Integer ageMax;
-
-
-    public Integer getAgeMin() {
-        return ageMin;
-    }
-
-    public void setAgeMin(Integer ageMin) {
-        this.ageMin = ageMin;
-    }
-
-    public Integer getAgeMax() {
-        return ageMax;
-    }
-
-    public void setAgeMax(Integer ageMax) {
-        this.ageMax = ageMax;
-    }
 
 
     @Override

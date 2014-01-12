@@ -53,5 +53,8 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     Date getLastReleaseForArtist(Artist artist);
+
+    @Transactional
+    Page<Music> findMusicByTileAndGenre(String query, Long genre, Pageable pageable);
 }
 

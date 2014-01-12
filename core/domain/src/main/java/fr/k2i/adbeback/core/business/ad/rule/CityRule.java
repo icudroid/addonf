@@ -2,10 +2,11 @@ package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.country.City;
+import lombok.Data;
 
 import javax.persistence.*;
 
-
+@Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.CITY_RULE)
 public class CityRule extends AdRule {
@@ -19,22 +20,6 @@ public class CityRule extends AdRule {
     @Column(name = IMetaData.ColumnMetadata.AdRule.AROUND)
     private Integer around;
 
-
-    public Integer getAround() {
-        return around;
-    }
-
-    public void setAround(Integer around) {
-        this.around = around;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
 
     @Override
     public boolean equals(Object o) {

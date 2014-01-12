@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 
 
+import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.IMultiGooseLevel;
@@ -18,17 +19,13 @@ import fr.k2i.adbeback.core.business.goosegame.ISingleGooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.SingleGooseLevel;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.dao.*;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.Product;
-import fr.k2i.adbeback.core.business.ad.rule.AdResponse;
-import fr.k2i.adbeback.core.business.ad.rule.AdRule;
-import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
-import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
-import fr.k2i.adbeback.core.business.ad.rule.ProductRule;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.service.AdGameManager;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,28 +118,36 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
                 //TODO : comment choisir la règle
 				List<AdRule> rules = ad.getRules();
-                List<AdRule> rulesPossible = new ArrayList<AdRule>();
+                List<AdService> rulesPossible = new ArrayList<AdService>();
 
+                LocalDate now = new LocalDate();
 
 				for (AdRule adRule : rules) {
                     if (adRule instanceof BrandRule) {
-                        rulesPossible.add(adRule);
+                        if(now.toDate().after(((BrandRule) adRule).getStartDate()) && now.toDate().before(((BrandRule) adRule).getEndDate())){
+                            rulesPossible.add((AdService) adRule);
+                        }
                     }
                     if (adRule instanceof OpenRule) {
-                        rulesPossible.add(adRule);
+                        if(now.toDate().after(((BrandRule) adRule).getStartDate()) && now.toDate().before(((BrandRule) adRule).getEndDate())){
+                            rulesPossible.add((AdService) adRule);
+                        }
                     }
                     if (adRule instanceof ProductRule) {
-                        rulesPossible.add(adRule);
+                        if(now.toDate().after(((BrandRule) adRule).getStartDate()) && now.toDate().before(((BrandRule) adRule).getEndDate())){
+                            rulesPossible.add((AdService) adRule);
+                        }
                     }
 				}
 
-                AdRule rule = rulesPossible.get(ramRandom.nextInt(rulesPossible.size()));
+                AdService rule = (AdService) rulesPossible.get(ramRandom.nextInt(rulesPossible.size()));
 
 				choises.setQuestion(rule.getQuestion());
 				choises.setPossiblities(generatePossibilies(ad, correct,rule));
 				choises.setCorrect(choises.getPossiblities().get(correct));
 				choises.setNumber(i);
                 choises.setAdGame(game);
+                choises.setGeneratedBy((AdService) rule);
 				res.put(i, choises);
 
 				i++;

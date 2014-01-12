@@ -119,7 +119,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/product.html").permitAll()
                     .antMatchers("/catalog.html").permitAll()
                     .antMatchers("/search.html").permitAll()
-                    .antMatchers("/search").permitAll()
+                    .antMatchers("/search/**").permitAll()
 
                     //manage cart
                     .antMatchers("/rest/addToCart/*").permitAll()

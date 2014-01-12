@@ -10,22 +10,18 @@ import fr.k2i.adbeback.webapp.bean.CartBean;
 import fr.k2i.adbeback.webapp.bean.search.ArtistBean;
 import fr.k2i.adbeback.webapp.bean.search.MusicBean;
 import fr.k2i.adbeback.webapp.bean.search.ProductorBean;
+import fr.k2i.adbeback.webapp.bean.search.SearchCommand;
 import fr.k2i.adbeback.webapp.facade.MediaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +73,7 @@ public class SearchController{
         model.put("staticUrl",staticUrl);
         model.put("categories",genreRepository.findAll());
         model.put("query", req);
+        model.put("showmore", true);
 
         if(!StringUtils.isEmpty(req)){
             mediaFacade.search(req,model);
@@ -90,6 +87,42 @@ public class SearchController{
 
 
 
+    @RequestMapping("/search/{what}.html")
+    public String search(@PathVariable String what, @ModelAttribute("search")SearchCommand searchCommand,Pageable pageable, Map<String, Object> model,HttpServletRequest request) throws Exception {
+
+        CartBean cart = (CartBean) request.getSession().getAttribute("cart");
+        if(cart==null){
+            cart = new CartBean();
+            request.getSession().setAttribute("cart",cart);
+        }
+        model.put("cart", cart);
+        model.put("staticUrl",staticUrl);
+        model.put("categories",genreRepository.findAll());
+        model.put("showmore", false);
+        /*model.put("query", req);
+        model.put("category", genre);*/
+
+        if(!StringUtils.isEmpty(searchCommand.getReq())){
+            model.put("musics",mediaFacade.findMusics(searchCommand.getGenreId(),searchCommand.getReq(),pageable));
+        }else{
+            model.put("musics", new PageImpl<MusicBean>(Lists.<MusicBean>newArrayList()));
+        }
+
+
+        if("music".equals(what)){
+            return "search/music";
+        }else if("productor".equals(what)){
+
+            return "search";
+        }else if("artist".equals(what)){
+            return "search";
+        }else{
+            return "search";
+        }
+
+
+
+    }
 }
 
 

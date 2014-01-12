@@ -1,7 +1,8 @@
 package fr.k2i.adbeback.webapp.bean.media;
 
 import fr.k2i.adbeback.core.business.media.Album;
-import fr.k2i.adbeback.core.business.media.Genre;
+import fr.k2i.adbeback.core.business.media.Category;
+import fr.k2i.adbeback.core.business.media.Category;
 import fr.k2i.adbeback.webapp.bean.PersonBean;
 import lombok.Data;
 
@@ -16,7 +17,7 @@ public class MediaBean {
 	private String title;
 	private List<PersonBean> productors;
 	private List<PersonBean> artists;
-	private List<Genre> genres;
+	private List<Category> categories;
     private List<AlbumBean> albums;
 	private String description;
 	private Long duration;

@@ -2,10 +2,11 @@ package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.country.Country;
+import lombok.Data;
 
 import javax.persistence.*;
 
-
+@Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.AdRule.Discrimator.COUNTRY_RULE)
 public class CountryRule extends AdRule {
@@ -15,13 +16,6 @@ public class CountryRule extends AdRule {
     @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.JOIN_COUNTRY)
     private Country country;
 
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
 
     @Override
     public boolean equals(Object o) {

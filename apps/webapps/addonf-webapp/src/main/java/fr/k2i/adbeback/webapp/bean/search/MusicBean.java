@@ -2,7 +2,7 @@ package fr.k2i.adbeback.webapp.bean.search;
 
 import com.google.common.collect.Lists;
 import fr.k2i.adbeback.core.business.media.Artist;
-import fr.k2i.adbeback.core.business.media.Genre;
+import fr.k2i.adbeback.core.business.media.Category;
 import fr.k2i.adbeback.core.business.media.Music;
 import fr.k2i.adbeback.core.business.media.Productor;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class MusicBean implements Serializable{
     private String title;
     private List<ProductorBean> productors;
     private List<ArtistBean> artists;
-    private List<Genre> genres;
+    private List<Category> categories;
     private String jacket;
     private Date releaseDate;
     private Integer nbAdsNeeded;
@@ -47,7 +47,7 @@ public class MusicBean implements Serializable{
             artists.add(new ArtistBean(artist.getId(),artist.getFirstName(),artist.getLastName(),artist.getPhoto()));
         }
 
-        genres = Lists.newArrayList(music.getGenres());
+        categories = Lists.newArrayList(music.getCategories());
 
         jacket = music.getJacket();
 

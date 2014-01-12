@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("Music")
-public class MusicGenre extends Genre {
+public class MusicCategory extends Category {
 	private static final long serialVersionUID = 7343096407501325625L;
 
 

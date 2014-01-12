@@ -76,7 +76,7 @@ public class MediaFacade {
         MediaBean bean = new MediaBean();
         bean.setDescription(media.getDescription());
         bean.setDuration(media.getDuration());
-        bean.setGenres(media.getGenres());
+        bean.setCategories(media.getCategories());
         bean.setId(media.getId());
         bean.setJacket(media.getJacket());
         bean.setReleaseDate(media.getReleaseDate());
@@ -158,16 +158,23 @@ public class MediaFacade {
 
     @Transactional
     public void search(String query, Map<String, Object> model) {
-        Pageable pageable = new PageRequest(0,10);
+        Pageable pageableArtist = new PageRequest(0,9);
+        Pageable pageableLabel = new PageRequest(0,9);
+        Pageable pageableMusic = new PageRequest(0,50);
 
-        Page<Artist> artist = mediaDao.findArtistByFullName(query, pageable);
-        Page<Productor> productors = mediaDao.findProductorByFullName(query, pageable);
-        Page<Music> musics = mediaDao.findMusicByTile(query, pageable);
+        Page<Artist> artist = mediaDao.findArtistByFullName(query, pageableArtist);
+        Page<Productor> productors = mediaDao.findProductorByFullName(query, pageableLabel);
+        Page<Music> musics = mediaDao.findMusicByTile(query, pageableMusic);
 
 
         model.put("artists",createPageArtists(artist));
         model.put("productors",createPageProductors(productors));
         model.put("musics",createPageMusics(musics));
 
+    }
+
+    @Transactional
+    public Page<Music> findMusics(Long genre, String query, Pageable pageable) {
+        return mediaDao.findMusicByTileAndGenre(query,genre, pageable);
     }
 }

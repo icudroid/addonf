@@ -49,9 +49,9 @@ public class AdGameWebservice {
     }
 
 
-    @RequestMapping(value = "/dln", method = RequestMethod.GET)
+    @RequestMapping(value = "/dln/{file}.{ext}", method = RequestMethod.GET)
     public @ResponseBody
-    void dnl(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    void dnl(@PathVariable String file,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long idGame = (Long) request.getSession().getAttribute(ID_ADGAME);
 
         adGameFacade.emptyGameSession(request);

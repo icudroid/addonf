@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.ad;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import fr.k2i.adbeback.core.business.ad.rule.AmountRule;
 import fr.k2i.adbeback.core.business.country.Country;
 import lombok.Data;
 
@@ -97,5 +99,15 @@ public abstract  class Ad extends BaseObject implements Serializable {
 				+ "]";
 	}
 
+
+    public <ADRULE extends AdRule> List<ADRULE> getRules(Class<ADRULE> clazz) {
+        List<ADRULE> res = new ArrayList<ADRULE>();
+        for (AdRule rule : rules) {
+            if(rule.getClass().equals(clazz)){
+                res.add((ADRULE)rule);
+            }
+        }
+        return res;
+    }
 
 }

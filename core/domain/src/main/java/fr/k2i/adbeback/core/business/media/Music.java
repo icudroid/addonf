@@ -1,45 +1,24 @@
 package fr.k2i.adbeback.core.business.media;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.List;
-
+@Data
 @Entity
 @DiscriminatorValue("Music")
 public class Music extends Media {
 	private static final long serialVersionUID = 2176672861946794968L;
+    @ManyToMany(targetEntity = Album.class, cascade = { CascadeType.PERSIST,
+            CascadeType.MERGE })
+    @JoinTable(name = "album_artist", joinColumns = @JoinColumn(name = "MUSIC_ID"), inverseJoinColumns = @JoinColumn(name = "ALBUM_ID"))
 	private List<Album> albums;
+
+    @ManyToMany(targetEntity = Artist.class, cascade = { CascadeType.PERSIST,
+            CascadeType.MERGE })
+    @JoinTable(name = "music_artist", joinColumns = @JoinColumn(name = "MUSIC_ID"), inverseJoinColumns = @JoinColumn(name = "ARTIST_ID"))
 	private List<Artist> artists;
 	private String mp3Sample;
-	
-	public String getMp3Sample() {
-		return mp3Sample;
-	}
-
-	public void setMp3Sample(String mp3Sample) {
-		this.mp3Sample = mp3Sample;
-	}
-
-	@ManyToMany(targetEntity = Album.class, cascade = { CascadeType.PERSIST,
-		CascadeType.MERGE })
-	@JoinTable(name = "album_artist", joinColumns = @JoinColumn(name = "MUSIC_ID"), inverseJoinColumns = @JoinColumn(name = "ALBUM_ID"))
-	public List<Album> getAlbums() {
-		return albums;
-	}
-
-	public void setAlbums(List<Album> albums) {
-		this.albums = albums;
-	}
-
-	@ManyToMany(targetEntity = Artist.class, cascade = { CascadeType.PERSIST,
-		CascadeType.MERGE })
-	@JoinTable(name = "music_artist", joinColumns = @JoinColumn(name = "MUSIC_ID"), inverseJoinColumns = @JoinColumn(name = "ARTIST_ID"))
-	public List<Artist> getArtists() {
-		return artists;
-	}
-
-	public void setArtists(List<Artist> artists) {
-		this.artists = artists;
-	}
 
 	@Override
 	public int hashCode() {
@@ -76,7 +55,7 @@ public class Music extends Media {
 	public String toString() {
 		return "Music [albums=" + albums + ", artists=" + artists + ", id="
 				+ id + ", title=" + title + ", productors=" + productors
-				+ ", genres=" + genres + ", description=" + description
+				+ ", genres=" + categories + ", description=" + description
 				+ ", duration=" + duration + ", jacket=" + jacket
 				+ ", releaseDate=" + releaseDate + "]";
 	}

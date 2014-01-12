@@ -3,19 +3,13 @@ package fr.k2i.adbeback.core.business.game;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import fr.k2i.adbeback.core.business.ad.rule.AdService;
 
 @Entity
 @Table(name = "adchoise")
@@ -27,9 +21,20 @@ public class AdChoise extends BaseObject implements Serializable {
 	private Possibility correct;
 	private String question;
 	private Integer number;
-	
-	
-	public Integer getNumber() {
+    private AdService generatedBy;
+
+
+    @ManyToOne
+    @JoinColumn(name = "adrule_id")
+    public AdService getGeneratedBy() {
+        return generatedBy;
+    }
+
+    public void setGeneratedBy(AdService generatedBy) {
+        this.generatedBy = generatedBy;
+    }
+
+    public Integer getNumber() {
 		return number;
 	}
 
@@ -39,7 +44,6 @@ public class AdChoise extends BaseObject implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
 	public Long getId() {
 		return id;
 	}

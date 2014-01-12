@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.player.Player;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * User Data Access Object (IGenericDao) interface.
@@ -20,5 +22,8 @@ public interface IAdDao extends IGenericDao<Ad, Long> {
 	 * @throws Exception
 	 */
     List<Ad> getAllValideFor(Player player);
+
+    @Transactional
+    void updatetAmountForAd(AdService adRule);
 }
 

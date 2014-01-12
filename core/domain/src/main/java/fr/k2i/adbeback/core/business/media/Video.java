@@ -1,26 +1,20 @@
 package fr.k2i.adbeback.core.business.media;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.List;
 
+@Data
 @Entity
 @DiscriminatorValue("Video")
 public class Video extends Media {
 	private static final long serialVersionUID = 305593059441866272L;
 
+    @ManyToMany(targetEntity = Actor.class, cascade = { CascadeType.PERSIST,
+            CascadeType.MERGE })
+    @JoinTable(name = "video_actor", joinColumns = @JoinColumn(name = "VIDEO_ID"), inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
 	private List<Actor> actors;
-
-
-	@ManyToMany(targetEntity = Actor.class, cascade = { CascadeType.PERSIST,
-			CascadeType.MERGE })
-	@JoinTable(name = "video_actor", joinColumns = @JoinColumn(name = "VIDEO_ID"), inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
-	public List<Actor> getActors() {
-		return actors;
-	}
-
-	public void setActors(List<Actor> actors) {
-		this.actors = actors;
-	}
 
 	@Override
 	public int hashCode() {
@@ -50,7 +44,7 @@ public class Video extends Media {
 	@Override
 	public String toString() {
 		return "Video [actors=" + actors + ", id=" + id + ", title=" + title
-				+ ", productors=" + productors + ", genres=" + genres
+				+ ", productors=" + productors + ", genres=" + categories
 				+ ", description=" + description + ", duration=" + duration
 				+ ", jacket=" + jacket + ", releaseDate=" + releaseDate + "]";
 	}

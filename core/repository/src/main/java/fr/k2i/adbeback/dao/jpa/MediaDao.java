@@ -4,6 +4,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.BooleanExpression;
 import fr.k2i.adbeback.core.business.media.*;
 import fr.k2i.adbeback.core.business.push.HomePush;
 import fr.k2i.adbeback.core.business.push.HomePush_;
@@ -53,8 +54,8 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
                 );
 
         query
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber())
                 .orderBy(media.title.asc());
 
         return new PageImpl<String>(query.list(media.title),pageable,query.count());
@@ -71,8 +72,8 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
                 );
 
         query
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber())
                 .orderBy(person.lastName.asc())
                 .orderBy(person.firstName.asc());
 
@@ -103,8 +104,8 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
                 );
 
         query
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber())
                 .orderBy(artist.lastName.asc())
                 .orderBy(artist.firstName.asc());
 
@@ -123,8 +124,8 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
                 );
 
         query
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber())
                 .orderBy(productor.lastName.asc())
                 .orderBy(productor.firstName.asc());
 
@@ -160,6 +161,30 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         return query.uniqueResult(music.releaseDate.max());
     }
 
+    @Override
+    public Page<Music> findMusicByTileAndGenre(String req, Long genre, Pageable pageable) {
+        QCategory qGenre = QCategory.category;
+
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        BooleanExpression predicat = music.title.containsIgnoreCase(req);
+
+        query.from(music);
+
+        if(genre!=null && genre>0){
+            predicat = predicat.and(music.categories.any().id.eq(genre));
+        }
+
+
+        query   .where(predicat)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(music.title.asc());
+
+
+        return new PageImpl<Music>(query.list(music),pageable,query.count());
+    }
+
 
     @Transactional
     @Override
@@ -172,8 +197,8 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
                 );
 
         query
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber())
                 .orderBy(music.title.asc());
 
 
@@ -210,7 +235,7 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
 		if (idGenre != null && idGenre != -1) {
             helper.criteriaHelper.and(
-                    helper.criteriaHelper.equal(helper.rootHelper.join(Music_.genres).get(Genre_.id), idGenre)
+                    helper.criteriaHelper.equal(helper.rootHelper.join(Music_.categories).get(Category_.id), idGenre)
             );
 		}
 		
@@ -239,7 +264,7 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
         if (idGenre != null && idGenre != -1) {
             helper.criteriaHelper.and(
-                    helper.criteriaHelper.equal(helper.rootHelper.join(Music_.genres).get(Genre_.id), idGenre)
+                    helper.criteriaHelper.equal(helper.rootHelper.join(Music_.categories).get(Category_.id), idGenre)
             );
         }
 
@@ -311,7 +336,7 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
         if (idGenre != null && idGenre != -1) {
             helper.criteriaHelper.and(
-                    helper.criteriaHelper.equal(helper.rootHelper.join(Music_.genres).get(Genre_.id), idGenre)
+                    helper.criteriaHelper.equal(helper.rootHelper.join(Music_.categories).get(Category_.id), idGenre)
             );
         }
 
