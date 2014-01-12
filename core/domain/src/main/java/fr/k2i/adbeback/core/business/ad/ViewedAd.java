@@ -3,11 +3,16 @@ package fr.k2i.adbeback.core.business.ad;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.player.Player;
+import lombok.Data;
+import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
+@Data
 @Entity
 @Table(name = IMetaData.TableMetadata.VIEWED_AD)
 public class ViewedAd extends BaseObject implements Serializable {
@@ -25,55 +30,22 @@ public class ViewedAd extends BaseObject implements Serializable {
     @Column(name=IMetaData.ColumnMetadata.ViewedMedia.NB)
     private Integer nb;
 
-    @ManyToOne
-    @JoinColumn(name = IMetaData.ColumnMetadata.ViewedMedia.AD)
-    private Ad ad;
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = IMetaData.ColumnMetadata.ViewedMedia.RULE)
-    private AdRule adRule;//Brand, Product, Open
+    private AdService adRule;//Brand, Product, Open
 
-    public Long getId() {
-        return id;
-    }
+    public ViewedAd(){}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-
-    public Integer getNb() {
-        return nb;
-    }
-
-    public void setNb(Integer nb) {
-        this.nb = nb;
-    }
-
-    public Ad getAd() {
-        return ad;
-    }
-
-    public void setAd(Ad ad) {
-        this.ad = ad;
-    }
-
-    public AdRule getAdRule() {
-        return adRule;
-    }
-
-    public void setAdRule(AdRule adRule) {
+    public ViewedAd(Player currentPlayer, AdService adRule) {
+        this.player = currentPlayer;
+        nb = 1;
+        date = new Date();
         this.adRule = adRule;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -82,7 +54,6 @@ public class ViewedAd extends BaseObject implements Serializable {
 
         ViewedAd viewedAd = (ViewedAd) o;
 
-        if (ad != null ? !ad.equals(viewedAd.ad) : viewedAd.ad != null) return false;
         if (adRule != null ? !adRule.equals(viewedAd.adRule) : viewedAd.adRule != null) return false;
         if (nb != null ? !nb.equals(viewedAd.nb) : viewedAd.nb != null) return false;
         if (player != null ? !player.equals(viewedAd.player) : viewedAd.player != null) return false;
@@ -94,7 +65,6 @@ public class ViewedAd extends BaseObject implements Serializable {
     public int hashCode() {
         int result = player != null ? player.hashCode() : 0;
         result = 31 * result + (nb != null ? nb.hashCode() : 0);
-        result = 31 * result + (ad != null ? ad.hashCode() : 0);
         result = 31 * result + (adRule != null ? adRule.hashCode() : 0);
         return result;
     }
@@ -105,8 +75,11 @@ public class ViewedAd extends BaseObject implements Serializable {
         return "ViewedAd{" +
                 "player=" + player +
                 ", nb=" + nb +
-                ", ad=" + ad +
                 ", adRule=" + adRule +
                 '}';
+    }
+
+    public void view() {
+        nb++;
     }
 }

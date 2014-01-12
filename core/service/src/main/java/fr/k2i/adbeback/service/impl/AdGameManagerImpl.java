@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 
 
+import fr.k2i.adbeback.core.business.ad.ViewedAd;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
@@ -56,6 +57,10 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
     @Autowired
     private IGooseLevelDao gooseLevelDao;
+
+
+    @Autowired
+    private IViewedAdDao viewedAdDao;
 
 	@Autowired
 	public void setIAdGameDao(fr.k2i.adbeback.dao.IAdGameDao IAdGameDao) {
@@ -124,21 +129,37 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 				for (AdRule adRule : rules) {
                     if (adRule instanceof BrandRule) {
-                        if(now.toDate().after(((BrandRule) adRule).getStartDate()) && now.toDate().before(((BrandRule) adRule).getEndDate())){
-                            rulesPossible.add((AdService) adRule);
+                        if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
+                            ViewedAd forToday = viewedAdDao.findForToday(player, (AdService) adRule);
+                            if(forToday==null || forToday.getNb() <= ((AdService) adRule).getMaxDisplayByUser()){
+                                rulesPossible.add((AdService) adRule);
+                            }
                         }
                     }
                     if (adRule instanceof OpenRule) {
-                        if(now.toDate().after(((BrandRule) adRule).getStartDate()) && now.toDate().before(((BrandRule) adRule).getEndDate())){
-                            rulesPossible.add((AdService) adRule);
+                        if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
+                            ViewedAd forToday = viewedAdDao.findForToday(player, (AdService) adRule);
+                            if(forToday==null || forToday.getNb() <= ((AdService) adRule).getMaxDisplayByUser()){
+                                rulesPossible.add((AdService) adRule);
+                            }
                         }
                     }
                     if (adRule instanceof ProductRule) {
-                        if(now.toDate().after(((BrandRule) adRule).getStartDate()) && now.toDate().before(((BrandRule) adRule).getEndDate())){
-                            rulesPossible.add((AdService) adRule);
+                        if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
+                            ViewedAd forToday = viewedAdDao.findForToday(player, (AdService) adRule);
+                            if(forToday==null || forToday.getNb() <= ((AdService) adRule).getMaxDisplayByUser()){
+                                rulesPossible.add((AdService) adRule);
+                            }
                         }
                     }
 				}
+
+                if(rulesPossible.isEmpty()){
+                    if(mapTest.size()==allAds.size()){
+                        throw new Exception("No more pub");
+                    }
+                    continue;
+                }
 
                 AdService rule = (AdService) rulesPossible.get(ramRandom.nextInt(rulesPossible.size()));
 

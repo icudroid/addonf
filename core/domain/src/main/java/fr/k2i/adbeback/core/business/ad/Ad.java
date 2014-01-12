@@ -103,7 +103,7 @@ public abstract  class Ad extends BaseObject implements Serializable {
     public <ADRULE extends AdRule> List<ADRULE> getRules(Class<ADRULE> clazz) {
         List<ADRULE> res = new ArrayList<ADRULE>();
         for (AdRule rule : rules) {
-            if(rule.getClass().equals(clazz)){
+            if(clazz.isAssignableFrom(rule.getClass())){
                 res.add((ADRULE)rule);
             }
         }

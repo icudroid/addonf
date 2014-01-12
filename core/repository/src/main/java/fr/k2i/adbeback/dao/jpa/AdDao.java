@@ -75,7 +75,26 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         res = matchSex(res,player);
         res = matchCity(res,player);
         res = matchAge(res,player);
+        res = matchService(res, player);
 
+        return res;
+    }
+
+    private List<Ad> matchService(List<Ad> ads, Player player) {
+        List<Ad> res = new ArrayList<Ad>();
+
+        Date now = new Date();
+        for (Ad ad : ads) {
+            List<AdService> rules = ad.getRules(AdService.class);
+            if(!rules.isEmpty()){
+                for (AdService rule : rules) {
+                     if(now.after(rule.getStartDate()) && now.before(rule.getEndDate())){
+                         res.add(ad);
+                         break;
+                     }
+                }
+            }
+        }
         return res;
     }
 

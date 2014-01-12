@@ -1,14 +1,8 @@
 package fr.k2i.adbeback.webapp.facade;
 
-import com.mysema.query.jpa.impl.JPAUpdateClause;
-import fr.k2i.adbeback.core.business.ad.Ad;
-import fr.k2i.adbeback.core.business.ad.AudioAd;
-import fr.k2i.adbeback.core.business.ad.StaticAd;
-import fr.k2i.adbeback.core.business.ad.VideoAd;
+import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
-import fr.k2i.adbeback.core.business.ad.rule.AmountRule;
-import fr.k2i.adbeback.core.business.ad.rule.QAmountRule;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.media.Media;
@@ -28,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileSystemUtils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -110,6 +103,9 @@ public class AdGameFacade {
     private String videoPath;
 
 
+    @Autowired
+    private IViewedAdDao viewedAdDao;
+
 
 
 
@@ -117,6 +113,7 @@ public class AdGameFacade {
     public AdGameBean createAdGame(HttpServletRequest request) throws Exception {
 
         Player player = playerFacade.getCurrentPlayer();
+
 
         CartBean cart = (CartBean) request.getSession().getAttribute(CART);
 
@@ -260,6 +257,7 @@ public class AdGameFacade {
         Long end = (Long) request.getSession().getAttribute(GAME_END_TIME);
         Boolean limited = (Boolean) request.getSession().getAttribute(LIMITED_TIME);
 
+        Player currentPlayer = playerFacade.getCurrentPlayer();
         if(limited && end < new Date().getTime()){
             res.setStatus(StatusGame.WinLimitTime);
             LimiteTimeAdGameBean gameResult = computeResultGame(request);
@@ -277,6 +275,8 @@ public class AdGameFacade {
 
             GooseCase gooseCase = null;
 
+            AdRule adRule = doStat(request, index, currentPlayer);
+
             if (answers.get(index) == null && correctId!=null && correctId.equals(responseId)) {
                 res.setCorrect(true);
                 score++;
@@ -287,9 +287,6 @@ public class AdGameFacade {
                 gooseCase = goHeadToken(request);
 
 
-                Map<Integer, AdChoise> choises = (Map<Integer, AdChoise>) request.getSession().getAttribute(AD_CHOISES);
-                AdChoise adChoise = choises.get(index);
-                AdRule adRule = adRuleRepository.findOne(adChoise.getGeneratedBy().getId());
                 adDao.updatetAmountForAd((AdService) adRule);
 
 
@@ -329,7 +326,7 @@ public class AdGameFacade {
         }
 
 
-        GooseToken gooseToken =  playerDao.getPlayerGooseToken(playerFacade.getCurrentPlayer().getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(currentPlayer.getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
         Integer number = gooseToken.getGooseCase().getNumber();
         res.setUserToken(number);
 
@@ -337,6 +334,25 @@ public class AdGameFacade {
 
     }
 
+    @Transactional
+    private AdRule doStat(HttpServletRequest request, Integer index, Player currentPlayer) {
+        Map<Integer, AdChoise> choises = (Map<Integer, AdChoise>) request.getSession().getAttribute(AD_CHOISES);
+        AdChoise adChoise = choises.get(index);
+        AdRule adRule = adRuleRepository.findOne(adChoise.getGeneratedBy().getId());
+
+
+        ViewedAd viewedAd = viewedAdDao.findForToday(currentPlayer, (AdService) adRule);
+        if(viewedAd==null){
+            viewedAd = new ViewedAd(currentPlayer,(AdService) adRule);
+            viewedAdDao.save(viewedAd);
+        }else{
+            viewedAd.view();
+        }
+        return adRule;
+    }
+
+
+    
     @Transactional
     private LimiteTimeAdGameBean computeResultGame(HttpServletRequest request) throws Exception {
         Player player = playerFacade.getCurrentPlayer();
@@ -491,6 +507,9 @@ public class AdGameFacade {
         Long end = (Long) request.getSession().getAttribute(GAME_END_TIME);
         Boolean limited = (Boolean) request.getSession().getAttribute(LIMITED_TIME);
 
+        Player currentPlayer = playerFacade.getCurrentPlayer();
+        AdRule adRule = doStat(request, index, currentPlayer);
+
         if(limited && end < new Date().getTime()){
             res.setStatus(StatusGame.WinLimitTime);
             LimiteTimeAdGameBean gameResult = computeResultGame(request);
@@ -530,7 +549,7 @@ public class AdGameFacade {
 
         }
 
-        GooseToken gooseToken =  playerDao.getPlayerGooseToken(playerFacade.getCurrentPlayer().getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(currentPlayer.getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
         Integer number = gooseToken.getGooseCase().getNumber();
         res.setUserToken(number);
 
