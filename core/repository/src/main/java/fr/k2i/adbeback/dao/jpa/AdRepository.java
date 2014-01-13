@@ -18,4 +18,5 @@ import java.util.List;
  */
 public interface AdRepository extends CrudRepository<Ad, Long> ,PagingAndSortingRepository<Ad,Long>{
     Page<Ad> findByBrand(Brand brand,Pageable pageable);
+    List<Ad> findByBrand(Brand brand);
 }

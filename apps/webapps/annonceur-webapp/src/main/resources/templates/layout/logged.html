@@ -22,9 +22,18 @@
     -->
 
     <link rel="stylesheet" th:href="@{/coral/assets/components/library/bootstrap/css/bootstrap.min.css}"/>
-    <link rel="stylesheet"
-          th:href="@{/coral/assets/css/admin/module.admin.page.dashboard_analytics.sidebar_type.discover.min.css}"/>
 
+    <link rel="stylesheet"
+          th:href="@{/coral/assets/css/admin/module.admin.page.tables.sidebar_type.discover.min.css}"/>
+
+
+
+    <script th:inline="javascript">
+        var addonf = {};
+        addonf.base = [[@{/}]];
+        addonf.static = [[${staticUrl}]];
+        addonf.token = [[${_csrf.token}]];
+    </script>
 
     <script th:src="@{/coral/assets/components/library/jquery/jquery.min.js}"></script>
     <script th:src="@{/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
@@ -191,6 +200,9 @@
     var themerPrimaryColor = primaryColor;
 </script>
 
+
+
+
 <script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
 <script th:src="@{/coral/assets/components/plugins/nicescroll/jquery.nicescroll.min.js}"></script>
 <script th:src="@{/coral/assets/components/plugins/breakpoints/breakpoints.js}"></script>
@@ -209,6 +221,18 @@
 <script th:src="@{/coral/assets/components/modules/admin/maps/vector/assets/lib/jquery-jvectormap-1.2.2.min.js}"></script>
 <script th:src="@{/coral/assets/components/modules/admin/maps/vector/assets/lib/maps/jquery-jvectormap-world-mill-en.js}"></script>
 <script th:src="@{/coral/assets/components/modules/admin/maps/vector/assets/custom/maps-vector.world-map-markers.init.js}"></script>
+
+
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/lib/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/lib/extras/TableTools/media/js/TableTools.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/lib/extras/ColVis/media/js/ColVis.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/custom/js/DT_bootstrap.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/custom/js/datatables.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/forms/elements/fuelux-checkbox/fuelux-checkbox.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/forms/elements/bootstrap-select/assets/lib/js/bootstrap-select.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/forms/elements/bootstrap-select/assets/custom/js/bootstrap-select.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/classic/assets/js/tables-classic.init.js}"></script>
+
 <script th:src="@{/coral/assets/components/core/js/sidebar.main.init.js}"></script>
 <script th:src="@{/coral/assets/components/core/js/sidebar.discover.init.js}"></script>
 <script th:src="@{/coral/assets/components/core/js/core.init.js}"></script>

@@ -17,13 +17,14 @@ public interface IMetaDataController {
 
         String ENROLL_FORM =                            "/signup.html";
         String REGISTRATION_CONFIRM =                   "/confirmEnroll/{crypt}/{code}";
-        String DASHBOARD_ADS =                          "/manageAds";
+        String DASHBOARD_ADS =                          "/createCampaign";
         String MANAGE_ADS_PARTIALS =                    "/manageAds/partials/{html}.html";
         String GET_ALL_ADS =                            "/manageAds/getAll";
         String MANAGE_ADS_PARTIALS_ACTION =             "/manageAds/partials/{action}/{html}.html";
         String CREATE_CAMPAIGN =                        "/manageAds/create";
         String SAVE_STEP =                              "/manageAds/saveStep/{step}";
         String SAVE_STEP_NO_FILE =                      "/manageAds/saveStepNoFile/{step}";;
+        String LIST_CAMPAIGNS =                         "listCampaign.html";
     }
 
     interface View{
@@ -35,5 +36,6 @@ public interface IMetaDataController {
         String ENROLLED_FORM =                          "enrolled";
         String REGISTRATION_BRAND_CONFIRM =             "enrollConfirmed";
         String DASHBOARD_ADS =                          "manage/ads/show";
+        String LIST_CAMPAIGNS =                         "campaigns";
     }
 }

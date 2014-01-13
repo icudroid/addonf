@@ -54,6 +54,14 @@ public class ManageAdsController {
     private CampaignCommandValidator campaignCommandValidator;
 
 
+    @RequestMapping(value = IMetaDataController.Path.LIST_CAMPAIGNS)
+    public String showCampaignAds(ModelMap model) throws Exception {
+        List<AdBean> ads = brandServiceFacade.getAdsForConnectedUser();
+        model.addAttribute("campaigns",ads);
+        return IMetaDataController.View.LIST_CAMPAIGNS;
+    }
+
+
     @RequestMapping(value = IMetaDataController.Path.DASHBOARD_ADS)
     public String showCurrentAds(){
         return IMetaDataController.View.DASHBOARD_ADS;
@@ -72,7 +80,7 @@ public class ManageAdsController {
 
     @RequestMapping(IMetaDataController.Path.GET_ALL_ADS)
     public @ResponseBody Page<AdBean> getAll(Pageable pageable) throws Exception {
-        return brandServiceFacade.getAllForCurrentUser(pageable);
+        return brandServiceFacade.getAllForConnectedUser(pageable);
     }
 
     @RequestMapping(IMetaDataController.Path.CREATE_CAMPAIGN)

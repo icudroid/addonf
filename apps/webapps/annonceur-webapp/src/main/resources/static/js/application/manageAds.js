@@ -14,12 +14,11 @@ var manageAdsApp = angular.module('manageAdsApp', [
 manageAdsApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-            when('/search', {templateUrl: addonf.base+'manageAds/partials/listads.html',   controller: 'ManageAdsCtrl'}).
             when('/create', {templateUrl: addonf.base+'manageAds/partials/create/step1.html',   controller: 'CreateAdsCtrl'}).
             when('/step2', {templateUrl: addonf.base+'manageAds/partials/create/step2.html',   controller: 'Step2Ctrl'}).
             when('/step3', {templateUrl: addonf.base+'manageAds/partials/create/step3.html',   controller: 'Step3Ctrl'}).
             when('/step4', {templateUrl: addonf.base+'manageAds/partials/create/step4.html',   controller: 'Step4Ctrl'}).
-            otherwise({redirectTo: '/search'});
+            otherwise({redirectTo: '/create'});
     }]);
 
 

@@ -4,26 +4,6 @@
 
 var manageAdsControllers = angular.module('manageAdsControllers', ['ngRoute','ui.bootstrap','angularFileUpload']);
 
-manageAdsControllers.controller('ManageAdsCtrl', ['$scope', 'Ads', '$interval','$timeout', '$route', '$location',
-    function($scope, Ads, $interval, $timeout, $route, $location) {
-         $scope.page = 0;
-         $scope.size=3;
-         $scope.sort='startDate,desc';
-         $scope.results = [];
-         $scope.nb = 0;
-
-         Ads.getAll({page:$scope.page,size:$scope.size,sort:$scope.sort},function(data){
-             $scope.results = data.content;
-             $scope.nb = data.totalElements;
-         });
-
-        $scope.create = function(){
-            $location.path("/create");
-        }
-    }
-]);
-
-
 
 manageAdsControllers.controller('CreateAdsCtrl', ['$scope', 'Ads', 'Campaign', '$interval','$timeout', '$route', '$location','$upload',
     function($scope, Ads, Campaign,$interval, $timeout, $route, $location,$upload) {

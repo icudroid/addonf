@@ -139,7 +139,20 @@ public class BrandServiceFacade {
     }
 
     @Transactional
-    public Page<AdBean> getAllForCurrentUser(Pageable pageable) throws Exception {
+    public List<AdBean> getAdsForConnectedUser() throws Exception {
+        Brand brand = userFacade.getCurrentUser();
+
+        List<AdBean> res = new ArrayList<AdBean>();
+        List<Ad> ads = adRepository.findByBrand(brand);
+
+        for (Ad ad : ads) {
+            res.add(new AdBean(ad));
+        }
+        return res;
+    }
+
+    @Transactional
+    public Page<AdBean> getAllForConnectedUser(Pageable pageable) throws Exception {
         Brand brand = userFacade.getCurrentUser();
 
         List<AdBean> res = new ArrayList<AdBean>();

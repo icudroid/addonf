@@ -69,6 +69,7 @@ public interface IMetaData {
             String END_DATE =                           "end_date";
             String DURATION =                           "duration";
             String AD_FILE =                            "ad_file";
+            String NAME =                               "name";
 
             public interface Discrimator {
                 String DISCRIMINATOR =                  "classe";

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged">
+
+<head>
+    <title th:text="${title}">Title</title>
+
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'list'})"></div>
+</div>
+
+
+<div layout:fragment="content" class="col-table">
+
+    <div class="heading-buttons border-bottom innerLR">
+        <div class="btn-group btn-group-xs pull-right">
+            <a class="btn btn-primary" th:href="@{/createCampaign}" th:utext="#{addonf.create.campaign}"><i class="fa fa-fw fa-plus-circle"></i> Create campaign</a>
+        </div>
+        <h4 class="margin-none innerTB" th:text="#{addonf.campaigns.title}">Mes campagnes publicitaires</h4>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="widget">
+        <div class="widget-body innerAll inner-2x">
+            <table class="dynamicTable colVis table">
+                <tr>
+                    <th th:text="#{addonf.campaigns.name.header}">Nom</th>
+                    <th th:text="#{addonf.campaigns.start.header}">Début</th>
+                    <th th:text="#{addonf.campaigns.end.header}">Fin</th>
+                    <th th:text="#{addonf.campaigns.amountInitial.header}">Budget Initial</th>
+                    <th th:text="#{addonf.campaigns.amountLeft.header}">Budget restant</th>
+                    <th th:text="#{addonf.campaigns.action.header}">Actions</th>
+                </tr>
+                <tr th:each="campaign : ${campaigns}" >
+                    <td th:text="${campaign.name}">Trident</td>
+                    <td th:text="${campaign.start}">Trident</td>
+                    <td th:text="${campaign.end}">Trident</td>
+                    <td th:text="${campaign.amountInitial}">Trident</td>
+                    <td th:text="${campaign.amountLeft}">Trident</td>
+                    <td th:text="${campaign.name}">
+                        <a id="modify" href="#" class="btn btn-sm btn-success" th:attr="data-idCampaign=${campaign.id}"><i class="fa fa-pencil"></i></a>
+                        <a id="delete" href="#" class="btn btn-sm btn-danger" th:attr="data-idCampaign=${campaign.id}"><i class="fa fa-times"></i></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+

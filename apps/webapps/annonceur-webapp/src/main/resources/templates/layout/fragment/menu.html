@@ -1,0 +1,27 @@
+<div id="menu" class="hidden-print hidden-xs sidebar-blue">
+    <div id="sidebar-discover-wrapper">
+        <div id="logoWrapper">
+            <a th:href="@{/}" id="logo" class="animated fadeInDown"><img
+                    th:src="@{/coral/assets/images/logo/app-logo-style-default.png}"/></a>
+        </div>
+        <ul class="list-unstyled">
+            <li th:class="${activeFirstMenu == 'home'}?'active':''"><a th:href="@{/}" th:text="#{menu.home}">Home</a></li>
+            <li th:class="${activeFirstMenu == 'ads'}?'active':''">
+                <a href="#sidebar-discover-example" data-toggle="sidebar-discover" th:utext="#{menu.manage.ad}">
+                    Gestion des publicités
+                </a>
+
+                <div id="sidebar-discover-example" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong th:text="#{addonf.ads.manage.menu}">Gestion</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li th:class="${activeSecondMenu == 'list'}?'active':''"><a th:href="@{/listCampaign.html}" th:text="#{addonf.list.campaign.menu}">Lister</a></li>
+                        <li th:class="${activeSecondMenu == 'create'}?'active':''"><a th:href="@{/createCampaign}" th:text="#{addonf.create.campaign.menu}">Créer</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+

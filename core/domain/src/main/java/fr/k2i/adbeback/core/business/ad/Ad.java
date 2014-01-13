@@ -62,6 +62,9 @@ public abstract  class Ad extends BaseObject implements Serializable {
     @Column(name = IMetaData.ColumnMetadata.Ad.AD_FILE)
     protected String adFile;
 
+    @Column(name = IMetaData.ColumnMetadata.Ad.NAME)
+    protected String name;
+
     @Override
 	public int hashCode() {
 		final int prime = 31;
