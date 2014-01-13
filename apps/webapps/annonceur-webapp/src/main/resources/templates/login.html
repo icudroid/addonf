@@ -1,27 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout">
+      layout:decorator="layout/unlogged">
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="signin.css" th:href="@{/css/signin.css}" />
 </head>
 <body>
 <div layout:fragment="content">
+    <h4 class="innerAll margin-none border-bottom text-center" th:utext="#{addonf.login.title}"><i class="fa fa-lock"></i> Login to your Account</h4>
+    <div class="col-app col-unscrollable">
 
-    <div class="container">
-        <form class="form-signin" action="/login" method="POST">
-            <h2 class="form-signin-heading">Connexion</h2>
-            <p th:if="${param.logout}" class="alert">You have been logged out</p>
-            <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
+        <!-- col-app -->
+        <div class="col-app">
+            <div class="login">
+                <div class="placeholder text-center"><i class="fa fa-lock"></i></div>
+                <div class="panel panel-default col-sm-6 col-sm-offset-3">
 
-            <input class="form-control" type="text" name="username" value="" placeholder="Username" />
-            <input class="form-control" type="password" name="password" placeholder="Password" />
+                    <div class="panel-body">
+                        <form role="form" class="form-signin" th:action="@{/login}" method="POST">
 
-            <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
-            <input type="hidden"
-                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        </form>
+                            <p th:if="${param.logout}" class="alert">You have been logged out</p>
+                            <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
+
+
+                            <div class="form-group">
+                                <label for="username" th:text="#{addonf.login.username.label}">Id</label>
+                                <input id="username" class="form-control" type="text" name="username" value="" th:placeholder="#{addonf.login.username.placeholder}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd" th:text="#{addonf.login.password.label}">Password</label>
+                                <input class="form-control" type="password" id="pwd" name="password" th:placeholder="#{addonf.login.password.placeholder}" />
+                            </div>
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button type="submit" class="btn btn-primary btn-block" th:text="#{addonf.login.btn}">Login</button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+                <div class="col-sm-4 col-sm-offset-4 text-center">
+                    <div class="innerAll">
+                        <a href="@{/signup.html}" class="btn btn-info" th:utext="#{addonf.login.create.btn}">Create a new account? <i class="fa fa-pencil"></i> </a>
+                        <div class="separator"></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+
+
+        </div>
+        <!-- // END col-app -->
 
     </div>
 

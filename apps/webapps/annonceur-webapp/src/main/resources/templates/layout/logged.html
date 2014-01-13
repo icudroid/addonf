@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      class="app">
 <head>
     <title>Admin annonceur</title>
 
@@ -39,7 +40,7 @@
 <div class="container-fluid menu-hidden menu-right-hidden">
 
 <!-- Main Sidebar Menu -->
-<div id="menu" class="hidden-print hidden-xs sidebar-blue">
+<div id="menu" class="hidden-print hidden-xs sidebar-blue" layout:fragment="menu">
 
     <div id="sidebar-discover-wrapper">
         <div id="logoWrapper">
@@ -111,15 +112,6 @@
     <div class="user-action user-action-btn-navbar pull-left border-right">
         <button class="btn btn-sm btn-navbar btn-primary btn-stroke"><i class="fa fa-bars fa-2x"></i></button>
     </div>
-    <div class="col-md-3 padding-none visible-md visible-lg">
-        <div class="input-group innerLR">
-            <input type="text" class="form-control input-sm" placeholder="Search stories ..." />
-      		<span class="input-group-btn">
-        		<button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
-      		</span>
-        </div>
-        <!-- /input-group -->
-    </div>
 
     <div class="user-action visible-xs user-action-btn-navbar pull-right">
         <button class="btn btn-sm btn-navbar-right btn-primary"><i class="fa fa-fw fa-arrow-right"></i><span
@@ -129,78 +121,17 @@
         <div class="dropdown username hidden-xs pull-left">
             <a class="dropdown-toggle " data-toggle="dropdown" href="#">
 				<span class="media margin-none">
-					<span class="pull-left"><img src="../assets/images/people/35/16.jpg" alt="user" class="img-circle" /></span>
+					<span class="pull-left"><img th:src="@{img/default/default-user.png}" alt="user" class="img-circle" /></span>
 					<span class="media-body">
-						Adrian Demian <span class="caret"></span>
+						<span sec:authentication="name">Bob</span> <span class="caret"></span>
 					</span>
 				</span>
             </a>
             <ul class="dropdown-menu pull-right">
-                <li><a href="index.html?lang=en" class="glyphicons user"><i></i> Profile</a></li>
-                <li><a href="timeline.html?lang=en" class="glyphicons list"><i></i>Timeline</a></li>
-                <li><a href="social_messages.html?lang=en" class="glyphicons envelope"><i></i>Messages</a></li>
-                <li><a href="social_account.html?lang=en">Settings</a></li>
-                <li><a href="login.html?lang=en">Logout</a></li>
-            </ul>
-        </div>
-        <div class="dropdown dropdown-icons padding-none">
-            <a data-toggle="dropdown" href="#" class="btn btn-primary btn-circle dropdown-toggle"><i
-                    class="fa fa-user"></i> </a>
-            <ul class="dropdown-menu">
-                <li data-toggle="tooltip" data-title="Photo Gallery" data-placement="left" data-container="body"><a
-                        href="gallery_photo.html?lang=en"><i class="fa fa-camera"></i></a></li>
-                <li data-toggle="tooltip" data-title="Tasks" data-placement="left" data-container="body"><a
-                        href="tasks.html?lang=en"><i class="fa fa-code-fork"></i></a></li>
-                <li data-toggle="tooltip" data-title="Employees" data-placement="left" data-container="body"><a
-                        href="employees.html?lang=en"><i class="fa fa-group"></i></a></li>
-                <li data-toggle="tooltip" data-title="Contacts" data-placement="left" data-container="body"><a
-                        href="contacts.html?lang=en"><i class="fa fa-phone-square"></i></a></li>
+                <li><a th:href="@{/custom-logout}" th:text="#{addonf.logout}">Logout</a></li>
             </ul>
         </div>
     </div>
-    <ul class="notifications pull-right hidden-xs">
-        <li class="dropdown notif">
-            <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="notif-block fa fa-comments-o"></i><span
-                    class="badge badge-primary">7</span></a>
-            <ul class="dropdown-menu chat media-list">
-                <li class="media">
-                    <a class="pull-left" href="#"><img class="media-object thumb"
-                                                       src="../assets/images/people/100/15.jpg" alt="50x50" width="50"/></a>
-
-                    <div class="media-body">
-                        <span class="label label-default pull-right">5 min</span>
-                        <h5 class="media-heading">Adrian D.</h5>
-
-                        <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                    </div>
-                </li>
-                <li class="media">
-                    <a class="pull-left" href="#"><img class="media-object thumb"
-                                                       src="../assets/images/people/100/16.jpg" alt="50x50" width="50"/></a>
-
-                    <div class="media-body">
-                        <span class="label label-default pull-right">2 days</span>
-                        <h5 class="media-heading">Jane B.</h5>
-
-                        <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                    </div>
-                </li>
-                <li class="media">
-                    <a class="pull-left" href="#"><img class="media-object thumb"
-                                                       src="../assets/images/people/100/17.jpg" alt="50x50" width="50"/></a>
-
-                    <div class="media-body">
-                        <span class="label label-default pull-right">3 days</span>
-                        <h5 class="media-heading">Andrew M.</h5>
-
-                        <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                    </div>
-                </li>
-                <li><a href="#" class="btn btn-primary"><i class="fa fa-list"></i> <span>View all messages</span></a>
-                </li>
-            </ul>
-        </li>
-    </ul>
     <div class="clearfix"></div>
 </div>
 <!-- // END navbar -->
@@ -230,9 +161,8 @@
 <div id="footer" class="hidden-print">
 
     <!--  Copyright Line -->
-    <div class="copy">&copy; 2012 - 2014 - <a href="http://www.mosaicpro.biz">MosaicPro</a> - All Rights Reserved. <a
-            href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current
-        version: v1.9.3 / <a target="_blank" href="../assets/../../CHANGELOG.txt">changelog</a></div>
+    <div class="copy">&copy; 2012 - 2014 - <a href="http://www.addonf.com">Addonf</a> - All Rights Reserved. - Current
+        version: v1.0.0 </div>
     <!--  End Copyright Line -->
 
 </div>

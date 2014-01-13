@@ -24,10 +24,10 @@ public class UserFacade {
     private BrandRepository brandRepository;
 
     @Transactional
-    public Brand getCurrentUser() {
+    public Brand getCurrentUser() throws Exception{
         Object principal = getAuthenticationPlayer().getPrincipal();
         if (!(principal instanceof Brand)) {
-            throw new AssertionError("Please check configuration. Should be Player in the principal.");
+            throw new Exception("Please check configuration. Should be Brand in the principal.");
         }
 
         return brandRepository.findOne(((Brand) principal).getId());

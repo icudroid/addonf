@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html
        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout">
+      layout:decorator="layout/logged">
+
 <head>
 <title th:text="${title}">Title</title>
 
@@ -9,26 +10,36 @@
 
 
 <body>
-    <div layout:fragment="content">
-        <div sec:authorize="hasRole('ROLE_ANNONCEUR')">
-            <ul class="nav nav-tabs">
-                <li class="active"><a th:href="@{/}" th:text="#{menu.home}">Home</a></li>
-                <li><a th:href="@{/parameters}" th:text="#{menu.parameter}">Mes paramètres</a></li>
-                <li><a th:href="@{/manageAds}" th:text="#{menu.manage.ad}">Gestion des publicités</a></li>
-                <li><a th:href="@{/manageProducts}" th:text="#{menu.manage.products}">Gestion des produits</a></li>
-                <li><a th:href="@{/manageActions}" th:text="#{menu.manage.actions}">Gestion des actions</a></li>
-                <li><a th:href="@{/statistics}" th:text="#{menu.statistics}">Rapport</a></li>
-            </ul>
 
-            <div class="container text-center" th:text="#{home.explain}">
-                Espace de gestion de compte
-            </div>
-
+<div id="menu" class="hidden-print hidden-xs sidebar-blue" layout:fragment="menu">
+    <div id="sidebar-discover-wrapper">
+        <div id="logoWrapper">
+            <a th:href="@{/}" id="logo" class="animated fadeInDown"><img th:src="@{/coral/assets/images/logo/app-logo-style-default.png}"/></a>
         </div>
+        <ul class="list-unstyled">
+            <li class="active"><a th:href="@{/}" th:text="#{menu.home}">Home</a></li>
+            <li>
+                <a href="#sidebar-discover-example" data-toggle="sidebar-discover" th:utext="#{menu.manage.ad}">
+                    Gestion des publicités
+                </a>
+                <div id="sidebar-discover-example" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Gestion</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li><a th:href="@{/manageAds}" th:text="#{menu.manage.ad}">Gestion des publicités</a></li>
+                        <li><a href="">Créer</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
 
-        <div sec:authorize="isAnonymous()">
-            <a th:href="@{/login}" th:text="#{home.login}">Se connectez</a><br />
-            Explain
+
+    <div layout:fragment="content" class="col-table">
+        <div class="container text-center" th:text="#{home.explain}">
+            Espace de gestion de compte
         </div>
     </div>
 </body>

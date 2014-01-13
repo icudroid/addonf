@@ -71,7 +71,7 @@ public class ManageAdsController {
     }
 
     @RequestMapping(IMetaDataController.Path.GET_ALL_ADS)
-    public @ResponseBody Page<AdBean> getAll(Pageable pageable){
+    public @ResponseBody Page<AdBean> getAll(Pageable pageable) throws Exception {
         return brandServiceFacade.getAllForCurrentUser(pageable);
     }
 

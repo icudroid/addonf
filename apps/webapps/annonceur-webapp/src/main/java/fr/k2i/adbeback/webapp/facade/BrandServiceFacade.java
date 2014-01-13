@@ -139,7 +139,7 @@ public class BrandServiceFacade {
     }
 
     @Transactional
-    public Page<AdBean> getAllForCurrentUser(Pageable pageable) {
+    public Page<AdBean> getAllForCurrentUser(Pageable pageable) throws Exception {
         Brand brand = userFacade.getCurrentUser();
 
         List<AdBean> res = new ArrayList<AdBean>();

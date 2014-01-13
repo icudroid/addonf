@@ -1,5 +1,9 @@
 package fr.k2i.adbeback.webapp.controller;
 
+import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.webapp.facade.BrandServiceFacade;
+import fr.k2i.adbeback.webapp.facade.UserFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,12 +20,18 @@ import java.util.Map;
 @Controller
 public class HomeController {
 
+    @Autowired
+    private UserFacade userFacade;
 
     @RequestMapping("/")
     public String home(Map<String, Object> model) {
-        return "home";
+        try{
+            Brand currentUser = userFacade.getCurrentUser();
+            return "home";
+        }catch (Exception e){
+            return "redirect:/login";
+        }
     }
-
 
     @RequestMapping("/logout-success")
     public String secure(Map<String, Object> model) {
