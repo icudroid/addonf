@@ -12,7 +12,7 @@
     <groupId>fr.k2i.adbeback.addonf.apps</groupId>
     <artifactId>apps</artifactId>
     <packaging>pom</packaging>
-    <name>APPSs</name>
+    <name>APPS</name>
 
     <modules>
         <module>webapps</module>
