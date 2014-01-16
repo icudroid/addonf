@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7 app"> <![endif]-->
-<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8 app"> <![endif]-->
-<!--[if IE 8]>    <html class="ie lt-ie9 app"> <![endif]-->
-<!--[if gt IE 8]> <html class="ie app"> <![endif]-->
-<!--[if !IE]><!--><html class="app"><!-- <![endif]-->
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <html class="ie "> <![endif]-->
+<!--[if !IE]><!--><html class=""><!-- <![endif]-->
 <head>
-	<title>CORAL Template (v1.9.3)</title>
+	<title>CORAL Template (v1.9.4)</title>
 	
 	<!-- Meta -->
 	<meta charset="utf-8">
@@ -31,12 +31,12 @@
     <![endif]-->
 
 
-	<script src="../../assets/components/library/jquery/jquery.min.js?v=v1.9.3"></script>
-<script src="../../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.3"></script>
-<script src="../../assets/components/library/modernizr/modernizr.js?v=v1.9.3"></script>
-<script src="../../assets/components/plugins/less-js/less.min.js?v=v1.9.3"></script>
-<script src="../../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.3"></script>
-<script src="../../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.3"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
+	<script src="../../assets/components/library/jquery/jquery.min.js?v=v1.9.4"></script>
+<script src="../../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.4"></script>
+<script src="../../assets/components/library/modernizr/modernizr.js?v=v1.9.4"></script>
+<script src="../../assets/components/plugins/less-js/less.min.js?v=v1.9.4"></script>
+<script src="../../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.4"></script>
+<script src="../../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.4"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
 	
 </head>
 <body class="">
@@ -44,337 +44,235 @@
 	<!-- Main Container Fluid -->
 	<div class="container-fluid menu-hidden">
 
-				<!-- Main Sidebar Menu -->
-		<div id="menu" class="hidden-print hidden-xs sidebar-blue">
-
-			
-<div id="sidebar-fusion-wrapper">
-	<div id="brandWrapper">
-		<a href="../index.html?lang=en" class="animated fadeInDown display-block-inline pull-left logo"><img src="../../assets/images/logo/app-logo-style-default.png" alt=""></a>
-		<a href="../index.html?lang=en"><span class="text">Coral</span></a>
-	</div>
-	<div id="logoWrapper">
-		<div id="logo">
-			
-			<a href="../index.html?lang=en" class="btn btn-sm btn-inverse"><i class="fa fa-fw icon-home-fill-1"></i></a>
-			<a href="../email.html?lang=en" class="btn btn-sm btn-inverse"><i class="fa fa-fw fa-envelope"></i><span class="badge pull-right badge-primary">2</span></a>
-
-			<div id="toggleNavbarColor" data-toggle="navbar-color">
-				<a href="" class="not-animated color color-blue active"></a>
-				<a href="" class="not-animated color color-white"></a>
-				<a href="" class="not-animated color color-inverse"></a>
-			</div>
-
-			<div class="innerTB">
-				<select name="" id="menu_switch" data-style="btn-inverse" id="" class="selectpicker margin-none dropdown-menu-light" data-container="body">
-					<option value="navigation_current_page">Modules</option>
-										<option value="navigation_components">Components</option>				</select>
-			</div>
-		</div>
-	</div>
-
-	<!-- <div id="logoWrapper">
-		<div id="logo">
-			<a href="../index.html?lang=en" class="animated fadeInDown display-block-inline"><img src="../../assets/images/logo/app-logo-style-default.png" alt=""></a>
-			<div class="innerAll">
-				<select name="" id="menu_switch" data-style="btn-inverse" id="" class="selectpicker dropdown-menu-light" data-container="body">
-					<option value="navigation_current_page">Modules</option>
-										<option value="navigation_components">Components</option>				</select>
-			</div>
-		</div>
-	</div> -->
-	
-	
-		<ul class="menu list-unstyled hide" id="navigation_components">
-		<li class=""><a href="../ui.html?lang=en"><i class="fa fa-circle-o"></i> UI Elements</a></li>
-<li class=""><a href="../icons.html?lang=en"><i class="fa fa-circle-o"></i> Icons</a></li>
-<li class=""><a href="../typography.html?lang=en"><i class="fa fa-circle-o"></i> Typography</a></li>
-<li class=""><a href="../widgets.html?lang=en"><i class="fa fa-circle-o"></i> Widgets</a></li>
-<li class=""><a href="../calendar.html?lang=en"><i class="fa fa-circle-o"></i> Calendar</a></li>
-<li class=""><a href="../tabs.html?lang=en"><i class="fa fa-circle-o"></i> Tabs</a></li>
-<li class="hasSubmenu">
-	<a href="#menu_tables" data-toggle="collapse"><span class="badge badge-primary pull-right">3</span><i class="fa fa-circle-o"></i> Tables</a>
-	<ul class="collapse" id="menu_tables">
-		<li class=""><a href="../tables.html?lang=en">Tables</a></li>
-		<li class=""><a href="../tables_responsive.html?lang=en">Responsive Tables</a></li>
-		<li class=""><a href="../pricing_tables.html?lang=en">Pricing Tables</a></li>
-	</ul>
-</li>
-<li class="hasSubmenu">
-	<a href="#menu_forms" data-toggle="collapse"><span class="badge badge-primary pull-right">4</span><i class="fa fa-circle-o"></i> Forms</a>
-	<ul class="collapse" id="menu_forms">
-		<li class=""><a href="../form_wizards.html?lang=en">Form Wizards</a></li>
-		<li class=""><a href="../form_elements.html?lang=en">Form Elements</a></li>
-		<li class=""><a href="../form_validator.html?lang=en">Form Validator</a></li>
-		<li class=""><a href="../file_managers.html?lang=en">File Managers</a></li>
-	</ul>
-</li>
-<li class=""><a href="../sliders.html?lang=en"><i class="fa fa-circle-o"></i> Sliders</a></li>
-<li class=""><a href="../charts.html?lang=en"><i class="fa fa-circle-o"></i> Charts</a></li>
-<li class=""><a href="../grid.html?lang=en"><i class="fa fa-circle-o"></i> Grid</a></li>
-<li class=""><a href="../notifications.html?lang=en"><i class="fa fa-circle-o"></i> Notifications</a></li>
-<li class=""><a href="../modals.html?lang=en"><i class="fa fa-circle-o"></i> Modals</a></li>
-<li class=""><a href="../thumbnails.html?lang=en"><i class="fa fa-circle-o"></i> Thumbnails</a></li>
-<li class=""><a href="../carousels.html?lang=en"><i class="fa fa-circle-o"></i> Carousels</a></li>
-<li class=""><a href="../image_crop.html?lang=en"><i class="fa fa-circle-o"></i> Image Cropping</a></li>
-<li class=""><a href="../twitter.html?lang=en"><i class="fa fa-circle-o"></i> Twitter API</a></li>
-<li class=""><a href="../infinite_scroll.html?lang=en"><i class="fa fa-circle-o"></i> Infinite Scroll</a></li>	</ul>
-	
-	<ul class="menu list-unstyled" id="navigation_current_page">
-
-		<li class="hasSubmenu">
-	<a href="#sidebar-fusion-dashboard" data-toggle="collapse"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
-	<ul id="sidebar-fusion-dashboard" class="collapse">
-		<li><a href="../dashboard_analytics.html?lang=en"><i class="fa fa-bar-chart-o"></i> Analytics</a></li>
-		<li><a href="../dashboard_users.html?lang=en"><i class="fa fa-user"></i> Users</a></li>
-		<li><a href="../dashboard_overview.html?lang=en"><i class="fa fa-dashboard"></i> Overview</a></li>
-	</ul>
-</li>
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-social" class="glyphicons globe_af" data-toggle="collapse"><span class="badge pull-right badge-primary">7</span><i></i><span>Social App</span></a>
-	
-	<ul id="sidebar-fusion-social" class="animated fadeIn collapse">
-		<li><a href="../index.html?lang=en"><i class="fa fa-flash"></i> Activity</a></li>
-		<li><a href="../social_account.html?lang=en"><i class="fa fa-male"></i> Account</a></li>
-		<li><a href="../social_messages.html?lang=en"><i class="fa fa-comments-o"></i> Messages</a></li>
-		<li><a href="../social.html?lang=en"><i class="fa fa-folder"></i> Widgets</a></li>
-		<li><a href="../timeline.html?lang=en"><i class="fa fa-clock-o"></i> Timelines</a></li>
-		<li><a href="../contacts.html?lang=en"><i class="fa fa-phone"></i> Contacts</a></li>
-		<li><a href="../ratings.html?lang=en" class="glyphicons star"><i></i><span>Ratings</span></a></li>
-	</ul>
-</li>
-
-<li><a href="../email.html?lang=en"><span class="badge pull-right badge-inverse">30</span><i class="fa fa-envelope"></i><span>Email App</span></a></li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-realestate" data-toggle="collapse"><i class="fa fa-home"></i><span>Real Estate</span></a>
-	<ul id="sidebar-fusion-realestate" class="collapse">
-		<li><a href="../realestate_listing_map.html?lang=en"><i class="fa fa-map-marker"></i><span>Property map</span> &nbsp; <span class="label label-primary">new</span></a></li>
-		<li><a href="../realestate_listing_grid.html?lang=en"><i class="fa fa-th"></i><span>Property grid</span></a></li>
-		<li><a href="../realestate_listing_list.html?lang=en"><i class="fa fa-list"></i><span>Property list</span></a></li>
-		<li><a href="../realestate_property.html?lang=en"><i class="fa fa-info"></i><span>Property details</span></a></li>
-		<li><a href="../realestate_compare.html?lang=en"><i class="fa icon-scale-2"></i><span>Property compare</span></a></li>
-		<li><a href="../realestate_property_edit.html?lang=en"><i class="fa fa-edit"></i><span>Property edit</span></a></li>
-	</ul>
-</li>
-
-<li><a href="../events.html?lang=en" class="glyphicons google_maps"><i></i><span class="badge pull-right badge-inverse">5</span><span>Events</span></a></li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-media" class="glyphicons picture" data-toggle="collapse"><span class="badge pull-right badge-primary">2</span><i></i><span>Multimedia</span></a>
-	<ul id="sidebar-fusion-media" class="animated fadeIn collapse">
-		<li><a href="../gallery_video.html?lang=en"><i class="fa fa-video-camera"></i> Video Gallery</a></li>
-		<li><a href="../gallery_photo.html?lang=en"><i class="fa fa-camera"></i> Photo Gallery</a></li>
-	</ul>
-</li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-maps" class="glyphicons google_maps" data-toggle="collapse"><i></i><span>Maps</span></a>
-	<ul id="sidebar-fusion-maps" class="animated fadeIn collapse">
-		<li><a href="../maps_vector.html?lang=en"><i class="fa fa-map-marker"></i> Vector Maps</a></li>
-		<li><a href="../maps_google.html?lang=en"><i class="fa fa-map-marker"></i> Google Maps</a></li>
-	</ul>
-</li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-manage" class="glyphicons wrench" data-toggle="collapse"><i></i><span>Manage</span></a>
-	<ul id="sidebar-fusion-manage" class="animated fadeIn collapse">
-		<li><a href="../tasks.html?lang=en"><i class="fa fa-clock-o"></i> Tasks</a></li>
-		<li><a href="../employees.html?lang=en"><i class="fa fa-user"></i> Employees</a></li>
-	</ul>
-</li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-medical" data-toggle="collapse" class="glyphicons circle_plus"><i></i><span>Medical</span></a>
-	<ul id="sidebar-fusion-medical" class="animated fadeIn collapse">
-		<li class="">
-			<a href="../medical_overview.html?lang=en"><i class="fa fa-medkit"></i> Overview</a>
-		</li>
-		<li class="">
-			<a href="../medical_patients.html?lang=en"><span class="badge pull-right badge-primary">2</span><i class="fa fa-user-md"></i> Patients</a>
-		</li>
-		<li class="">
-			<a href="../medical_appointments.html?lang=en"><i class="fa fa-stethoscope"></i> Appointments</a>
-		</li>
-		<li class="">
-			<a href="../medical_memos.html?lang=en"><i class="fa fa-file-text-o"></i> Memos</a>
-		</li>
-		<li class="border-bottom-none">
-			<a href="../medical_metrics.html?lang=en"><i class="fa fa-bar-chart-o"></i> Metrics</a>
-		</li>
-	</ul>
-</li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-learning" data-toggle="collapse" class="glyphicons crown"><i></i><span>Courses</span></a>
-	<ul id="sidebar-fusion-learning" class="collapse">
-		<li class=""><a href="../courses_2.html?lang=en"><i class="fa fa-book"></i><span>Courses Home #1</span></a></li>
-		<li class=""><a href="../courses.html?lang=en"><i class="fa fa-book"></i><span>Courses Home #2</span></a></li>
-		<li class=""><a href="../courses_listing.html?lang=en"><i class="fa fa-book"></i><span>Courses Listing</span></a></li>
-		<li class=""><a href="../course.html?lang=en"><i class="fa fa-book"></i><span>Course page</span></a></li>
-	</ul>
-</li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-content" data-toggle="collapse" class="glyphicons notes_2"><i></i><span>Content</span></a>
-	<ul id="sidebar-fusion-content" class="animated fadeIn collapse">
-		<li><a href="../news.html?lang=en"><i class="fa fa-file-text"></i> News</a></li>
-		<li><a href="../stories.html?lang=en"><i class="fa fa-file-text-o"></i> Stories</a></li>
-		<li><a href="../faq.html?lang=en"><i class="fa fa-question-circle"></i> FAQ</a></li>
-		<li><a href="../search.html?lang=en"><i class="fa fa-search"></i> Search</a></li>
-	</ul>
-</li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-financial" data-toggle="collapse" class="glyphicons calculator"><i></i><span>Financial</span></a>
-	<ul id="sidebar-fusion-financial" class="animated fadeIn collapse">
-		<li><a href="../invoice.html?lang=en"><i class="fa fa-file-text-o"></i> Invoice</a></li>
-		<li><a href="../finances.html?lang=en"><i class="fa fa-legal"></i> Finances</a></li>
-		<li><a href="../bookings.html?lang=en"><i class="fa fa-ticket"></i> Bookings</a></li>
-	</ul>
-</li>
-
-<li><a href="../support_tickets.html?lang=en" class="glyphicons life_preserver"><i></i><span>Support</span></a></li>
-
-<li><a href="../shop_products.html?lang=en" class="glyphicons shopping_cart"><i></i><span>Shop</span></a></li>
-
-<li><a href="../ui.html?lang=en" class="glyphicons adjust_alt"><i></i><span>Elements</span></a></li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-front" data-toggle="collapse" class="glyphicons leather"><i></i><span>Website</span></a>
-	<ul id="sidebar-fusion-front" class="animated fadeIn collapse">
-		<li><a target="_blank" href="../../front/index.html?lang=en"><i class="fa fa-home"></i> Home page</a></li>
-		<li><a target="_blank" href="../../front/pricing.html?lang=en"><i class="fa fa-money"></i> Pricing</a></li>
-		<li><a target="_blank" href="../../front/blog.html?lang=en"><i class="fa fa-file-text-o"></i> Blog</a></li>
-		<li><a target="_blank" href="../../front/team.html?lang=en"><i class="fa fa-group"></i> The Team</a></li>
-		<li><a target="_blank" href="../../front/contact.html?lang=en"><i class="fa fa-envelope"></i> Contact</a></li>
-	</ul>
-</li>
-
-<li class="hasSubmenu">
-	<a href="#sidebar-fusion-account" data-toggle="collapse" class="glyphicons user"><i></i><span>Account</span></a>
-	<ul id="sidebar-fusion-account" class="animated fadeIn collapse">
-		<li><a href="../login.html?lang=en"><i class="fa fa-lock"></i> Login</a></li>
-		<li><a href="../signup.html?lang=en"><i class="fa fa-pencil"></i> Signup</a></li>
-	</ul>
-</li>
-
-<li><a href="../survey.html?lang=en" class="glyphicons turtle"><i></i><span>Surveys</span></a></li>
-
-<li><a href="../error.html?lang=en" class="glyphicons warning_sign"><i></i><span>Error</span></a></li>
-		<li class="hasSubmenu">
-			<a href="#sidebar-fusion-example" data-toggle="collapse"><span class="badge pull-right badge-primary">7</span><i class="fa fa-stack-exchange"></i><span>Submenus</span></a>
-			<ul id="sidebar-fusion-example" class="collapse">
-				<li class="active"><a href=""><i class="fa fa-flash"></i><span>Active</span></a></li>
-				<li><a href=""><i class="fa fa-male"></i><span>Menu item</span></a></li>
-				<li><a href=""><i class="fa fa-comments-o"></i><span>Menu item</span></a></li>
-				<li class="menu hasSubmenu">
-					<a href="#submenu" data-toggle="collapse"><span class="badge pull-right badge-primary">30</span><i class="fa fa-envelope"></i><span>2nd level</span></a>
-					<ul class="collapse menu" id="submenu">
-						<li><a href=""><span>Menu item</span></a></li>
-						<li><a href=""><span>Menu item</span></a></li>
-						<li><a href=""><span>Menu item</span></a></li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-
-	</ul>
-</div>
-
-
-
-
-
-			
-		</div>
-		<!-- // Main Sidebar Menu END -->
 		
 				
 		<!-- Content -->
 		<div id="content">
 
 						
-				<div class="navbar hidden-print navbar-inverse box main" role="navigation">
-	<div class="user-action user-action-btn-navbar pull-left border-right">
-		<button class="btn btn-sm btn-navbar btn-primary btn-stroke"><i class="fa fa-bars fa-2x"></i></button>
-	</div>
-	<div class="col-md-3 padding-none visible-md visible-lg">
-    	<div class="input-group innerLR">
-      		<input type="text" class="form-control input-sm" placeholder="Search stories ...">
-      		<span class="input-group-btn">
-        		<button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
-      		</span>
-    	</div><!-- /input-group -->
-  	</div>
+				<div class="navbar hidden-print navbar-primary box main navbar-default" role="navigation">
+	<div class="container">
 
-  	<div class="user-action visible-xs user-action-btn-navbar pull-right">
-		<button class="btn btn-sm btn-navbar-right btn-primary"><i class="fa fa-fw fa-arrow-right"></i><span class="menu-left-hidden-xs"> Modules</span></button>
-	</div>
-	<div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs">
-		<div class="dropdown username hidden-xs pull-left">
-			<a class="dropdown-toggle " data-toggle="dropdown" href="#">
-				<span class="media margin-none">
-					<span class="pull-left"><img src="../../assets/images/people/35/16.jpg" alt="user" class="img-circle"></span>
-					<span class="media-body">
-						Adrian Demian <span class="caret"></span> 
-					</span>
-				</span>
-			</a>
-			<ul class="dropdown-menu pull-right">
-				<li><a href="../index.html?lang=en" class="glyphicons user"><i></i> Profile</a></li>
-				<li><a href="../timeline.html?lang=en" class="glyphicons list"><i></i>Timeline</a></li>
-				<li><a href="../social_messages.html?lang=en" class="glyphicons envelope"><i></i>Messages</a></li>
-				<li><a href="../social_account.html?lang=en">Settings</a></li>
-				<li><a href="../login.html?lang=en">Logout</a></li>
-		    </ul>
-		</div>
-		<div class="dropdown dropdown-icons padding-none">
-			<a data-toggle="dropdown" href="#" class="btn btn-primary btn-circle dropdown-toggle"><i class="fa fa-user"></i> </a>
-			<ul class="dropdown-menu">
-				<li data-toggle="tooltip" data-title="Photo Gallery" data-placement="left" data-container="body"><a href="../gallery_photo.html?lang=en"><i class="fa fa-camera"></i></a></li>
-				<li data-toggle="tooltip" data-title="Tasks" data-placement="left" data-container="body"><a href="../tasks.html?lang=en"><i class="fa fa-code-fork"></i></a></li>
-				<li data-toggle="tooltip" data-title="Employees" data-placement="left" data-container="body"><a href="../employees.html?lang=en"><i class="fa fa-group"></i></a></li>
-				<li data-toggle="tooltip" data-title="Contacts" data-placement="left" data-container="body"><a href="../contacts.html?lang=en"><i class="fa fa-phone-square"></i></a></li>
-			</ul>
-		</div>
-	</div>
-	<ul class="notifications pull-right hidden-xs">
-		<li class="dropdown notif">
-			<a href="" class="dropdown-toggle"  data-toggle="dropdown"><i class="notif-block fa fa-comments-o"></i><span class="badge badge-primary">7</span></a>
-			<ul class="dropdown-menu chat media-list">
-				<li class="media">
-			        <a class="pull-left" href="#"><img class="media-object thumb" src="../../assets/images/people/100/15.jpg" alt="50x50" width="50"/></a>
-					<div class="media-body">
-			        	<span class="label label-default pull-right">5 min</span>
-			            <h5 class="media-heading">Adrian D.</h5>
-			            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-			        </div>
+		<div class="navbar-header">
+          	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            	<span class="sr-only">Toggle navigation</span>
+            	<span class="icon-bar"></span>
+            	<span class="icon-bar"></span>
+            	<span class="icon-bar"></span>
+          	</button>
+
+          	<a id="logo" href="../index.html?lang=en" class="animated fadeInDown pull-left"><img src="../../assets/images/logo/app-logo-style-default.png" alt="" class="img-clean" width="37"></a>
+        </div>
+
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li class="dropdown dropdown-light active">
+					<a href="" data-toggle="dropdown" class="dropdown-toggle">Admin <span class="caret"></span></a>
+					<ul class="dropdown-menu pull-left">
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../dashboard_analytics.html?lang=en" class="glyphicons dashboard"><i></i><span>Dashboard</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="../dashboard_analytics.html?lang=en"><i class="fa fa-bar-chart-o"></i><span>Analytics</span></a></li>
+								<li><a href="../dashboard_users.html?lang=en"><i class="fa fa-user"></i><span>Users</span></a></li>
+								<li><a href="../dashboard_overview.html?lang=en"><i class="fa fa-dashboard"></i><span>Overview</span></a></li>
+							</ul>
+						</li>
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../index.html?lang=en" class="glyphicons globe"><i></i><span>Social</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="../index.html?lang=en" class="glyphicons cardio"><i></i><span>Activity</span></a></li>
+								<li><a href="../social_account.html?lang=en" class="glyphicons user"><i></i><span>Account</span></a></li>
+								<li><a href="../social_messages.html?lang=en"><i class="fa fa-comments-o"></i><span>Messages</span></a></li>
+								<li><a href="../social_friends.html?lang=en"><i class="fa fa-group"></i><span>Friends</span></a></li>
+								<li><a href="../email.html?lang=en"><span class="badge pull-right badge-inverse">30</span><i class="fa fa-envelope"></i><span>Inbox</span></a></li>
+								<li><a href="../social.html?lang=en"><i class="fa fa-folder"></i><span>Widgets</span></a></li>
+								<li><a href="../timeline.html?lang=en"><i class="fa fa-clock-o"></i><span>Timelines</span></a></li>
+								<li><a href="../contacts_2.html?lang=en" class="glyphicons iphone"><i></i><span>Contacts #2</span></a></li>
+								<li><a href="../contacts.html?lang=en" class="glyphicons iphone"><i></i><span>Contacts #1</span></a></li>
+								<li><a href="../ratings.html?lang=en" class="glyphicons star"><i></i><span>Ratings</span></a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../realestate_listing_map.html?lang=en"><i class="fa fa-home"></i><span>Real Estate</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="../realestate_listing_map.html?lang=en"><i class="fa fa-map-marker"></i><span>Property map</span> &nbsp; <span class="label label-primary">new</span></a></li>
+								<li><a href="../realestate_listing_grid.html?lang=en"><i class="fa fa-th"></i><span>Property grid</span></a></li>
+								<li><a href="../realestate_listing_list.html?lang=en"><i class="fa fa-list"></i><span>Property list</span></a></li>
+								<li><a href="../realestate_property.html?lang=en"><i class="fa fa-info"></i><span>Property details</span></a></li>
+								<li><a href="../realestate_compare.html?lang=en"><i class="fa icon-scale-2"></i><span>Property compare</span></a></li>
+								<li><a href="../realestate_property_edit.html?lang=en"><i class="fa fa-edit"></i><span>Property edit</span></a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../maps_vector.html?lang=en" class="glyphicons google_maps"><i></i><span>Maps</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="../maps_vector.html?lang=en" class="glyphicons google_maps"><i></i><span>Vector Maps</span></a></li>
+								<li><a href="../maps_google.html?lang=en" class="glyphicons google_maps"><i></i><span>Google Maps</span></a></li>
+							</ul>
+						</li>
+
+						<li><a href="../events.html?lang=en"><i class="fa fa-ticket"></i><span>Events</span></a></li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../news.html?lang=en" class="glyphicons notes"><i></i> Content</a>
+							<ul class="dropdown-menu">
+								<li><a href="../news.html?lang=en"><i class="fa fa-file-text"></i><span>News</span></a></li>
+								<li><a href="../stories.html?lang=en"><i class="fa fa-file-text-o"></i><span>Stories</span></a></li>
+								<li><a href="../search.html?lang=en"><i class="fa fa-search"></i><span>Search</span></a></li>
+								<li><a href="../faq.html?lang=en"><i class="fa fa-question-circle"></i><span>FAQ</span></a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../gallery_video.html?lang=en" class="glyphicons picture"><i></i><span>Media</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="../gallery_video.html?lang=en"><i class="fa fa-video-camera"></i><span>Video Gallery</span></a></li>
+								<li><a href="../gallery_photo.html?lang=en"><i class="fa fa-camera"></i><span>Photo Gallery</span></a></li>
+							</ul>
+						</li>
+
+						<li><a href="../tasks.html?lang=en" class="glyphicons share_alt"><i></i><span>Tasks</span></a></li>
+
+						<li><a href="../support_tickets.html?lang=en" class="glyphicons life_preserver"><i></i><span>Support</span></a></li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../medical_overview.html?lang=en" class="glyphicons circle_plus"><i></i><span>Medical</span></a>
+							<ul class="dropdown-menu">
+								<li class="">
+									<a href="../medical_overview.html?lang=en"><i class="fa fa-medkit"></i><span>Overview</span></a>
+								</li>
+								<li class="">
+									<a href="../medical_patients.html?lang=en"><span class="badge pull-right badge-primary">2</span><i class="fa fa-user-md"></i><span>Patients</span></a>
+								</li>
+								<li class="">
+									<a href="../medical_appointments.html?lang=en"><i class="fa fa-stethoscope"></i><span>Appointments</span></a>
+								</li>
+								<li class="">
+									<a href="../medical_memos.html?lang=en"><i class="fa fa-file-text-o"></i><span>Memos</span></a>
+								</li>
+								<li class="border-bottom-none">
+									<a href="../medical_metrics.html?lang=en"><i class="fa fa-bar-chart-o"></i><span>Metrics</span></a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../courses_2.html?lang=en" class="glyphicons crown"><i></i> Learning</a>
+							<ul class="dropdown-menu">
+								<li class=""><a href="../courses_2.html?lang=en"><i class="fa fa-book"></i><span>Courses Home #1</span></a></li>
+								<li class=""><a href="../courses.html?lang=en"><i class="fa fa-book"></i><span>Courses Home #2</span></a></li>
+								<li class=""><a href="../courses_listing.html?lang=en"><i class="fa fa-book"></i><span>Courses Listing</span></a></li>
+								<li class=""><a href="../course.html?lang=en"><i class="fa fa-book"></i><span>Course page</span></a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../finances.html?lang=en" class="glyphicons calculator"><i></i> Finance</a>
+							<ul class="dropdown-menu">
+								<li><a href="../finances.html?lang=en"><i class="fa fa-legal"></i><span>Finances</span></a></li>
+								<li><a href="../invoice.html?lang=en"><i class="fa fa-file-text-o"></i><span>Invoice</span></a></li>
+								<li><a href="../bookings.html?lang=en"><i class="fa fa-ticket"></i><span>Bookings</span></a></li>
+							</ul>
+						</li>
+
+						<li><a href="../shop_products.html?lang=en" class="glyphicons shopping_cart"><i></i><span>Shop</span></a></li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../survey.html?lang=en" class="glyphicons turtle"><i></i><span>Surveys</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="../survey.html?lang=en"><i class="fa fa-check"></i><span>Single</span></a></li>
+								<li><a href="../survey_multiple.html?lang=en"><i class="fa fa-windows"></i><span>Multiple</span></a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown dropdown-light dropdown-submenu">
+							<a href="../profile_resume.html?lang=en" class="glyphicons plus"><i></i><span>Other</span></a>
+							<ul class="dropdown-menu dropdown-menu-bottom">
+								<li><a href="../profile_resume.html?lang=en"><i class="fa fa-download"></i>Profile / CV</a></li>
+								<li><a href="../login.html?lang=en"><i class="fa fa-lock"></i><span>Login</span></a></li>
+								<li><a href="../signup.html?lang=en"><i class="fa fa-pencil"></i>Signup</a></li>
+								<li><a href="../landing.html?lang=en"><i class="fa fa-share"></i><span>Landing</span></a></li>
+								<li><a href="../employees.html?lang=en" class="glyphicons group"><i></i><span>Employees</span></a></li>
+								<li><a href="../error.html?lang=en" class="glyphicons warning_sign"><i></i><span>Error</span></a></li>
+								<li><a href="../ui.html?lang=en" class="glyphicons adjust_alt"><i></i><span>Elements</span></a></li>
+							</ul>
+						</li>
+					</ul>
 				</li>
-		      	<li class="media">
-		          	<a class="pull-left" href="#"><img class="media-object thumb" src="../../assets/images/people/100/16.jpg" alt="50x50" width="50"/></a>
-					<div class="media-body">
-			          	<span class="label label-default pull-right">2 days</span>
-			            <h5 class="media-heading">Jane B.</h5>
-			            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-			        </div>
-		        </li>
-			    <li class="media">
-		          	<a class="pull-left" href="#"><img class="media-object thumb" src="../../assets/images/people/100/17.jpg" alt="50x50" width="50"/></a>
-			      	<div class="media-body">
-						<span class="label label-default pull-right">3 days</span>
-			            <h5 class="media-heading">Andrew M.</h5>
-			            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-			        </div>
-		        </li>
-		        <li><a href="#" class="btn btn-primary"><i class="fa fa-list"></i> <span>View all messages</span></a></li>
-	      </ul>
-		</li>
-	</ul>
-	<div class="clearfix"></div>
+				<li class="dropdown dropdown-light">
+					<a href="" data-toggle="dropdown" class="dropdown-toggle">Website <span class="caret"></span></a>
+					<ul class="dropdown-menu pull-left">
+						<li><a href="../../front/index.html?lang=en" class="glyphicons show_big_thumbnails" target="_blank"><i></i><span>Multi Purpose</span></a></li>
+						<li><a href="../../shop/index.html?lang=en" class="glyphicons shopping_cart" target="_blank"><i></i><span>Online Shop</span></a></li>
+						<li><a href="../../realestate/index.html?lang=en" class="glyphicons home" target="_blank"><i></i><span>Real Estate</span></a></li>
+					</ul>
+				</li>
+			</ul>
+
+		  	<div class="user-action visible-xs user-action-btn-navbar pull-right">
+				<button class="btn btn-sm btn-navbar-right btn-primary btn-stroke"><i class="fa fa-fw fa-arrow-right"></i><span class="menu-left-hidden-xs"> Modules</span></button>
+			</div>
+
+			<div class="col-md-3 visible-md visible-lg pull-right padding-none">
+		    	<div class="input-group">
+		      		<input type="text" class="form-control input-sm" placeholder="Search stories ...">
+		      		<span class="input-group-btn">
+		        		<button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+		      		</span>
+		    	</div><!-- /input-group -->
+		  	</div>
+
+		  	<div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs hidden-xs">
+				<div class="dropdown dropdown-icons padding-none">
+					<a data-toggle="dropdown" href="#" class="btn btn-primary btn-circle dropdown-toggle"><i class="fa fa-user"></i> </a>
+					<ul class="dropdown-menu">
+						<li data-toggle="tooltip" data-title="Photo Gallery" data-placement="left" data-container="body"><a href="../gallery_photo.html?lang=en"><i class="fa fa-camera"></i></a></li>
+						<li data-toggle="tooltip" data-title="Tasks" data-placement="left" data-container="body"><a href="../tasks.html?lang=en"><i class="fa fa-code-fork"></i></a></li>
+						<li data-toggle="tooltip" data-title="Employees" data-placement="left" data-container="body"><a href="../employees.html?lang=en"><i class="fa fa-group"></i></a></li>
+						<li data-toggle="tooltip" data-title="Contacts" data-placement="left" data-container="body"><a href="../contacts_2.html?lang=en"><i class="fa fa-phone-square"></i></a></li>
+					</ul>
+				</div>
+			</div>
+
+			<ul class="notifications pull-right hidden-xs">
+				<li class="dropdown notif">
+					<a href="" class="dropdown-toggle"  data-toggle="dropdown"><i class="notif-block fa fa-comments-o"></i><span class="badge badge-primary">7</span></a>
+					<ul class="dropdown-menu chat media-list">
+						<li class="media">
+					        <a class="pull-left" href="#"><img class="media-object thumb" src="../../assets/images/people/100/15.jpg" alt="50x50" width="50"/></a>
+							<div class="media-body">
+					        	<span class="label label-default pull-right">5 min</span>
+					            <h5 class="media-heading">Adrian D.</h5>
+					            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+					        </div>
+						</li>
+				      	<li class="media">
+				          	<a class="pull-left" href="#"><img class="media-object thumb" src="../../assets/images/people/100/16.jpg" alt="50x50" width="50"/></a>
+							<div class="media-body">
+					          	<span class="label label-default pull-right">2 days</span>
+					            <h5 class="media-heading">Jane B.</h5>
+					            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+					        </div>
+				        </li>
+					    <li class="media">
+				          	<a class="pull-left" href="#"><img class="media-object thumb" src="../../assets/images/people/100/17.jpg" alt="50x50" width="50"/></a>
+					      	<div class="media-body">
+								<span class="label label-default pull-right">3 days</span>
+					            <h5 class="media-heading">Andrew M.</h5>
+					            <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+					        </div>
+				        </li>
+				        <li><a href="#" class="btn btn-primary"><i class="fa fa-list"></i> <span>View all messages</span></a></li>
+			      	</ul>
+				</li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+	</div>
 </div>
 <!-- // END navbar -->
-
 
 
 
@@ -382,7 +280,7 @@
 			
 			<div class="layout-app">
 
-			<!-- row -->
+			<div class="container"><!-- row -->
 <div class="row row-app">
 
 	<!-- col -->
@@ -517,7 +415,7 @@
 </div>
 <!-- // END row	
 		
-		
+		</div>
 		</div>
 		</div>
 		<!-- // Content END -->
@@ -529,7 +427,7 @@
 		<div id="footer" class="hidden-print">
 			
 			<!--  Copyright Line -->
-			<div class="copy">&copy; 2012 - 2014 - <a href="http://www.mosaicpro.biz">MosaicPro</a> - All Rights Reserved. <a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.9.3 / <a target="_blank" href="../../assets/../../CHANGELOG.txt">changelog</a></div>
+			<div class="copy">&copy; 2012 - 2014 - <a href="http://www.mosaicpro.biz">MosaicPro</a> - All Rights Reserved. <a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.9.4 / <a target="_blank" href="../../assets/../../CHANGELOG.txt">changelog</a></div>
 			<!--  End Copyright Line -->
 	
 		</div>
@@ -558,14 +456,10 @@
 	var themerPrimaryColor = primaryColor;
 	</script>
 	
-	<script src="../../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.3"></script>
-<script src="../../assets/components/plugins/nicescroll/jquery.nicescroll.min.js?v=v1.9.3"></script>
-<script src="../../assets/components/plugins/breakpoints/breakpoints.js?v=v1.9.3"></script>
-<script src="../../assets/components/core/js/animations.init.js?v=v1.9.3"></script>
-<script src="../../assets/components/core/js/sidebar.main.init.js?v=v1.9.3"></script>
-<script src="../../assets/components/core/js/sidebar.collapse.init.js?v=v1.9.3"></script>
-<script src="../../assets/components/modules/admin/forms/elements/bootstrap-select/assets/lib/js/bootstrap-select.js?v=v1.9.3"></script>
-<script src="../../assets/components/modules/admin/forms/elements/bootstrap-select/assets/custom/js/bootstrap-select.init.js?v=v1.9.3"></script>
-<script src="../../assets/components/core/js/core.init.js?v=v1.9.3"></script>	
+	<script src="../../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.4"></script>
+<script src="../../assets/components/plugins/nicescroll/jquery.nicescroll.min.js?v=v1.9.4"></script>
+<script src="../../assets/components/plugins/breakpoints/breakpoints.js?v=v1.9.4"></script>
+<script src="../../assets/components/core/js/animations.init.js?v=v1.9.4"></script>
+<script src="../../assets/components/core/js/core.init.js?v=v1.9.4"></script>	
 </body>
 </html>

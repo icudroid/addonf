@@ -51,61 +51,23 @@
 	}
 }
 
-// helpers
-.bg-primary { background: @primaryColor !important; color: #fff; }
-.bg-primary-light {
-	background: lighten(@primaryColor, 27%) !important;
-	*:not(.btn) { border-color: lighten(@primaryColor, 17%) !important; }
-	.caret { 
-		border-left-color: transparent !important;
-		border-bottom-color: transparent !important;
-		border-top-color: transparent !important;
-		border-right-color: lighten(@primaryColor, 17%) !important;
-	}
-}
-.bg-gray { background: #f9f9f9 !important; }
-.bg-white { background: #fff !important; }
-.bg-inverse { background: @inverseColor !important; color: #fff; }
-.bg-inverse-faded { background: fade(@inverseColor, 50%) !important; }
-
-.text-white { color: #fff; }
-.text-medium { font-size: 30px; line-height: 30px; }
-.text-condensed { letter-spacing: -2px; }
-
-// global helpers
-.border-top { border-top : 1px solid #efefef;}
-.border-right { border-right: 1px solid #efefef;}
-.border-bottom { border-bottom: 1px solid #efefef;}
-.border-left { border-left: 1px solid #efefef;}
-.half {
-	&.innerAll { padding: @spacing / 2 !important; }
-	&.innerLR { padding-left: @spacing / 2 !important; padding-right: @spacing / 2 !important; }
-	&.innerTB { padding-top: @spacing / 2 !important; padding-bottom: @spacing / 2 !important; }
-	&.innerT { padding-top: @spacing / 2 !important; }
-	&.innerB { padding-bottom: @spacing / 2 !important; }
-}
-.inner-2x {
-	&.innerAll { padding: @spacing * 2 !important; }
-	&.innerTB { padding-top: @spacing * 2 !important; padding-bottom: @spacing * 2 !important; }
-}
-
 .row-app { overflow: hidden; }
 .nicescroll-rails { display: none; }
-.overflow-hidden { overflow: hidden !important; }
-.overflow-x { overflow-x: auto; }
 
-.panel {
-	.panel-heading {
-		&.bg-primary { &, *, i:before { color: #fff !important; } }
-	}
-}
-.separator {
-	padding: 0 0 @spacing;
-}
+.panel .panel-heading.bg-primary { &, *, i:before { color: #fff !important; } }
+.separator { padding: 0 0 @spacing; }
 
 .well, 
-.panel {
-	margin-bottom: 15px;
+.panel { 
+	margin-bottom: 15px; 
+	border-color: #efefef; 
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+.list-group-item,
+.panel-default > .panel-heading {
+	border-color: #efefef; 
 }
 
 .row [class*="col-"] {
@@ -118,11 +80,6 @@
 }
 
 .widget-pinterest {
-	.widget-body .thumb {
-		height: 250px;
-		display: block;
-		overflow: hidden;
-	}
 	.mark {
 		position: absolute;
 		z-index: 1;

@@ -11,6 +11,19 @@
 	
 	width: @menuSidebarWidth;
 	background: @menuSidebarBg;
+
+	#toggleNavbarColor {
+		position: absolute;
+		right: 6px;
+		top: 0;
+		a {
+			&.color {
+				display: inline-block;
+				width: 6px;
+				height: 6px;
+			}
+		}
+	}
 	
 	#sidebar-discover-wrapper {
 		#logoWrapper {
@@ -45,6 +58,7 @@
 			.border-bottom { border-color: @menuSidebarBg !important; }
 			ul {
 				list-style: none;
+				padding: 0;
 				li {
 					border-bottom: 1px solid lighten(@menuSidebarBg,6%);
 					a {
@@ -111,12 +125,11 @@
 		#discover {
 			opacity: 1;
 			background: @inverseColor;
-			ul {
-				padding: 0;
-			}
+			ul { padding: 0; }
 		}
 		> ul {
 			width: 50px;
+			padding: 0;
 			> li {
 				> a {
 					> i {
@@ -245,6 +258,12 @@
 					opacity: 1;
 				}
 			}
+		}
+	}
+	.profile-avatar {
+		.btn-avatar {
+			right: 10px;
+			top: 10px;
 		}
 	}
 }

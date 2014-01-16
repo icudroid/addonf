@@ -137,39 +137,6 @@ if (window.location != window.parent.location)
 		$(this).closest('li').removeClass('active');
 	});
 
-	$('[data-toggle="navbar-color"] a').on('click', function(e){
-		e.preventDefault();
-		
-		if ($(this).is('.active'))
-			return;
-
-		if ($(this).is('.color-white'))
-			$('.navbar.main').removeClass('navbar-inverse navbar-blue');
-
-		if ($(this).is('.color-blue'))
-		{
-			$('.navbar.main').removeClass('navbar-inverse').addClass('navbar-blue');
-			$('#menu').addClass('sidebar-blue');
-			$('html').addClass('layout-blue');
-		}
-
-		if ($(this).is('.color-inverse'))
-		{
-			$('.navbar.main').removeClass('navbar-blue').addClass('navbar-inverse');
-			$('#menu').removeClass('sidebar-blue');
-			$('html').removeClass('layout-blue');
-		}
-
-		$(this).parent().find('.active').removeClass('active');
-		$(this).addClass('active');
-	});
-
-	if ($('.sidebar-blue').length)
-	{
-		$('html').addClass('layout-blue');
-		$('.navbar.main').removeClass('navbar-inverse').addClass('navbar-blue');
-	}
-
 	window.enableContentNiceScroll = function(hide)
 	{
 		if ($('html').is('.ie') || Modernizr.touch)

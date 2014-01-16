@@ -16,7 +16,7 @@
 	
 	width: @menuSidebarWidth;
 	background: @menuSidebarBg;
-	
+
 	#sidebar-fusion-wrapper {
 		// #logoWrapper {
 		// 	position: relative;
@@ -56,22 +56,6 @@
 						padding: 3px 5px;
 						font-size: 10px;
 						border: none;
-					}
-				}
-				#toggleNavbarColor {
-					position: absolute;
-					right: 20px;
-					top: 10px;
-					a {
-						&.color {
-							display: inline-block;
-							width: 7px;
-							height: 7px;
-
-							&.color-inverse { background: #222; }
-							&.color-blue { background: lighten(#374a59, 5%); }
-							&.color-white { background: fade(#fff, 80%); }
-						}
 					}
 				}
 			}
@@ -284,6 +268,45 @@
 							}
 						}
 					}
+				}
+			}
+		}
+	}
+
+	&.sidebar-brand-primary {
+		#sidebar-fusion-wrapper {
+			#brandWrapper {
+				background: @primaryColor;
+			}
+			> ul > li.active > a {
+				background: lighten(#313233, 3%);
+				> i:before { color: @primaryColor; }
+			}
+		}
+	}
+
+	.dropdown {
+		&.open {
+			.dropdown-toggle {
+				background: #fff;
+				i { color: @primaryColor; }
+			}
+		}
+		ul.dropdown-menu {
+			background: #fff;
+			width: 212px;
+			min-width: 212px;
+			overflow: hidden;
+			.rounded(3px,3px,3px,3px);
+			li {
+				border-bottom: 1px solid #efefef;
+				a {
+					.rounded();
+					padding: 5px 5px;
+					color: #000;
+					font-weight: 300;
+					font-size: 13px;
+					&:hover { color: #000; }
 				}
 			}
 		}

@@ -43,5 +43,4 @@
 		$('.btn-avatar [data-toggle="tab"]').parent().removeClass('active');
 	});
 
-
 })(jQuery);

@@ -45,6 +45,24 @@
 	height: 100%;
 	background: @inverseColor;
 	z-index: 1;
+
+	#toggleNavbarColor {
+		position: absolute;
+		right: 20px;
+		top: 10px;
+		a {
+			&.color {
+				display: inline-block;
+				width: 7px;
+				height: 7px;
+
+				&.color-inverse { background: #222; }
+				&.color-blue { background: lighten(#374a59, 5%); }
+				&.color-white { background: fade(#fff, 80%); }
+			}
+		}
+	}
+
 	.profile-avatar {
 		ul.reset {
 			height: auto;
