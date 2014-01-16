@@ -1,76 +1,74 @@
-(function($){
+$(function(){
 
-	// handles Animate
-	function dataAnimate()
-	{
-		if (typeof $.fn.appear == 'undefined')
-			return;
+    // handles Animate
+    var dataAnimate =  function()
+    {
+        if (typeof $.fn.appear == 'undefined')
+            return;
 
-	  	$('[data-animate]').each(function()
-	  	{
-	    	var $toAnimateElement = $(this);
-	    	var toAnimateDelay = $(this).attr('data-delay') || 200;
+        $('[data-animate]').each(function()
+        {
+            var $toAnimateElement = $(this);
+            var toAnimateDelay = $(this).attr('data-delay') || 200;
 
-		    if( !$toAnimateElement.hasClass('animated') ) 
-		    { 
-		      	var elementAnimation = $toAnimateElement.attr('data-animate');
-		      	$toAnimateElement.addClass('non-viewport')
-		      	$toAnimateElement.appear().on('appear', function(e, $a)
-		      	{
-		        	setTimeout(function() {
-		          		$toAnimateElement.removeClass('non-viewport').addClass( elementAnimation + ' animated');
-		        	}, toAnimateDelay);
-		      	});
-	    	}
-	  	});
-	}
-	
-	// animate only after page finished loading
-	$(window).on('load', function()
-	{
-		dataAnimate();
+            if( !$toAnimateElement.hasClass('animated') )
+            {
+                var elementAnimation = $toAnimateElement.attr('data-animate');
+                $toAnimateElement.addClass('non-viewport')
+                $toAnimateElement.appear().on('appear', function(e, $a)
+                {
+                    setTimeout(function() {
+                        $toAnimateElement.removeClass('non-viewport').addClass( elementAnimation + ' animated');
+                    }, toAnimateDelay);
+                });
+            }
+        });
+    }
 
-		if (typeof $.fn.appear != 'undefined')
-		{
-			setTimeout(function(){
-				$.force_appear();
-			}, 500);
-		}
 
-		// disable animations on touch devices
-		if (Modernizr.touch)
-		{
-			$(".owl-carousel").css('visibility', 'visible');
-			$('#slide1 h1, #slide1 h2, #slide1 .block').css('visibility', 'visible');
-			return;
-		}
+    dataAnimate();
 
-		// animate slide1
-		$('#slide1 h1, #slide1 h2, #slide1 .block')
-		.each(function(k,v)
-		{
-			var t = $(this);
-			setTimeout(function(){
-				t.css('visibility', 'visible').addClass('animated fadeIn');
-			}, 150*k);
-		});
+    if (typeof $.fn.appear != 'undefined')
+    {
+        setTimeout(function(){
+            $.force_appear();
+        }, 500);
+    }
 
-		setTimeout(function(){
-			$(".owl-carousel").css('visibility', 'visible')
-			.not('#owl-featured')
-			.addClass('animated fadeInDown');
-		}, 300);
+    // disable animations on touch devices
+    if (Modernizr.touch)
+    {
+        $(".owl-carousel").css('visibility', 'visible');
+        $('#slide1 h1, #slide1 h2, #slide1 .block').css('visibility', 'visible');
+        return;
+    }
 
-		// animate owl-carousel items
-		$("#owl-featured .owl-item")
-		.each(function(k,v)
-		{
-			var t = $(this);
-			setTimeout(function(){
-				t.css('visibility', 'visible').addClass('animated bounceIn');
-			}, 150*k);
-		});
+    // animate slide1
+    $('#slide1 h1, #slide1 h2, #slide1 .block')
+        .each(function(k,v)
+        {
+            var t = $(this);
+            setTimeout(function(){
+                t.css('visibility', 'visible').addClass('animated fadeIn');
+            }, 150*k);
+        });
 
-	});
+    setTimeout(function(){
+        $(".owl-carousel").css('visibility', 'visible')
+            .not('#owl-featured')
+            .addClass('animated fadeInDown');
+    }, 300);
 
-})(jQuery);
+    // animate owl-carousel items
+    $("#owl-featured .owl-item")
+        .each(function(k,v)
+        {
+            var t = $(this);
+            setTimeout(function(){
+                t.css('visibility', 'visible').addClass('animated bounceIn');
+            }, 150*k);
+        });
+
+
+
+});

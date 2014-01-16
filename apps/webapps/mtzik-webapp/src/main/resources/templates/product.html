@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/product_layout">
+      layout:decorator="layout/home_layout">
 <head>
 <title th:text="${title}">Title</title>
 
@@ -35,7 +35,7 @@
                     <p th:utext="#{addonf.product.media.duration(${media.duration})}">Durée :03:16</p>
                     <p>
                         <span th:text="#{addonf.product.media.genres}">Category : </span><br/>
-                        <span th:each="genre : ${media.genres}" th:text="#{'addonf.reference.'+${genre.codeGenre}}"></span>
+                        <span th:each="genre : ${media.categories}" th:text="#{'addonf.reference.'+${genre.codeGenre}}"></span>
                     </p>
                     <p>
                         <span th:text="#{addonf.product.media.produtors}">Producteurs : </span><br/>

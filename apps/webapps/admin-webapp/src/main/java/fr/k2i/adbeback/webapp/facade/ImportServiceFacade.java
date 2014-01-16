@@ -1,6 +1,5 @@
 package fr.k2i.adbeback.webapp.facade;
 
-import au.com.bytecode.opencsv.CSVReader;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.dao.jpa.CityRepository;
@@ -38,7 +37,7 @@ public class ImportServiceFacade {
 
     @Transactional
     public void importCities() throws IOException {
-        CSVReader reader = new CSVReader(new FileReader("/tmp/FR.txt"),'\t');
+        /*CSVReader reader = new CSVReader(new FileReader("/tmp/FR.txt"),'\t');
         String[] row = null;
 
         Country country = null;
@@ -85,7 +84,7 @@ public class ImportServiceFacade {
 
         }
 //...
-        reader.close();
+        reader.close();*/
 
     }
 

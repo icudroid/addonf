@@ -2,47 +2,22 @@
 <html
        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="layout/home_layout">
-<head layout:fragment="customHead">
-    <title>MTZik</title>
-
-    <!-- Meta -->
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
-
-    <link th:href="@{/img/favicon.png}" rel="icon" />
+<head>
 
 
-    <link rel="stylesheet" th:href="@{/coral/assets/components/library/jquery-ui/css/jquery-ui.min.css}"/>
 
-    <link rel="stylesheet" th:href="@{/css/home.css}"/>
-
-    <script th:src="@{/coral/assets/components/library/jquery/jquery.min.js}"></script>
-    <script th:src="@{/coral/assets/components/library/jquery-ui/js/jquery-ui.min.js}"></script>
-    <script th:src="@{/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
-    <script th:src="@{/coral/assets/components/library/modernizr/modernizr.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/less-js/less.min.js}"></script>
-    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
+    <script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
 
 
-    <script th:inline="javascript">
-        var addonf = {};
-        addonf.base = [[@{/}]];
-            addonf.static = [[${staticUrl}]];
-            addonf.token = [[${_csrf.token}]];
-    </script>
-
-    <script src="audio.js" th:src="@{/js/addonf/audio.js}"></script>
-    <script src="login.js" th:src="@{/js/addonf/login.js}"></script>
-    <script src="audio.js" th:src="@{/js/addonf/search.js}"></script>
-
-    <style type="text/css">
-        .ui-front{
-            z-index: 1500;
-        }
-    </style>
-
+    <script th:src="@{/coral/assets/components/plugins/parallax/parallax/parallax.init.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/shop/owl-carousel/featured/front.shop.owl-carousel.featured.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/front/core/assets/js/front.core.init.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/shop/core/js/shop.animations.init.js}"></script>
 </head>
 
 
@@ -86,36 +61,6 @@
 </div>
 
 
-    <div layout:fragment="customJsInclude">
-        <!-- Global -->
-        <script>
-            var basePath = '',
-                    commonPath = '../assets/',
-                    rootPath = '../',
-                    DEV = false,
-                    componentsPath = '../assets/components/';
 
-            var primaryColor = '#eb6a5a',
-                    dangerColor = '#b55151',
-                    successColor = '#609450',
-                    warningColor = '#ab7a4b',
-                    inverseColor = '#45484d';
-
-            var themerPrimaryColor = primaryColor;
-        </script>
-
-
-
-        <script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
-        <script th:src="@{/coral/assets/components/modules/shop/core/js/shop.animations.init.js}"></script>
-        <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
-        <script th:src="@{/coral/assets/components/modules/shop/owl-carousel/featured/front.shop.owl-carousel.featured.js}"></script>
-        <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
-        <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
-        <script th:src="@{/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
-        <script th:src="@{/coral/assets/components/plugins/parallax/parallax/parallax.init.js}"></script>
-        <script th:src="@{/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
-        <script th:src="@{/coral/assets/components/modules/front/core/assets/js/front.core.init.js}"></script>
-    </div>
 </body>
 </html>
