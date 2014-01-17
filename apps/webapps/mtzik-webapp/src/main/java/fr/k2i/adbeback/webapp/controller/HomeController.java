@@ -53,4 +53,9 @@ public class HomeController{
         String referer = request.getHeader("Referer");
         return "redirect:"+ referer;
     }
+
+    @RequestMapping(value = "/cgu.html")
+    public String cgu(){
+        return "cgu";
+    }
 }
