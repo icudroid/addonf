@@ -25,7 +25,7 @@
                     <img style="height: 62px;width:100%;" th:if="${productor.photo ==null}" th:src="@{${session.staticUrl}+'productor/default.png'}" />
                 </div>
                 <div class="col-md-8">
-                    <a th:href="@{'/productor/'+${productor.id}}" th:utext="${productor.fullName}">name</a>
+                    <a th:href="@{/majorPage(majorId=${productor.id})}" th:utext="${productor.fullName}">name</a>
                     <p th:with="df=#{date.format}" th:utext="#{addonf.search.result.last.music.date(${#dates.format(productor.lastRelease,df)})}">Sortie le plus récente: 2014-01-08</p>
                 </div>
             </div>

@@ -39,7 +39,6 @@ public class MediaFacade {
     private IHomePushDao homePushDao;
 
 
-
     @Transactional
     public List<MediaBean> getBestMusicDownload(Long idGenre,int max) throws Exception {
         return construstBeanList(mediaDao.searchBestMusicDownload(idGenre,max));
@@ -194,6 +193,59 @@ public class MediaFacade {
     }
 
     public  Page<Music> findTopMusics(Long genre, String query, int top ,Pageable pageable) {
-        return mediaDao.findMusicByTileAndGenreAndTopDl(query, genre,top, pageable);
+        return mediaDao.findMusicByTileAndGenreAndTopDl(query, genre, top, pageable);
+    }
+
+    @Transactional
+    public ArtistBean getArtistById(Long artistId) {
+        Artist a = mediaDao.findArtistById(artistId);
+        return new ArtistBean(a.getId(),a.getFirstName(),a.getLastName(),a.getPhoto(),mediaDao.getLastReleaseForArtist(a));
+    }
+
+    public Long countMusicForArtist(Long artistId) {
+        return mediaDao.countMediaForArtist(artistId);
+    }
+
+    @Transactional
+    public List<MusicBean> last5MusicForArtist(Long artistId) {
+        List<MusicBean> content= new ArrayList<MusicBean>();
+        List<Music> musics  = mediaDao.last5MusicForArtist(artistId);
+
+        for (Music a : musics) {
+            content.add(new MusicBean(a));
+        }
+
+        return content;
+    }
+
+    @Transactional
+    public Page<Music> findMusicsForArtist(Long artistId, String req, Pageable pageable) {
+        return mediaDao.findMusicsForArtist(artistId,req,pageable);
+    }
+
+    @Transactional
+    public ProductorBean getProductorById(Long majorId) {
+        Productor a = mediaDao.getProductor(majorId);
+        return new ProductorBean(a.getId(),a.getFirstName(),a.getLastName(),a.getPhoto(),mediaDao.getLastReleaseForProductor(a));  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    @Transactional
+    public Long countArtistForLabel(Long majorId) {
+        return mediaDao.countArtistForLabel(majorId);
+    }
+
+    public List<MusicBean> last10MusicForLabel(Long majorId) {
+        List<MusicBean> content= new ArrayList<MusicBean>();
+        List<Music> musics  = mediaDao.last10MusicForLabel(majorId);
+
+        for (Music a : musics) {
+            content.add(new MusicBean(a));
+        }
+
+        return content;
+    }
+
+    public  Page<Music> findMusicsForLabel(Long majorId,Long genre, String req, Pageable pageable) {
+        return mediaDao.findMusicsForLabel(majorId,genre,req,pageable);
     }
 }

@@ -17,17 +17,10 @@ import org.springframework.web.bind.support.SessionAttributeStore;
 @SessionAttributes("cart")
 public class AbstractController {
 
-    @Value(value ="${addonf.static.url}" )
-    private String staticUrl;
-
     @ModelAttribute("cart")
     public CartBean cartBean(){
         return new CartBean();
     }
 
-    @ModelAttribute("staticUrl")
-    public String staticUrl(){
-        return staticUrl;
-    }
 
 }

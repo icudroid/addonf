@@ -96,8 +96,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             }
 
             private void addAttributesToSession(HttpServletRequest req) {
-                req.getSession().setAttribute("cart", new CartBean());
-                req.getSession().setAttribute("staticUrl", staticUrl);
+                if(req.getSession().getAttribute("cart")==null)
+                    req.getSession().setAttribute("cart", new CartBean());
+                if(req.getSession().getAttribute("staticUrl")==null)
+                    req.getSession().setAttribute("staticUrl", staticUrl);
             }
 
         };
@@ -173,6 +175,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/catalog.html").permitAll()
                     .antMatchers("/search.html").permitAll()
                     .antMatchers("/search/**").permitAll()
+                    .antMatchers("/artistPage.html").permitAll()
+                    .antMatchers("/majorPage.html").permitAll()
 
                     //manage cart
                     .antMatchers("/rest/addToCart/*").permitAll()

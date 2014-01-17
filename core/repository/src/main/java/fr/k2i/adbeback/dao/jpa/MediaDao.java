@@ -248,6 +248,126 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         return new PageImpl<Music>(query.list(music),pageable,query.count());
     }
 
+    @Override
+    public Artist findArtistById(Long artistId) {
+        QArtist qArtist = QArtist.artist;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qArtist).where(qArtist.id.eq(artistId));
+        return query.uniqueResult(qArtist);
+    }
+
+    @Override
+    public Long countMediaForArtist(Long artistId) {
+        QMusic music =QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(music).where(music.artists.any().id.eq(artistId));
+
+        return query.count();
+    }
+
+    @Transactional
+    @Override
+    public List<Music> last5MusicForArtist(Long artistId) {
+        QMusic music =QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        query
+                .from(music)
+                .where(
+                        music.artists.any().id.eq(artistId)
+                );
+
+        query.orderBy(music.releaseDate.desc());
+        query.limit(5);
+        return query.list(music);
+    }
+
+    @Transactional
+    @Override
+    public Page<Music> findMusicsForArtist(Long artistId, String req, Pageable pageable) {
+        QMusic music =QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        query
+                .from(music)
+                .where(
+                        music.artists.any().id.eq(artistId)
+                );
+
+
+        query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(music.title.asc());
+
+
+        return new PageImpl<Music>(query.list(music),pageable,query.count());
+    }
+
+    @Override
+    public Productor getProductor(Long majorId) {
+        QProductor qProductor = QProductor.productor;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qProductor).where(qProductor.id.eq(majorId));
+
+        return query.uniqueResult(qProductor);
+    }
+
+    @Override
+    public Long countArtistForLabel(Long majorId) {
+        QArtist qArtist = QArtist.artist;
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qArtist).where(qArtist.musics.any().productors.any().id.eq(majorId));
+
+        return query.count();
+    }
+
+    @Override
+    public List<Music> last10MusicForLabel(Long majorId) {
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(music)
+                .where(
+                        music.productors.any().id.eq(majorId)
+                );
+
+
+        query.orderBy(music.releaseDate.desc());
+        query.limit(10);
+        return query.list(music);
+    }
+
+    @Override
+    public Page<Music> findMusicsForLabel(Long majorId, Long genre, String req, Pageable pageable) {
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+
+        BooleanExpression predicat = music.title.containsIgnoreCase(req)
+                .and(music.productors.any().id.eq(majorId))
+                .and(music.title.containsIgnoreCase(req));
+
+        query.from(music);
+
+        if(genre!=null && genre>0){
+            predicat = predicat.and(music.categories.any().id.eq(genre));
+        }
+
+
+        query.where(
+                        predicat
+                );
+
+
+        query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(music.title.asc());
+
+        return new PageImpl<Music>(query.list(music),pageable,query.count());
+    }
+
 
     @Transactional
     @Override
