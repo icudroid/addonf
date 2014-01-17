@@ -11,7 +11,6 @@ public class Email {
     private String subject;
     private Map<String, Object> model;
     private String content;
-    private boolean html;
     private List<String> recipients = Lists.newArrayList();
     private String messageKey;
     private List<Attachement>attachements = Lists.newArrayList();
@@ -76,19 +75,9 @@ public class Email {
         return attachements;
     }
 
-    public boolean isHtml() {
-        return html;
-    }
 
     private class Builder implements Modelable, Subjectable, Contentable, Recipientable, Attachementable, Producer {
 
-        public Builder() {
-            html = false;
-        }
-
-        public Builder(boolean includeHtml) {
-            html = includeHtml;
-        }
 
         @Override
         public Modelable subject(String subject) {
@@ -153,10 +142,6 @@ public class Email {
             }
         }
 
-    }
-
-    public static Subjectable builder(boolean includeHtml) {
-        return new Email().new Builder(includeHtml);
     }
 
     public static Subjectable builder() {

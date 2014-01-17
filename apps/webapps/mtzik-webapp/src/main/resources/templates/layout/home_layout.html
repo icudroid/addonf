@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
 
 
@@ -111,7 +114,7 @@
                 <div class="btn-group">
                     <a href="#login-menu" class="btn btn-login" data-toggle="collapse" th:text="#{addonf.login}"> Login</a>
                     <div class="collapse login" id="login-menu">
-                        <form class="form-signin" th:action="@{/login}" method="POST">
+                        <form class="form-signin" th:action="@{/login}" method="POST" id="form-signin">
                             <div>
                                 <p id="login-error" class="" style="display: none;">There was an error, please try again</p>
                                 <div class="input-group input-group-sm">
@@ -128,7 +131,7 @@
                                 <i id="login-waiting" style="display: none;" class="fa fa-refresh fa-spin"></i> <button type="submit" class="btn btn-login" th:text="#{addonf.login.btn}">Login</button>
                             </div>
                             <div class="center">
-                                <a th:href="@{/forgottenPwd.html}" class="recover-password"><span th:text="#{addonf.login.pwd.recovery}">Recover Password</span> <i class="fa fa-lock"></i></a>
+                                <a th:href="@{/getForgottenPwd}" class="recover-password"><span th:text="#{addonf.login.pwd.recovery}">Recover Password</span> <i class="fa fa-lock"></i></a>
                             </div>
                         </form>
                     </div>

@@ -3,6 +3,10 @@ package fr.k2i.adbeback.crypto;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
 import fr.k2i.adbeback.core.business.otp.OTPSecurity;
+import fr.k2i.adbeback.core.business.otp.OneTimePassword;
+import fr.k2i.adbeback.core.business.otp.OtpAction;
+import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import fr.k2i.adbeback.dao.jpa.OTPSecurityRepository;
 import fr.k2i.adbeback.logger.LogHelper;
 import org.apache.commons.lang.math.RandomUtils;
@@ -45,6 +49,10 @@ public class DESCryptoService {
 
     @Autowired
     private OTPSecurityRepository optSecurityRepository;
+
+
+    @Autowired
+    private IOneTimePasswordDao oneTimePasswordDao;
 
 
     private static byte[] salt = {
@@ -120,5 +128,23 @@ public class DESCryptoService {
         }
 
         return encrypt(toEncodeStr)+"/"+optSecurity.getKey();
+    }
+
+
+    @Transactional
+    public String generateOtp(String toEncodeStr, Player user, OtpAction action){
+        OneTimePassword otp =  oneTimePasswordDao.findBy(user,action);
+
+        if(otp==null){
+            NumberFormat numberFormat = new DecimalFormat("0000000");
+            String key = numberFormat.format(RandomUtils.nextInt(100000000));
+            otp = new OneTimePassword();
+            otp.setKey(key);
+            otp.setAction(action);
+            otp.setUser(user);
+            oneTimePasswordDao.save(otp);
+        }
+
+        return encrypt(toEncodeStr)+"/"+otp.getKey();
     }
 }

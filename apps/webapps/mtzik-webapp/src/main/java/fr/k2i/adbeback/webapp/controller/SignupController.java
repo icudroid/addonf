@@ -126,11 +126,12 @@ public class SignupController{
         }
 
         Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user",player.getUsername());
 
-        Email.Producer producer = Email.builder(true)
-                .subject("Récupération de votre mot de passe")
+        Email.Producer producer = Email.builder()
+                .subject("Welcome")
                 .model(model)
-                .content("forgotten")
+                .content("email/welcome")
                 .recipients(player.getEmail())
                 .noAttachements();
 

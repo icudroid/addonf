@@ -3,9 +3,6 @@ package fr.k2i.adbeback.application.services.mail;
 import fr.k2i.adbeback.application.services.mail.dto.Attachement;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -13,13 +10,14 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.spring3.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,23 +32,16 @@ public class MailEngine implements IMailEngine{
     private final Log log = LogFactory.getLog(MailEngine.class);
     private JavaMailSender mailSender;
     private String defaultFrom;
-    private Configuration configuration;
+    private SpringTemplateEngine templateEngine;
     private String imagesResources;
-
-    private int CONTENT_TEXT = 0;
-    private int CONTENT_HTML = 1;
 
     private static final String OUTPUT_ENCODING = "UTF-8";
 
 
-    public MailEngine(JavaMailSender mailSender, String defaultFrom,FreeMarkerConfigurer configuration,String imagesResources) throws IOException, TemplateException {
+    public MailEngine(JavaMailSender mailSender, String defaultFrom,SpringTemplateEngine templateEngine,String imagesResources) throws SendException {
         this.mailSender = mailSender;
         this.defaultFrom = defaultFrom;
-        if(configuration.getConfiguration() == null){
-            this.configuration = configuration.createConfiguration();
-        }else{
-            this.configuration = configuration.getConfiguration();
-        }
+        this.templateEngine = templateEngine;
         this.imagesResources = imagesResources;
     }
 
@@ -58,30 +49,31 @@ public class MailEngine implements IMailEngine{
     public void sendMessage(Email email) throws SendException {
         sendMessage(email,Locale.FRANCE);
     }
-    /**
-     * Send a simple message based.
-     * @param email
-     */
+
+
+
+        /**
+         * Send a simple message based.
+         * @param email
+         */
     @Override
     public void sendMessage(Email email, Locale locale) throws SendException {
 
-        final String[] contents;
         final String subject;
+        final String content;
         final String messageKey = email.getMessageKey();
         final List<String> recipients = email.getRecipients();
         final List<Attachement> attachements = email.getAttachements();
 
-        try {
-            contents = retrieveContent(email,locale);
-            subject = email.getSubject();
-        } catch (IOException e) {
-            log.error("IOException when processing template : ", e);
-            throw new SendException("Unable to read or process freemarker configuration or template", e);
+        final Context context = new Context(locale);
+        //WebContext context = new WebContext(request, null,  request.getSession().getServletContext(), request.getLocale());
 
-        } catch (TemplateException e) {
-            log.error("Error when processing template : " , e);
-            throw new SendException("Problem initializing freemarker or rendering template", e);
+        for (Map.Entry<String, Object> entry : email.getModel().entrySet()) {
+            context.setVariable(entry.getKey(),entry.getValue());
         }
+
+        content = retrieveContent(email, context);
+        subject = email.getSubject();
 
         try {
             mailSender.send(new MimeMessagePreparator() {
@@ -90,23 +82,16 @@ public class MailEngine implements IMailEngine{
                     message.setFrom(defaultFrom);
                     message.setTo(recipients.toArray(new String[recipients.size()]));
                     message.setSubject(subject);
-                    if(contents.length==2){
-                        message.setText(contents[CONTENT_TEXT], contents[CONTENT_HTML]);
+                    message.setText(content,true);
 
-                        Collection<String> imgToSearch = findImgToSearch(contents[CONTENT_HTML]);
+                    Collection<String> imgToSearch = findImgToSearch(content);
 
-                        if (imgToSearch != null) {
-                            for (String filename : imgToSearch) {
-                                ClassPathResource resource = new ClassPathResource(imagesResources+File.separator+filename);
-                                message.addInline(filename, resource);
-                            }
+                    if (imgToSearch != null) {
+                        for (String filename : imgToSearch) {
+                            ClassPathResource resource = new ClassPathResource(imagesResources+File.separator+filename);
+                            message.addInline(filename, resource);
                         }
-                    }else{
-                        message.setText(contents[CONTENT_TEXT]);
                     }
-
-
-
 
                     if(!attachements.isEmpty()){
                         for (Attachement attachement : attachements) {
@@ -122,8 +107,8 @@ public class MailEngine implements IMailEngine{
     }
 
 
-    @Override
-    public Collection<String> findImgToSearch(String htmlContent) {
+
+    private Collection<String> findImgToSearch(String htmlContent) {
 
         Map<String, String> map = new HashMap<String, String>();
         // search for img tag with src attribute begining with cid 'cid or "cid
@@ -152,21 +137,8 @@ public class MailEngine implements IMailEngine{
         return values;
     }
 
-
-    @Override
-    public String[] retrieveContent(Email email, Locale locale) throws TemplateException, IOException {
-        List<String> content = new ArrayList<String>();
-        Template textTemplate = configuration.getTemplate(email.getContent() + "-text.ftl",locale, OUTPUT_ENCODING);
-        textTemplate.setOutputEncoding(OUTPUT_ENCODING);
-        content.add(FreeMarkerTemplateUtils.processTemplateIntoString(textTemplate, email.getModel()));
-
-        if (email.isHtml()) {
-            Template htmlTemplate = configuration.getTemplate(email.getContent()+ "-html.ftl",locale, OUTPUT_ENCODING);
-            htmlTemplate.setOutputEncoding(OUTPUT_ENCODING);
-            content.add(FreeMarkerTemplateUtils.processTemplateIntoString(htmlTemplate, email.getModel()));
-        }
-
-        return content.toArray(new String[content.size()]);
+    private String retrieveContent(Email email, Context context){
+        return this.templateEngine.process(email.getContent(), context);
     }
 
 

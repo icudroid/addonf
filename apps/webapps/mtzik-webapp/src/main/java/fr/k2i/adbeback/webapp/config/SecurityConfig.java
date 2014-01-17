@@ -177,6 +177,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/search/**").permitAll()
                     .antMatchers("/artistPage.html").permitAll()
                     .antMatchers("/majorPage.html").permitAll()
+                    .antMatchers("/getForgottenPwd").permitAll()
+                    .antMatchers("/pwdinit/**").permitAll()
+
 
                     //manage cart
                     .antMatchers("/rest/addToCart/*").permitAll()

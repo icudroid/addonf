@@ -67,7 +67,7 @@ public class MailEngineTest extends AbstractJUnit4SpringContextTests {
 
         Map<String,Object> model = new HashMap<String, Object>();
         model.put("test","test");
-        Email.Producer producer = Email.builder(true)
+        Email.Producer producer = Email.builder()
                 .subject("Merci de votre inscription")
                 .model(model)
                 .content("test")
@@ -99,7 +99,7 @@ public class MailEngineTest extends AbstractJUnit4SpringContextTests {
 
         Map<String,Object> model = new HashMap<String, Object>();
         model.put("test","test");
-        Email.Producer producer_noattach = Email.builder(true)
+        Email.Producer producer_noattach = Email.builder()
                 .subject("Merci de votre inscription")
                 .model(model)
                 .content("test")
@@ -107,7 +107,7 @@ public class MailEngineTest extends AbstractJUnit4SpringContextTests {
                 .noAttachements();
 
 
-        Email.Producer producer = Email.builder(true)
+        Email.Producer producer = Email.builder()
                 .subject("Merci de votre inscription")
                 .model(model)
                 .content("test")

@@ -2,6 +2,9 @@ package fr.k2i.adbeback.service.impl;
 
 import java.util.List;
 
+import fr.k2i.adbeback.core.business.otp.OneTimePassword;
+import fr.k2i.adbeback.core.business.otp.OtpAction;
+import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import fr.k2i.adbeback.dao.IPlayerDao;
 import fr.k2i.adbeback.dao.jpa.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.service.PlayerManager;
 import fr.k2i.adbeback.service.UserExistsException;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -27,7 +31,10 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
     private CountryRepository countryRepository;
     @Autowired(required = false)
     private SaltSource saltSource;
-    
+    @Autowired
+    private IOneTimePasswordDao oneTimePasswordDao;
+
+
     @Autowired
     public void setCountryRepository(CountryRepository countryRepository) {
 		this.countryRepository = countryRepository;
@@ -196,7 +203,20 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
 		return (Player) playerDao.loadUserByEmail(email);
 		
 	}
-       
 
+    @Transactional
+    @Override
+    public void changePasswd(String username, String newPwd) {
+        Player user = playerDao.findByEmailorUserName(username);
+        OneTimePassword otp = oneTimePasswordDao.findBy(user, OtpAction.FORGOTTEN_PWD);
+        oneTimePasswordDao.remove(otp);
+        if (saltSource == null) {
+            // backwards compatibility
+            user.setPassword(passwordEncoder.encodePassword(newPwd, null));
+            log.warn("SaltSource not set, encrypting password w/o salt");
+        } else {
+            user.setPassword(passwordEncoder.encodePassword(newPwd, saltSource.getSalt(user)));
+        }
+    }
 
 }

@@ -67,4 +67,6 @@ public interface PlayerManager extends GenericManager<Player, Long> {
      * @return
      */
     Player getPlayerByEmail(String email);
+
+    void changePasswd(String username, String password);
 }

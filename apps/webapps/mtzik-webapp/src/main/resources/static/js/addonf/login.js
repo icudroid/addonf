@@ -33,7 +33,7 @@ $(function(){
     });
 
 
-    $("form.form-signin").submit(function(e) {
+    $("#form-signin").submit(function(e) {
         $("#login-waiting").show();
         $.ajax({url: addonf.base+"login",
             type: "POST",

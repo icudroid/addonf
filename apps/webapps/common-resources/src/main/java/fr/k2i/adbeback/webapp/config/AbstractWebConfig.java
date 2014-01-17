@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.config;
 
+import fr.k2i.adbeback.application.services.mail.config.EmailConfig;
 import org.springframework.boot.autoconfigure.jdbc.TomcatDataSourceConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

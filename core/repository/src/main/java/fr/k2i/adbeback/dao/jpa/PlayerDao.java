@@ -88,6 +88,18 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
         return helper.getSingleResult();
     }
 
+    @Override
+    public Player findByEmailorUserName(String username) {
+        QPlayer player = QPlayer.player;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(player)
+                .where(
+                        player.username.eq(username).or(player.email.eq(username))
+                );
+
+        return query.uniqueResult(player);
+    }
+
 
     /**
      * {@inheritDoc}
