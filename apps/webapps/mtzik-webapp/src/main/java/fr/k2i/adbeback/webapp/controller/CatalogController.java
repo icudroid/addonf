@@ -19,7 +19,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class CatalogController extends AbstractController{
+public class CatalogController{
 
     @Autowired
     private MediaFacade mediaFacade;

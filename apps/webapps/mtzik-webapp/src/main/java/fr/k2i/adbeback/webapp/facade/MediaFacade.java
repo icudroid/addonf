@@ -177,4 +177,23 @@ public class MediaFacade {
     public Page<Music> findMusics(Long genre, String query, Pageable pageable) {
         return mediaDao.findMusicByTileAndGenre(query,genre, pageable);
     }
+
+    @Transactional
+    public Page<ArtistBean> findArtists(String req, Pageable pageable) {
+        return createPageArtists( mediaDao.findArtistByFullName(req, pageable));
+    }
+
+    @Transactional
+    public Page<ProductorBean> findProductors(String req, Pageable pageable) {
+        return createPageProductors(mediaDao.findProductorByFullName(req, pageable));
+    }
+
+    @Transactional
+    public Page<Music> findNewMusics(Long genre, String query, Pageable pageable) {
+        return mediaDao.findMusicByTileAndGenreAndisNew(query, genre, pageable);
+    }
+
+    public  Page<Music> findTopMusics(Long genre, String query, int top ,Pageable pageable) {
+        return mediaDao.findMusicByTileAndGenreAndTopDl(query, genre,top, pageable);
+    }
 }

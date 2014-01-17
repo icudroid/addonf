@@ -1,6 +1,4 @@
-(function($)
-{
-
+$(function(){
 	$("#owl-featured").owlCarousel({
 		autoPlay: 5000,
 		items: 3,
@@ -19,4 +17,4 @@
 		e.stopPropagation();
 	});
 
-})(jQuery);
+});

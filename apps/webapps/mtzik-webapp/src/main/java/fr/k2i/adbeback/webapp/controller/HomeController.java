@@ -22,7 +22,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class HomeController extends AbstractController{
+public class HomeController{
     @Autowired
     private MediaFacade mediaFacade;
 
@@ -45,5 +45,12 @@ public class HomeController extends AbstractController{
     @RequestMapping("/logout-success")
     public String secure(Map<String, Object> model) {
         return "redirect:/";
+    }
+
+
+    @RequestMapping(value = "/back")
+    public String rateHandler(HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 }

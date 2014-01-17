@@ -16,7 +16,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class CartController extends AbstractController{
+public class CartController{
 
 
     @RequestMapping("/cart.html")

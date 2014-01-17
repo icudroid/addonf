@@ -10,6 +10,7 @@ import fr.k2i.adbeback.core.business.push.HomePush;
 import fr.k2i.adbeback.core.business.push.HomePush_;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -168,6 +169,68 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         QMusic music = QMusic.music;
         JPAQuery query = new JPAQuery(getEntityManager());
         BooleanExpression predicat = music.title.containsIgnoreCase(req);
+
+        query.from(music);
+
+        if(genre!=null && genre>0){
+            predicat = predicat.and(music.categories.any().id.eq(genre));
+        }
+
+
+        query   .where(predicat)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(music.title.asc());
+
+
+        return new PageImpl<Music>(query.list(music),pageable,query.count());
+    }
+
+    @Transactional
+    @Override
+    public Page<Music> findMusicByTileAndGenreAndisNew(String req, Long genre, Pageable pageable) {
+        QCategory qGenre = QCategory.category;
+
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        LocalDate localDate = new LocalDate();
+
+        BooleanExpression predicat = music.title.containsIgnoreCase(req).and(music.releaseDate.gt(localDate.minusMonths(1).toDate()));
+
+        query.from(music);
+
+
+
+        if(genre!=null && genre>0){
+            predicat = predicat.and(music.categories.any().id.eq(genre));
+        }
+
+
+        query   .where(predicat)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(music.title.asc());
+
+
+        return new PageImpl<Music>(query.list(music),pageable,query.count());
+    }
+
+    @Transactional
+    @Override
+    public Page<Music> findMusicByTileAndGenreAndTopDl(String req, Long genre, int limit ,Pageable pageable) {
+
+        QCategory qGenre = QCategory.category;
+        QMusic music = QMusic.music;
+
+        JPAQuery queryTopDl = new JPAQuery(getEntityManager());
+        queryTopDl.from(music).groupBy(music.id).orderBy(music.id.count().desc()).limit(limit);
+
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+
+        BooleanExpression predicat = music.title.containsIgnoreCase(req).and(music.id.in(queryTopDl.list(music.id)));
 
         query.from(music);
 

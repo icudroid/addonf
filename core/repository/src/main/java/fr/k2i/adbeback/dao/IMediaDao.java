@@ -56,5 +56,11 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     Page<Music> findMusicByTileAndGenre(String query, Long genre, Pageable pageable);
+
+    @Transactional
+    Page<Music> findMusicByTileAndGenreAndisNew(String query, Long genre, Pageable pageable);
+
+    @Transactional
+    Page<Music> findMusicByTileAndGenreAndTopDl(String req, Long genre, int limit, Pageable pageable);
 }
 

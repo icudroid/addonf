@@ -4,9 +4,6 @@
       layout:decorator="layout/home_layout">
 <head>
 
-
-
-    <script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
     <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
     <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
@@ -16,12 +13,15 @@
 
     <script th:src="@{/coral/assets/components/plugins/parallax/parallax/parallax.init.js}"></script>
     <script th:src="@{/coral/assets/components/modules/shop/owl-carousel/featured/front.shop.owl-carousel.featured.js}"></script>
-    <script th:src="@{/coral/assets/components/modules/front/core/assets/js/front.core.init.js}"></script>
-    <script th:src="@{/coral/assets/components/modules/shop/core/js/shop.animations.init.js}"></script>
 </head>
 
 
 <body>
+    <div layout:fragment="searchBar">
+        <div th:replace="layout/fragment/searchBar(activeSearch=${'home'})"></div>
+    </div>
+
+
     <div layout:fragment="content" id="content">
     <div class="parallax" id="slide1" data-stellar-background-ratio="0.5" th:substituteby="/layout/fragment/push"></div>
 
@@ -39,7 +39,7 @@
                             </div>
                             <div class="widget-body padding-none">
                                 <a th:href="@{/product.html(musicId=${best.id})}" class="thumb">
-                                    <img th:src="@{${staticUrl}+'jacket/'+${best.jacket}}" alt="Jacket" class="img-responsive" />
+                                    <img th:src="@{${session.staticUrl}+'jacket/'+${best.jacket}}" alt="Jacket" class="img-responsive" />
                                 </a>
                                 <div class="description">
                                     <a href="#" class="btn btn-primary btn-circle pull-right addToCart" th:attr="data-music=${best.id}"><i class="fa fa-shopping-cart"></i></a>

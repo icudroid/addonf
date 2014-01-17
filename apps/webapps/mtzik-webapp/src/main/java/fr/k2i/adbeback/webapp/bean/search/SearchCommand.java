@@ -16,4 +16,5 @@ import java.io.Serializable;
 public class SearchCommand implements Serializable{
     private String req;
     private long genreId;
+    private int top = 50;
 }

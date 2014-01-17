@@ -4,7 +4,7 @@
             <h4 class="text-faded" th:utext="#{addonf.search.productors.musics(${musics.getTotalElements()})}">Musiques</h4>
         </div>
         <div class="col-md-4 text-right">
-            <span th:text="#{addonf.searh.show.by}">Monter par :</span>
+            <span th:text="#{addonf.search.show.by}">Monter par :</span>
             <select id="bySize">
                 <option value="20" th:selected="${musics.getSize()==20}">20</option>
                 <option value="50"  th:selected="${musics.getSize()==50}">50</option>
@@ -27,7 +27,7 @@
             <td>
                 <div class="media">
                     <a th:href="@{/product.html(musicId=${music.id})}" class="media-object pull-left hidden-xs">
-                        <img width="50" height="50" style="width: 50px; height: 50px;" class="thumb"  th:src="@{${staticUrl}+'jacket/'+${music.jacket}}" alt="" />
+                        <img width="50" height="50" style="width: 50px; height: 50px;" class="thumb"  th:src="@{${session.staticUrl}+'jacket/'+${music.jacket}}" alt="" />
                     </a>
                     <div class="media-body" style="padding-top:16px;">
                         <h5 class="text-uppercase" th:utext="${music.title}">Product name goes here</h5>

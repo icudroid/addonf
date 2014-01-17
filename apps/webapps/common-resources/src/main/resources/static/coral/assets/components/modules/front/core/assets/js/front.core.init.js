@@ -1,6 +1,4 @@
-(function($, window)
-{
-
+$(function(){
 	$('.dropdown-menu.login input').on('focus', function(e){
 		e.stopPropagation();
 	});
@@ -16,4 +14,4 @@
 		Holder.add_theme("primary", {background:primaryColor, foreground:"#fff", size:9}).run();
 	}
 
-})(jQuery, window);
+});

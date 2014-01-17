@@ -21,7 +21,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class CheckoutController extends AbstractController{
+public class CheckoutController{
 
     @ModelAttribute("player")
     public Player player(){

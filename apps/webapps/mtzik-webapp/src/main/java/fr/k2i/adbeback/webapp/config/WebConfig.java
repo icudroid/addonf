@@ -42,6 +42,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
 
 import javax.sql.DataSource;
 
@@ -60,6 +61,7 @@ public class WebConfig extends AbstractWebConfig {
     public MvcConfig mvcConfig() {
         return new MvcConfig();
     }
+
 
     public static void main(String[] args) throws Exception {
         new SpringApplicationBuilder(WebConfig.class).run(args);

@@ -26,7 +26,7 @@ import static fr.k2i.adbeback.webapp.facade.AdGameFacade.ID_ADGAME;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class GameController extends AbstractController{
+public class GameController{
 
     @Autowired
     private AdGameFacade adGameFacade;

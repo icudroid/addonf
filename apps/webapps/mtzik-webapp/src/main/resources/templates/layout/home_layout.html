@@ -12,6 +12,20 @@
 
     <link th:href="@{/img/favicon.png}" rel="icon" />
 
+
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/icons/fontawesome/assets/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_regular.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_social.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_filetypes.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/icons/pictoicons/css/picto.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/animate/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/plugins/owl-carousel/owl.theme.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/modules/admin/forms/elements/uniform/assets/lib/css/uniform.default.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/jquery-ui/css/jquery-ui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/coral/assets/components/modules/admin/forms/elements/bootstrap-select/assets/lib/css/bootstrap-select.css}"/>
+
     <link rel="stylesheet" th:href="@{/coral/assets/components/library/jquery-ui/css/jquery-ui.min.css}"/>
 
     <link rel="stylesheet" th:href="@{/css/home.css}"/>
@@ -32,7 +46,7 @@
     <script th:inline="javascript">
         var addonf = {};
         addonf.base = [[@{/}]];
-            addonf.static = [[${staticUrl}]];
+            addonf.static = [[${session.staticUrl}]];
             addonf.token = [[${_csrf.token}]];
     </script>
 
@@ -52,22 +66,12 @@
     </style>
 
 
-    <!-- Global -->
-    <script>
-        var basePath = '',
-                commonPath = '../assets/',
-                rootPath = '../',
-                DEV = false,
-                componentsPath = '../assets/components/';
+    <script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
 
-        var primaryColor = '#eb6a5a',
-                dangerColor = '#b55151',
-                successColor = '#609450',
-                warningColor = '#ab7a4b',
-                inverseColor = '#45484d';
 
-        var themerPrimaryColor = primaryColor;
-    </script>
+
+    <script th:src="@{/coral/assets/components/modules/shop/core/js/shop.animations.init.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/realestate/map/search/realestate.map.search.js}"></script>
 
 
 </head>
@@ -98,20 +102,6 @@
             <ul class="nav navbar-nav main-menu">
                 <li><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
                 <li><a th:href="@{/search/music.html}"  th:text="#{addonf.mainmenu.catalog}">Catalog</a></li>
-                <li>
-
-                    <form th:action="@{/search.html}" method="get">
-                        <div class="input-group">
-
-                                <input type="text" th:placeholder="#{addonf.menu.search.placeholder}" class="form-control searchInput" name="q" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default searchBtn"><i class="fa fa-search"></i></button>
-                                </span>
-
-                        </div>
-                    </form>
-
-                </li>
             </ul>
         </div>
         <!-- NavBar Collapse -->
@@ -165,65 +155,40 @@
 
 
 
-<div layout:fragment="content" id="content">
+<div id="realestate-map-search"  layout:fragment="searchBar">
+    <div class="search-navbar">
+        <div class="container">
+            <h3 class="innerTB margin-none search-closed" th:utext="#{addonf.search.title}"><i class="fa fa-fw icon-volume-levels"></i> Recherche de Musiques</h3>
+            <div class="innerTB">
+                <form th:action="@{/search.html}" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control searchInput" th:placeholder="#{addonf.search.placeholder}" name="q"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-primary searchBtn"><i class="fa fa-fw icon-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="innerTB search-closed">
+                <ul class="list-unstyled">
+                    <li><a th:href="@{/search/music}" class="btn btn-default" th:utext="#{addonf.search.byMusic}"><i class="fa fa-fw  icon-albums"></i> Par Musique</a></li>
+                    <li><a th:href="@{/search/artist}" class="btn btn-default" th:utext="#{addonf.search.byArtist}"><i class="fa fa-fw  icon-user-2"></i> Par Artiste</a></li>
+                    <li><a th:href="@{/search/productor}" class="btn btn-default" th:utext="#{addonf.search.byLabel}"><i class="fa fa-fw i icon-vinyl-record"></i> Par Label</a></li>
+                    <li><a th:href="@{/search/news}" class="btn btn-default" th:utext="#{addonf.search.byNews}"><i class="fa fa-fw i icon-tag-fill-1"></i> Par Nouveauté</a></li>
+                    <li><a th:href="@{/search/top50}" class="btn btn-default" th:utext="#{addonf.search.popular}"><i class="fa fa-fw i icon-music-heart"></i> Les plus télécharger</a></li>
+                </ul>
+            </div>
+            <button class="btn btn-xs btn-primary search-closed" id="close-realestate-map-search"><i class="fa fa-fw fa-caret-up"></i></button>
+        </div>
+    </div>
 
 </div>
 
 
-<div class="parallax bg-gray innerTB inner-2x">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <div data-delay="200" data-animate="fadeInLeft" class="text-center innerAll inner-2x fadeInLeft animated">
-                    <h2>Catalog</h2>
-                    <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a href="cart.html?lang=en">Woman Top Sellers</a></li>
-                        <li><a href="catalog.html?lang=en">New Products for Men</a></li>
-                        <li><a href="catalog.html?lang=en">Top Accesories</a></li>
-                        <li><a href="catalog.html?lang=en">Special Shoes</a></li>
-                        <li><a href="catalog.html?lang=en">Just for Kids</a></li>
-                        <li><a href="catalog.html?lang=en">Outlet Sale Specials</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div data-delay="300" data-animate="fadeInUp" class="text-center innerAll inner-2x fadeInUp animated">
-                    <h2>My Account</h2>
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="">Woman Top Sellers</a></li>
-                        <li><a href="">New Products for Men</a></li>
-                        <li><a href="">Top Accesories</a></li>
-                        <li><a href="">Special Shoes</a></li>
-                        <li><a href="">Just for Kids</a></li>
-                        <li><a href="">Outlet Sale Specials</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div data-delay="350" data-animate="fadeInUp" class="text-center innerAll inner-2x fadeInUp animated">
-                    <h2>Support</h2>
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="">Woman Top Sellers</a></li>
-                        <li><a href="">New Products for Men</a></li>
-                        <li><a href="">Top Accesories</a></li>
-                    </ul>
-                </div>
-                <div data-delay="400" data-animate="fadeInUp" class="text-center innerAll inner-2x fadeInUp animated">
-                    <p class="margin-none lead text-center">
-                        <i class="fa fa-2x text-faded fa-phone"></i><br/>1-800-MY-SHOP
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div data-delay="200" data-animate="fadeInRight" class="text-center innerAll inner-2x fadeInRight animated">
-                    <div class="lead innerAll text-center">
-                        <img th:src="@{/img/logo.png}"/>
-                        <div class="separator"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div layout:fragment="content" id="content">
+
 </div>
 
 
@@ -236,9 +201,9 @@
             <li><a th:href="@{/populars}"  th:text="#{addonf.mainmenu.populars}">Populars</a></li>
             <li><a th:href="@{/search}"  th:text="#{addonf.mainmenu.search}">Search</a></li>
         </ul>
-        <div class="copy">Copyright &copy; 2013 MTZik. All Rights Reserved.</div>
+        <div class="copy" th:utext="#{addonf.copyright}">Copyright &copy; 2013 MTZik. All Rights Reserved.</div>
 
-        <div class="copy margin-none">Version de démonstration</div>
+        <div class="copy margin-none" th:utext="#{addonf.copyright.more}">Version de démonstration</div>
 
     </div>
 </div>

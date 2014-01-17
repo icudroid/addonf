@@ -1,4 +1,4 @@
-(function($){
+$(function(){
 
 	// handles Animate
 	function dataAnimate()
@@ -73,4 +73,4 @@
 
 	});
 
-})(jQuery);
+});

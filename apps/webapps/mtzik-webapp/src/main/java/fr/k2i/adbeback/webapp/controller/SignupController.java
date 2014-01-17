@@ -38,7 +38,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/signup*")
-public class SignupController extends AbstractController{
+public class SignupController{
 
 
     protected final Log log = LogFactory.getLog(getClass());

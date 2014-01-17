@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-lg-9 col-md-8 padding-none">
                         <a th:href="@{/product.html(musicId=${push.id})}">
-                            <img th:src="@{${staticUrl}+'jacket/'+${push.jacket}}" alt="photo"
+                            <img th:src="@{${session.staticUrl}+'jacket/'+${push.jacket}}" alt="photo"
                                  class="img-responsive"/>
                         </a>
                     </div>

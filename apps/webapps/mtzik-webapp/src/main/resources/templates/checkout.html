@@ -33,7 +33,7 @@
     <script th:inline="javascript">
         var addonf = {};
         addonf.base = [[@{/}]];
-            addonf.static = [[${staticUrl}]];
+            addonf.static = [[${session.staticUrl}]];
             addonf.token = [[${_csrf.token}]];
     </script>
 
