@@ -4,10 +4,19 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.expr.BooleanExpression;
 import fr.k2i.adbeback.core.business.game.*;
+import fr.k2i.adbeback.core.business.media.Media;
+import fr.k2i.adbeback.core.business.media.Music;
+import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Player_;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -47,6 +56,49 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
 		return helper.getResultList();
 	}
+
+    @Override
+    public Page<Media> getDownloadedMusic(Player player, long genreId, String req, Pageable pageable) {
+        QAdGameMedia qAdGameMedia = QAdGameMedia.adGameMedia;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        BooleanExpression predicat = qAdGameMedia.player.eq(player).and(qAdGameMedia.statusGame.eq(StatusGame.Win));
+        
+        if(genreId>0){
+           predicat = predicat.and(qAdGameMedia.medias.any().categories.any().id.eq(genreId));
+        }
+
+        if(!StringUtils.isEmpty(req)){
+            predicat = predicat.and(qAdGameMedia.medias.any().title.containsIgnoreCase(req));
+        }
+        
+        query.from(qAdGameMedia).where(
+                predicat.and(qAdGameMedia.medias.any().instanceOf(Music.class))
+        );
+
+
+        query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qAdGameMedia.medias.any().title.asc());
+
+        return new PageImpl<Media>(query.list(qAdGameMedia.medias.any()),pageable,query.count());
+    }
+
+    @Override
+    public Boolean musicIsWonByPlayer(Player player, Long musicId) {
+        QAdGameMedia qAdGameMedia = QAdGameMedia.adGameMedia;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        query.from(qAdGameMedia).where(
+                        qAdGameMedia.player.eq(player)
+                        .and(qAdGameMedia.statusGame.eq(StatusGame.Win))
+                        .and(qAdGameMedia.medias.any().instanceOf(Music.class))
+                        .and(qAdGameMedia.medias.any().id.eq(musicId))
+        );
+
+        return query.exists();
+
+    }
 
 
 }

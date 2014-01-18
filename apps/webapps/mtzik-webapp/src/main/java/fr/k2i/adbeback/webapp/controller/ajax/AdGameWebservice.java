@@ -49,6 +49,7 @@ public class AdGameWebservice {
     }
 
 
+
     @RequestMapping(value = "/dln/{file}.{ext}", method = RequestMethod.GET)
     public @ResponseBody
     void dnl(@PathVariable String file,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -118,6 +118,8 @@
                     <a href="#login-menu" class="btn btn-login" data-toggle="collapse" th:text="#{addonf.login}"> Login</a>
                     <div class="collapse login" id="login-menu">
                         <form class="form-signin" th:action="@{/login}" method="POST" id="form-signin">
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             <div>
                                 <p id="login-error" class="" style="display: none;">There was an error, please try again</p>
                                 <div class="input-group input-group-sm">
@@ -142,7 +144,17 @@
                 </div>
             </li>
             <li sec:authorize="hasRole('ROLE_USER')">
-                Logged user: <span sec:authentication="name">Bob</span>
+                <div class="btn-group">
+                    <a href="#login-menu" class="btn btn-login" data-toggle="collapse" th:text="#{addonf.myaccount}"> My account</a>
+                    <div class="collapse login" id="login-menu">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a th:href="@{/redownload}" th:utext="#{addonf.loggued.redownload}">Redownload</a></li>
+                        <li><a th:href="@{/changepwd}" th:utext="#{addonf.loggued.changepwd}">Change pwd</a></li>
+                        <li><a th:href="@{/deleteAccount}" th:utext="#{addonf.loggued.delete.account}">delete account</a></li>
+                    </ul>
+                    </div>
+                    <a th:href="@{/custom-logout}" class="btn btn-login" th:utext="#{addonf.logout}"> Logout</a>
+                </div>
             </li>
             <li class="cart hidden-xs">
                 <a href="#" class="glyphicons shopping_bag dropdown-toggle" data-toggle="dropdown"><i></i></a>

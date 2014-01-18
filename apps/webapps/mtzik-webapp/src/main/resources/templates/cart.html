@@ -5,14 +5,28 @@
       ng-app="adgameApp">
 <head>
     <link rel="stylesheet" th:href="@{/css/cart.css}"/>
+
+    <script type="text/javascript">
+        $(function(){
+            $(".back").click(function(){
+                history.back();
+                return false;
+            });
+        });
+    </script>
 </head>
 
 
 <body>
 
+<div layout:fragment="searchBar">
+    <div th:replace="layout/fragment/searchBar(activeSearch=${'home'})"></div>
+</div>
+
+
     <div layout:fragment="content" id="content">
         <div class="container">
-            <a th:href="@{/catalog.html}" class="btn btn-default btn-sm" th:utext="#{addonf.backTo.shopping}"><i class="fa fa-arrow-left fa-fw"></i> Back to Shopping</a>
+            <a class="btn btn-default btn-sm back" th:utext="#{addonf.goBack}"><i class="fa fa-arrow-left fa-fw"></i> Back to Shopping</a>
             <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/game.html}" class="btn btn-primary btn-sm" th:utext="#{addonf.cart.goGame}"><i class="fa fa-fw fa-check"></i> Play and Win</a>
             <a sec:authorize="isAnonymous()" th:href="@{/checkout.html}" class="btn btn-primary btn-sm" th:utext="#{addonf.backTo.checkout}"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
         </div>

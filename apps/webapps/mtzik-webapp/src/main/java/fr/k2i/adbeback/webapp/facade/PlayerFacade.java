@@ -3,6 +3,7 @@ package fr.k2i.adbeback.webapp.facade;
 import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
+import fr.k2i.adbeback.core.business.media.Music;
 import fr.k2i.adbeback.core.business.otp.OneTimePassword;
 import fr.k2i.adbeback.core.business.otp.OtpAction;
 import fr.k2i.adbeback.core.business.player.Player;
@@ -13,6 +14,7 @@ import fr.k2i.adbeback.dao.IPlayerDao;
 import fr.k2i.adbeback.service.PlayerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -48,9 +50,10 @@ public class PlayerFacade {
     @Autowired
     private PlayerManager playerManager;
 
-
     @Value("${addonf.base.url}")
     private String urlBase;
+
+
 
 
     @Transactional
@@ -115,4 +118,5 @@ public class PlayerFacade {
     public void changePasswd(String username, String password) {
         playerManager.changePasswd(username, password);
     }
+
 }

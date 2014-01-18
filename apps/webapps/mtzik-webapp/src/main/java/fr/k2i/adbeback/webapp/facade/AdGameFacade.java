@@ -611,6 +611,38 @@ public class AdGameFacade {
         return res;
     }
 
+    @Transactional
+    public void getMedia(Long musicId, Player player, HttpServletResponse response) throws IOException {
+
+        if (adGameManager.musicIsWonByPlayer(player,musicId)) {
+                Media media = mediaDao.get(musicId);
+
+                java.io.File file = null;
+
+                if (media instanceof Music) {
+                    file =  new File(musicPath+media.getFile());
+                }else{
+                    file =  new File(videoPath+media.getFile());
+                }
+
+
+                response.setContentType("audio/mpeg");
+                response.setHeader("Content-Disposition","inline; filename=\""+media.getTitle()+"."+new Filename(media.getFile()).extension()+"\"");
+                response.setContentLength((int) file.length());
+                ServletOutputStream outputStream = response.getOutputStream();
+                FileInputStream fileInputStream = new FileInputStream(file);
+                int read =0;
+                byte []b = new byte[1024];
+                while((read = fileInputStream.read(b, 0, 1024))>0){
+                    outputStream.write(b, 0, read);
+                    b = new byte[1024];
+                }
+                fileInputStream.close();
+        }
+    }
+
+
+
     public void getMedias(Long idAdGame, HttpServletResponse response) throws IOException {
         AbstractAdGame abstractAdGame = adGameManager.get(idAdGame);
         if (abstractAdGame instanceof AdGameMedia  && fr.k2i.adbeback.core.business.game.StatusGame.Win.equals(abstractAdGame.getStatusGame())) {

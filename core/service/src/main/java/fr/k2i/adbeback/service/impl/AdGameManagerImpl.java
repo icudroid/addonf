@@ -285,6 +285,10 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 		IAdGameDao.save(adGame);
 	}
 
+    @Override
+    public Boolean musicIsWonByPlayer(Player player, Long musicId) {
+        return IAdGameDao.musicIsWonByPlayer(player,musicId);
+    }
 
 
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.player.Player;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -34,6 +36,8 @@ public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
 	 * @throws Exception
 	 */
 	void saveResponses(Long idAdGame, Integer score, Map<Integer, Long> answers,StatusGame statusGame)throws Exception;
-	
 
+
+    @Transactional
+    Boolean musicIsWonByPlayer(Player player, Long musicId);
 }
