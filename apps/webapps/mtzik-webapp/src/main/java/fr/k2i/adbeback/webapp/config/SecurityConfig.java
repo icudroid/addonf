@@ -181,6 +181,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/pwdinit/**").permitAll()
                     .antMatchers("/contactForm").permitAll()
                     .antMatchers("/cgu.html").permitAll()
+                    .antMatchers("/albumPage.html").permitAll()
 
 
 

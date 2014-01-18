@@ -31,7 +31,7 @@
 
                 <div class="col-md-4">
                     <div class="thumbnail">
-                        <img th:src="@{${session.staticUrl}+'jacket/'+${media.jacket}}" alt="photo" class="img-responsive" />
+                        <img id="jacket" th:src="@{${session.staticUrl}+'jacket/'+${media.jacket}}" alt="photo" class="img-responsive" />
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@
                     <div class="box-generic padding-none">
                         <h3 class="strong margin-none innerAll border-bottom text-inverse" th:utext="#{addonf.product.price(${media.nbAdsNeeded})}">Price: €50.00</h3>
                         <div class="innerAll">
-                            <a href="#" class="btn btn-primary strong addToCart" th:utext="#{addonf.product.addToCart}" th:attr="data-music=${media.id}"><i class="fa fa-plus"></i> Add to Cart</a>&nbsp;&nbsp;
+                            <a href="#" class="btn btn-primary strong addToCart" th:utext="#{addonf.product.addToCart}" th:attr="data-music=${media.id},data-selector=${'#jacket'}"><i class="fa fa-plus"></i> Add to Cart</a>&nbsp;&nbsp;
                             <a href="#" class="btn btn-primary strong playMusic" th:utext="#{addonf.product.playMusic}" th:attr="data-music=${media.id}"><i class="fa fa-play"></i> Play</a>
                         </div>
                     </div>

@@ -1,19 +1,13 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.QueryModifiers;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.BooleanExpression;
-import fr.k2i.adbeback.core.business.game.QAdGameMedia;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.media.*;
-import fr.k2i.adbeback.core.business.push.HomePush;
-import fr.k2i.adbeback.core.business.push.HomePush_;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -387,6 +381,33 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         query.limit(max);
 
         return query.list(music);
+    }
+
+    @Override
+    public Page<Music> findMusicsForAlbum(Long albumId, String req, Pageable pageable) {
+
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        query.from(music);
+        if(StringUtils.isEmpty(req)){
+            query.where(
+                    music.albums.any().id.eq(albumId)
+            );
+        }else{
+            query.where(
+                    music.albums.any().id.eq(albumId).and(music.title.containsIgnoreCase(req))
+            );
+        }
+
+
+
+        query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(music.title.asc());
+
+        return new PageImpl<Music>(query.list(music),pageable,query.count());
     }
 
 

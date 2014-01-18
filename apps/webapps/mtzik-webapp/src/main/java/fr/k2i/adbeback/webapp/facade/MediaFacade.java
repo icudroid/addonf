@@ -255,4 +255,7 @@ public class MediaFacade {
         return construstBeanList(mediaDao.getNewMusics(max));
     }
 
+    public Page<Music> findMusicsForAlbum(Long albumId, String req,Pageable pageable) {
+        return mediaDao.findMusicsForAlbum(albumId,req,pageable);
+    }
 }

@@ -50,9 +50,17 @@ $(function(){
     $(".addToCart").unbind("click").click(function(e){
         cartMethode("add", $(this).data("music"));
 
+        var selector = $(this).data("selector");
         var cart = $('.cart');
         cart.addClass("open");
-        var imgtodrag = $(this).parent().parent().find("img").eq(0);
+        var imgtodrag = null;
+        if(jQuery.type( selector ) === "undefined"){
+            imgtodrag = $(this).parent().parent().find("img").eq(0);
+        }else{
+            imgtodrag = $(selector);
+        }
+
+
         if (imgtodrag) {
             var imgclone = imgtodrag.clone()
                 .offset({
