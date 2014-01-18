@@ -37,7 +37,8 @@ public class HomeController{
     @RequestMapping("/")
     public String home(Map<String, Object> model,HttpServletRequest request) throws Exception {
         model.put("pushes", mediaFacade.getHomePush());
-        model.put("bests", mediaFacade.getBestMusicDownload(null,maxHomeBestDl));
+        model.put("news", mediaFacade.getNewMusics(maxHomeBestDl));
+        model.put("top10", mediaFacade.getBestMusicDownload(null,10));
         model.put("categories",genreRepository.findAll());
         return "home";
     }
@@ -59,3 +60,4 @@ public class HomeController{
         return "cgu";
     }
 }
+

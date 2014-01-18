@@ -246,6 +246,13 @@ public class MediaFacade {
     }
 
     public  Page<Music> findMusicsForLabel(Long majorId,Long genre, String req, Pageable pageable) {
-        return mediaDao.findMusicsForLabel(majorId,genre,req,pageable);
+        return mediaDao.findMusicsForLabel(majorId, genre, req, pageable);
     }
+
+
+    @Transactional
+    public List<MediaBean> getNewMusics(Integer max) throws Exception {
+        return construstBeanList(mediaDao.getNewMusics(max));
+    }
+
 }

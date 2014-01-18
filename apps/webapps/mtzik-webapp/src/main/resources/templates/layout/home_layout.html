@@ -103,7 +103,10 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav main-menu">
                 <li><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
-                <li><a th:href="@{/search/music.html}"  th:text="#{addonf.mainmenu.catalog}">Catalog</a></li>
+                <li><a th:href="@{/search.html}"  th:text="#{addonf.mainmenu.search}">Rechercher</a></li>
+                <li><a th:href="@{/cgu.html}"  th:text="#{addonf.mainmenu.cgu}">CGU</a></li>
+                <li><a th:href="@{/about.html}"  th:text="#{addonf.mainmenu.about}">About</a></li>
+                <li><a th:href="@{/contactForm}"  th:text="#{addonf.mainmenu.contactForm}">Contact us</a></li>
             </ul>
         </div>
         <!-- NavBar Collapse -->
@@ -198,7 +201,7 @@
     <div class="container">
 
         <ul class="list-unstyled center">
-            <li class="active"><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
+            <li><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
             <li><a th:href="@{/search.html}"  th:text="#{addonf.mainmenu.search}">Rechercher</a></li>
             <li><a th:href="@{/cgu.html}"  th:text="#{addonf.mainmenu.cgu}">CGU</a></li>
             <li><a th:href="@{/about.html}"  th:text="#{addonf.mainmenu.about}">About</a></li>

@@ -28,24 +28,24 @@
     <div class="container">
         <div class="row innerTB">
             <div class="col-md-9">
-                <h5 class="text-faded margin-none" th:text="#{addonf.best.download}">Best download</h5>
+                <h5 class="text-faded margin-none" th:text="#{addonf.home.news}">News</h5>
                 <div class="row">
 
-                    <div class="col-sm-4 col-xs-6" th:each="best : ${bests}">
+                    <div class="col-sm-4 col-xs-6" th:each="newMusic : ${news}">
                         <div class="widget widget-pinterest" data-animate="bounceIn" data-delay="200">
                             <div class="mark">
                                 <span class="caret caret-default"></span>
-                                <span class="text" th:text="#{addonf.slider.best}">New</span>
+                                <span class="text" th:text="#{addonf.slider.newMusic}">New</span>
                             </div>
                             <div class="widget-body padding-none">
-                                <a th:href="@{/product.html(musicId=${best.id})}" class="thumb">
-                                    <img th:src="@{${session.staticUrl}+'jacket/'+${best.jacket}}" alt="Jacket" class="img-responsive" />
+                                <a th:href="@{/product.html(musicId=${newMusic.id})}" class="thumb">
+                                    <img th:src="@{${session.staticUrl}+'jacket/'+${newMusic.jacket}}" alt="Jacket" class="img-responsive" />
                                 </a>
                                 <div class="description">
-                                    <a href="#" class="btn btn-primary btn-circle pull-right addToCart" th:attr="data-music=${best.id}"><i class="fa fa-shopping-cart"></i></a>
-                                    <a href="#" class="btn btn-primary btn-circle pull-right playMusic" th:attr="data-music=${best.id}" style="margin-right: 2px;"><i class="fa fa fa-play"></i></a>
-                                    <h5 class="text-uppercase" th:text="${best.title}" style="height:3em">Product name</h5>
-                                    <span class="text-primary text-medium text-condensed"  th:text="#{addonf.price(${best.nbAdsNeeded})}" >&euro;216.00</span>
+                                    <a href="#" class="btn btn-primary btn-circle pull-right addToCart" th:attr="data-music=${newMusic.id}"><i class="fa fa-shopping-cart"></i></a>
+                                    <a href="#" class="btn btn-primary btn-circle pull-right playMusic" th:attr="data-music=${newMusic.id}" style="margin-right: 2px;"><i class="fa fa fa-play"></i></a>
+                                    <h5 class="text-uppercase" th:text="${newMusic.title}" style="height:3em">Product name</h5>
+                                    <span class="text-primary text-medium text-condensed"  th:text="#{addonf.price(${newMusic.nbAdsNeeded})}" >&euro;216.00</span>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div th:substituteby="/layout/fragment/categories"></div>
+            <div th:substituteby="/layout/fragment/top10"></div>
 
         </div>
     </div>

@@ -123,7 +123,7 @@ public class BrandServiceFacade {
 
         model.put("url", url);
         model.put("name", contactBean.getFirstname() + " "+contactBean.getLastname());
-        Email email = Email.builder(true)
+        Email email = Email.builder()
                                         .subject(messageSource.getMessage("mail.enrolled.annonceur", new Object[]{}, locale))
                                         .model(model)
                                         .content("annonceur_enrolled")
