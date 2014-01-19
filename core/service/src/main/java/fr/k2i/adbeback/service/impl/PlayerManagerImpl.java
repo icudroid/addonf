@@ -204,6 +204,21 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
 		
 	}
 
+
+    @Transactional
+    @Override
+    public void changePasswd(Player user, String newPwd) {
+        if (saltSource == null) {
+            // backwards compatibility
+            user.setPassword(passwordEncoder.encodePassword(newPwd, null));
+            log.warn("SaltSource not set, encrypting password w/o salt");
+        } else {
+            user.setPassword(passwordEncoder.encodePassword(newPwd, saltSource.getSalt(user)));
+        }
+    }
+
+
+
     @Transactional
     @Override
     public void changePasswd(String username, String newPwd) {

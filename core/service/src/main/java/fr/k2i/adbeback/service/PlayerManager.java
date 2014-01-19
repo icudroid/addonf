@@ -6,6 +6,7 @@ import fr.k2i.adbeback.dao.IPlayerDao;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.k2i.adbeback.core.business.player.Player;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -69,4 +70,7 @@ public interface PlayerManager extends GenericManager<Player, Long> {
     Player getPlayerByEmail(String email);
 
     void changePasswd(String username, String password);
+
+    @Transactional
+    void changePasswd(Player user, String newPwd);
 }

@@ -105,7 +105,7 @@
                 <li><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
                 <li><a th:href="@{/search.html}"  th:text="#{addonf.mainmenu.search}">Rechercher</a></li>
                 <li><a th:href="@{/cgu.html}"  th:text="#{addonf.mainmenu.cgu}">CGU</a></li>
-                <li><a th:href="@{/about.html}"  th:text="#{addonf.mainmenu.about}">About</a></li>
+                <!--<li><a th:href="@{/about.html}"  th:text="#{addonf.mainmenu.about}">About</a></li>-->
                 <li><a th:href="@{/contactForm}"  th:text="#{addonf.mainmenu.contactForm}">Contact us</a></li>
             </ul>
         </div>
@@ -149,8 +149,7 @@
                     <div class="collapse login" id="login-menu">
                     <ul class="nav nav-pills nav-stacked">
                         <li><a th:href="@{/redownload}" th:utext="#{addonf.loggued.redownload}">Redownload</a></li>
-                        <li><a th:href="@{/changepwd}" th:utext="#{addonf.loggued.changepwd}">Change pwd</a></li>
-                        <li><a th:href="@{/deleteAccount}" th:utext="#{addonf.loggued.delete.account}">delete account</a></li>
+                        <li><a th:href="@{/myaccount/changepwd}" th:utext="#{addonf.loggued.changepwd}">Change pwd</a></li>
                     </ul>
                     </div>
                     <a th:href="@{/custom-logout}" class="btn btn-login" th:utext="#{addonf.logout}"> Logout</a>
@@ -216,7 +215,7 @@
             <li><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
             <li><a th:href="@{/search.html}"  th:text="#{addonf.mainmenu.search}">Rechercher</a></li>
             <li><a th:href="@{/cgu.html}"  th:text="#{addonf.mainmenu.cgu}">CGU</a></li>
-            <li><a th:href="@{/about.html}"  th:text="#{addonf.mainmenu.about}">About</a></li>
+            <!--<li><a th:href="@{/about.html}"  th:text="#{addonf.mainmenu.about}">About</a></li>-->
             <li><a th:href="@{/contactForm}"  th:text="#{addonf.mainmenu.contactForm}">Contact us</a></li>
         </ul>
         <div class="copy" th:utext="#{addonf.copyright}">Copyright &copy; 2013 MTZik. All Rights Reserved.</div>
