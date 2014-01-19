@@ -123,36 +123,12 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
     }
 
+    private static double CONVERSION_LATLONG_METRES = 111319.49079327;
 
-    private double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        if (unit == 'K') {
-            dist = dist * 1.609344;
-        } else if (unit == 'N') {
-            dist = dist * 0.8684;
-        }
-        return (dist);
+
+    private double get_angle_decalage_geo(double $distance){
+        return $distance / CONVERSION_LATLONG_METRES;
     }
-
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-/*::  This function converts decimal degrees to radians             :*/
-/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-/*::  This function converts radians to decimal degrees             :*/
-/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    private double rad2deg(double rad) {
-        return (rad * 180 / Math.PI);
-    }
-
-
 
 
     /**
@@ -163,12 +139,24 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
      */
     private List<Ad> matchCity(List<Ad> ads,Player player) {
         List<Ad> res = new ArrayList<Ad>();
+        Double latPlayer = player.getAddress().getCity().getLat();
+        Double lonPlayer = player.getAddress().getCity().getLon();
 
         for (Ad ad : ads) {
             List<CityRule> rules = ad.getRules(CityRule.class);
             if(!rules.isEmpty()){
                 for (CityRule rule : rules) {
-                    if(rule.getCity().equals(player.getAddress().getCity())){
+                    Integer around = rule.getAround();
+                    Double lat = rule.getCity().getLat();
+                    Double lon = rule.getCity().getLon();
+
+                    Double latP1 = lat - get_angle_decalage_geo(around*1000);
+                    Double lonP1 = lon + get_angle_decalage_geo(around*1000);
+
+                    Double latP3 = lat + get_angle_decalage_geo(around*1000);
+                    Double lonP3 = lon - get_angle_decalage_geo(around*1000);
+
+                    if(lonPlayer>lonP1 && lonPlayer<lonP3 && latPlayer>latP1 && latPlayer<latP3){
                         res.add(ad);
                     }
                 }

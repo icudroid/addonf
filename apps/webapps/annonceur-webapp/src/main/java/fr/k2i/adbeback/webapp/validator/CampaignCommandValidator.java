@@ -80,10 +80,6 @@ public class CampaignCommandValidator implements Validator{
             errors.rejectValue("name","required");
         }
 
-        AdType type = command.getType();
-        if(type==null){
-            errors.rejectValue("type","required");
-        }
 
     }
 

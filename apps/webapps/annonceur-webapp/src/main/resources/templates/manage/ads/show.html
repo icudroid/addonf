@@ -41,7 +41,11 @@
     <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'create'})"></div>
 </div>
 
-<div layout:fragment="content">
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{addonf.create.ad}">
+
+</h4>
+
+<div layout:fragment="content" class="col-app">
     <ng-view></ng-view>
 </div>
 

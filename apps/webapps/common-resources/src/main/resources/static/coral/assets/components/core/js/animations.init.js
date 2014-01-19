@@ -160,7 +160,7 @@
 		$('.widget-tabs .tab-pane').addClass('animated fadeInUp');
 
 		// animate page exits
-		$('body')
+		/*$('body')
 		.on('click', 'a', function(e)
 		{
 			if ($(this).is('[data-edit]') || $(this).is('[data-gallery]') || $(this).is('.no-ajaxify') || $(this).is('[data-toggle]') || $(this).is('[data-dismiss]') || $(this).attr('target') == '_blank')
@@ -189,7 +189,7 @@
 					location = t.attr('href');
 			}, 
 			500);
-		});
+		});*/
 
 		// resize nicescroll areas after animations ended
 		setTimeout(function(){

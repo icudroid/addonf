@@ -17,16 +17,19 @@
     <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'list'})"></div>
 </div>
 
-
-<div layout:fragment="content" class="col-table">
-
-    <div class="heading-buttons border-bottom innerLR">
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile">
+    <div class="heading-buttons innerLR">
         <div class="btn-group btn-group-xs pull-right">
             <a class="btn btn-primary" th:href="@{/createCampaign}" th:utext="#{addonf.create.campaign}"><i class="fa fa-fw fa-plus-circle"></i> Create campaign</a>
         </div>
         <h4 class="margin-none innerTB" th:text="#{addonf.campaigns.title}">Mes campagnes publicitaires</h4>
         <div class="clearfix"></div>
     </div>
+</h4>
+
+<div layout:fragment="content" class="col-app">
+
+
 
     <div class="widget">
         <div class="widget-body innerAll inner-2x">
@@ -58,6 +61,7 @@
 
 </body>
 </html>
+
 
 
 

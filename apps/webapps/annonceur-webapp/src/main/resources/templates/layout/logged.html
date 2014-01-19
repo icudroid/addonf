@@ -23,10 +23,7 @@
 
     <link rel="stylesheet" th:href="@{/coral/assets/components/library/bootstrap/css/bootstrap.min.css}"/>
 
-    <link rel="stylesheet"
-          th:href="@{/coral/assets/css/admin/module.admin.page.tables.sidebar_type.discover.min.css}"/>
-
-
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
 
     <script th:inline="javascript">
         var addonf = {};
@@ -152,8 +149,25 @@
 <div class="row row-app">
 <div class="col-md-12">
 <div class="col-separator col-separator-first col-unscrollable bg-none">
-<div class="col-table" layout:fragment="content"></div>
 
+<div class="col-table">
+    <h4 class="innerAll bg-white margin-none" layout:fragment="formTile">Form Wizards</h4>
+
+    <div class="col-separator-h"></div>
+
+    <!-- col-table-row -->
+    <div class="col-table-row">
+
+        <!-- col-app -->
+        <div class="col-app col-unscrollable">
+
+            <!-- col-app -->
+            <div class="col-app"  layout:fragment="content">
+                My content
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 </div>
 </div>

@@ -160,7 +160,9 @@ if (window.location != window.parent.location)
 				cursorborder: "none",
 				cursorborderradius: "0",
 				cursorcolor: primaryColor
-			});
+			}).scroll(function(){
+                $(this).getNiceScroll().resize();
+            });
 
 			if (hide == true)
 				$(this).getNiceScroll().hide();

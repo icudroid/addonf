@@ -20,7 +20,6 @@ public class InformationCommand implements Serializable{
     private String name;
     private AdDisplay displayAd = AdDisplay.VIDEO;
     private Integer displayDuration = 0;
-    private AdType type;
     private Double initialAmonut;
     private Date startDate;
     private Date endDate;
