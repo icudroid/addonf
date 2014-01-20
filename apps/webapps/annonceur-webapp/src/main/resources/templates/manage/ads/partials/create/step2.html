@@ -92,7 +92,9 @@
 
 
                         CreateCampaign.addCityRule({},{
-                            city : selectOptionCity.city,
+                            city : {
+                                id :selectOptionCity.city.id
+                            },
                             around : selectOptionCity.around
                         }
                         , function(data) {
@@ -188,7 +190,12 @@
                 $scope.removeCityRule = function(rule){
                     var index = $scope.model.rules.cityRules.indexOf(rule);
                     if (index > -1) {
-                        CreateCampaign.removeCityRule({},$scope.model.rules.cityRules[index], function(data) {
+                        CreateCampaign.removeCityRule({},{
+                            city : {
+                                id : $scope.model.rules.cityRules[index].city.id
+                            },
+                            around : $scope.model.rules.cityRules[index].around
+                        }, function(data) {
                             if(data.errors){
                                 alert(data.errors.countryRule);
                             }else{
@@ -397,60 +404,66 @@
                         <div class="tab-pane active">
 
 
-
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-danger">Restrictions disponibles</button>
-                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a ng-click="addCountryRule()">Restriction par pays</a></li>
-                                    <li><a ng-click="addCityRule()">Restriction par ville</a></li>
-                                    <li><a ng-show="!alreadySex"  ng-click="addSexRule()">Restriction par sex</a></li>
-                                    <li><a ng-show="!alreadyAge"  ng-click="addAgeRule()">Restriction par Age</a></li>
-                                </ul>
+                            <div class="heading-buttons border-bottom innerLR">
+                                <div class="btn-group pull-right">
+                                    <a class="btn btn-primary" href="#" ng-click="addCountryRule()"><i class="fa fa-fw fa-plus-circle"></i> Restriction par pays</a>
+                                    <a class="btn btn-primary" href="#" ng-click="addCityRule()"><i class="fa fa-fw fa-plus-circle"></i> Restriction par ville</a>
+                                    <a class="btn btn-primary" href="#" ng-show="!alreadySex"  ng-click="addSexRule()"><i class="fa fa-fw fa-plus-circle"></i>  Restriction par sex</a>
+                                    <a class="btn btn-primary" href="#" ng-show="!alreadyAge"  ng-click="addAgeRule()"><i class="fa fa-fw fa-plus-circle"></i> Restriction par Age</a>
+                                </div>
+                                <h4 class="margin-none innerTB">Choix des restrictions :</h4>
+                                <div class="clearfix"></div>
                             </div>
 
+                            <div class="separator bottom"></div>
 
-                            <div class="container">
                                 <table class="table table-striped">
                                     <tr>
-                                        <th>Type</th>
-                                        <th>Règle</th>
-                                        <th>Actions</th>
+                                        <th width="40%">Type</th>
+                                        <th width="40%">Règle</th>
+                                        <th width="20%">Actions</th>
                                     </tr>
                                     <tr ng-repeat="countryRule in model.rules.countryRules">
                                         <td>Pays</td>
                                         <td>{{drawCountryRule(countryRule)}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-default" ng-click="removeCountryRule(countryRule)">Supprimer</button>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeCountryRule(countryRule)"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
                                     <tr ng-repeat="cityRule in model.rules.cityRules">
                                         <td>Ville</td>
                                         <td>{{drawCityRule(cityRule)}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-default" ng-click="removeCityRule(cityRule)">Supprimer</button>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeCityRule(cityRule)"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
                                     <tr ng-if="model.rules.sexRule !=null">
                                         <td>Sex</td>
                                         <td>{{drawSexRule(model.rules.sexRule)}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-default" ng-click="removeSexRule(model.rules.sexRule)">Supprimer</button>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeSexRule(model.rules.sexRule)"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
                                     <tr ng-if="model.rules.ageRule != null">
                                         <td>Pays</td>
                                         <td>{{drawAgeRule(model.rules.ageRule)}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-default" ng-click="removeAgeRule(model.rules.ageRule)">Supprimer</button>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeAgeRule(model.rules.ageRule)"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
 
                                 </table>
 
+
+                            <div class="text-right innerAll border-top">
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-default" th:href="@{/createCampaign/step1}"><i class="fa fa-chevron-left"></i> Retour</a>
+                                    <a class="btn btn-primary" th:href="@{/createCampaign/step3}"><i class="fa fa-fw fa-check"></i> Suivant</a>
+                                </div>
+                            </div>
+
+
+<!--
                                 <form class="form-horizontal" role="form" ng-submit="submit()">
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
@@ -458,11 +471,12 @@
                                         </div>
                                     </div>
                                 </form>
+-->
 
 
 
 
-                        </div>
+
                         <!-- // Step 1 END -->
 
                     </div>

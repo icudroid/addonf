@@ -10,11 +10,14 @@ import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.facade.BrandServiceFacade;
 import fr.k2i.adbeback.webapp.validator.CampaignCommandValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.*;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +26,8 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -44,6 +49,17 @@ public class ManageAdsController {
     private CampaignCommandValidator campaignCommandValidator;
 
 
+    @Autowired
+    private MessageSource messageSource;
+
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder,Locale locale) {
+        DateFormat dateFormat = new SimpleDateFormat(messageSource.getMessage("date_format",null,locale));
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
+
     @RequestMapping(value = IMetaDataController.Path.LIST_CAMPAIGNS)
     public String showCampaignAds(ModelMap model) throws Exception {
         List<AdBean> ads = brandServiceFacade.getAdsForConnectedUser();
@@ -53,10 +69,15 @@ public class ManageAdsController {
 
 
     @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1,method = RequestMethod.GET)
-    public String step1(@ModelAttribute("informationCommand") InformationCommand informationCommand,Map<String, Object> model,HttpServletRequest request){
-        CampaignCommand campaignCommand = new CampaignCommand();
-        campaignCommand.setInformation(informationCommand);
-        request.getSession().setAttribute("campaignCommand", campaignCommand);
+    public String step1(Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        if(campaignCommand ==null){
+            campaignCommand = new CampaignCommand();
+            request.getSession().setAttribute("campaignCommand", campaignCommand);
+        }
+
+        model.put("informationCommand",campaignCommand.getInformation());
+
         return IMetaDataController.View.CREATE_CAMPAIGN_STEP_1;
     }
 
@@ -74,14 +95,14 @@ public class ManageAdsController {
 
 
     @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_2,method = RequestMethod.GET)
-    public String step1(@ModelAttribute("adRulesCommand") AdRulesCommand adRulesCommand,Map<String, Object> model,HttpServletRequest request){
+    public String step2(Map<String, Object> model,HttpServletRequest request){
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
-        campaignCommand.setRules(adRulesCommand);
+        model.put("adRulesCommand",campaignCommand.getRules());
         return IMetaDataController.View.CREATE_CAMPAIGN_STEP_2;
     }
 
     @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_2,method = RequestMethod.POST)
-    public String step1Submit(@ModelAttribute("adRulesCommand") AdRulesCommand adRulesCommand,BindingResult bindingResults,HttpServletRequest request){
+    public String step2Submit(@ModelAttribute("adRulesCommand") AdRulesCommand adRulesCommand,BindingResult bindingResults,HttpServletRequest request){
         campaignCommandValidator.validate(adRulesCommand,bindingResults);
         if(bindingResults.hasErrors()){
             return IMetaDataController.View.CREATE_CAMPAIGN_STEP_2;
@@ -241,14 +262,32 @@ public class ManageAdsController {
     }
 
 
-
-
-
-
     @RequestMapping("/createCampaign/get")
     public @ResponseBody
     CampaignCommand getCampaign(HttpServletRequest request){
         return (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+    }
+
+
+
+
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_3,method = RequestMethod.GET)
+    public String step3(Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        model.put("adService",campaignCommand.getAdServices());
+        return IMetaDataController.View.CREATE_CAMPAIGN_STEP_3;
+    }
+
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_3,method = RequestMethod.POST)
+    public String step2Submit(@ModelAttribute("adService") AdService adService,BindingResult bindingResults,HttpServletRequest request){
+        campaignCommandValidator.validate(adService,bindingResults);
+        if(bindingResults.hasErrors()){
+            return IMetaDataController.View.CREATE_CAMPAIGN_STEP_2;
+        }else{
+            CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+            campaignCommand.setAdServices(adService);
+            return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_3;
+        }
     }
 
 

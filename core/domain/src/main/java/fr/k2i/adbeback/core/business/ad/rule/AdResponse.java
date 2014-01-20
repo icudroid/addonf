@@ -7,8 +7,10 @@ import javax.persistence.*;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
+import lombok.Data;
 
 
+@Data
 @Entity
 @Table(name = IMetaData.TableMetadata.AD_RESPONSE)
 public class AdResponse extends BaseObject implements Serializable{
@@ -19,22 +21,10 @@ public class AdResponse extends BaseObject implements Serializable{
 
     @Column(name = IMetaData.ColumnMetadata.AdResponse.RESPONSE)
 	private String response;
+
+    @Column(name = IMetaData.ColumnMetadata.AdResponse.RESPONSE_IMG)
+    private String image;
 	
-	public String getResponse() {
-		return response;
-	}
-
-	public void setResponse(String response) {
-		this.response = response;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	@Override
 	public int hashCode() {

@@ -27,11 +27,15 @@ public interface IMetaData {
         public interface AdResponse {
             String RESPONSE =                           "response";
             String ID =                                 "id";
+            String RESPONSE_IMG =                       "response_img";
         }
 
         public interface AdRule {
             String SEX =                                "sex";
             String AROUND =                            "around";
+            String BRAND_NO_DISPLAY_TABLE_JOIN =        "brand_no_display_with";
+            String BRAND_RULE_JOIN =                    "brand_rule_id";
+            String BRAND_JOIN =                         "brand_id";
 
             public interface Discrimator{
                 String DISCRIMINATOR =                  "classe";

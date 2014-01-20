@@ -1,10 +1,12 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
 import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.ad.Brand;
 import lombok.Data;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -13,6 +15,13 @@ import javax.persistence.Entity;
 public class BrandRule extends AdService {
 	private static final long serialVersionUID = 2387046492593489427L;
 
+    @ManyToMany
+    @JoinTable(
+            name = IMetaData.ColumnMetadata.AdRule.BRAND_NO_DISPLAY_TABLE_JOIN,
+            joinColumns = { @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.BRAND_RULE_JOIN) },
+            inverseJoinColumns = @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.BRAND_JOIN)
+    )
+    private List<Brand> noDisplayWith = new ArrayList<Brand>();
 
     @Override
     public String toString() {
