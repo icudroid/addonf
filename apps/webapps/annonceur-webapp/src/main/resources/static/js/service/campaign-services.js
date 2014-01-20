@@ -12,7 +12,7 @@ campaignServices.factory('Campaign', ['$resource',
 
         var Campaign = $resource('/', {_csrf:addonf.token}, {
             _save: {url:addonf.base+'manageAds/saveStepNoFile/:step',method:'POST',responseType:"json",isArray: false},
-            create: {url:addonf.base+'manageAds/create',method:'GET',responseType:"json",isArray: false}
+            getCampaign: {url:addonf.base+'createCampaign/get',method:'GET',responseType:"json",isArray: false}
         });
 
         Campaign.resolve = function (Campaign, $q) {
@@ -27,7 +27,7 @@ campaignServices.factory('Campaign', ['$resource',
         Campaign.getCurrent = function (callback) {
             if (!singleton) {
 
-                singleton = Campaign.create({}, function(data){
+                singleton = Campaign.getCampaign({}, function(data){
                     singleton = data;
                     if (callback) {
                         callback(singleton);

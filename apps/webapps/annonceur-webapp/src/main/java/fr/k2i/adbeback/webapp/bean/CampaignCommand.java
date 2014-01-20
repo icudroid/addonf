@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.webapp.bean;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ public class CampaignCommand implements Serializable{
     private ProductBean product = new ProductBean();
     private AdRulesCommand rules = new AdRulesCommand();
     private AdService adServices = new AdService();
+
 
 
 }

@@ -2,9 +2,11 @@ package fr.k2i.adbeback.webapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.k2i.adbeback.core.business.ad.AdType;
-import fr.k2i.adbeback.webapp.bean.AdBean;
-import fr.k2i.adbeback.webapp.bean.CampaignCommand;
-import fr.k2i.adbeback.webapp.bean.FileCommand;
+import fr.k2i.adbeback.core.business.ad.rule.AgeRule;
+import fr.k2i.adbeback.core.business.ad.rule.CityRule;
+import fr.k2i.adbeback.core.business.ad.rule.CountryRule;
+import fr.k2i.adbeback.core.business.ad.rule.SexRule;
+import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.facade.BrandServiceFacade;
 import fr.k2i.adbeback.webapp.validator.CampaignCommandValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +35,6 @@ import java.util.*;
 @Controller
 public class ManageAdsController {
 
-    @ModelAttribute("values")
-    public Map<String,Object> model(){
-        Map<String,Object> model = new HashMap<String, Object>();
-
-        List<String> adTypes = new ArrayList<String>();
-        for (AdType type : AdType.values()) {
-            adTypes.add(type.name());
-        }
-        model.put("adTypes",adTypes);
-
-        return model;
-    }
 
     @Autowired
     private BrandServiceFacade brandServiceFacade;
@@ -62,10 +52,218 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value = IMetaDataController.Path.DASHBOARD_ADS)
-    public String showCurrentAds(){
-        return IMetaDataController.View.DASHBOARD_ADS;
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1,method = RequestMethod.GET)
+    public String step1(@ModelAttribute("informationCommand") InformationCommand informationCommand,Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = new CampaignCommand();
+        campaignCommand.setInformation(informationCommand);
+        request.getSession().setAttribute("campaignCommand", campaignCommand);
+        return IMetaDataController.View.CREATE_CAMPAIGN_STEP_1;
     }
+
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1,method = RequestMethod.POST)
+    public String step1Submit(@ModelAttribute("informationCommand") InformationCommand informationCommand,BindingResult bindingResults,HttpServletRequest request){
+        campaignCommandValidator.validate(informationCommand,bindingResults);
+        if(bindingResults.hasErrors()){
+            return IMetaDataController.View.CREATE_CAMPAIGN_STEP_1;
+        }else{
+            CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+            campaignCommand.setInformation(informationCommand);
+            return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_2;
+        }
+    }
+
+
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_2,method = RequestMethod.GET)
+    public String step1(@ModelAttribute("adRulesCommand") AdRulesCommand adRulesCommand,Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        campaignCommand.setRules(adRulesCommand);
+        return IMetaDataController.View.CREATE_CAMPAIGN_STEP_2;
+    }
+
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_2,method = RequestMethod.POST)
+    public String step1Submit(@ModelAttribute("adRulesCommand") AdRulesCommand adRulesCommand,BindingResult bindingResults,HttpServletRequest request){
+        campaignCommandValidator.validate(adRulesCommand,bindingResults);
+        if(bindingResults.hasErrors()){
+            return IMetaDataController.View.CREATE_CAMPAIGN_STEP_2;
+        }else{
+            CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+            campaignCommand.setRules(adRulesCommand);
+            return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_3;
+        }
+    }
+
+
+    @RequestMapping(value="/createCampaign/rule", params={"addCountryRule"})
+    public ModelAndView addCountryRule(@RequestBody CountryRule countryRule, final BindingResult bindingResult, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        if(campaignCommand.getRules().getCountryRules().contains(countryRule)){
+            bindingResult.reject("Exists");
+        }
+
+        if(bindingResult.hasErrors()){
+            Map<String,String> errors = new HashMap<String, String>();
+            for (ObjectError objectError : bindingResult.getAllErrors()) {
+                errors.put(objectError.getObjectName(),objectError.getCode());
+            }
+            view.addObject("errors",errors);
+        }else{
+
+            campaignCommand.getRules().getCountryRules().add(countryRule);
+        }
+
+        return view;
+    }
+
+
+    @RequestMapping(value="/createCampaign/rule", params={"removeCountryRule"})
+    public ModelAndView removeCountryRule(@RequestBody CountryRule countryRule, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        campaignCommand.getRules().getCountryRules().remove(countryRule);
+
+        return view;
+    }
+
+
+
+    @RequestMapping(value="/createCampaign/rule", params={"addCityRule"})
+    public ModelAndView addCityRule(@RequestBody CityRule cityRule, final BindingResult bindingResult, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        if(campaignCommand.getRules().getCityRules().contains(cityRule)){
+            bindingResult.reject("Exists");
+        }
+
+        if(bindingResult.hasErrors()){
+            Map<String,String> errors = new HashMap<String, String>();
+            for (ObjectError objectError : bindingResult.getAllErrors()) {
+                errors.put(objectError.getObjectName(),objectError.getCode());
+            }
+            view.addObject("errors",errors);
+        }else{
+
+            campaignCommand.getRules().getCityRules().add(cityRule);
+        }
+
+        return view;
+    }
+
+
+    @RequestMapping(value="/createCampaign/rule", params={"removeCityRule"})
+    public ModelAndView removeCountryRule(@RequestBody CityRule cityRule, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        campaignCommand.getRules().getCityRules().remove(cityRule);
+
+        return view;
+    }
+
+
+
+
+    @RequestMapping(value="/createCampaign/rule", params={"setAgeRule"})
+    public ModelAndView setAgeRule(@RequestBody AgeRule ageRule, final BindingResult bindingResult, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        if(campaignCommand.getRules().getAgeRule() != null){
+            bindingResult.reject("Exists");
+        }
+
+        if(bindingResult.hasErrors()){
+            Map<String,String> errors = new HashMap<String, String>();
+            for (ObjectError objectError : bindingResult.getAllErrors()) {
+                errors.put(objectError.getObjectName(),objectError.getCode());
+            }
+            view.addObject("errors",errors);
+        }else{
+
+            campaignCommand.getRules().setAgeRule(ageRule);
+        }
+
+        return view;
+    }
+
+
+    @RequestMapping(value="/createCampaign/rule", params={"removeAgeRule"})
+    public ModelAndView removeAgeRule( HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        campaignCommand.getRules().setAgeRule(null);
+
+        return view;
+    }
+
+
+
+    @RequestMapping(value="/createCampaign/rule", params={"setSexRule"})
+    public ModelAndView setSexRule(@RequestBody SexRule sexRule, final BindingResult bindingResult, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        if(campaignCommand.getRules().getSexRule() != null){
+            bindingResult.reject("Exists");
+        }
+
+        if(bindingResult.hasErrors()){
+            Map<String,String> errors = new HashMap<String, String>();
+            for (ObjectError objectError : bindingResult.getAllErrors()) {
+                errors.put(objectError.getObjectName(),objectError.getCode());
+            }
+            view.addObject("errors",errors);
+        }else{
+
+            campaignCommand.getRules().setSexRule(sexRule);
+        }
+
+        return view;
+    }
+
+
+    @RequestMapping(value="/createCampaign/rule", params={"removeSexRule"})
+    public ModelAndView removeSexRule( HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        campaignCommand.getRules().setSexRule(null);
+
+        return view;
+    }
+
+
+
+
+
+
+    @RequestMapping("/createCampaign/get")
+    public @ResponseBody
+    CampaignCommand getCampaign(HttpServletRequest request){
+        return (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @RequestMapping( IMetaDataController.Path.MANAGE_ADS_PARTIALS)
@@ -89,15 +287,27 @@ public class ManageAdsController {
         return brandServiceFacade.createCampaign();
     }
 
-    @RequestMapping(IMetaDataController.Path.SAVE_STEP)
+    @RequestMapping("/manageAds/saveStep/1")
     public @ResponseBody
-    ModelAndView save( @RequestBody(required = false) MultipartFile file,@PathVariable Integer step, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        CampaignCommand campaignCommand = mapper.readValue(request.getParameter("command"), CampaignCommand.class);
-        return saveStep(file, step, campaignCommand,request);
+    ModelAndView step1(@ModelAttribute("command") InformationCommand informationCommand,ModelMap model,HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //ObjectMapper mapper = new ObjectMapper();
+        //CampaignCommand campaignCommand = mapper.readValue(request.getParameter("command"), CampaignCommand.class);
+        //return saveStep( 1, campaignCommand,request);
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+        return view;
     }
 
-    private ModelAndView saveStep(MultipartFile file, Integer step, CampaignCommand campaignCommand, HttpServletRequest request) throws IOException {
+
+    @RequestMapping(IMetaDataController.Path.SAVE_STEP)
+    public @ResponseBody
+    ModelAndView save(@PathVariable Integer step, @ModelAttribute CampaignCommand campaignCommand,ModelMap model,HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        //CampaignCommand campaignCommand = mapper.readValue(request.getParameter("command"), CampaignCommand.class);
+        return saveStep( step, campaignCommand,request);
+    }
+
+    private ModelAndView saveStep(Integer step, CampaignCommand campaignCommand, HttpServletRequest request) throws IOException {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
 
@@ -106,22 +316,22 @@ public class ManageAdsController {
             switch (step){
                 case 1:
                     campaignCommandValidator.validate(campaignCommand.getInformation(),bindingResults);
-                    if(file!=null && file.isEmpty()){
+/*                    if(file!=null && file.isEmpty()){
                         errors.put("","required");
                     }else{
                         FileCommand ad = new FileCommand(file);
                         request.getSession().setAttribute("ad",file);
-                    }
+                    }*/
                     //Todo:
                     break;
                 case 2:
                     campaignCommandValidator.validate(campaignCommand.getProduct(),bindingResults);
-                    if(file!=null && file.isEmpty()){
+/*                    if(file!=null && file.isEmpty()){
                         errors.put("","required");
                     }else{
                         FileCommand ad = new FileCommand(file);
                         request.getSession().setAttribute("product",file);
-                    }
+                    }*/
                     //Todo:
                     break;
                 case 3:
@@ -146,13 +356,13 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value = IMetaDataController.Path.SAVE_STEP_NO_FILE, method = RequestMethod.POST)
+/*    @RequestMapping(value = IMetaDataController.Path.SAVE_STEP_NO_FILE, method = RequestMethod.POST)
     public @ResponseBody
     ModelAndView saveNoFile( @PathVariable Integer step, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         CampaignCommand campaignCommand = mapper.readValue(request.getInputStream(), CampaignCommand.class);
         return saveStep(null, step, campaignCommand, request);
-    }
+    }*/
 
 
 

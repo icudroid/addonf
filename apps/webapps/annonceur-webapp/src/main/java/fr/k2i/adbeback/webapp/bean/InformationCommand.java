@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.k2i.adbeback.core.business.ad.AdType;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +20,16 @@ public class InformationCommand implements Serializable{
     private Long id;
     private String name;
     private AdDisplay displayAd = AdDisplay.VIDEO;
-    private Integer displayDuration = 0;
+    private Long displayDuration = 0L;
     private Double initialAmonut;
     private Date startDate;
     private Date endDate;
+
+    @JsonIgnore
+    private MultipartFile adFile;
+
+
+    public  InformationCommand(){
+        displayAd = AdDisplay.VIDEO;
+    }
 }

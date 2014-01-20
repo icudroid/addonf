@@ -43,9 +43,6 @@ public class CampaignCommandValidator implements Validator{
         if(o instanceof InformationCommand){
             validateStep((InformationCommand) o, errors);
         }else
-        if(o instanceof ProductBean){
-            validateStep((ProductBean) o, errors);
-        }else
         if(o instanceof AdRulesCommand){
             validateStep((AdRulesCommand) o, errors);
         }else
@@ -83,13 +80,6 @@ public class CampaignCommandValidator implements Validator{
 
     }
 
-
-    public void validateStep(ProductBean productBean, Errors errors) {
-        String name = productBean.getName();
-        if(name==null){
-            errors.rejectValue("name","required");
-        }
-    }
 
     public void validateStep(AdRulesCommand adRulesCommand, Errors errors) {
 

@@ -1,45 +1,480 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged"
+        ng-app="myModule">
+
+<head>
+    <title th:text="${title}">Title</title>
+
+    <script th:src="@{/lib/angular-1.2.0/angular.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-animate.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-resource.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-route.js}"></script>
+
+    <script th:src="@{/js/service/services.js}"></script>
+    <script th:src="@{/js/service/campaign-services.js}"></script>
+
+    <script th:src="@{/lib/ui-bootstrap-0.9.0/ui-bootstrap-tpls-0.9.0.js}"></script>
+
+
+
+    <script th:inline="javascript">
+
+        var controllers = angular.module('myModule', ['ui.bootstrap','services','campaignServices', 'ngResource']);
+
+        controllers.controller('Step2Ctrl', ['$scope', 'Services', 'Campaign', '$modal', '$resource',
+            function($scope, Services, Campaign, $modal,$resource) {
+
+
+
+                var CreateCampaign =  $resource(addonf.base+"createCampaign/rule",{_csrf:addonf.token},
+                        {
+                            addCountryRule: {method:'POST', params:{addCountryRule:true}, isArray:false},
+                            removeCountryRule: {method:'POST', params:{removeCountryRule:true}, isArray:false},
+                            addCityRule: {method:'POST', params:{addCityRule:true}, isArray:false},
+                            removeCityRule: {method:'POST', params:{removeCityRule:true}, isArray:false},
+                            setSexRule: {method:'POST', params:{setSexRule:true}, isArray:false},
+                            removeSexRule: {method:'POST', params:{removeSexRule:true}, isArray:false},
+                            setAgeRule: {method:'POST', params:{setAgeRule:true}, isArray:false},
+                            removeAgeRule: {method:'POST', params:{removeAgeRule:true}, isArray:false}
+                        });
+
+
+                $scope.model = Campaign.getCurrent();
+
+                Services.getSexes(function(data){
+                    $scope.sexes = data;
+                });
+
+                $scope.alreadySex = false;
+                $scope.alreadyAge = false;
+
+                $scope.addCountryRule = function(){
+                    var countryModal = $modal.open({
+                        templateUrl: addonf.base+'manageAds/partials/create/modalCountry.html',
+                        controller: "AddCountryRuleCtrl"
+                    });
+
+                    countryModal.result.then(function (selectedCountry) {
+
+
+                        CreateCampaign.addCountryRule({},{
+                                                country : {
+                                                    code:selectedCountry
+                                                }
+                                            }, function(data) {
+                                                if(data.errors){
+                                                    alert(data.errors.countryRule);
+                                                }else{
+                                                    $scope.model.rules.countryRules.push(
+                                                            {
+                                                                country : {
+                                                                    code:selectedCountry
+                                                                }
+                                                            }
+                                                    );
+
+                                                }
+                                            });
+
+
+                    }, function () {});
+
+                };
+                $scope.addCityRule = function(){
+                    var cityModal = $modal.open({
+                        templateUrl: addonf.base+'manageAds/partials/create/modalCity.html',
+                        controller: "AddCityRuleCtrl"
+                    });
+
+                    cityModal.result.then(function (selectOptionCity) {
+
+
+                        CreateCampaign.addCityRule({},{
+                            city : selectOptionCity.city,
+                            around : selectOptionCity.around
+                        }
+                        , function(data) {
+                            if(data.errors){
+                                alert(data.errors.countryRule);
+                            }else{
+                                $scope.model.rules.cityRules.push(
+                                        {
+                                            city : selectOptionCity.city,
+                                            around : selectOptionCity.around
+                                        }
+                                );
+                            }
+                        });
+
+                    }, function () {});
+                };
+                $scope.addSexRule = function(){
+                    var sexModal = $modal.open({
+                        templateUrl: addonf.base+'manageAds/partials/create/modalSex.html',
+                        controller: "SetSexRuleCtrl",
+                        resolve: {
+                            sexes: function () {
+                                return $scope.sexes;
+                            }
+                        }
+                    });
+
+                    sexModal.result.then(function (selectSex) {
+
+                        CreateCampaign.setSexRule({},{
+                                    sex : selectSex
+                                }
+                                , function(data) {
+                                    if(data.errors){
+                                        alert(data.errors.countryRule);
+                                    }else{
+                                        $scope.model.rules.sexRule =
+                                        {
+                                            sex : selectSex
+                                        };
+                                        $scope.alreadySex = true;
+                                    }
+                                });
+
+                    }, function () {});
+                };
+                $scope.addAgeRule = function(){
+                    var ageModal = $modal.open({
+                        templateUrl: addonf.base+'manageAds/partials/create/modalAge.html',
+                        controller: "SetAgeRuleCtrl"
+                    });
+
+                    ageModal.result.then(function (ageRule) {
+
+                        CreateCampaign.setAgeRule({},ageRule
+                                , function(data) {
+                                    if(data.errors){
+                                        alert(data.errors.countryRule);
+                                    }else{
+                                        $scope.model.rules.ageRule = ageRule;
+                                        $scope.alreadyAge = true;
+                                    }
+                                });
+
+                    }, function () {});
+                };
+
+
+                $scope.drawCountryRule = function(rule){
+                    return rule.country.code;
+                };
+                $scope.removeCountryRule = function(rule){
+                    var index = $scope.model.rules.countryRules.indexOf(rule);
+                    if (index > -1) {
+
+                        CreateCampaign.removeCountryRule({},$scope.model.rules.countryRules[index], function(data) {
+                            if(data.errors){
+                                alert(data.errors.countryRule);
+                            }else{
+                                $scope.model.rules.countryRules.splice(index, 1);
+                            }
+                        });
+
+
+                    }
+                };
+
+
+                $scope.drawCityRule = function(rule){
+                    return rule.city.city + "|" + rule.around+ " km(s)";
+                };
+                $scope.removeCityRule = function(rule){
+                    var index = $scope.model.rules.cityRules.indexOf(rule);
+                    if (index > -1) {
+                        CreateCampaign.removeCityRule({},$scope.model.rules.cityRules[index], function(data) {
+                            if(data.errors){
+                                alert(data.errors.countryRule);
+                            }else{
+                                $scope.model.rules.cityRules.splice(index, 1);
+                            }
+                        });
+                    }
+                };
+
+                $scope.drawSexRule = function(rule){
+                    return rule.sex;
+                };
+                $scope.removeSexRule = function(rule){
+
+                    CreateCampaign.removeSexRule({}, function(data) {
+                        if(data.errors){
+                            alert(data.errors.countryRule);
+                        }else{
+                            $scope.model.rules.sexRule = null;
+                            $scope.alreadySex = false;
+                        }
+                    });
+                };
+
+
+                $scope.drawAgeRule = function(rule){
+                    return "de " + rule.ageMin + " à "+rule.ageMax;
+                };
+                $scope.removeAgeRule = function(rule){
+
+                    CreateCampaign.removeSexRule({}, function(data) {
+                        if(data.errors){
+                            alert(data.errors.countryRule);
+                        }else{
+                            $scope.model.rules.ageRule = null;
+                            $scope.alreadyAge = false;
+                        }
+                    });
+
+                };
+
+
+                $scope.submit = function(){
+
+                    Campaign.save($scope.model,3,function(data){
+                        if(angular.isDefined(data.errors)){
+                            $scope.drawErrors(data.errors);
+                        }else{
+                            $location.path("/step4");
+                        }
+                    });
+
+                };
+
+            }
+        ]);
+
+
+        controllers.controller('AddCountryRuleCtrl', ['$scope', 'Services', '$modalInstance',
+            function($scope, Services, $modalInstance) {
+                $scope.countries = [];
+                $scope.selectedCountry = {};
+
+                Services.getCountries(function(data){
+                    $scope.countries = data;
+                    $scope.selectedCountry = $scope.countries[0];
+                });
+
+                $scope.ok = function () {
+                    if($scope.selectedCountry==null){
+                        window.alert("Selectionnez un pays");
+                    }else{
+                        $modalInstance.close($scope.selectedCountry.value);
+                    }
+                };
+
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            }
+        ]);
+
+
+        controllers.controller('AddCityRuleCtrl', ['$scope', 'Services', '$modalInstance','$http',
+            function($scope, Services, $modalInstance,$http) {
+                $scope.selectedCity = {
+                    city : null,
+                    around: 0
+                };
+
+                $scope.getCitiesByName = function(val){
+                    return $http.get(addonf.base+'getTownsByName/'+val ,{
+                        params: {
+                            _csrf:addonf.token
+                        }
+                    }).then(function(data){
+                                var res = [];
+                                angular.forEach(data.data, function(item){
+                                    item.label =item.zipcode+" "+item.city+", "+item.country.code;
+                                    res.push(item);
+                                });
+                                return res;
+                            });
+                };
+
+
+                $scope.ok = function () {
+                    if($scope.selectedCity.city==null || $scope.selectedCity.around==null){
+                        window.alert("Données incomplètes");
+                    }else{
+                        $modalInstance.close($scope.selectedCity);
+                    }
+
+                };
+
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            }
+        ]);
+
+
+        controllers.controller('SetSexRuleCtrl', ['$scope', 'Services', '$modalInstance', 'sexes',
+            function($scope, Services, $modalInstance , sexes) {
+                $scope.sexes = sexes;
+
+                $scope.selectedSex = {
+                    item: $scope.sexes[0]
+                };
+
+                $scope.ok = function () {
+                    if($scope.selectedSex.item==null){
+                        window.alert("Données incomplètes");
+                    }else{
+                        $modalInstance.close($scope.selectedSex.item.value);
+                    }
+
+                };
+
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            }
+        ]);
+
+
+        controllers.controller('SetAgeRuleCtrl', ['$scope', 'Services', '$modalInstance',
+            function($scope, Services, $modalInstance) {
+
+                $scope.ageRule = {
+                    ageMin: 0,
+                    ageMax: 0
+                };
+
+                $scope.ok = function () {
+                    if($scope.ageRule.ageMin==null ||$scope.ageRule.ageMax==null){
+                        window.alert("Données incomplètes");
+                    }else{
+                        $modalInstance.close( $scope.ageRule);
+                    }
+
+                };
+
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            }
+        ]);
+
+
+    </script>
+</head>
+
+
 <body>
 
-<ol class="breadcrumb">
-    <li>Informations général</li>
-    <li class="active">Produit présenté</li>
-    <li>Choix du public</li>
-    <li>Choix d'affichage</li>
-</ol>
-
-<div class="container">
-    <form class="form-horizontal" role="form" ng-submit="submit()">
-        <div class="form-group">
-            <label for="name" class="col-sm-2 control-label">Nom du produit</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" ng-required="true" ng-model="model.product.name"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="name" class="col-sm-2 control-label">Description</label>
-            <div class="col-sm-10">
-                <textarea class="form-control" rows="3" ng-model="model.product.description"/>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label for="logo" class="col-sm-2 control-label">Image du produit</label>
-            <div class="col-sm-4">
-                <input type="file" id="logo" ng-required="true" ng-file-select="onFileSelect($files)" accept="image/*"/>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Suivant</button>
-            </div>
-        </div>
-    </form>
+<div layout:fragment="menu">
+    <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'create'})"></div>
 </div>
 
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{addonf.create.ad}"></h4>
 
+
+<div layout:fragment="content" class="col-table">
+
+    <div class="widget" ng-controller="Step2Ctrl">
+
+        <div class="wizard" id="rootwizard">
+
+            <!-- Wizard heading -->
+            <div class="wizard-head">
+                <ul class="bwizard-steps">
+                    <li><a>Informations Générales</a></li>
+                    <li class="active"><a>Choix du public</a></li>
+                    <li><a>Choix d'affichages</a></li>
+                </ul>
+            </div>
+            <!-- // Wizard heading END -->
+
+            <div class="widget">
+
+                <div class="widget-body">
+                    <div class="tab-content">
+
+                        <!-- Step 1 -->
+                        <div class="tab-pane active">
+
+
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-danger">Restrictions disponibles</button>
+                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a ng-click="addCountryRule()">Restriction par pays</a></li>
+                                    <li><a ng-click="addCityRule()">Restriction par ville</a></li>
+                                    <li><a ng-show="!alreadySex"  ng-click="addSexRule()">Restriction par sex</a></li>
+                                    <li><a ng-show="!alreadyAge"  ng-click="addAgeRule()">Restriction par Age</a></li>
+                                </ul>
+                            </div>
+
+
+                            <div class="container">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Règle</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    <tr ng-repeat="countryRule in model.rules.countryRules">
+                                        <td>Pays</td>
+                                        <td>{{drawCountryRule(countryRule)}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" ng-click="removeCountryRule(countryRule)">Supprimer</button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="cityRule in model.rules.cityRules">
+                                        <td>Ville</td>
+                                        <td>{{drawCityRule(cityRule)}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" ng-click="removeCityRule(cityRule)">Supprimer</button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="model.rules.sexRule !=null">
+                                        <td>Sex</td>
+                                        <td>{{drawSexRule(model.rules.sexRule)}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" ng-click="removeSexRule(model.rules.sexRule)">Supprimer</button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="model.rules.ageRule != null">
+                                        <td>Pays</td>
+                                        <td>{{drawAgeRule(model.rules.ageRule)}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" ng-click="removeAgeRule(model.rules.ageRule)">Supprimer</button>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+                                <form class="form-horizontal" role="form" ng-submit="submit()">
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-default">Suivant</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+
+
+                        </div>
+                        <!-- // Step 1 END -->
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
 </body>
 </html>
