@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div class="modal-header">
+    <h3>Option d'affichage de votre publicité par logo</h3>
+</div>
+<div class="modal-body">
+
+    <form role="form">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="startDate" class="control-label">Date de début</label>
+                    <div class="input-group ">
+                        <input id="startDate" name="startDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brandRule.startDate" is-open="startDatepicker.opened"  close-text="Fermer" ng-required="true"/>
+                        <div class="input-group-btn"><button class="btn" ng-click="openDate(startDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="maxDisplayByUser" class="control-label">Nombre max. d'affichage par jour et par joueur</label>
+                    <select id="maxDisplayByUser" name="maxDisplayByUser" ng-model="brandRule.maxDisplayByUser" ng-options="nb for nb in nbDisplay">
+                        <option value="">-- Pas de limite --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="endDate" class="control-label">Date de fin</label>
+
+                    <div class="input-group">
+                        <input id="endDate" name="endDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brandRule.endDate" is-open="endDatepicker.opened"  close-text="Fermer" ng-required="true"/>
+                        <div class="input-group-btn"><button class="btn" ng-click="openDate(endDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="brands" class="control-label">Nombre max. d'affichage par jour et par joueur</label>
+                    <select id="brands" ng-model="selectedBrand" ng-options="brand.name for brand in brands"
+                            data-placeholder="Choisir une société" chosen="brands">
+                    </select>
+                </div>
+
+                <a class="btn btn-primary" ng-click="addNoShowWith(selectedBrand)"><i class="fa fa-fw fa-plus-circle"></i> Ajouter la restriction</a>
+
+            </div>
+        </div>
+        <div class="separator"></div>
+
+        <div class="widget">
+            <div class="widget-head">
+                <h4 class="heading">Liste des companies avec lesquels vous ne serez pas affiché</h4>
+            </div>
+            <div class="widget-body innerAll inner-2x">
+                <div style="max-height: 150px;overflow: auto;">
+                <table class="table table-striped" >
+                    <tr>
+                        <th width="40%">Company</th>
+                        <th width="40%">Logo</th>
+                        <th width="20%">Actions</th>
+                    </tr>
+                    <tr ng-repeat="brand in brandRule.noDisplayWith">
+                        <td>{{brand.name}}</td>
+                        <td><img src="{{base}}logo/{{brand.logo}}" style="max-width: 50px;max-height: 50px;"/></td>
+                        <td>
+                            <a class="btn  btn-danger" href="#" ng-click="removeBrandRule(brand)"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+    </form>
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Ajouter</button>
+    <button class="btn btn-warning" ng-click="cancel()">Annuler</button>
+</div>
+</body>
+</html>

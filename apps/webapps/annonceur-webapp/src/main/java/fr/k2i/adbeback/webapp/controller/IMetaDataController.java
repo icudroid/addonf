@@ -25,10 +25,8 @@ public interface IMetaDataController {
         String MANAGE_ADS_PARTIALS =                    "/manageAds/partials/{html}.html";
         String GET_ALL_ADS =                            "/manageAds/getAll";
         String MANAGE_ADS_PARTIALS_ACTION =             "/manageAds/partials/{action}/{html}.html";
-        String CREATE_CAMPAIGN =                        "/manageAds/create";
-        String SAVE_STEP =                              "/manageAds/saveStep/{step}";
-        String SAVE_STEP_NO_FILE =                      "/manageAds/saveStepNoFile/{step}";;
         String LIST_CAMPAIGNS =                         "listCampaign.html";
+        String CREATE_CAMPAIGN =                        "/createCampaign";
     }
 
     interface View{
@@ -44,5 +42,6 @@ public interface IMetaDataController {
 
         String CREATE_CAMPAIGN_STEP_1=                  "manage/ads/partials/create/step1";
         String CREATE_CAMPAIGN_STEP_2=                  "manage/ads/partials/create/step2";
+        String CREATE_CAMPAIGN_STEP_3 =                 "manage/ads/partials/create/step3";
     }
 }

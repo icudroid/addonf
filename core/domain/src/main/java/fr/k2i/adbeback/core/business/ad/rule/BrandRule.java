@@ -27,4 +27,11 @@ public class BrandRule extends AdService {
     public String toString() {
         return "Brand";
     }
+
+    public void addNoDisplayWith(Brand brand) {
+        if(noDisplayWith==null){
+            noDisplayWith = new ArrayList<Brand>();
+        }
+        noDisplayWith.add(brand);
+    }
 }

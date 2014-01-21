@@ -3,6 +3,9 @@ package fr.k2i.adbeback.webapp.bean;
 import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
 import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
 import fr.k2i.adbeback.core.business.ad.rule.ProductRule;
+import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
+import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
+import fr.k2i.adbeback.webapp.bean.adservice.ProductRuleBean;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,7 +21,7 @@ import java.util.List;
  */
 @Data
 public class AdService implements Serializable{
-    private List<BrandRule> brandRules = new ArrayList<BrandRule>();
-    private List<OpenRule> openRules = new ArrayList<OpenRule>();
-    private List<ProductRule> productRules = new ArrayList<ProductRule>();
+    private List<BrandRuleBean> brandRules = new ArrayList<BrandRuleBean>();
+    private List<OpenRuleBean> openRules = new ArrayList<OpenRuleBean>();
+    private List<ProductRuleBean> productRules = new ArrayList<ProductRuleBean>();
 }

@@ -3,6 +3,7 @@ package fr.k2i.adbeback.core.business.ad.rule;
 import fr.k2i.adbeback.core.business.IMetaData;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -55,5 +56,12 @@ public class OpenRule extends AdService {
                 "responses=" + responses +
                 ", correct=" + correct +
                 '}';
+    }
+
+    public void addResponse(AdResponse adResponse) {
+        if(responses == null){
+            responses = new ArrayList<AdResponse>();
+        }
+        responses.add(adResponse);
     }
 }

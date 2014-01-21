@@ -15,7 +15,7 @@
     <script th:src="@{/js/service/services.js}"></script>
     <script th:src="@{/js/service/campaign-services.js}"></script>
 
-    <script th:src="@{/lib/ui-bootstrap-0.9.0/ui-bootstrap-tpls-0.9.0.js}"></script>
+    <script th:src="@{/lib/ui-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.js}"></script>
 
 
 
@@ -65,7 +65,7 @@
                                                 }
                                             }, function(data) {
                                                 if(data.errors){
-                                                    alert(data.errors.countryRule);
+                                                    alert(data.errors);
                                                 }else{
                                                     $scope.model.rules.countryRules.push(
                                                             {
@@ -99,7 +99,7 @@
                         }
                         , function(data) {
                             if(data.errors){
-                                alert(data.errors.countryRule);
+                                alert(data.errors);
                             }else{
                                 $scope.model.rules.cityRules.push(
                                         {
@@ -130,7 +130,7 @@
                                 }
                                 , function(data) {
                                     if(data.errors){
-                                        alert(data.errors.countryRule);
+                                        alert(data.errors);
                                     }else{
                                         $scope.model.rules.sexRule =
                                         {
@@ -153,7 +153,7 @@
                         CreateCampaign.setAgeRule({},ageRule
                                 , function(data) {
                                     if(data.errors){
-                                        alert(data.errors.countryRule);
+                                        alert(data.errors);
                                     }else{
                                         $scope.model.rules.ageRule = ageRule;
                                         $scope.alreadyAge = true;
@@ -173,7 +173,7 @@
 
                         CreateCampaign.removeCountryRule({},$scope.model.rules.countryRules[index], function(data) {
                             if(data.errors){
-                                alert(data.errors.countryRule);
+                                alert(data.errors);
                             }else{
                                 $scope.model.rules.countryRules.splice(index, 1);
                             }
@@ -197,7 +197,7 @@
                             around : $scope.model.rules.cityRules[index].around
                         }, function(data) {
                             if(data.errors){
-                                alert(data.errors.countryRule);
+                                alert(data.errors);
                             }else{
                                 $scope.model.rules.cityRules.splice(index, 1);
                             }
@@ -212,7 +212,7 @@
 
                     CreateCampaign.removeSexRule({}, function(data) {
                         if(data.errors){
-                            alert(data.errors.countryRule);
+                            alert(data.errors);
                         }else{
                             $scope.model.rules.sexRule = null;
                             $scope.alreadySex = false;
@@ -228,7 +228,7 @@
 
                     CreateCampaign.removeSexRule({}, function(data) {
                         if(data.errors){
-                            alert(data.errors.countryRule);
+                            alert(data.errors);
                         }else{
                             $scope.model.rules.ageRule = null;
                             $scope.alreadyAge = false;

@@ -9,7 +9,8 @@ services.factory('Services', ['$resource',
         return $resource('/', {_csrf:addonf.token}, {
             getCountries: {url:addonf.base+'getCountries',method:'GET',responseType:"json",isArray: true},
             getCitiesByName : {url:addonf.base+'getTownsByName/:name',method:'GET',responseType:"json",isArray: true},
-            getSexes : {url:addonf.base+'getSexes',method:'GET',responseType:"json",isArray: true}
+            getSexes : {url:addonf.base+'getSexes',method:'GET',responseType:"json",isArray: true},
+            getBrands : {url:addonf.base+'getBrands',method:'GET',responseType:"json",isArray: true}
 
         });
     }

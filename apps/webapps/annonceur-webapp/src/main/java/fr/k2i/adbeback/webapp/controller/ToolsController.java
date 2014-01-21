@@ -1,11 +1,16 @@
 package fr.k2i.adbeback.webapp.controller;
 
 import fr.k2i.adbeback.core.business.LabelValue;
+import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.core.business.player.Sex;
+import fr.k2i.adbeback.dao.IBrandDao;
+import fr.k2i.adbeback.dao.jpa.BrandDao;
 import fr.k2i.adbeback.dao.jpa.CityRepository;
 import fr.k2i.adbeback.dao.jpa.CountryRepository;
+import fr.k2i.adbeback.webapp.bean.BrandBean;
+import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -35,6 +40,9 @@ public class ToolsController {
 
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    private IBrandDao brandDao;
 
 
     @RequestMapping("/getTowns/{country}/{postalCode}")
@@ -76,6 +84,17 @@ public class ToolsController {
         List<LabelValue> res = new ArrayList<LabelValue>();
         for (Sex sex : Sex.values()) {
             res.add(new LabelValue(messageSource.getMessage("sex."+sex.name(),new Object[]{},request.getLocale()),sex.name()));
+        }
+        return res;
+    }
+
+
+    @RequestMapping("/getBrands")
+    public  @ResponseBody List<BrandBean> getBrands(){
+        List<BrandBean> res = new ArrayList<BrandBean>();
+        List<Brand> all = brandDao.getAll();
+        for (Brand brand : all) {
+            res.add(new BrandBean(brand.getId(),brand.getName(),brand.getLogo()));
         }
         return res;
     }

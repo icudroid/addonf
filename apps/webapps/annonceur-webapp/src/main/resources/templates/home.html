@@ -15,10 +15,10 @@
     <div th:replace="layout/fragment/menu(activeFirstMenu=${'home'},activeSecondMenu=${''})"></div>
 </div>
 
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{home.explain}"></h4>
+
     <div layout:fragment="content" class="col-table">
-        <div class="container text-center" th:text="#{home.explain}">
-            Espace de gestion de compte
-        </div>
+
     </div>
 </body>
 </html>

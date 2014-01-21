@@ -4,9 +4,8 @@ import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
 import fr.k2i.adbeback.core.business.Constants;
-import fr.k2i.adbeback.core.business.ad.Ad;
-import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.core.business.ad.Contact;
+import fr.k2i.adbeback.core.business.ad.*;
+import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Role;
@@ -16,6 +15,11 @@ import fr.k2i.adbeback.dao.jpa.*;
 import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.util.PhoneNumberUtils;
 import fr.k2i.adbeback.webapp.bean.*;
+import fr.k2i.adbeback.webapp.bean.AdService;
+import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
+import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
+import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
+import fr.k2i.adbeback.webapp.bean.adservice.ProductRuleBean;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +30,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -45,6 +53,9 @@ public class BrandServiceFacade {
 
     @Autowired
     private CityRepository cityRepository;
+
+    @Autowired
+    private CountryRepository countryRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -76,6 +87,17 @@ public class BrandServiceFacade {
 
     @Autowired
     private UserFacade userFacade;
+
+    @Value("${addonf.price.byBrand:0.30}")
+    private Double showBrandPrice;
+    @Value("${addonf.price.byOpen:0.30}")
+    private Double showOpenPrice;
+
+    @Value("${addonf.ads.location}")
+    private String adsPath;
+
+    @Value("${addonf.logo.location}")
+    private String logoPath;
 
 
     @Transactional
@@ -167,6 +189,135 @@ public class BrandServiceFacade {
     public CampaignCommand createCampaign() {
         return new CampaignCommand();
     }
+
+    @Transactional
+    public void save(CampaignCommand campaignCommand) throws Exception {
+        Brand brand = userFacade.getCurrentUser();
+        Ad ad = null;
+
+        InformationCommand information = campaignCommand.getInformation();
+        if (AdDisplay.VIDEO.equals(information.getDisplayAd())){
+            ad = new VideoAd();
+            //video
+        }else{
+            //static
+            ad = new StaticAd();
+            ad.setDuration(information.getDisplayDuration()*1000);
+        }
+
+
+        ad.setAdFile(saveFile(information.getAdFile().getBytes(),adsPath));
+        ad.setBrand(brand);
+        ad.setEndDate(information.getEndDate());
+        ad.setInitialAmount(information.getInitialAmonut());
+        ad.setName(information.getName());
+        ad.setStartDate(information.getStartDate());
+
+        List<AdRule> rules = ad.getRules();
+
+        AdRulesCommand restrictionRules = campaignCommand.getRules();
+
+        for (CountryRule countryRule : restrictionRules.getCountryRules()) {
+            CountryRule c = new CountryRule();
+            c.setCountry(countryRepository.findByCode(countryRule.getCountry().getCode()));
+            rules.add(c);
+        }
+
+
+        for (CityRule cityRule : restrictionRules.getCityRules()) {
+            CityRule c = new CityRule();
+            c.setAround(cityRule.getAround());
+            c.setCity(cityRepository.findOne(cityRule.getId()));
+            rules.add(c);
+        }
+
+        SexRule sexRule = restrictionRules.getSexRule();
+        if(sexRule!=null){
+            rules.add(sexRule);
+        }
+
+        AgeRule ageRule = restrictionRules.getAgeRule();
+        if(ageRule!=null){
+            rules.add(ageRule);
+        }
+
+
+        AdService adServices = campaignCommand.getAdServices();
+
+        List<BrandRuleBean> brandRules = adServices.getBrandRules();
+
+        for (BrandRuleBean brandRule : brandRules) {
+            BrandRule b = new BrandRule();
+            b.setAd(ad);
+            b.setStartDate(brandRule.getStartDate());
+            b.setEndDate(brandRule.getEndDate());
+            b.setPrice(showBrandPrice);
+            b.setQuestion("Quel est le Logo de la publicité ?");
+            b.setMaxDisplayByUser(b.getMaxDisplayByUser());
+
+            List<Brand> noDisplayWith = brandRule.getNoDisplayWith();
+            for (Brand bNo : noDisplayWith) {
+                b.addNoDisplayWith(brandRepository.findOne(bNo.getId()));
+            }
+            rules.add(b);
+        }
+
+
+        List<OpenRuleBean> openRules = adServices.getOpenRules();
+
+        for (OpenRuleBean openRule : openRules) {
+            OpenRule o = new OpenRule();
+            o.setAd(ad);
+            o.setStartDate(openRule.getStartDate());
+            o.setEndDate(openRule.getEndDate());
+            o.setQuestion(openRule.getQuestion());
+            o.setPrice(showOpenPrice);
+            o.setMaxDisplayByUser(openRule.getMaxDisplayByUser());
+
+            List<AdResponseBean> responses = openRule.getResponses();
+            for (AdResponseBean response : responses) {
+                AdResponse adResponse = new AdResponse();
+                adResponse.setImage(saveFile(response.getImage().getBytes(),logoPath));
+                adResponse.setResponse(response.getResponse());
+                o.addResponse(adResponse);
+                if(response.isCorrect()){
+                    o.setCorrect(adResponse);
+                }
+            }
+
+            rules.add(o);
+        }
+
+    }
+
+
+    /**
+     *
+     * @param content
+     * @return
+     * @throws java.io.IOException
+     */
+    private String saveFile(byte[] content,String base) throws IOException {
+        return saveFile(content, UUID.randomUUID().toString(),base);
+    }
+
+
+    /**
+     *
+     * @param content
+     * @param path
+     * @return
+     * @throws IOException
+     */
+    private String saveFile(byte[] content, String path,String base)  throws IOException{
+        String completePath = base + File.separator + path;
+        FileOutputStream fos = new FileOutputStream(completePath);
+        fos.write(content);
+        fos.close();
+        return path;
+    }
+
+
 
     public enum ConfirmationRegistration {
         TIME_OUT,OK,KO;
