@@ -113,7 +113,7 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"addCountryRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"addCountryRule"})
     public ModelAndView addCountryRule(@RequestBody CountryRule countryRule, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -137,7 +137,7 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"removeCountryRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeCountryRule"})
     public ModelAndView removeCountryRule(@RequestBody CountryRule countryRule, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -150,7 +150,7 @@ public class ManageAdsController {
 
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"addCityRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"addCityRule"})
     public ModelAndView addCityRule(@RequestBody CityRule cityRule, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -174,7 +174,7 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"removeCityRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeCityRule"})
     public ModelAndView removeCountryRule(@RequestBody CityRule cityRule, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -188,7 +188,7 @@ public class ManageAdsController {
 
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"setAgeRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"setAgeRule"})
     public ModelAndView setAgeRule(@RequestBody AgeRule ageRule, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -212,7 +212,7 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"removeAgeRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeAgeRule"})
     public ModelAndView removeAgeRule( HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -225,7 +225,7 @@ public class ManageAdsController {
 
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"setSexRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"setSexRule"})
     public ModelAndView setSexRule(@RequestBody SexRule sexRule, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -249,7 +249,7 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"removeSexRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeSexRule"})
     public ModelAndView removeSexRule( HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -281,7 +281,7 @@ public class ManageAdsController {
 
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"addBrandRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"addBrandRule"})
     public ModelAndView addBrandRule(@RequestBody BrandRuleBean brandRuleBean, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -305,7 +305,7 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value="/createCampaign/rule", params={"removeBrandRule"})
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeBrandRule"})
     public ModelAndView removeCountryRule(@RequestBody BrandRuleBean brandRuleBean, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
@@ -317,10 +317,8 @@ public class ManageAdsController {
     }
 
 
-    @RequestMapping(value="/createCampaign/save")
+    @RequestMapping(value=IMetaDataController.Path.SAVE)
     public String save(HttpServletRequest request) throws Exception {
-        ModelAndView view = new ModelAndView();
-        view.setView(new MappingJackson2JsonView());
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
 

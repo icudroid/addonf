@@ -27,6 +27,8 @@ public interface IMetaDataController {
         String MANAGE_ADS_PARTIALS_ACTION =             "/manageAds/partials/{action}/{html}.html";
         String LIST_CAMPAIGNS =                         "listCampaign.html";
         String CREATE_CAMPAIGN =                        "/createCampaign";
+        String RULE =                                   "/createCampaign/rule";
+        String SAVE =                                   "/createCampaign/save";
     }
 
     interface View{
