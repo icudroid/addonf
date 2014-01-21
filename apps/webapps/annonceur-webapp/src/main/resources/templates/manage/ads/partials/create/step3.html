@@ -47,7 +47,11 @@
                         controller: "AddBrandRuleCtrl",
                         resolve: {
                             rule: function () {
-                                return null;
+                                return {
+                                    isNew :true,
+                                    startDate : $scope.model.information.startDate,
+                                    endDate : $scope.model.information.endDate
+                               };
                             }
                         }
                     });
@@ -123,12 +127,16 @@
             function($scope, Services, $modalInstance ,rule) {
                 $scope.base=addonf.base;
                 $scope.brands = [];
-                if(rule == null){
+                if(rule.isNew){
                     $scope.brandRule = {
-                        noDisplayWith : []
+                        noDisplayWith : [],
+                        startDate : rule.startDate,
+                        endDate : rule.endDate
                     };
+                    $scope.btnValidate = "valider"
                 }else{
                     $scope.brandRule = rule;
+                    $scope.btnValidate = "Modifier"
                 }
                 $scope.selectedBrand = {};
                 $scope.format = "dd/MM/yyyy";

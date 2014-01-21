@@ -36,6 +36,8 @@ public interface IMetaData {
             String BRAND_NO_DISPLAY_TABLE_JOIN =        "brand_no_display_with";
             String BRAND_RULE_JOIN =                    "brand_rule_id";
             String BRAND_JOIN =                         "brand_id";
+            String INITIAL_AMOUNT =                     "initial_amount";
+            String INSERTED =                           "inserted";
 
             public interface Discrimator{
                 String DISCRIMINATOR =                  "classe";

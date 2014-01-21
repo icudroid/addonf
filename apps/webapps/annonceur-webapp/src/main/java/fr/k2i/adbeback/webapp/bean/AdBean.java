@@ -7,6 +7,7 @@ import fr.k2i.adbeback.core.business.ad.rule.AmountRule;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,13 @@ public class AdBean implements Serializable{
         startDate = ad.getStartDate();
         endDate = ad.getEndDate();
         name = ad.getName();
-        List<AdRule> rules = ad.getRules();
+        List<AmountRule> amountRules = ad.getRules(AmountRule.class);
+        BigDecimal left = new BigDecimal("0.0");
+        for (AmountRule amountRule : amountRules) {
+            left = left.add(new BigDecimal("" + amountRule.getAmount()));
+        }
+        leftAmount = left.doubleValue();
+        List < AdRule > rules = ad.getRules();
         for (AdRule rule : rules) {
             if(rule instanceof AmountRule){
                 leftAmount = ((AmountRule) rule).getAmount();

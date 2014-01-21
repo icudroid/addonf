@@ -12,13 +12,19 @@ import fr.k2i.adbeback.dao.jpa.CountryRepository;
 import fr.k2i.adbeback.webapp.bean.BrandBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +49,13 @@ public class ToolsController {
 
     @Autowired
     private IBrandDao brandDao;
+
+    @Value("${addonf.ads.location:/videos/}")
+    private String pathAds;
+
+    @Value("${addonf.logo.location:/logos/}")
+    private String pathLogo;
+
 
 
     @RequestMapping("/getTowns/{country}/{postalCode}")
@@ -97,5 +110,23 @@ public class ToolsController {
             res.add(new BrandBean(brand.getId(),brand.getName(),brand.getLogo()));
         }
         return res;
+    }
+
+
+    @RequestMapping(value = "/logo/{filename}.{ext}", method = RequestMethod.GET)
+    public void streamLogoAd(@PathVariable String filename,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        File file = new File(pathLogo+filename+"."+ext);
+
+        FileInputStream fileInputStream = new FileInputStream(file);
+        int read =0;
+        byte []b = new byte[1024];
+        while((read = fileInputStream.read(b, 0, 1024))>0){
+            outputStream.write(b, 0, read);
+            b = new byte[1024];
+        }
+        fileInputStream.close();
+
     }
 }

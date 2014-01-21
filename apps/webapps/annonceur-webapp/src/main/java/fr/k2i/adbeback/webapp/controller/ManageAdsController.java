@@ -92,12 +92,13 @@ public class ManageAdsController {
     }
 
     @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1,method = RequestMethod.POST)
-    public String step1Submit(@ModelAttribute("informationCommand") InformationCommand informationCommand,BindingResult bindingResults,HttpServletRequest request){
+    public String step1Submit(@ModelAttribute("informationCommand") InformationCommand informationCommand,BindingResult bindingResults,HttpServletRequest request) throws IOException {
         campaignCommandValidator.validate(informationCommand,bindingResults);
         if(bindingResults.hasErrors()){
             return IMetaDataController.View.CREATE_CAMPAIGN_STEP_1;
         }else{
             CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+            informationCommand.setAdFileCommand(new FileCommand(informationCommand.getAdFile()));
             campaignCommand.setInformation(informationCommand);
             return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_2;
         }
@@ -317,15 +318,15 @@ public class ManageAdsController {
 
 
     @RequestMapping(value="/createCampaign/save")
-    public ModelAndView save(HttpServletRequest request) throws Exception {
+    public String save(HttpServletRequest request) throws Exception {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
 
         this.brandServiceFacade.save(campaignCommand);
-
-        return view;
+        request.getSession().removeAttribute("campaignCommand");
+        return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.LIST_CAMPAIGNS;
     }
 
 

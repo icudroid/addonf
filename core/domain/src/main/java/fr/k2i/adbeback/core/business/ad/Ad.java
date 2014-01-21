@@ -12,6 +12,7 @@ import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AmountRule;
+import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
 import fr.k2i.adbeback.core.business.country.Country;
 import lombok.Data;
 
@@ -43,7 +44,7 @@ public abstract  class Ad extends BaseObject implements Serializable {
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.INITIAL_AMOUNT)
     protected Double initialAmount;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = IMetaData.ColumnMetadata.Ad.TYPE)
 	protected AdType type;
 
@@ -113,4 +114,10 @@ public abstract  class Ad extends BaseObject implements Serializable {
         return res;
     }
 
+    public void addRule(AdRule rule) {
+        if(rules == null){
+            rules = new ArrayList<AdRule>();
+        }
+        rules.add(rule);
+    }
 }

@@ -6,6 +6,7 @@
         </div>
         <ul class="list-unstyled">
             <li th:class="${activeFirstMenu == 'home'}?'active':''"><a th:href="@{/}" th:text="#{menu.home}">Home</a></li>
+            <li th:class="${activeFirstMenu == 'logo'}?'active':''"><a th:href="@{/setLogo}" th:text="#{menu.change.logo}">Logo</a></li>
             <li th:class="${activeFirstMenu == 'ads'}?'active':''">
                 <a href="#sidebar-discover-example" data-toggle="sidebar-discover" th:utext="#{menu.manage.ad}">
                     Gestion des publicités
@@ -21,6 +22,7 @@
                     </ul>
                 </div>
             </li>
+
         </ul>
     </div>
 </div>

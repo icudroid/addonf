@@ -206,39 +206,43 @@ public class BrandServiceFacade {
         }
 
 
-        ad.setAdFile(saveFile(information.getAdFile().getBytes(),adsPath));
+        ad.setAdFile(saveFile(information.getAdFileCommand().getContent(),adsPath));
         ad.setBrand(brand);
         ad.setEndDate(information.getEndDate());
         ad.setInitialAmount(information.getInitialAmonut());
         ad.setName(information.getName());
         ad.setStartDate(information.getStartDate());
 
-        List<AdRule> rules = ad.getRules();
+        AmountRule amountRule = new AmountRule();
+        amountRule.setAmount(information.getInitialAmonut());
+        amountRule.setInitialAmount(information.getInitialAmonut());
+        amountRule.setInserted(new Date());
+        ad.addRule(amountRule);
 
         AdRulesCommand restrictionRules = campaignCommand.getRules();
 
         for (CountryRule countryRule : restrictionRules.getCountryRules()) {
             CountryRule c = new CountryRule();
             c.setCountry(countryRepository.findByCode(countryRule.getCountry().getCode()));
-            rules.add(c);
+            ad.addRule(c);
         }
 
 
         for (CityRule cityRule : restrictionRules.getCityRules()) {
             CityRule c = new CityRule();
             c.setAround(cityRule.getAround());
-            c.setCity(cityRepository.findOne(cityRule.getId()));
-            rules.add(c);
+            c.setCity(cityRepository.findOne(cityRule.getCity().getId()));
+            ad.addRule(c);
         }
 
         SexRule sexRule = restrictionRules.getSexRule();
         if(sexRule!=null){
-            rules.add(sexRule);
+            ad.addRule(sexRule);
         }
 
         AgeRule ageRule = restrictionRules.getAgeRule();
         if(ageRule!=null){
-            rules.add(ageRule);
+            ad.addRule(ageRule);
         }
 
 
@@ -259,7 +263,7 @@ public class BrandServiceFacade {
             for (Brand bNo : noDisplayWith) {
                 b.addNoDisplayWith(brandRepository.findOne(bNo.getId()));
             }
-            rules.add(b);
+            ad.addRule(b);
         }
 
 
@@ -285,8 +289,10 @@ public class BrandServiceFacade {
                 }
             }
 
-            rules.add(o);
+            ad.addRule(o);
         }
+
+        adRepository.save(ad);
 
     }
 

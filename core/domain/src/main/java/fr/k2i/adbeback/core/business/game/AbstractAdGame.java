@@ -84,7 +84,7 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
 	}*/
 	
 	
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	public StatusGame getStatusGame() {
 		return statusGame;
 	}

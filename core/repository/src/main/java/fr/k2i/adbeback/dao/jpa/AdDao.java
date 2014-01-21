@@ -194,9 +194,11 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
         for (Ad ad : ads) {
             List<AmountRule> rules = ad.getRules(AmountRule.class);
-            if(!rules.isEmpty()){
-                if(rules.get(0).getAmount()>1){
+
+            for (AmountRule rule : rules) {
+                if(rule.getAmount() > 1.0){
                     res.add(ad);
+                    break;
                 }
             }
         }
@@ -207,15 +209,24 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
     @Transactional
     @Override
-    public void updatetAmountForAd(AdService adRule){
+    public void updateAmountForAd(AdService adRule){
         QAmountRule qAmountRule = QAmountRule.amountRule;
 
         Double price = adRule.getPrice();
-        AmountRule amountRule = adRule.getAd().getRules(AmountRule.class).get(0);
+        List<AmountRule> rules = adRule.getAd().getRules(AmountRule.class);
+        Long amountRuleId = null;
+        for (AmountRule rule : rules) {
+            if(rule.getAmount() > 1.0){
+                amountRuleId = rule.getId();
+                break;
+            }
+        }
+
+
 
         Query query = getEntityManager().createQuery("update AmountRule set amount=amount-:amount where id = :id")
                 .setParameter("amount", price)
-                .setParameter("id", amountRule.getId());
+                .setParameter("id", amountRuleId);
 
         query.executeUpdate();
 

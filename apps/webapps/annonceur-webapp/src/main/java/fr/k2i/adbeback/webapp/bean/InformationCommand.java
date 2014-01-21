@@ -29,5 +29,8 @@ public class InformationCommand implements Serializable{
     @JsonIgnore
     private MultipartFile adFile;
 
+    @JsonIgnore
+    private FileCommand adFileCommand;
+
 
 }

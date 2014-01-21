@@ -3,9 +3,8 @@ package fr.k2i.adbeback.core.business.ad.rule;
 import fr.k2i.adbeback.core.business.IMetaData;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -15,6 +14,13 @@ public class AmountRule extends AdRule {
 
     @Column(name = IMetaData.ColumnMetadata.AdRule.AMOUNT)
     private Double amount;
+
+    @Column(name = IMetaData.ColumnMetadata.AdRule.INITIAL_AMOUNT)
+    private Double initialAmount;
+
+    @Column(name = IMetaData.ColumnMetadata.AdRule.INSERTED)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date inserted;
 
 
     @Override

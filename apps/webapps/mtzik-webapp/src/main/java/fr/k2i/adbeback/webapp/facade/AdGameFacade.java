@@ -287,7 +287,7 @@ public class AdGameFacade {
                 gooseCase = goHeadToken(request);
 
 
-                adDao.updatetAmountForAd((AdService) adRule);
+                adDao.updateAmountForAd((AdService) adRule);
 
 
             } else {

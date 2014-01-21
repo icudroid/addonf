@@ -63,7 +63,7 @@ public class GooseWin extends BaseObject implements Serializable {
 		this.value = value;
 	}
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	public WinStatus getStatus() {
 		return status;
 	}

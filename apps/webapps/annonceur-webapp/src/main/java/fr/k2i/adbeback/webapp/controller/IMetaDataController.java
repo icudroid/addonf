@@ -9,7 +9,7 @@ package fr.k2i.adbeback.webapp.controller;
 public interface IMetaDataController {
 
     interface PathUtils{
-        String REDIRECT = "redirect:";
+        String REDIRECT = "redirect:/";
         String CONTEXT_RELATIVE="contextRelative:";
     }
 
