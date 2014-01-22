@@ -293,6 +293,7 @@ public class ManageAdsController {
     public ModelAndView addBrandRule(@RequestBody BrandRuleBean brandRuleBean, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
+        brandRuleBean.setUid(UUID.randomUUID().toString());
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
         if(campaignCommand.getAdServices().getBrandRules().contains(brandRuleBean)){
             bindingResult.reject("Exists");
@@ -307,8 +308,24 @@ public class ManageAdsController {
         }else{
 
             campaignCommand.getAdServices().getBrandRules().add(brandRuleBean);
+            view.addObject("rule",brandRuleBean);
         }
 
+        return view;
+    }
+
+
+
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"modifyBrandRule"})
+    public ModelAndView modifyBrandRule(@RequestBody BrandRuleBean brandRuleBean, final BindingResult bindingResult, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        int index = campaignCommand.getAdServices().getBrandRules().indexOf(brandRuleBean);
+        campaignCommand.getAdServices().getBrandRules().set(index,brandRuleBean);
+        view.addObject("rule",brandRuleBean);
         return view;
     }
 
@@ -323,6 +340,83 @@ public class ManageAdsController {
 
         return view;
     }
+
+
+
+
+
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"addOpenRule"})
+    public ModelAndView addOpenRule(@RequestBody OpenRuleBean openRuleBean, final BindingResult bindingResult, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        openRuleBean.setUid(UUID.randomUUID().toString());
+        FileCommand uploadedImg[] = (FileCommand[]) request.getSession().getAttribute(UPLOADED_IMG);
+        List<AdResponseBean> responses = openRuleBean.getResponses();
+        int i =0;
+        if(uploadedImg!=null){
+            for (AdResponseBean response : responses) {
+                response.setImage(uploadedImg[i]);
+                i++;
+            }
+        }
+
+        if(campaignCommand.getAdServices().getOpenRules().contains(openRuleBean)){
+            bindingResult.reject("Exists");
+        }
+
+        if(bindingResult.hasErrors()){
+            Map<String,String> errors = new HashMap<String, String>();
+            for (ObjectError objectError : bindingResult.getAllErrors()) {
+                errors.put(objectError.getObjectName(),objectError.getCode());
+            }
+            view.addObject("errors",errors);
+        }else{
+
+            campaignCommand.getAdServices().getOpenRules().add(openRuleBean);
+            view.addObject("rule",openRuleBean);
+        }
+
+        return view;
+    }
+
+
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"modifyOpenRule"})
+    public ModelAndView modifyOpenRule(@RequestBody OpenRuleBean openRuleBean, final BindingResult bindingResult, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        FileCommand uploadedImg[] = (FileCommand[]) request.getSession().getAttribute(UPLOADED_IMG);
+        List<AdResponseBean> responses = openRuleBean.getResponses();
+        int i =0;
+        if(uploadedImg!=null){
+            for (AdResponseBean response : responses) {
+                response.setImage(uploadedImg[i]);
+                i++;
+            }
+        }
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        int index = campaignCommand.getAdServices().getOpenRules().indexOf(openRuleBean);
+        campaignCommand.getAdServices().getOpenRules().set(index,openRuleBean);
+
+        view.addObject("rule",openRuleBean);
+        return view;
+    }
+
+
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeOpenRule"})
+    public ModelAndView removeOpenRule(@RequestBody OpenRuleBean openRuleBean, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        campaignCommand.getAdServices().getOpenRules().remove(openRuleBean);
+
+        return view;
+    }
+
+
 
 
     @RequestMapping(value=IMetaDataController.Path.SAVE)
@@ -405,6 +499,38 @@ public class ManageAdsController {
 
         } catch (IOException e) {
 
+        }
+
+        return new MappingJackson2JsonView();
+    }
+
+
+    @RequestMapping("/createCampaign/tmpImage/empty")
+    public View emptyDownloadTmpImage(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().removeAttribute(UPLOADED_IMG);
+        return new MappingJackson2JsonView();
+    }
+
+    @RequestMapping("/createCampaign/tmpImage/load/{numOpenRule}")
+    public View loadDownloadTmpImage(@PathVariable Integer numOpenRule,HttpServletRequest request, HttpServletResponse response) {
+        FileCommand uploadedImg[] = (FileCommand[]) request.getSession().getAttribute(UPLOADED_IMG);
+        if(uploadedImg==null){
+            //no updated file
+            uploadedImg = new FileCommand[3];
+            request.getSession().setAttribute(UPLOADED_IMG, uploadedImg);
+        }
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+
+        List<OpenRuleBean> openRules = campaignCommand.getAdServices().getOpenRules();
+
+        OpenRuleBean openRuleBean = openRules.get(numOpenRule);
+
+        List<AdResponseBean> responses = openRuleBean.getResponses();
+
+        int i =0;
+        for (AdResponseBean adResponseBean : responses) {
+            uploadedImg[i] = adResponseBean.getImage();
+            i++;
         }
 
         return new MappingJackson2JsonView();

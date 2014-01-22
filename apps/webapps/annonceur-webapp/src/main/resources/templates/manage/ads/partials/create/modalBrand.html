@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="startDate" class="control-label">Date de début</label>
                     <div class="input-group ">
-                        <input id="startDate" name="startDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brandRule.startDate" is-open="startDatepicker.opened"  close-text="Fermer" ng-required="true"/>
+                        <input id="startDate" name="startDate" type="text" class="form-control" min="minDate" max ="maxDate" datepicker-popup="{{format}}" ng-model="brandRule.startDate" is-open="startDatepicker.opened"  close-text="Fermer" ng-required="true"/>
                         <div class="input-group-btn"><button class="btn" ng-click="openDate(startDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                     <label for="endDate" class="control-label">Date de fin</label>
 
                     <div class="input-group">
-                        <input id="endDate" name="endDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brandRule.endDate" is-open="endDatepicker.opened"  close-text="Fermer" ng-required="true"/>
+                        <input id="endDate" name="endDate" type="text" class="form-control" min="minDate" max ="maxDate" datepicker-popup="{{format}}" ng-model="brandRule.endDate" is-open="endDatepicker.opened"  close-text="Fermer" ng-required="true"/>
                         <div class="input-group-btn"><button class="btn" ng-click="openDate(endDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
                     </div>
 

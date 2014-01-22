@@ -1,4 +1,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .modal-more-larger {
+
+        }
+
+        .modal-more-larger div.modal-dialog{
+            width: 960px !important;
+        }
+    </style>
+</head>
 <body>
 
 <div class="modal-header">
@@ -13,7 +24,7 @@
                 <div class="form-group">
                     <label for="startDate" class="control-label">Date de début</label>
                     <div class="input-group ">
-                        <input id="startDate" name="startDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="openRule.startDate" is-open="startDatepicker.opened"  close-text="Fermer" ng-required="true"/>
+                        <input id="startDate" name="startDate" type="text" class="form-control" min="minDate" max ="maxDate" datepicker-popup="{{format}}" ng-model="openRule.startDate" is-open="startDatepicker.opened"  close-text="Fermer" show-button-bar="false" ng-required="true"/>
                         <div class="input-group-btn"><button class="btn" ng-click="openDate(startDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
                     </div>
                 </div>
@@ -24,7 +35,7 @@
                     <label for="endDate" class="control-label">Date de fin</label>
 
                     <div class="input-group">
-                        <input id="endDate" name="endDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="openRule.endDate" is-open="endDatepicker.opened"  close-text="Fermer" ng-required="true"/>
+                        <input id="endDate" name="endDate" type="text" class="form-control"  min="minDate" max ="maxDate" datepicker-popup="{{format}}" ng-model="openRule.endDate" is-open="endDatepicker.opened"  close-text="Fermer" show-button-bar="false" ng-required="true"/>
                         <div class="input-group-btn"><button class="btn" ng-click="openDate(endDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
                     </div>
 
@@ -49,39 +60,37 @@
          <div class="widget">
              <div class="widget-head"><h4 class="heading">Réponses vu par l'utilisateur</h4></div>
              <div class="widget-body">
-                 <table class="table">
-                     <tr>
-                         <th width="10%">Réponse correcte</th>
-                         <th width="70%">Réponse</th>
-                         <th width="20%">Progression</th>
-                     </tr>
 
-                     <tr ng-repeat="response in openRule.responses">
-                        <td>
-                            <div class="radio">
-                                <label>
-                                    <input name="correctAnswer" type="radio" ng-model="response.correct" value="true" />
-                                </label>
-                            </div>
-                        </td>
-                         <td>
-                             <div style="width: 100%;height:100px;">
-                                 <img style="max-width: 100%;height: 100%;margin: 0 auto;display: block" ng-src="{{img[$index]}}"/>
-                                 <a style="display: block; z-index: 0; position: relative; margin-top: -60px;" class="btn btn-link" pl-upload="upload" on-file-uploaded="setNowTmpImageUrl($index)" pl-progress-model="percent[$index]" th:attr="pl-flash-swf-url=@{/lib/plupload/plupload.flash.swf},pl-silverlight-xap-url=@{lib/plupload/plupload.flash.silverlight.xap},pl-url=${'{{getUploadUrl($index)}}'}">Choisir une image</a>
-                             </div>
-                             <div class="form-group">
-                                 <label>Réponse</label>
-                                 <input class="form-control" type="text" ng-model="response.response" />
-                             </div>
 
-                         </td>
-                         <td>
+                 <div class="row">
+                     <div class="col-md-4" ng-repeat="response in openRule.responses">
+                         <div class="form-group">
+                             <label>Réponse</label>
+                             <input class="form-control" type="text" ng-model="response.response" />
+                         </div>
+
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <div class="radio">
+                                     <label>
+                                         <input name="correctAnswer" type="radio" ng-model="response.correct" ng-value="true" />
+                                         Réponse correcte
+                                     </label>
+                                 </div>
+                             </div>
+                             <div class="col-md-8">
+                                 <div style="width: 100%;height:100px;">
+                                     <img style="max-width: 100%;height: 100%;margin: 0 auto;display: block" ng-src="{{img[$index]}}"/>
+                                     <a style="display: block; z-index: 0; position: relative; margin-top: -60px;" class="btn btn-link"  pl-upload="upload"  pl-filters-model="formatImage" on-file-uploaded="setNowTmpImageUrl($index)" pl-progress-model="percent[$index]" th:attr="pl-flash-swf-url=@{/lib/plupload/plupload.flash.swf},pl-silverlight-xap-url=@{lib/plupload/plupload.flash.silverlight.xap},pl-url=${'{{getUploadUrl($index)}}'}">Choisir une image</a>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="col-md-8 col-md-offset-4">
                              <progressbar value="percent[$index]"><span style="color:black; white-space:nowrap;">{{percent[$index]}}%</span></progressbar>
-                         </td>
+                         </div>
 
-                     </tr>
-
-                 </table>
+                     </div>
+                 </div>
 
              </div>
          </div>

@@ -20,5 +20,17 @@ import java.util.List;
 public class BrandRuleBean extends  AdServiceBean implements Serializable {
     private List<Brand> noDisplayWith = new ArrayList<Brand>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BrandRuleBean)) return false;
+        if (!super.equals(o)) return false;
 
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

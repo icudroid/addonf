@@ -22,4 +22,18 @@ public class OpenRuleBean extends  AdServiceBean implements Serializable {
     public OpenRuleBean(){
         responses = Lists.newArrayList(new AdResponseBean(),new AdResponseBean(),new AdResponseBean());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OpenRuleBean)) return false;
+        if (!super.equals(o)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
