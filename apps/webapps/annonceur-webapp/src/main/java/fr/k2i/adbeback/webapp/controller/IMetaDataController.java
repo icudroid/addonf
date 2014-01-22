@@ -29,6 +29,7 @@ public interface IMetaDataController {
         String CREATE_CAMPAIGN =                        "/createCampaign";
         String RULE =                                   "/createCampaign/rule";
         String SAVE =                                   "/createCampaign/save";
+        String UPLOAD_IMG =                             "/createCampaign/upload/{numOpenRule}/{numResponse}";
     }
 
     interface View{

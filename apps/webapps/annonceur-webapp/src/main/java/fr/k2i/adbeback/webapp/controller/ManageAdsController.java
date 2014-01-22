@@ -7,7 +7,9 @@ import fr.k2i.adbeback.core.business.ad.rule.CityRule;
 import fr.k2i.adbeback.core.business.ad.rule.CountryRule;
 import fr.k2i.adbeback.core.business.ad.rule.SexRule;
 import fr.k2i.adbeback.webapp.bean.*;
+import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
+import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
 import fr.k2i.adbeback.webapp.facade.BrandServiceFacade;
 import fr.k2i.adbeback.webapp.validator.CampaignCommandValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,16 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -42,6 +49,7 @@ import java.util.*;
 public class ManageAdsController {
 
 
+    public static final String UPLOADED_IMG = "uploadedImg";
     @Autowired
     private BrandServiceFacade brandServiceFacade;
 
@@ -331,6 +339,25 @@ public class ManageAdsController {
 
 
 
+    @RequestMapping(value=IMetaDataController.Path.UPLOAD_IMG)
+    public ModelAndView upload(@PathVariable Integer numOpenRule,@PathVariable Integer numResponse,@RequestBody MultipartFile file,HttpServletRequest request) throws Exception {
+
+        FileCommand uploadedImg[] = (FileCommand[]) request.getSession().getAttribute(UPLOADED_IMG);
+        if(uploadedImg==null){
+            //no updated file
+            uploadedImg = new FileCommand[3];
+            request.getSession().setAttribute(UPLOADED_IMG, uploadedImg);
+        }
+
+        uploadedImg[numResponse] = new FileCommand(file);
+
+
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        return view;
+    }
+
 
 
 
@@ -347,6 +374,40 @@ public class ManageAdsController {
     @RequestMapping(IMetaDataController.Path.GET_ALL_ADS)
     public @ResponseBody Page<AdBean> getAll(Pageable pageable) throws Exception {
         return brandServiceFacade.getAllForConnectedUser(pageable);
+    }
+
+
+    @RequestMapping("/createCampaign/tmpImage/{numResponse}")
+    public View downloadTmpImage(@PathVariable Integer numResponse,HttpServletRequest request, HttpServletResponse response) {
+        FileCommand uploadedImg[] = (FileCommand[]) request.getSession().getAttribute(UPLOADED_IMG);
+
+        if(uploadedImg==null){
+            return new MappingJackson2JsonView();
+        }
+
+        try {
+            FileCommand fileCommand = uploadedImg[numResponse];
+            response.setContentType(URLConnection.getFileNameMap().getContentTypeFor(fileCommand.getFileName()));
+            response.addHeader("Content-Disposition:","inline; filename=\""+fileCommand.getFileName()+"\"");
+
+            response.setContentLength(fileCommand.getSize().intValue());
+            ServletOutputStream outputStream = response.getOutputStream();
+
+            InputStream memoryBuffer = new ByteArrayInputStream(fileCommand.getContent());
+
+            int read = 0;
+            byte[] b = new byte[1024];
+            while ((read = memoryBuffer.read(b, 0, 1024)) > 0) {
+                outputStream.write(b, 0, read);
+                b = new byte[1024];
+            }
+            memoryBuffer.close();
+
+        } catch (IOException e) {
+
+        }
+
+        return new MappingJackson2JsonView();
     }
 
 

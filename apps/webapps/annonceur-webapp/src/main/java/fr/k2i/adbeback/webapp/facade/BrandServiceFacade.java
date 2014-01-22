@@ -281,7 +281,7 @@ public class BrandServiceFacade {
             List<AdResponseBean> responses = openRule.getResponses();
             for (AdResponseBean response : responses) {
                 AdResponse adResponse = new AdResponse();
-                adResponse.setImage(saveFile(response.getImage().getBytes(),logoPath));
+                adResponse.setImage(saveFile(response.getImage().getContent(),logoPath));
                 adResponse.setResponse(response.getResponse());
                 o.addResponse(adResponse);
                 if(response.isCorrect()){

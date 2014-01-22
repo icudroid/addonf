@@ -21,11 +21,13 @@
 
     <script th:src="@{/lib/ui-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.js}"></script>
 
+    <script th:src="@{/lib/plupload-angular-directive/src/lib/plupload/plupload.full.js}"></script>
+    <script th:src="@{/lib/plupload-angular-directive/src/js/plupload-angular-directive.js}"></script>
 
 
-    <script th:inline="javascript">
+    <script type="text/javascript">
 
-        var controllers = angular.module('myModule', ['ui.bootstrap','services','campaignServices', 'directives', 'ngResource']);
+        var controllers = angular.module('myModule', ['ui.bootstrap','services','campaignServices', 'directives', 'plupload.module', 'ngResource']);
 
         controllers.controller('Step3Ctrl', ['$scope', 'Services', 'Campaign', '$modal', '$resource',
             function($scope, Services, Campaign, $modal,$resource) {
@@ -115,6 +117,31 @@
 
                 $scope.addOpenRule= function(){
 
+                    var opneRuleModal = $modal.open({
+                        templateUrl: addonf.base+'manageAds/partials/create/modalOpen.html',
+                        controller: "AddOpenRuleCtrl",
+                        resolve: {
+                            rule: function () {
+                                return {
+                                    isNew :true,
+                                    startDate : $scope.model.information.startDate,
+                                    endDate : $scope.model.information.endDate
+                                };
+                            }
+                        }
+                    });
+
+                    opneRuleModal.result.then(function (openRule) {
+                        /*CreateCampaign.addBrandRule({},brandRule,function(data){
+                            if(data.errors){
+                                alert(data.errors);
+                            }else{
+                                $scope.model.adServices.brandRules.push(brandRule);
+                            }
+
+                        });*/
+                    }, function () {});
+
                 };
 
 
@@ -140,7 +167,7 @@
                 }
                 $scope.selectedBrand = {};
                 $scope.format = "dd/MM/yyyy";
-                $scope.nbDisplay = [1,2,3,4,5,10,15,20];
+                $scope.nbDisplay = [1,2,3,4,5,6,7,8,9,10];
 
                 Services.getBrands(function(data){
                     $scope.brands = data;
@@ -170,6 +197,74 @@
 
                 $scope.ok = function () {
                     $modalInstance.close($scope.brandRule);
+                };
+
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            }
+        ]);
+
+
+
+        controllers.controller('AddOpenRuleCtrl', ['$scope', 'Services', '$modalInstance', 'rule',
+            function($scope, Services, $modalInstance ,rule) {
+                $scope.base=addonf.base;
+                $scope.img = [];
+                $scope.percent = [];
+
+                $scope.getUploadUrl = function (index){
+                    return addonf.base+"createCampaign/upload/"+"0"+"/"+index+"?_csrf="+addonf.token;
+                }
+
+                $scope.getDownloadTmpImageUrl = function (index){
+                    return addonf.base+"createCampaign/tmpImage/"+index+"?"+new Date().getTime();
+                }
+
+                $scope.setNowTmpImageUrl = function (index){
+                    $scope.img[index] = $scope.getDownloadTmpImageUrl(index);
+                }
+
+
+                $scope.setNowTmpImageUrl(0);
+                $scope.setNowTmpImageUrl(1);
+                $scope.setNowTmpImageUrl(2);
+
+                $scope.percent[0] = 0;
+                $scope.percent[1] = 0;
+                $scope.percent[2] = 0;
+
+
+
+
+                if(rule.isNew){
+                    $scope.openRule = {
+                        responses : [
+                            {
+                                correct:false
+                            },
+                            {
+                                correct:false
+                            },
+                            {
+                                correct:false
+                            }
+                        ],
+                        startDate : rule.startDate,
+                        endDate : rule.endDate
+                    };
+                    $scope.btnValidate = "valider"
+                }else{
+                    $scope.openRule = rule;
+                    $scope.btnValidate = "Modifier";
+                }
+
+                $scope.format = "dd/MM/yyyy";
+                $scope.nbDisplay = [1,2,3,4,5,6,7,8,9,10];
+
+
+                $scope.ok = function () {
+                    $modalInstance.close($scope.openRule);
                 };
 
                 $scope.cancel = function () {
