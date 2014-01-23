@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged"
+        ng-app="myModule">
+
+<head>
+    <title th:text="${title}">Title</title>
+
+    <script th:src="@{/lib/angular-1.2.0/angular.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-animate.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-resource.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-route.js}"></script>
+
+    <script th:src="@{/js/service/services.js}"></script>
+    <script th:src="@{/js/service/campaign-services.js}"></script>
+
+    <script th:src="@{/lib/ui-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.js}"></script>
+
+    <script th:src="@{/js/controller/campaign/step2.js}"></script>
+
+
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${actionCampaign})"></div>
+</div>
+
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{'addonf.'+${actionCampaign}+'.ad'}"></h4>
+
+
+<div layout:fragment="content" class="col-table">
+
+    <div class="widget" ng-controller="Step2Ctrl">
+
+        <div class="wizard" id="rootwizard">
+
+            <!-- Wizard heading -->
+            <div class="wizard-head">
+                <ul class="bwizard-steps">
+                    <li><a th:text="#{addonf.campaign.general.info}">Informations Générales</a></li>
+                    <li class="active"><a th:text="#{addonf.campaign.public}">Choix du public</a></li>
+                    <li><a th:text="#{addonf.campaign.adService}">Choix d'affichages</a></li>
+                </ul>
+            </div>
+            <!-- // Wizard heading END -->
+
+            <div class="widget">
+
+                <div class="widget-body">
+                    <div class="tab-content">
+
+                        <!-- Step 1 -->
+                        <div class="tab-pane active">
+
+
+                            <div class="heading-buttons border-bottom innerLR">
+                                <div class="btn-group pull-right">
+                                    <a class="btn btn-primary" href="#" ng-click="addCountryRule()" th:utext="#{addonf.campaign.step2.restriction.country}"><i class="fa fa-fw fa-plus-circle"></i> Restriction par pays</a>
+                                    <a class="btn btn-primary" href="#" ng-click="addCityRule()" th:utext="#{addonf.campaign.step2.restriction.city}"><i class="fa fa-fw fa-plus-circle"></i> Restriction par ville</a>
+                                    <a class="btn btn-primary" href="#" ng-show="!alreadySex"  ng-click="addSexRule()" th:utext="#{addonf.campaign.step2.restriction.sex}"><i class="fa fa-fw fa-plus-circle"></i>  Restriction par sex</a>
+                                    <a class="btn btn-primary" href="#" ng-show="!alreadyAge"  ng-click="addAgeRule()" th:utext="#{addonf.campaign.step2.restriction.age}"><i class="fa fa-fw fa-plus-circle"></i> Restriction par Age</a>
+                                </div>
+                                <h4 class="margin-none innerTB" th:text="#{addonf.campaign.step2.choice}">Choix des restrictions :</h4>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="separator bottom"></div>
+
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th width="40%" th:text="#{addonf.campaign.step2.table.header.type}">Type</th>
+                                        <th width="40%" th:text="#{addonf.campaign.step2.table.header.rule}">Règle</th>
+                                        <th width="20%" th:text="#{addonf.campaign.step2.table.header.action}">Actions</th>
+                                    </tr>
+                                    <tr ng-repeat="countryRule in model.rules.countryRules">
+                                        <td th:text="#{addonf.campaign.step2.table.body.countryRule}">Pays</td>
+                                        <td>{{drawCountryRule(countryRule)}}</td>
+                                        <td>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeCountryRule(countryRule)"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="cityRule in model.rules.cityRules">
+                                        <td th:text="#{addonf.campaign.step2.table.body.cityRule}">Ville</td>
+                                        <td>{{drawCityRule(cityRule)}}</td>
+                                        <td>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeCityRule(cityRule)"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="model.rules.sexRule !=null">
+                                        <td th:text="#{addonf.campaign.step2.table.body.sexRule}">Sex</td>
+                                        <td>{{drawSexRule(model.rules.sexRule)}}</td>
+                                        <td>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeSexRule(model.rules.sexRule)"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="model.rules.ageRule != null">
+                                        <td th:text="#{addonf.campaign.step2.table.body.ageRule}">Age</td>
+                                        <td>{{drawAgeRule(model.rules.ageRule)}}</td>
+                                        <td>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeAgeRule(model.rules.ageRule)"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+
+                            <div class="text-right innerAll border-top">
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-default" th:href="@{'/'+${actionCampaign}+'Campaign/step1'}" th:utext="#{addonf.campaign.step2.previous}"><i class="fa fa-chevron-left"></i> Retour</a>
+                                    <a class="btn btn-primary" th:href="@{'/'+${actionCampaign}+'Campaign/step3'}" th:utext="#{addonf.campaign.step2.next}"><i class="fa fa-fw fa-check"></i> Suivant</a>
+                                </div>
+                            </div>
+
+
+                        <!-- // Step 1 END -->
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+</body>
+</html>

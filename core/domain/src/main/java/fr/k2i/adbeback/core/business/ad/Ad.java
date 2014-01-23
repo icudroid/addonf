@@ -120,4 +120,6 @@ public abstract  class Ad extends BaseObject implements Serializable {
         }
         rules.add(rule);
     }
+
+
 }

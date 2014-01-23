@@ -20,11 +20,26 @@
 <div layout:fragment="content" class="col-table">
     <div class="widget">
         <div class="widget-head">
-            <h4 class="heading">Head</h4>
+            <h4 class="heading">Changement de votre Logo</h4>
         </div>
         <div class="widget-body">
-          <h5 class="strong text-uppercase">SubTitle</h5>
-           corp
+            <h5 class="strong text-uppercase">Votre logo actuel</h5>
+            <form role="form" method="post" enctype="multipart/form-data" th:action="@{/setLogo(${_csrf.parameterName}=${_csrf.token})}">
+                <div style="width: 100%;height: 100px;" th:if="${not #strings.isEmpty(logo)}">
+                    <img th:src="@{'/logo/'+${logo}}" style="max-height: 100px;max-width: 100%;display: block;margin:0 auto;"/>
+                </div>
+                <span th:if="${#strings.isEmpty(logo)}">Vous n'avez pas de Logo renseigné</span>
+
+                <div class="form-group">
+                    <label for="logoFile">Logo</label>
+                    <input type="file" id="logoFile" name="logo" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Télécharger votre Logo</button>
+            </form>
+
+
+
         </div>
     </div>
 </div>

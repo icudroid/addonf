@@ -84,6 +84,12 @@ public class ManageAdsController {
         return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1;
     }
 
+    @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN,method = RequestMethod.GET)
+    public String modifyCampaign(@PathVariable Long idAd,Map<String, Object> model,HttpServletRequest request) throws Exception {
+        CampaignCommand campaignCommand = brandServiceFacade.loadCampaign(idAd);
+        request.getSession().setAttribute("campaignCommand", campaignCommand);
+        return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_1;
+    }
 
 
     @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1,method = RequestMethod.GET)
@@ -95,13 +101,23 @@ public class ManageAdsController {
         }
 
         model.put("informationCommand",campaignCommand.getInformation());
-
+        model.put("actionCampaign","create");
         return IMetaDataController.View.CREATE_CAMPAIGN_STEP_1;
     }
 
+    @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_1,method = RequestMethod.GET)
+    public String modifyStep1(Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        model.put("informationCommand",campaignCommand.getInformation());
+        model.put("actionCampaign","modify");
+        return IMetaDataController.View.MODIFY_CAMPAIGN_STEP_1;
+    }
+
+
     @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1,method = RequestMethod.POST)
-    public String step1Submit(@ModelAttribute("informationCommand") InformationCommand informationCommand,BindingResult bindingResults,HttpServletRequest request) throws IOException {
+    public String step1Submit(@ModelAttribute("informationCommand") InformationCommand informationCommand,BindingResult bindingResults,Map<String, Object> model,HttpServletRequest request) throws IOException {
         campaignCommandValidator.validate(informationCommand,bindingResults);
+        model.put("actionCampaign","create");
         if(bindingResults.hasErrors()){
             return IMetaDataController.View.CREATE_CAMPAIGN_STEP_1;
         }else{
@@ -113,16 +129,43 @@ public class ManageAdsController {
     }
 
 
+    @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_1,method = RequestMethod.POST)
+    public String modifyStep1Submit(@ModelAttribute("informationCommand") InformationCommand informationCommand,BindingResult bindingResults,Map<String, Object> model,HttpServletRequest request) throws IOException {
+        campaignCommandValidator.validateModify(informationCommand,bindingResults);
+        model.put("actionCampaign","modify");
+        if(bindingResults.hasErrors()){
+            return IMetaDataController.View.CREATE_CAMPAIGN_STEP_1;
+        }else{
+            CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+            if(!informationCommand.getAdFile().isEmpty()){
+                informationCommand.setAdFileCommand(new FileCommand(informationCommand.getAdFile()));
+            }
+            campaignCommand.setInformation(informationCommand);
+            return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_2;
+        }
+    }
+
+
     @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_2,method = RequestMethod.GET)
     public String step2(Map<String, Object> model,HttpServletRequest request){
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
         model.put("adRulesCommand",campaignCommand.getRules());
+        model.put("actionCampaign","create");
         return IMetaDataController.View.CREATE_CAMPAIGN_STEP_2;
     }
 
 
+    @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_2,method = RequestMethod.GET)
+    public String modifyStep2(Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        model.put("adRulesCommand",campaignCommand.getRules());
+        model.put("actionCampaign","modify");
+        return IMetaDataController.View.MODIFY_CAMPAIGN_STEP_2;
+    }
+
+
     @RequestMapping(value=IMetaDataController.Path.RULE, params={"addCountryRule"})
-    public ModelAndView addCountryRule(@RequestBody CountryRule countryRule, final BindingResult bindingResult, HttpServletRequest request) {
+    public ModelAndView addCountryRule(@RequestBody CountryRuleBean countryRule, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
@@ -144,14 +187,32 @@ public class ManageAdsController {
         return view;
     }
 
-
     @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeCountryRule"})
-    public ModelAndView removeCountryRule(@RequestBody CountryRule countryRule, HttpServletRequest request) {
+    public ModelAndView removeCountryRule(@RequestBody CountryRuleBean countryRule, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
-        campaignCommand.getRules().getCountryRules().remove(countryRule);
+
+
+        List<CountryRuleBean> countryRules = campaignCommand.getRules().getCountryRules();
+        if(countryRule.getId() != null){
+            for (CountryRuleBean rule : countryRules) {
+                if(rule.getId().equals(rule.getId())){
+                    countryRules.remove(rule);
+                    break;
+                }
+            }
+        }else{
+            for (CountryRuleBean rule : countryRules) {
+                if(rule.getCountry().getId().equals(rule.getCountry().getId())){
+                    countryRules.remove(rule);
+                    break;
+                }
+            }
+
+        }
+
 
         return view;
     }
@@ -159,7 +220,7 @@ public class ManageAdsController {
 
 
     @RequestMapping(value=IMetaDataController.Path.RULE, params={"addCityRule"})
-    public ModelAndView addCityRule(@RequestBody CityRule cityRule, final BindingResult bindingResult, HttpServletRequest request) {
+    public ModelAndView addCityRule(@RequestBody CityRuleBean cityRule, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
@@ -183,12 +244,28 @@ public class ManageAdsController {
 
 
     @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeCityRule"})
-    public ModelAndView removeCountryRule(@RequestBody CityRule cityRule, HttpServletRequest request) {
+    public ModelAndView removeCountryRule(@RequestBody CityRuleBean cityRule, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
-        campaignCommand.getRules().getCityRules().remove(cityRule);
+        List<CityRuleBean> cityRules = campaignCommand.getRules().getCityRules();
+        if(cityRule.getId() != null){
+            for (CityRuleBean rule : cityRules) {
+                if(rule.getId().equals(cityRule.getId())){
+                    cityRules.remove(rule);
+                    break;
+                }
+            }
+        }else{
+            for (CityRuleBean rule : cityRules) {
+                if(rule.getCity().getId().equals(cityRule.getCity().getId())){
+                    cityRules.remove(rule);
+                    break;
+                }
+            }
+
+        }
 
         return view;
     }
@@ -197,7 +274,7 @@ public class ManageAdsController {
 
 
     @RequestMapping(value=IMetaDataController.Path.RULE, params={"setAgeRule"})
-    public ModelAndView setAgeRule(@RequestBody AgeRule ageRule, final BindingResult bindingResult, HttpServletRequest request) {
+    public ModelAndView setAgeRule(@RequestBody AgeRuleBean ageRule, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
@@ -234,7 +311,7 @@ public class ManageAdsController {
 
 
     @RequestMapping(value=IMetaDataController.Path.RULE, params={"setSexRule"})
-    public ModelAndView setSexRule(@RequestBody SexRule sexRule, final BindingResult bindingResult, HttpServletRequest request) {
+    public ModelAndView setSexRule(@RequestBody SexRuleBean sexRule, final BindingResult bindingResult, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
         view.setView(new MappingJackson2JsonView());
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
@@ -282,10 +359,19 @@ public class ManageAdsController {
     public String step3(Map<String, Object> model,HttpServletRequest request){
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
         model.put("adService",campaignCommand.getAdServices());
+        model.put("actionCampaign","create");
         return IMetaDataController.View.CREATE_CAMPAIGN_STEP_3;
     }
 
 
+
+    @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_3,method = RequestMethod.GET)
+    public String modifyStep3(Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        model.put("adService",campaignCommand.getAdServices());
+        model.put("actionCampaign","modify");
+        return IMetaDataController.View.MODIFY_CAMPAIGN_STEP_3;
+    }
 
 
 
@@ -323,7 +409,26 @@ public class ManageAdsController {
 
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
-        int index = campaignCommand.getAdServices().getBrandRules().indexOf(brandRuleBean);
+        //int index = campaignCommand.getAdServices().getBrandRules().indexOf(brandRuleBean);
+        int index = 0;
+        List<BrandRuleBean> brandRules = campaignCommand.getAdServices().getBrandRules();
+        if(brandRuleBean.getId() != null){
+            for (BrandRuleBean rule : brandRules) {
+                if(rule.getId().equals(brandRuleBean.getId())){
+                    break;
+                }
+                index++;
+            }
+        }else{
+            for (BrandRuleBean rule : brandRules) {
+                if(rule.getUid().equals(brandRuleBean.getUid())){
+                    break;
+                }
+                index++;
+            }
+
+        }
+
         campaignCommand.getAdServices().getBrandRules().set(index,brandRuleBean);
         view.addObject("rule",brandRuleBean);
         return view;
@@ -336,7 +441,26 @@ public class ManageAdsController {
         view.setView(new MappingJackson2JsonView());
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
-        campaignCommand.getAdServices().getBrandRules().remove(brandRuleBean);
+
+
+        List<BrandRuleBean> brandRules = campaignCommand.getAdServices().getBrandRules();
+        if(brandRuleBean.getId() != null){
+            for (BrandRuleBean rule : brandRules) {
+                if(rule.getId().equals(brandRuleBean.getId())){
+                    brandRules.remove(rule);
+                    break;
+                }
+            }
+        }else{
+            for (BrandRuleBean rule : brandRules) {
+                if(rule.getUid().equals(brandRuleBean.getUid())){
+                    brandRules.remove(rule);
+                    break;
+                }
+            }
+
+        }
+
 
         return view;
     }
@@ -397,7 +521,29 @@ public class ManageAdsController {
         }
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
-        int index = campaignCommand.getAdServices().getOpenRules().indexOf(openRuleBean);
+
+        //int index = campaignCommand.getAdServices().getOpenRules().indexOf(openRuleBean);
+
+        int index = 0;
+        List<OpenRuleBean> openRules = campaignCommand.getAdServices().getOpenRules();
+        if(openRuleBean.getId() != null){
+            for (OpenRuleBean rule : openRules) {
+                if(rule.getId().equals(openRuleBean.getId())){
+                    break;
+                }
+                index++;
+            }
+        }else{
+            for (OpenRuleBean rule : openRules) {
+                if(rule.getUid().equals(openRuleBean.getUid())){
+                    break;
+                }
+                index++;
+            }
+
+        }
+
+
         campaignCommand.getAdServices().getOpenRules().set(index,openRuleBean);
 
         view.addObject("rule",openRuleBean);
@@ -411,7 +557,28 @@ public class ManageAdsController {
         view.setView(new MappingJackson2JsonView());
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
-        campaignCommand.getAdServices().getOpenRules().remove(openRuleBean);
+
+
+        List<OpenRuleBean> openRules = campaignCommand.getAdServices().getOpenRules();
+        if(openRuleBean.getId() != null){
+            for (OpenRuleBean rule : openRules) {
+                if(rule.getId().equals(openRuleBean.getId())){
+                    openRules.remove(rule);
+                    break;
+                }
+            }
+        }else{
+            for (OpenRuleBean rule : openRules) {
+                if(rule.getUid().equals(openRuleBean.getUid())){
+                    openRules.remove(rule);
+                    break;
+                }
+            }
+
+        }
+
+
+        openRules.remove(openRuleBean);
 
         return view;
     }
@@ -430,6 +597,15 @@ public class ManageAdsController {
     }
 
 
+    @RequestMapping(value=IMetaDataController.Path.MODIFY)
+    public String modify(HttpServletRequest request) throws Exception {
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+
+        this.brandServiceFacade.save(campaignCommand);
+        request.getSession().removeAttribute("campaignCommand");
+        return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.LIST_CAMPAIGNS;
+    }
 
 
 

@@ -7,6 +7,7 @@ import fr.k2i.adbeback.webapp.bean.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -52,6 +53,57 @@ public class CampaignCommandValidator implements Validator{
 
     }
 
+
+    public void validateModify(Object o, Errors errors) {
+        if(o instanceof InformationCommand){
+            validateStepModify((InformationCommand) o, errors);
+        }else
+        if(o instanceof AdRulesCommand){
+            validateStepModify((AdRulesCommand) o, errors);
+        }else
+        if(o instanceof AdService){
+            validateStepModify((AdService) o, errors);
+        }
+
+    }
+
+    private void validateStepModify(InformationCommand command, Errors errors) {
+        Date endDate = command.getEndDate();
+        if(endDate==null){
+            errors.rejectValue("endDate","required");
+        }
+        Date startDate = command.getStartDate();
+        if(startDate==null){
+            errors.rejectValue("startDate","required");
+        }
+
+        if(startDate!=null && endDate!=null && startDate.after(endDate)){
+            errors.rejectValue("startDate","after.endDate");
+        }
+
+
+        Double initialAmonut = command.getInitialAmonut();
+        if(initialAmonut==null){
+            errors.rejectValue("initialAmonut","required");
+        }
+        String name = command.getName();
+        if(name==null){
+            errors.rejectValue("name","required");
+        }
+    }
+
+
+    private void validateStepModify(AdRulesCommand o, Errors errors) {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+
+    private void validateStepModify(AdService o, Errors errors) {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+
+
     public void validateStep(InformationCommand command, Errors errors) {
 
         Date endDate = command.getEndDate();
@@ -77,6 +129,9 @@ public class CampaignCommandValidator implements Validator{
             errors.rejectValue("name","required");
         }
 
+        if(command.getAdFile().isEmpty()){
+            errors.rejectValue("adFile","required");
+        }
 
     }
 
@@ -88,5 +143,6 @@ public class CampaignCommandValidator implements Validator{
     public void validateStep(AdService adService, Errors errors) {
 
     }
+
 
 }

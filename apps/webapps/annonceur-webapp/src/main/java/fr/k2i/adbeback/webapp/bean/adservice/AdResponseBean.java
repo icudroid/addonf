@@ -19,4 +19,5 @@ public class AdResponseBean implements Serializable{
     @JsonIgnore
     private FileCommand image;
     private boolean correct;
+    private Long id;
 }

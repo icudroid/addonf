@@ -8,9 +8,7 @@ import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.Address;
-import fr.k2i.adbeback.core.business.player.Role;
 import fr.k2i.adbeback.crypto.DESCryptoService;
-import fr.k2i.adbeback.dao.IAdDao;
 import fr.k2i.adbeback.dao.jpa.*;
 import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.util.PhoneNumberUtils;
@@ -19,7 +17,6 @@ import fr.k2i.adbeback.webapp.bean.AdService;
 import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
-import fr.k2i.adbeback.webapp.bean.adservice.ProductRuleBean;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +27,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -195,54 +191,74 @@ public class BrandServiceFacade {
         Brand brand = userFacade.getCurrentUser();
         Ad ad = null;
 
+
         InformationCommand information = campaignCommand.getInformation();
-        if (AdDisplay.VIDEO.equals(information.getDisplayAd())){
-            ad = new VideoAd();
-            //video
-        }else{
-            //static
-            ad = new StaticAd();
-            ad.setDuration(information.getDisplayDuration()*1000);
+
+        if(information.getId()!=null){
+            ad = adRepository.findOne(information.getId());
+        }else {
+            if (AdDisplay.VIDEO.equals(information.getDisplayAd())){
+                ad = new VideoAd();
+                //video
+            }else{
+                //static
+                ad = new StaticAd();
+            }
         }
 
+        ad.setDuration(information.getDisplayDuration()*1000);
 
-        ad.setAdFile(saveFile(information.getAdFileCommand().getContent(),adsPath));
+        if(information.getAdFileCommand()!=null){
+            ad.setAdFile(saveFile(information.getAdFileCommand().getContent(),adsPath));
+        }
         ad.setBrand(brand);
         ad.setEndDate(information.getEndDate());
-        ad.setInitialAmount(information.getInitialAmonut());
+        if(ad.getId()==null){
+            ad.setInitialAmount(information.getInitialAmonut());
+        }
         ad.setName(information.getName());
         ad.setStartDate(information.getStartDate());
 
-        AmountRule amountRule = new AmountRule();
-        amountRule.setAmount(information.getInitialAmonut());
-        amountRule.setInitialAmount(information.getInitialAmonut());
-        amountRule.setInserted(new Date());
-        ad.addRule(amountRule);
+        if(information.getInitialAmonut()>0.0){
+            AmountRule amountRule = new AmountRule();
+            amountRule.setAmount(information.getInitialAmonut());
+            amountRule.setInitialAmount(information.getInitialAmonut());
+            amountRule.setInserted(new Date());
+            ad.addRule(amountRule);
+        }
 
         AdRulesCommand restrictionRules = campaignCommand.getRules();
 
-        for (CountryRule countryRule : restrictionRules.getCountryRules()) {
+        if(ad.getId()!=null){
+            deleteNotNeededCountryRule(ad,restrictionRules.getCountryRules());
+            deleteNotNeededCityRule(ad, restrictionRules.getCityRules());
+            deleteNotNeededAgeRule(ad, restrictionRules.getAgeRule());
+            deleteNotNeededSexyRule(ad, restrictionRules.getSexRule());
+            adRepository.save(ad);
+        }
+
+        for (CountryRuleBean countryRule : restrictionRules.getCountryRules()) {
             CountryRule c = new CountryRule();
             c.setCountry(countryRepository.findByCode(countryRule.getCountry().getCode()));
             ad.addRule(c);
         }
 
 
-        for (CityRule cityRule : restrictionRules.getCityRules()) {
+        for (CityRuleBean cityRule : restrictionRules.getCityRules()) {
             CityRule c = new CityRule();
             c.setAround(cityRule.getAround());
             c.setCity(cityRepository.findOne(cityRule.getCity().getId()));
             ad.addRule(c);
         }
 
-        SexRule sexRule = restrictionRules.getSexRule();
+        SexRuleBean sexRule = restrictionRules.getSexRule();
         if(sexRule!=null){
-            ad.addRule(sexRule);
+            ad.addRule(sexRule.toSexRule());
         }
 
-        AgeRule ageRule = restrictionRules.getAgeRule();
+        AgeRuleBean ageRule = restrictionRules.getAgeRule();
         if(ageRule!=null){
-            ad.addRule(ageRule);
+            ad.addRule(ageRule.toAgeRule());
         }
 
 
@@ -250,8 +266,24 @@ public class BrandServiceFacade {
 
         List<BrandRuleBean> brandRules = adServices.getBrandRules();
 
+        deleteNotNeededBrandRule(ad, brandRules);
+        //ad.getRules().removeAll(ad.getRules(BrandRule.class));
+
         for (BrandRuleBean brandRule : brandRules) {
-            BrandRule b = new BrandRule();
+            BrandRule b =null;
+
+            if(brandRule.getId() != null){
+                List<BrandRule> rules = ad.getRules(BrandRule.class);
+                for (BrandRule rule : rules) {
+                    if(rule.getId().equals(brandRule.getId())){
+                        b = rule;
+                        break;
+                    }
+                }
+            }else{
+                b = new BrandRule();
+            }
+
             b.setAd(ad);
             b.setStartDate(brandRule.getStartDate());
             b.setEndDate(brandRule.getEndDate());
@@ -259,8 +291,9 @@ public class BrandServiceFacade {
             b.setQuestion("Quel est le Logo de la publicité ?");
             b.setMaxDisplayByUser(b.getMaxDisplayByUser());
 
-            List<Brand> noDisplayWith = brandRule.getNoDisplayWith();
-            for (Brand bNo : noDisplayWith) {
+            b.getNoDisplayWith().clear();
+            List<BrandBean> noDisplayWith = brandRule.getNoDisplayWith();
+            for (BrandBean bNo : noDisplayWith) {
                 b.addNoDisplayWith(brandRepository.findOne(bNo.getId()));
             }
             ad.addRule(b);
@@ -268,15 +301,33 @@ public class BrandServiceFacade {
 
 
         List<OpenRuleBean> openRules = adServices.getOpenRules();
+        //ad.getRules().removeAll(ad.getRules(OpenRule.class));
+        deleteNotNeededOpenRule(ad,openRules);
 
         for (OpenRuleBean openRule : openRules) {
             OpenRule o = new OpenRule();
+
+            if(openRule.getId() != null){
+                List<OpenRule> rules = ad.getRules(OpenRule.class);
+                for (OpenRule rule : rules) {
+                    if(rule.getId().equals(openRule.getId())){
+                        o = rule;
+                        break;
+                    }
+                }
+            }else{
+                o = new OpenRule();
+            }
+
+
             o.setAd(ad);
             o.setStartDate(openRule.getStartDate());
             o.setEndDate(openRule.getEndDate());
             o.setQuestion(openRule.getQuestion());
             o.setPrice(showOpenPrice);
             o.setMaxDisplayByUser(openRule.getMaxDisplayByUser());
+
+            if(o.getResponses()!=null)o.getResponses().clear();
 
             List<AdResponseBean> responses = openRule.getResponses();
             for (AdResponseBean response : responses) {
@@ -294,6 +345,59 @@ public class BrandServiceFacade {
 
         adRepository.save(ad);
 
+    }
+
+    private void deleteNotNeededBrandRule(Ad ad, List<BrandRuleBean> brandRules) {
+        List<BrandRule> rules = ad.getRules(BrandRule.class);
+        for (BrandRule rule : rules) {
+            boolean found = false;
+            for (BrandRuleBean brandRule : brandRules) {
+                if(rule.getId().equals(brandRule.getId())){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                rules.remove(rule);
+            }
+        }
+    }
+
+
+    private void deleteNotNeededOpenRule(Ad ad, List<OpenRuleBean> openRuleBeans) {
+        List<OpenRule> rules = ad.getRules(OpenRule.class);
+        for (OpenRule rule : rules) {
+            boolean found = false;
+            for (OpenRuleBean openRuleBean : openRuleBeans) {
+                if(rule.getId().equals(openRuleBean.getId())){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                rules.remove(rule);
+            }
+        }
+    }
+
+    private void deleteNotNeededSexyRule(Ad ad, SexRuleBean sexRule) {
+        List<SexRule> rules = ad.getRules(SexRule.class);
+        ad.getRules().removeAll(rules);
+    }
+
+    private void deleteNotNeededAgeRule(Ad ad, AgeRuleBean ageRule) {
+        List<AgeRule> rules = ad.getRules(AgeRule.class);
+        ad.getRules().removeAll(rules);
+    }
+
+    private void deleteNotNeededCityRule(Ad ad, List<CityRuleBean> cityRules) {
+        List<CityRule> rules = ad.getRules(CityRule.class);
+        ad.getRules().removeAll(rules);
+    }
+
+    private void deleteNotNeededCountryRule(Ad ad, List<CountryRuleBean> countryRules) {
+        List<CountryRule> rules = ad.getRules(CountryRule.class);
+        ad.getRules().removeAll(rules);
     }
 
 
@@ -323,6 +427,54 @@ public class BrandServiceFacade {
         return path;
     }
 
+    @Transactional
+    public CampaignCommand loadCampaign(Long idAd) throws Exception {
+        CampaignCommand campaignCommand = new CampaignCommand();
+
+        Brand brand = userFacade.getCurrentUser();
+        Ad ad = adRepository.findOne(idAd);
+
+        if(!ad.getBrand().equals(brand)){
+            throw new Exception("Not authorize to change this ad");
+        }
+
+        InformationCommand information = new InformationCommand();
+
+        information.setInitialAmonut(0.0);
+
+
+        information.setAdFileCommand(new FileCommand(new File(adsPath+ad.getAdFile())));
+
+        if(ad instanceof VideoAd){
+            information.setDisplayAd(AdDisplay.VIDEO);
+        }else{
+            information.setDisplayAd(AdDisplay.STATIC);
+        }
+
+        information.setDisplayDuration(ad.getDuration()/1000);
+        information.setStartDate(ad.getStartDate());
+        information.setEndDate(ad.getEndDate());
+        information.setId(ad.getId());
+        information.setName(ad.getName());
+
+        campaignCommand.setInformation(information);
+
+        AdRulesCommand rules = new AdRulesCommand();
+        AdService service = new AdService();
+
+
+        for (AdRule adRule : ad.getRules()) {
+            rules.addRule(adRule);
+            service.addService(adRule,logoPath);
+        }
+
+        campaignCommand.setRules(rules);
+        campaignCommand.setAdServices(service);
+
+
+
+        return campaignCommand;
+    }
 
 
     public enum ConfirmationRegistration {

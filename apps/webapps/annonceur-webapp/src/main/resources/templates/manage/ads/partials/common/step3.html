@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged"
+        ng-app="myModule">
+
+<head>
+    <title th:text="${title}">Title</title>
+
+    <link rel="stylesheet" th:href="@{/css/chosen-mtzik.css}"/>
+    <script th:src="@{/lib/chosen-1.0/chosen.jquery.js}"></script>
+
+    <script th:src="@{/lib/angular-1.2.0/angular.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-animate.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-resource.js}"></script>
+    <script th:src="@{/lib/angular-1.2.0/angular-route.js}"></script>
+
+    <script th:src="@{/js/service/services.js}"></script>
+    <script th:src="@{/js/service/campaign-services.js}"></script>
+    <script th:src="@{/js/directive/directives.js}"></script>
+
+    <script th:src="@{/lib/ui-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.js}"></script>
+
+    <script th:src="@{/lib/plupload-angular-directive/src/lib/plupload/plupload.full.js}"></script>
+    <script th:src="@{/lib/plupload-angular-directive/src/js/plupload-angular-directive.js}"></script>
+
+    <script th:src="@{/js/controller/campaign/step3.js}"></script>
+
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${actionCampaign})"></div>
+</div>
+
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{'addonf.'+${actionCampaign}+'.ad'}"></h4>
+
+
+<div layout:fragment="content" class="col-table">
+
+    <div class="widget" ng-controller="Step3Ctrl">
+
+        <div class="wizard" id="rootwizard">
+
+            <!-- Wizard heading -->
+            <div class="wizard-head">
+                <ul class="bwizard-steps">
+                    <li><a th:text="#{addonf.campaign.general.info}">Informations Générales</a></li>
+                    <li><a th:text="#{addonf.campaign.public}">Choix du public</a></li>
+                    <li class="active"><a th:text="#{addonf.campaign.adService}">Choix d'affichages</a></li>
+                </ul>
+            </div>
+            <!-- // Wizard heading END -->
+
+            <div class="widget">
+
+                <div class="widget-body">
+                    <div class="tab-content">
+
+                        <!-- Step 1 -->
+                        <div class="tab-pane active">
+
+
+                            <div class="heading-buttons border-bottom innerLR">
+                                <div class="btn-group pull-right">
+                                    <a class="btn btn-primary" href="#" ng-click="addBrandRule()" th:utext="#{addonf.campaign.step3.brandRule}"><i class="fa fa-fw fa-plus-circle"></i> Affichage par Logo</a>
+                                    <a class="btn btn-primary" href="#" ng-click="addOpenRule()" th:utext="#{addonf.campaign.step3.openRule}"><i class="fa fa-fw fa-plus-circle"></i> Affichage Personnalisé</a>
+                                </div>
+                                <h4 class="margin-none innerTB" th:text="#{addonf.campaign.step3.choice}">Choix d'affichages :</h4>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="separator bottom"></div>
+
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th width="20%" th:text="#{addonf.campaign.step3.table.header.type}">Type d'affichage</th>
+                                        <th width="40%" th:text="#{addonf.campaign.step3.table.header.dates}">Dates</th>
+                                        <th width="30%" th:text="#{addonf.campaign.step3.table.header.nb}">Nb max. vue / jour / utilisateur</th>
+                                        <th width="20%" th:text="#{addonf.campaign.step3.table.header.actions}">Actions</th>
+                                    </tr>
+                                    <tr ng-repeat="brandRule in model.adServices.brandRules">
+                                        <td th:text="#{addonf.campaign.step3.table.body.brandRule}">Par Logo</td>
+                                        <td th:inline="text">[[#{addonf.campaign.step3.between}]]&nbsp;{{brandRule.startDate | date:format}}&nbsp;[[#{addonf.campaign.step3.and}]]&nbsp;{{brandRule.endDate | date:format}}</td>
+                                        <td>{{brandRule.maxDisplayByUser}}</td>
+                                        <td>
+                                            <a class="btn  btn-success" href="#" ng-click="modifyBrandRule(brandRule)"><i class="fa fa fa-pencil"></i></a>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeBrandRule(brandRule)"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+
+                                    <tr ng-repeat="openRule in model.adServices.openRules">
+                                        <td th:text="#{addonf.campaign.step3.table.body.openRule}">Personnalisé</td>
+                                        <td th:inline="text">[[#{addonf.campaign.step3.between}]]&nbsp;{{openRule.startDate | date:format}}&nbsp;[[#{addonf.campaign.step3.and}]]&nbsp;{{openRule.endDate | date:format}}</td>
+                                        <td>{{openRule.maxDisplayByUser}}</td>
+                                        <td>
+                                            <a class="btn  btn-success" href="#" ng-click="modifyOpenRule(openRule)"><i class="fa fa fa-pencil"></i></a>
+                                            <a class="btn  btn-danger" href="#" ng-click="removeOpenRule(openRule)"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+
+                            <div class="text-right innerAll border-top">
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-default" th:href="@{'/'+${actionCampaign}+'Campaign/step2'}" th:utext="#{addonf.campaign.step3.previous}"><i class="fa fa-chevron-left"></i> Retour</a>
+                                    <a class="btn btn-primary" th:href="@{'/'+${actionCampaign}+'Campaign/save'}" th:utext="#{addonf.campaign.step3.validate}"><i class="fa fa-fw fa-check"></i> Valider</a>
+                                </div>
+                            </div>
+
+
+
+                        <!-- // Step 1 END -->
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+</body>
+</html>

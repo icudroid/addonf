@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.bean;
 
+import fr.k2i.adbeback.core.business.ad.Brand;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -23,5 +24,11 @@ public class BrandBean implements Serializable{
     }
 
     public BrandBean() {
+    }
+
+    public BrandBean(Brand brand) {
+        id = brand.getId();
+        name = brand.getName();
+        logo = brand.getLogo();
     }
 }

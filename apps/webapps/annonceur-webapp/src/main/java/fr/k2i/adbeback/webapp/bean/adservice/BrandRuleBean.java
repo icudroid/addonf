@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.webapp.bean.adservice;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.webapp.bean.BrandBean;
 import lombok.Data;
 
 import javax.persistence.Temporal;
@@ -18,7 +19,9 @@ import java.util.List;
  */
 @Data
 public class BrandRuleBean extends  AdServiceBean implements Serializable {
-    private List<Brand> noDisplayWith = new ArrayList<Brand>();
+    //Todo : ne pas mettre Brand mais un DTO
+
+    private List<BrandBean> noDisplayWith = new ArrayList<BrandBean>();
 
     @Override
     public boolean equals(Object o) {
@@ -32,5 +35,12 @@ public class BrandRuleBean extends  AdServiceBean implements Serializable {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public void addNoDisplayWith(BrandBean brand) {
+        if(noDisplayWith==null){
+            noDisplayWith = new ArrayList<BrandBean>();
+        }
+        noDisplayWith.add(brand);
     }
 }

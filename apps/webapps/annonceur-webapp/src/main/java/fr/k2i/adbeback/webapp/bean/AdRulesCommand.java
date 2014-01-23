@@ -16,8 +16,45 @@ import java.util.List;
  */
 @Data
 public class AdRulesCommand implements Serializable{
-    private List<CountryRule> countryRules = new ArrayList<CountryRule>();
-    private List<CityRule> cityRules = new ArrayList<CityRule>();
-    private SexRule sexRule;
-    private AgeRule ageRule;
+    private List<CountryRuleBean> countryRules = new ArrayList<CountryRuleBean>();
+    private List<CityRuleBean> cityRules = new ArrayList<CityRuleBean>();
+    private SexRuleBean sexRule;
+    private AgeRuleBean ageRule;
+
+    public void addRule(CityRule adRule) {
+        if(cityRules == null){
+            cityRules = new ArrayList<CityRuleBean>();
+        }
+        cityRules.add(new CityRuleBean(adRule));
+    }
+
+    public void addRule(CountryRule adRule) {
+        if(countryRules == null){
+            countryRules = new ArrayList<CountryRuleBean>();
+        }
+        countryRules.add(new CountryRuleBean(adRule));
+    }
+
+    public void addRule(SexRule adRule) {
+        sexRule = new SexRuleBean(adRule);
+    }
+
+    public void addRule(AgeRule adRule) {
+        ageRule = new AgeRuleBean(adRule);
+    }
+
+    public void addRule(AdRule adRule) {
+        if(adRule instanceof CityRule){
+            addRule((CityRule)adRule);
+        }else if(adRule instanceof CountryRule){
+            addRule((CountryRule)adRule);
+        }else if(adRule instanceof SexRule){
+            addRule((SexRule)adRule);
+        }else if(adRule instanceof AgeRule){
+            addRule((AgeRule)adRule);
+        }
+    }
+
+
+
 }

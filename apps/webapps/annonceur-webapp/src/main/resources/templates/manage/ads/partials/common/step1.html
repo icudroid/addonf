@@ -14,59 +14,29 @@
 
     <script th:src="@{/lib/ui-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.js}"></script>
 
-
-
-
     <script th:inline="javascript" th:with="df=#{${'yyyy-MM-dd'}}">
-
-        angular.module('myModule', ['ui.bootstrap']);
-
-
-        var Step1Ctrl = function($scope) {
-            $scope.format = "dd/MM/yyyy";
-
-            $scope.model = {
+        addonf.config = {
+            step1 : {
                 displayAd:[[${informationCommand.displayAd.name()}]],
                 startDate:Date.parse([[${#dates.format(informationCommand.startDate, df)}]]),
                 endDate:Date.parse([[${#dates.format(informationCommand.endDate, df)}]])
-            };
-
-
-            $scope.minDate = new Date();
-
-            $scope.startDatepicker = {
-                opened : false
-            };
-
-            $scope.endDatepicker = {
-                opened : false
-            };
-
-            $scope.openDate = function(which){
-                $timeout(function() {
-                    which.opened = true;
-                });
-            };
-
-            $scope.getAcceptedMedia = function(typeMedia){
-                if("VIDEO"==typeMedia){
-                    return "video/*";
-                }else if("STATIC"==typeMedia){
-                    return "image/*";
-                }
-            }
-        }
+            },
+            dateFormat : [[#{date_format}]]
+        };
     </script>
+
+    <script th:src="@{/js/controller/campaign/step1.js}"></script>
+
 </head>
 
 
 <body>
 
 <div layout:fragment="menu">
-    <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'create'})"></div>
+    <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${actionCampaign})"></div>
 </div>
 
-<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{addonf.create.ad}"></h4>
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{'addonf.'+${actionCampaign}+'.ad'}"></h4>
 
 
 <div layout:fragment="content" class="col-table">
@@ -80,9 +50,9 @@
             <!-- Wizard heading -->
             <div class="wizard-head">
                 <ul class="bwizard-steps">
-                    <li class="active"><a>Informations Générales</a></li>
-                    <li><a>Choix du public</a></li>
-                    <li><a>Choix d'affichages</a></li>
+                    <li class="active"><a th:text="#{addonf.campaign.general.info}">Informations Générales</a></li>
+                    <li><a th:text="#{addonf.campaign.public}">Choix du public</a></li>
+                    <li><a th:text="#{addonf.campaign.adService}">Choix d'affichages</a></li>
                 </ul>
             </div>
             <!-- // Wizard heading END -->
@@ -95,13 +65,14 @@
                         <!-- Step 1 -->
                         <div class="tab-pane active">
 
-                            <form role="form" th:action="@{/createCampaign/step1(${_csrf.parameterName}=${_csrf.token})}" th:object="${informationCommand}" method="post" enctype="multipart/form-data">
+                            <form role="form" th:action="@{'/'+${actionCampaign}+'Campaign/step1'(${_csrf.parameterName}=${_csrf.token})}" th:object="${informationCommand}" method="post" enctype="multipart/form-data">
+                                <input type="hidden" th:field="*{id}"/>
                                 <div class="row">
                                     <div class="col-md-6">
 
 
                                         <div th:class="${#fields.hasErrors('name')}? 'form-group has-error':'form-group'">
-                                            <label for="name" class="control-label">Nom de la campagne</label>
+                                            <label for="name" class="control-label" th:text="#{addonf.campaign.name}">Nom de la campagne</label>
                                             <div >
                                                 <input type="text" class="form-control" th:field="*{name}"/>
                                                 <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</span>
@@ -111,17 +82,17 @@
                                         <div th:class="${#fields.hasErrors('displayAd')}? 'form-group has-error':'form-group'">
                                             <div class="row">
                                                 <div class="col-md-4" style="padding-top:18px">
-                                                    <label class="checkbox-inline">
+                                                    <label class="checkbox-inline" th:inline="text">
                                                         <input type="radio" value="VIDEO" th:field="*{displayAd}" ng-model="model.displayAd"/>
-                                                        Vidéo
+                                                        [[#{addonf.campaign.video.label}]]
                                                     </label>
-                                                    <label class="checkbox-inline">
+                                                    <label class="checkbox-inline" th:inline="text">
                                                         <input type="radio" value="STATIC" th:field="*{displayAd}" ng-model="model.displayAd"/>
-                                                        Image
+                                                        [[#{addonf.campaign.image.label}]]
                                                     </label>
                                                 </div>
                                                 <div class="col-md-8" id="durationBlock" ng-show="model.displayAd == 'STATIC'">
-                                                    <label for="adFile" class="control-label">Durée d'affichage de l'image en secondes</label>
+                                                    <label for="adFile" class="control-label" th:text="#{addonf.campaign.display.duration}">Durée d'affichage de l'image en secondes</label>
                                                     <div class="input-group">
                                                         <input class="form-control" type="number" th:field="*{displayDuration}"/>
                                                         <span class="help-block" th:if="${#fields.hasErrors('displayDuration')}" th:errors="*{displayDuration}">Error</span>
@@ -133,18 +104,19 @@
 
 
                                         <div th:class="${#fields.hasErrors('adFile')}? 'form-group has-error':'form-group'">
-                                            <label for="adFile" class="control-label">Média</label>
+                                            <label for="adFile" class="control-label" th:text="#{addonf.campaign.adFile}">Média</label>
                                             <div>
                                                 <input type="file" id="adFile"  th:field="*{adFile}" accept='{{getAcceptedMedia(model.displayAd)}}' />
                                                 <span class="help-block" th:if="${#fields.hasErrors('adFile')}" th:errors="*{adFile}">Error</span>
                                             </div>
                                         </div>
 
+
                                     </div>
                                     <div class="col-md-6">
 
                                         <div th:class="${#fields.hasErrors('initialAmonut')}? 'form-group has-error':'form-group'">
-                                            <label for="amount" class="control-label">Montant max.</label>
+                                            <label for="amount" class="control-label" th:text="#{'addonf.campaign.initialAmount.'+${actionCampaign}}">Montant max.</label>
 
                                             <div class="input-group col-md-4">
                                                 <span class="input-group-addon">€</span>
@@ -156,7 +128,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div th:class="${#fields.hasErrors('startDate')}? 'form-group has-error':'form-group'">
-                                                    <label for="startDate" class="control-label">Date de début</label>
+                                                    <label for="startDate" class="control-label" th:text="#{addonf.campaign.startDate}" ng-readonly="cannotChangeStartDate">Date de début</label>
                                                     <div class="input-group ">
                                                         <input id="startDate" name="startDate" type="text" class="form-control" min="minDate" datepicker-popup="{{format}}" ng-model="model.startDate" is-open="startDatepicker.opened"  close-text="Fermer" />
                                                         <div class="input-group-btn"><button class="btn" ng-click="openDate(startDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
@@ -166,7 +138,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div th:class="${#fields.hasErrors('endDate')}? 'form-group has-error':'form-group'">
-                                                    <label for="endDate" class="control-label">Date de fin</label>
+                                                    <label for="endDate" class="control-label" th:text="#{addonf.campaign.endDate}">Date de fin</label>
 
                                                     <div class="input-group">
                                                         <input id="endDate" name="endDate" type="text" class="form-control" min="minDate" datepicker-popup="{{format}}" ng-model="model.endDate" is-open="endDatepicker.opened"  close-text="Fermer" />
@@ -186,12 +158,12 @@
                                     </div>
                                 </div>
 
-
-                                <div class="form-group">
-                                    <div class="col-sm-offset-11">
-                                        <button type="submit" class="btn btn-default btn-primary">Suivant</button>
+                                <div class="text-right innerAll border-top">
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="submit" class="btn btn-primary" th:utext="#{addonf.campaign.next}"><i class="fa fa-fw fa-check"></i> Suivant</button>
                                     </div>
                                 </div>
+
                             </form>
 
 

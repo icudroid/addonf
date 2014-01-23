@@ -31,24 +31,18 @@ public class AdBean implements Serializable{
     public AdBean(){}
     public AdBean(Ad ad) {
         id = ad.getId();
-        initialAmount =ad.getInitialAmount();
         adType = ad.getType();
         startDate = ad.getStartDate();
         endDate = ad.getEndDate();
         name = ad.getName();
         List<AmountRule> amountRules = ad.getRules(AmountRule.class);
         BigDecimal left = new BigDecimal("0.0");
+        BigDecimal initial = new BigDecimal("0.0");
         for (AmountRule amountRule : amountRules) {
             left = left.add(new BigDecimal("" + amountRule.getAmount()));
+            initial = initial.add(new BigDecimal("" + amountRule.getInitialAmount()));
         }
         leftAmount = left.doubleValue();
-        List < AdRule > rules = ad.getRules();
-        for (AdRule rule : rules) {
-            if(rule instanceof AmountRule){
-                leftAmount = ((AmountRule) rule).getAmount();
-                break;
-            }
-        }
-
+        initialAmount = initial.doubleValue();
     }
 }

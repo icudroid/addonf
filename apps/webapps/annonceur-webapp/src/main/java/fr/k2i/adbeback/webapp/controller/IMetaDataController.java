@@ -9,7 +9,7 @@ package fr.k2i.adbeback.webapp.controller;
 public interface IMetaDataController {
 
     interface PathUtils{
-        String REDIRECT = "redirect:/";
+        String REDIRECT = "redirect:";
         String CONTEXT_RELATIVE="contextRelative:";
     }
 
@@ -25,11 +25,18 @@ public interface IMetaDataController {
         String MANAGE_ADS_PARTIALS =                    "/manageAds/partials/{html}.html";
         String GET_ALL_ADS =                            "/manageAds/getAll";
         String MANAGE_ADS_PARTIALS_ACTION =             "/manageAds/partials/{action}/{html}.html";
-        String LIST_CAMPAIGNS =                         "listCampaign.html";
+        String LIST_CAMPAIGNS =                         "/listCampaign.html";
         String CREATE_CAMPAIGN =                        "/createCampaign";
         String RULE =                                   "/createCampaign/rule";
         String SAVE =                                   "/createCampaign/save";
         String UPLOAD_IMG =                             "/createCampaign/upload/{numOpenRule}/{numResponse}";
+
+        String MODIFY_CAMPAIGN =                        "/modifyCampaign/{idAd}";
+        String MODIFY_CAMPAIGN_STEP_1 =                 "/modifyCampaign/step1";
+        String MODIFY_CAMPAIGN_STEP_2 =                 "/modifyCampaign/step2";
+        String MODIFY_CAMPAIGN_STEP_3 =                 "/modifyCampaign/step3";
+
+        String MODIFY =                                 "/modifyCampaign/save";
     }
 
     interface View{
@@ -43,8 +50,13 @@ public interface IMetaDataController {
         String DASHBOARD_ADS =                          "manage/ads/show";
         String LIST_CAMPAIGNS =                         "campaigns";
 
-        String CREATE_CAMPAIGN_STEP_1=                  "manage/ads/partials/create/step1";
-        String CREATE_CAMPAIGN_STEP_2=                  "manage/ads/partials/create/step2";
-        String CREATE_CAMPAIGN_STEP_3 =                 "manage/ads/partials/create/step3";
+        String CREATE_CAMPAIGN_STEP_1=                  "manage/ads/partials/common/step1";
+        String CREATE_CAMPAIGN_STEP_2=                  "manage/ads/partials/common/step2";
+        String CREATE_CAMPAIGN_STEP_3 =                 "manage/ads/partials/common/step3";
+
+        String MODIFY_CAMPAIGN_STEP_1=                  "manage/ads/partials/common/step1";
+        String MODIFY_CAMPAIGN_STEP_2=                  "manage/ads/partials/common/step2";
+        String MODIFY_CAMPAIGN_STEP_3 =                 "manage/ads/partials/common/step3";
+
     }
 }

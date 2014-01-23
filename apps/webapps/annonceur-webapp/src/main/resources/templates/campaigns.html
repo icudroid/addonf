@@ -48,9 +48,9 @@
                     <td th:text="${campaign.endDate}">Trident</td>
                     <td th:text="${campaign.initialAmount}">Trident</td>
                     <td th:text="${campaign.leftAmount}">Trident</td>
-                    <td th:text="${campaign.name}">
-                        <a id="modify" href="#" class="btn btn-sm btn-success" th:attr="data-idCampaign=${campaign.id}"><i class="fa fa-pencil"></i></a>
-                        <a id="delete" href="#" class="btn btn-sm btn-danger" th:attr="data-idCampaign=${campaign.id}"><i class="fa fa-times"></i></a>
+                    <td>
+                        <a id="modify" th:href="@{'/modifyCampaign/'+${campaign.id}}" class="btn btn-sm btn-success" th:attr="data-idCampaign=${campaign.id}"><i class="fa fa-pencil"></i></a>
+                        <a id="delete" th:href="@{'/deleteCampaign/'+${campaign.id}}" class="btn btn-sm btn-danger" th:attr="data-idCampaign=${campaign.id}"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>
             </table>

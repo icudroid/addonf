@@ -17,6 +17,8 @@ public abstract class AdServiceBean implements Serializable {
     protected Date endDate;
     protected Integer maxDisplayByUser;
     protected String uid;
+    private Long id;
+
 
     @Override
     public boolean equals(Object o) {
@@ -25,6 +27,7 @@ public abstract class AdServiceBean implements Serializable {
 
         AdServiceBean that = (AdServiceBean) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
 
         return true;
@@ -32,6 +35,8 @@ public abstract class AdServiceBean implements Serializable {
 
     @Override
     public int hashCode() {
-        return uid != null ? uid.hashCode() : 0;
+        int result = uid != null ? uid.hashCode() : 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        return result;
     }
 }

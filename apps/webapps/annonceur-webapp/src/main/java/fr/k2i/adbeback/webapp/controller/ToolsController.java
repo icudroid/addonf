@@ -129,4 +129,22 @@ public class ToolsController {
         fileInputStream.close();
 
     }
+
+
+    @RequestMapping(value = "/logo/{filename}", method = RequestMethod.GET)
+    public void streamLogoAdNoExt(@PathVariable String filename,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        File file = new File(pathLogo+filename);
+
+        FileInputStream fileInputStream = new FileInputStream(file);
+        int read =0;
+        byte []b = new byte[1024];
+        while((read = fileInputStream.read(b, 0, 1024))>0){
+            outputStream.write(b, 0, read);
+            b = new byte[1024];
+        }
+        fileInputStream.close();
+
+    }
 }
