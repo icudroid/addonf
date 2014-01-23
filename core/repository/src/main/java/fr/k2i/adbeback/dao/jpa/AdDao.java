@@ -7,6 +7,7 @@ import java.util.List;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 import fr.k2i.adbeback.core.business.ad.Ad_;
+import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.QAd;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.media.QCategory;
@@ -232,6 +233,13 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
     }
 
+    @Override
+    public List<Ad> findByBrand(Brand brand) {
+        QAd qAd = QAd.ad;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qAd).where(qAd.brand.eq(brand));
+        return query.list(qAd);
+    }
 
 
 }
