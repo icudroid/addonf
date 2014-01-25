@@ -19,7 +19,7 @@ import fr.k2i.adbeback.core.business.ad.Brand;
  *   the new BaseDaoHibernate implementation that uses generics.
 */
 @Repository("brandDao")
-public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeback.dao.IBrandDao,UserDetailsService {
+public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeback.dao.IBrandDao {
 
     @Autowired
     private BrandRepository brandRepository;
@@ -32,10 +32,5 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
         super(Brand.class);
     }
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return brandRepository.findByEmail(username);
-    }
 }
 

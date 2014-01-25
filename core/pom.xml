@@ -21,6 +21,8 @@
         <module>repository</module>
         <module>service</module>
         <module>application-service</module>
+        <module>domain-web</module>
+        <module>repository-web</module>
     </modules>
     <dependencies>
         <dependency>

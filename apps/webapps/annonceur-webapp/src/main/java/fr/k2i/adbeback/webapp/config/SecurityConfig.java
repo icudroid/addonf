@@ -28,7 +28,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationManager authenticationManager(org.springframework.security.config.annotation.ObjectPostProcessor<Object> objectPostProcessor) throws Exception {
-        DaoAuthenticationConfigurer<AuthenticationManagerBuilder,UserDetailsService> builder = new AuthenticationManagerBuilder(objectPostProcessor).userDetailsService((UserDetailsService) context.getBean("brandDao"));
+        DaoAuthenticationConfigurer<AuthenticationManagerBuilder,UserDetailsService> builder = new AuthenticationManagerBuilder(objectPostProcessor).userDetailsService((UserDetailsService) context.getBean("webUserDao"));
         builder.passwordEncoder(passwordEncoder());
 
         return builder.and().build();

@@ -130,6 +130,8 @@ public class Player extends BaseObject implements UserDetails {
     @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
     private List<ViewedAd> viewedAds = new ArrayList<ViewedAd>();
 
+    @Enumerated(EnumType.STRING)
+    private AgeGroup ageGroup;
 
 	/**
      * Default constructor - creates a new instance with no values set.

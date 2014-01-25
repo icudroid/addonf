@@ -2,6 +2,7 @@ package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.dao.IPlayerDao;
 import fr.k2i.adbeback.dao.jpa.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,11 @@ public class UserFacade {
     @Transactional
     public Brand getCurrentUser() throws Exception{
         Object principal = getAuthenticationPlayer().getPrincipal();
-        if (!(principal instanceof Brand)) {
+        if (!(principal instanceof WebUser)) {
             throw new Exception("Please check configuration. Should be Brand in the principal.");
         }
 
-        return brandRepository.findOne(((Brand) principal).getId());
+        return brandRepository.findOne(((WebUser) principal).getUser().getId());
     }
 
     protected Authentication getAuthenticationPlayer() {

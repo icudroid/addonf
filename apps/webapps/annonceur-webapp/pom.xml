@@ -25,12 +25,12 @@
 
         <dependency>
             <groupId>fr.k2i.adbeback.addonf.core</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>domain-web</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>fr.k2i.adbeback.addonf.core</groupId>
-            <artifactId>repository</artifactId>
+            <artifactId>repository-web</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

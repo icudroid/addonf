@@ -7,6 +7,7 @@ import fr.k2i.adbeback.core.business.media.Music;
 import fr.k2i.adbeback.core.business.otp.OneTimePassword;
 import fr.k2i.adbeback.core.business.otp.OtpAction;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.player.WebPlayer;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.IOneTimePasswordDao;
@@ -71,11 +72,11 @@ public class PlayerFacade {
     @Transactional
     public Player getCurrentPlayer() {
         Object principal = getAuthenticationPlayer().getPrincipal();
-        if (!(principal instanceof Player)) {
+        if (!(principal instanceof WebPlayer)) {
             throw new AssertionError("Please check configuration. Should be Player in the principal.");
         }
 
-        return playerDao.get(((Player) principal).getId());
+        return playerDao.get(((WebPlayer) principal).getUser().getId());
     }
 
     protected Authentication getAuthenticationPlayer() {

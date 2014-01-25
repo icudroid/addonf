@@ -10,6 +10,7 @@ import fr.k2i.adbeback.dao.IAdDao;
 import fr.k2i.adbeback.dao.IStatisticsDao;
 import fr.k2i.adbeback.dao.jpa.BrandRepository;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,7 @@ public class StatisticsFacade {
     @Transactional
     public void global(Long idAd, Map<String, Object> model) throws Exception {
 
+/*
         Brand currentUser = userFacade.getCurrentUser();
 
         Ad ad = adDao.get(idAd);
@@ -50,9 +52,21 @@ public class StatisticsFacade {
             throw new Exception("bad user");
         }
 
+*/
+
+
+        LocalDate d = new LocalDate();
+
+        for (int i = 0; i < 60; i++) {
+            statisticsDao.doStatisticsValidatedForDay(d.minusDays(i).toDate());
+            statisticsDao.doStatisticsViewedForDay(d.minusDays(i).toDate());
+        }
+
+/*
         model.put("global",statisticsDao.nbGlobal(ad));
         model.put("validated",statisticsDao.nbValidated(ad));
         model.put("notValidated",statisticsDao.nbNotValidated(ad));
+*/
 
     }
 }

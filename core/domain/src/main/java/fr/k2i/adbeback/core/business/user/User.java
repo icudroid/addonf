@@ -21,7 +21,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "ad_user")
 @DiscriminatorColumn(name = "classe", discriminatorType = DiscriminatorType.STRING)
-public abstract class User extends BaseObject implements Serializable, UserDetails {
+public abstract class User extends BaseObject implements Serializable {
 
     protected Long id;
     protected String username;                    // required

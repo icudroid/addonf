@@ -2,9 +2,11 @@ package fr.k2i.adbeback.dao;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
-import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.player.AgeGroup;
+import fr.k2i.adbeback.core.business.statistic.Statistics;
+import fr.k2i.adbeback.core.business.statistic.StatisticsValidated;
+import fr.k2i.adbeback.core.business.statistic.StatisticsViewed;
 import fr.k2i.adbeback.dao.jpa.StatisticsDao;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public interface IStatisticsDao extends IGenericDao<Ad, Long> {
+public interface IStatisticsDao extends IGenericDao<Statistics, Long> {
 
 
     long nbGlobal(Ad ad, Date start, Date end);
@@ -23,7 +25,7 @@ public interface IStatisticsDao extends IGenericDao<Ad, Long> {
 
     List<StatisticsDao.StatisticsAge> nbGlobalGroupByGroupAge(Ad ad, Date start, Date end);
 
-    StatisticsDao.StatisticsAge nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, StatisticsDao.AgeGroup ageGroup);
+    StatisticsDao.StatisticsAge nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup);
 
     List<StatisticsDao.StatisticsCity> nbGlobalGroupByCity(Ad ad, Date start, Date end);
 
@@ -37,7 +39,7 @@ public interface IStatisticsDao extends IGenericDao<Ad, Long> {
 
     List<StatisticsDao.StatisticsAge> nbValidatedGroupByGroupAge(Ad ad, Date start, Date end);
 
-    StatisticsDao.StatisticsAge nbValidatedGroupByGroupAge(Ad ad, Date start, Date end, StatisticsDao.AgeGroup ageGroup);
+    StatisticsDao.StatisticsAge nbValidatedGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup);
 
     List<StatisticsDao.StatisticsCity> nbValidatedGroupByCity(Ad ad, Date start, Date end);
 
@@ -49,7 +51,7 @@ public interface IStatisticsDao extends IGenericDao<Ad, Long> {
 
     List<StatisticsDao.Statistics> nbNotValidatedGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service);
 
-    StatisticsDao.StatisticsAge nbNotValidatedGroupByGroupAge(Ad ad, Date start, Date end, StatisticsDao.AgeGroup ageGroup);
+    StatisticsDao.StatisticsAge nbNotValidatedGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup);
 
     List<StatisticsDao.StatisticsAge> nbNotValidatedGroupByGroupAge(Ad ad, Date start, Date end);
 
@@ -62,7 +64,7 @@ public interface IStatisticsDao extends IGenericDao<Ad, Long> {
 
     List<StatisticsDao.Statistics> nbGlobalGroupByService(Ad ad);
 
-    StatisticsDao.StatisticsAge nbGlobalGroupByGroupAge(Ad ad, StatisticsDao.AgeGroup ageGroup);
+    StatisticsDao.StatisticsAge nbGlobalGroupByGroupAge(Ad ad, AgeGroup ageGroup);
 
     List<StatisticsDao.StatisticsAge> nbGlobalGroupByGroupAge(Ad ad);
 
@@ -74,7 +76,7 @@ public interface IStatisticsDao extends IGenericDao<Ad, Long> {
 
     List<StatisticsDao.Statistics> nbValidatedGroupByService(Ad ad, Class<? extends AdService> service);
 
-    StatisticsDao.StatisticsAge nbValidatedGroupByGroupAge(Ad ad, StatisticsDao.AgeGroup ageGroup);
+    StatisticsDao.StatisticsAge nbValidatedGroupByGroupAge(Ad ad, AgeGroup ageGroup);
 
     List<StatisticsDao.StatisticsAge> nbValidatedGroupByGroupAge(Ad ad);
 
@@ -86,10 +88,15 @@ public interface IStatisticsDao extends IGenericDao<Ad, Long> {
 
     List<StatisticsDao.Statistics> nbNotValidatedGroupByService(Ad ad, Class<? extends AdService> service);
 
-    StatisticsDao.StatisticsAge nbNotValidatedGroupByGroupAge(Ad ad, StatisticsDao.AgeGroup ageGroup);
+    StatisticsDao.StatisticsAge nbNotValidatedGroupByGroupAge(Ad ad, AgeGroup ageGroup);
 
     List<StatisticsDao.StatisticsAge> nbNotValidatedGroupByGroupAge(Ad ad);
 
     List<StatisticsDao.StatisticsCity> nbNotValidatedGroupByCity(Ad ad);
+
+
+    List<StatisticsValidated> doStatisticsValidatedForDay(Date day);
+
+    List<StatisticsViewed> doStatisticsViewedForDay(Date day);
 }
 

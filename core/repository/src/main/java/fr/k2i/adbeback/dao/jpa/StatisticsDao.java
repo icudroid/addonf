@@ -13,6 +13,12 @@ import fr.k2i.adbeback.core.business.ad.QViewedAd;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.game.*;
+import fr.k2i.adbeback.core.business.player.AgeGroup;
+import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.player.Sex;
+import fr.k2i.adbeback.core.business.statistic.Statistics;
+import fr.k2i.adbeback.core.business.statistic.StatisticsValidated;
+import fr.k2i.adbeback.core.business.statistic.StatisticsViewed;
 import fr.k2i.adbeback.dao.IStatisticsDao;
 import lombok.Data;
 import org.joda.time.*;
@@ -22,47 +28,11 @@ import javax.persistence.Query;
 import java.util.*;
 
 @Repository
-public class StatisticsDao extends GenericDaoJpa<Ad, Long> implements IStatisticsDao {
+public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IStatisticsDao {
 
     public StatisticsDao() {
-        super(Ad.class);
+        super(fr.k2i.adbeback.core.business.statistic.Statistics.class);
     }
-
-    public enum AgeGroup{
-        $15_17(15,17),
-        $18_24(18,24),
-        $25_34(25,34),
-        $35_49(35,49),
-        $50_64(50,64),
-        _65_MORE(65,130);
-
-        private int min;
-        private int max;
-
-        private AgeGroup(int min, int max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        public int getMin() {
-            return min;
-        }
-
-        public int getMax() {
-            return max;
-        }
-
-        public Date minDate() {
-            DateTime now = new DateTime();
-            return now.minusYears(this.min).toDate();
-        }
-
-        public Date maxDate() {
-            DateTime now = new DateTime();
-            return now.minusYears(this.max).toDate();
-        }
-    }
-
 
     @Data
     public class Statistics{
@@ -98,6 +68,66 @@ public class StatisticsDao extends GenericDaoJpa<Ad, Long> implements IStatistic
             this.count = count;
         }
     }
+
+
+
+    @Override
+    public List<StatisticsViewed> doStatisticsViewedForDay(Date day) {
+
+        QViewedAd viewedAd = QViewedAd.viewedAd;
+        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
+
+        LocalDate d = new LocalDate(day);
+        LocalDate start =new LocalDate(d.getYear(),d.getMonthOfYear(),d.getDayOfMonth());
+        PathBuilder<Player> player= new PathBuilder<Player>(Player.class, "player");
+
+        jpaQuery.from(viewedAd).join(viewedAd.player, player).join(player.get("address.city")).join(viewedAd.adRule);
+        jpaQuery.where(viewedAd.date.between(start.toDate(), start.plusDays(1).toDate()));
+        jpaQuery.groupBy(player.get("address.city")).groupBy(player.get("sex")).groupBy(player.get("ageGroup")).groupBy(viewedAd.adRule);
+
+
+        List<StatisticsViewed> res = new ArrayList<StatisticsViewed>();
+        List<Tuple> list = jpaQuery.list(viewedAd.count(), player.get("address.city"), player.get("sex"), player.get("ageGroup"), viewedAd.adRule);
+        for (Tuple tuple : list) {
+            StatisticsViewed viewed = new StatisticsViewed(day, (Sex) tuple.get(player.get("sex")), (City) tuple.get(player.get("address.city")), tuple.get(viewedAd.adRule), (AgeGroup) tuple.get(player.get("ageGroup")), tuple.get(viewedAd.count()));
+            res.add((StatisticsViewed) save(viewed));
+        }
+
+        return res;
+    }
+
+
+    @Override
+    public List<StatisticsValidated> doStatisticsValidatedForDay(Date day) {
+
+        Query query = getEntityManager().createQuery("select count(answer), game.player.address.city, game.player.sex, game.player.ageGroup, choise.generatedBy from AbstractAdGame game " +
+                "join game.choises  as choise " +
+                "join game.score.answers as answer " +
+                "where " +
+                "game.generated between :start and :end " +
+                "and answer.response = choise.correct " +
+                "group by game.player.address.city, game.player.sex, game.player.ageGroup, choise.generatedBy");
+
+        LocalDate d = new LocalDate(day);
+        LocalDate start =new LocalDate(d.getYear(),d.getMonthOfYear(),d.getDayOfMonth());
+        query.setParameter("start",start.toDate());
+        query.setParameter("end",start.plusDays(1).toDate());
+
+        List resultList = query.getResultList();
+
+
+        List<StatisticsValidated> res = new ArrayList<StatisticsValidated>();
+
+        for (Object o : resultList) {
+            Object results[] = (Object[]) o;
+            StatisticsValidated validated = new StatisticsValidated(day, (Sex) results[2], (City) results[1], (AdService) results[4], (AgeGroup) results[3], (Long) results[0]);
+            res.add((StatisticsValidated) save(validated));
+        }
+
+        return res;
+    }
+
+
 
 
     @Override
@@ -270,7 +300,7 @@ public class StatisticsDao extends GenericDaoJpa<Ad, Long> implements IStatistic
     }
 
 
-        @Override
+    @Override
     public long nbValidated(Ad ad, Date start, Date end){
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
 
@@ -394,7 +424,7 @@ public class StatisticsDao extends GenericDaoJpa<Ad, Long> implements IStatistic
     }
 
 
-        @Override
+    @Override
     public StatisticsAge nbValidatedGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup) {
 
 

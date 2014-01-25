@@ -31,14 +31,6 @@ public interface PlayerManager extends GenericManager<Player, Long> {
      */
     Player getPlayer(String playerId);
 
-    /**
-     * Finds a user by their username.
-     * @param username the user's username used to login
-     * @return User a populated user object
-     * @throws org.springframework.security.core.userdetails.UsernameNotFoundException
-     *         exception thrown when user not found
-     */
-    Player getPlayerByUsername(String username) throws UsernameNotFoundException;
 
     /**
      * Retrieves a list of all users.

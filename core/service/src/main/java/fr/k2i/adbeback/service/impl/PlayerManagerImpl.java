@@ -188,16 +188,6 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
         playerDao.remove(new Long(playerId));
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param username the login name of the human
-     * @return User the populated user object
-     * @throws UsernameNotFoundException thrown when username not found
-     */
-    public Player getPlayerByUsername(String username) throws UsernameNotFoundException {
-        return (Player) playerDao.loadUserByUsername(username);
-    }
 
 	public Player getPlayerByEmail(String email) {
 		return (Player) playerDao.loadUserByEmail(email);

@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   the new BaseDaoHibernate implementation that uses generics.
 */
 @Repository("playerDao")
-public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adbeback.dao.IPlayerDao, UserDetailsService {
+public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adbeback.dao.IPlayerDao {
 
     /**
      * Constructor that sets the entity to User.class.
@@ -98,35 +98,6 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
                 );
 
         return query.uniqueResult(player);
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        QPlayer player = QPlayer.player;
-        JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(player)
-                .where(
-                        player.username.eq(username)
-                );
-
-/*
-        CriteriaBuilderHelper<Player> helper = new CriteriaBuilderHelper(getEntityManager(),Player.class);
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.get(Player_.username), username)
-        );
-*/
-        //List users = helper.getResultList();
-        List<Player> users = query.list(player);
-
-        if (users == null || users.isEmpty()) {
-            throw new UsernameNotFoundException("user '" + username + "' not found...");
-        } else {
-            return (UserDetails) users.get(0);
-        }
     }
 
     /**
