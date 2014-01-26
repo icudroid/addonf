@@ -1,12 +1,10 @@
 package fr.k2i.adbeback.webapp.validator;
 
-import fr.k2i.adbeback.dao.IBrandDao;
-import fr.k2i.adbeback.dao.jpa.BrandDao;
 import fr.k2i.adbeback.dao.jpa.BrandRepository;
 import fr.k2i.adbeback.logger.LogHelper;
-import fr.k2i.adbeback.util.PhoneNumberUtils;
-import fr.k2i.adbeback.util.SirenSiretValidator;
-import fr.k2i.adbeback.util.ValidatorHelper;
+import fr.k2i.adbeback.webapp.util.PhoneNumberUtils;
+import fr.k2i.adbeback.webapp.util.SirenSiretValidator;
+import fr.k2i.adbeback.webapp.util.ValidatorHelper;
 import fr.k2i.adbeback.webapp.bean.AddressBean;
 import fr.k2i.adbeback.webapp.bean.ContactBean;
 import fr.k2i.adbeback.webapp.bean.EnrollBrandCommand;
@@ -19,7 +17,6 @@ import org.springframework.validation.Validator;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.groups.Default;
-import java.util.Map;
 import java.util.Set;
 
 /**

@@ -1,16 +1,11 @@
 package fr.k2i.adbeback.core.business.ad.rule;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.*;
-
-
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
-import fr.k2i.adbeback.core.business.country.Country;
 import lombok.Data;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity

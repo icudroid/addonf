@@ -160,6 +160,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/login").permitAll()
                     .antMatchers("/logout-success").permitAll()
                     .antMatchers("/back").permitAll()
+                    .antMatchers("/ads").permitAll()
 
 
                     .antMatchers("/lib/**").permitAll()
@@ -182,6 +183,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/contactForm").permitAll()
                     .antMatchers("/cgu.html").permitAll()
                     .antMatchers("/albumPage.html").permitAll()
+
+                    .antMatchers("/getTownsByName/**").permitAll()
 
 
 

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.k2i.adbeback.addonf.webapps</groupId>
+    <groupId>fr.k2i.adbeback.addonf.apps.batches</groupId>
     <artifactId>batches</artifactId>
     <name>BATCHES</name>
     <modules>

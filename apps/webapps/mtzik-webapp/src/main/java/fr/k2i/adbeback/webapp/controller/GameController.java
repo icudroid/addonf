@@ -37,6 +37,12 @@ public class GameController{
     }
 
 
+    @RequestMapping("/resume")
+    public String resume(Map<String, Object> model,HttpServletRequest request) {
+        return "manage/gooseGame/partials/resume";
+    }
+
+
 
     @RequestMapping("/downloadMusics.html")
     public String downloadMusics(Map<String, Object> model,HttpServletRequest request) {

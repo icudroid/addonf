@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.util;
+package fr.k2i.adbeback.webapp.util;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;

@@ -43,7 +43,7 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="fr.k2i.adbeback.util">
+    <logger name="fr.k2i.adbeback.webapp.util">
         <level value="WARN"/>
     </logger>
     

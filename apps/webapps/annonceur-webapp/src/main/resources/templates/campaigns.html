@@ -44,10 +44,10 @@
                 </tr>
                 <tr th:each="campaign : ${campaigns}" >
                     <td th:text="${campaign.name}">Trident</td>
-                    <td th:text="${campaign.startDate}">Trident</td>
-                    <td th:text="${campaign.endDate}">Trident</td>
-                    <td th:text="${campaign.initialAmount}">Trident</td>
-                    <td th:text="${campaign.leftAmount}">Trident</td>
+                    <td th:text="${#dates.format(campaign.startDate, 'dd/MM/yyyy')}">Trident</td>
+                    <td th:text="${#dates.format(campaign.endDate, 'dd/MM/yyyy')}">Trident</td>
+                    <td th:utext="${campaign.initialAmount+' &euro;'}">Trident</td>
+                    <td th:utext="${campaign.leftAmount+' &euro;'}">Trident</td>
                     <td>
                         <a id="modify" th:href="@{'/modifyCampaign/'+${campaign.id}}" class="btn btn-sm btn-success" th:attr="data-idCampaign=${campaign.id}"><i class="fa fa-pencil"></i></a>
                         <!--<a id="delete" th:href="@{'/deleteCampaign/'+${campaign.id}}" class="btn btn-sm btn-danger" th:attr="data-idCampaign=${campaign.id}"><i class="fa fa-times"></i></a>-->

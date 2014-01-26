@@ -44,7 +44,7 @@
                         <div class="panel panel-default col-sm-6 col-sm-offset-3">
 
                             <div class="panel-body">
-                                <form th:action="@{/signup.html}" method="post" class="form-horizontal" role="form" th:object="${enrollBrandCommand}">
+                                <form th:action="@{/signup.html}" method="post" class="form-horizontal" role="form" th:object="${enrollBrandCommand}" autocomplete="off">
                                     <div th:class="${#fields.hasErrors('name')}? 'form-group has-error':'form-group'">
                                         <label for="name" class=" control-label" th:text="#{enroll.company.name}">Nom de la société</label>
                                             <input type="text" class="form-control" id="name" th:field="*{name}" />
@@ -70,7 +70,7 @@
                                             <select id="country" class="form-control" th:field="*{address.country}">
                                                 <option th:each="country : ${values['countries']}"
                                                         th:value="${country}"
-                                                        th:text="#{${'reference.country.'+country}}">France</option>
+                                                        th:text="#{${'country.'+country}}">France</option>
                                             </select>
                                             <span class="help-block" th:if="${#fields.hasErrors('address.country')}" th:errors="*{address.country}">Error</span>
                                     </div>
@@ -93,7 +93,7 @@
                                             <select id="sex" class="form-control" th:field="*{contact.sex}">
                                                 <option th:each="sex : ${values['sexes']}"
                                                         th:value="${sex}"
-                                                        th:text="#{${'reference.sex.'+sex}}">Mr</option>
+                                                        th:text="#{${'sex.'+sex}}">Mr</option>
                                             </select>
                                             <span class="help-block" th:if="${#fields.hasErrors('contact.sex')}" th:errors="*{contact.sex}">Error</span>
                                     </div>

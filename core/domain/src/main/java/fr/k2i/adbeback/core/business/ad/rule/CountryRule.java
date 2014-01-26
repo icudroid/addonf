@@ -4,7 +4,10 @@ import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.country.Country;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Data
 @Entity

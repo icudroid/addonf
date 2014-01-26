@@ -1,20 +1,15 @@
 package fr.k2i.adbeback.core.business.ad;
 
+import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.*;
-
-
-import fr.k2i.adbeback.core.business.BaseObject;
-import fr.k2i.adbeback.core.business.IMetaData;
-import fr.k2i.adbeback.core.business.ad.rule.AdRule;
-import fr.k2i.adbeback.core.business.ad.rule.AmountRule;
-import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
-import fr.k2i.adbeback.core.business.country.Country;
-import lombok.Data;
 
 @Data
 @Entity

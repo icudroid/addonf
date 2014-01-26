@@ -27,7 +27,7 @@ public class AdService implements Serializable{
     private List<ProductRuleBean> productRules = new ArrayList<ProductRuleBean>();
 
 
-    public void addService(OpenRule adRule,String base) throws IOException {
+    public void addService(OpenRule adRule,String base,boolean used) throws IOException {
         if(openRules == null){
             openRules = new ArrayList<OpenRuleBean>();
         }
@@ -38,7 +38,7 @@ public class AdService implements Serializable{
         add.setEndDate(adRule.getEndDate());
         add.setMaxDisplayByUser(adRule.getMaxDisplayByUser());
         add.setId(adRule.getId());
-
+        add.setCanBeDelete(!used);
 
         List<AdResponse> responses = adRule.getResponses();
 
@@ -51,7 +51,7 @@ public class AdService implements Serializable{
     }
 
 
-    public void addService(BrandRule adRule) {
+    public void addService(BrandRule adRule,boolean used) {
         if(brandRules == null){
             brandRules = new ArrayList<BrandRuleBean>();
         }
@@ -61,6 +61,7 @@ public class AdService implements Serializable{
         add.setEndDate(adRule.getEndDate());
         add.setMaxDisplayByUser(adRule.getMaxDisplayByUser());
         add.setId(adRule.getId());
+        add.setCanBeDelete(!used);
 
         for (Brand brand : adRule.getNoDisplayWith()) {
             add.addNoDisplayWith(new BrandBean(brand));
@@ -70,12 +71,12 @@ public class AdService implements Serializable{
     }
 
 
-    public void addService(AdRule adRule,String base) throws IOException {
+    public void addService(AdRule adRule, String base, boolean used) throws IOException {
 
         if(adRule instanceof BrandRule){
-            addService((BrandRule) adRule);
+            addService((BrandRule) adRule,used);
         }else if(adRule instanceof OpenRule){
-            addService((OpenRule) adRule, base);
+            addService((OpenRule) adRule, base, used);
         }
 
 

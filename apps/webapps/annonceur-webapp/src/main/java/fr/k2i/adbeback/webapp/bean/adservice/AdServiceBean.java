@@ -18,6 +18,7 @@ public abstract class AdServiceBean implements Serializable {
     protected Integer maxDisplayByUser;
     protected String uid;
     private Long id;
+    private boolean canBeDelete = true;
 
 
     @Override

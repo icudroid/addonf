@@ -4,11 +4,17 @@ angular.module('registrationApp', ['ui.bootstrap'], function(){
 
 });
 
-var registrationCtrl = function ($scope, $timeout) {
+var registrationCtrl = function ($scope, $timeout,$http) {
+
+
+    $scope.format="dd/MM/yyyy";
+
     $scope.today = function() {
         $scope.dt = new Date();
     };
     $scope.today();
+
+    $scope.city = "";
 
     $scope.showWeeks = true;
     $scope.toggleWeeks = function () {
@@ -28,6 +34,21 @@ var registrationCtrl = function ($scope, $timeout) {
         $scope.minDate = ( $scope.minDate ) ? null : new Date();
     };
     $scope.toggleMin();
+
+    $scope.getCitiesByName = function(val){
+        return $http.get(addonf.base+'getTownsByName/'+val ,{
+            params: {
+                _csrf:addonf.token
+            }
+        }).then(function(data){
+                var res = [];
+                angular.forEach(data.data, function(item){
+                    item.label =item.zipcode+" "+item.city+", "+item.country.code;
+                    res.push(item);
+                });
+                return res;
+            });
+    };
 
     $scope.open = function() {
         $timeout(function() {

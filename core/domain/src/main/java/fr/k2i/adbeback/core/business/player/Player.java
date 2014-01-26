@@ -1,47 +1,15 @@
 package fr.k2i.adbeback.core.business.player;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-
-import fr.k2i.adbeback.core.business.ad.ViewedAd;
-import lombok.Data;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.LabelValue;
+import fr.k2i.adbeback.core.business.ad.ViewedAd;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.GooseWin;
+import lombok.Data;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * This class represents the basic "user" object in AppFuse that allows for authentication
@@ -55,7 +23,7 @@ import fr.k2i.adbeback.core.business.goosegame.GooseWin;
 @Entity
 @Table(name = "player")
 @Data
-public class Player extends BaseObject implements UserDetails {
+public class Player extends BaseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -179,17 +147,6 @@ public class Player extends BaseObject implements UserDetails {
      */
     public void addRole(Role role) {
         getRoles().add(role);
-    }
-
-    /**
-     * @return GrantedAuthority[] an array of roles.
-     * @see org.springframework.security.core.userdetails.UserDetails#getAuthorities()
-     */
-    @Transient
-    public Set<GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new LinkedHashSet<GrantedAuthority>();
-        authorities.addAll(roles);
-        return authorities;
     }
 
     /**

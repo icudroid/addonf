@@ -17,6 +17,7 @@
     <modules>
         <module>webapps</module>
         <module>batches</module>
+        <module>deamon</module>
     </modules>
 
 </project>

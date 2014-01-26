@@ -1,13 +1,11 @@
 package fr.k2i.adbeback.webapp.validator;
 
-import fr.k2i.adbeback.core.business.ad.AdType;
 import fr.k2i.adbeback.logger.LogHelper;
-import fr.k2i.adbeback.util.ValidatorHelper;
+import fr.k2i.adbeback.webapp.util.ValidatorHelper;
 import fr.k2i.adbeback.webapp.bean.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

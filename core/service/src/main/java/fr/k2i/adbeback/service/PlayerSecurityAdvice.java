@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import fr.k2i.adbeback.core.business.player.WebPlayer;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -125,7 +126,7 @@ public class PlayerSecurityAdvice implements MethodBeforeAdvice, AfterReturningA
             if (auth != null && !signupUser) {
                 Player currentPlayer = getCurrentPlayer(auth);
                 if (currentPlayer.getId().equals(player.getId())) {
-                    auth = new UsernamePasswordAuthenticationToken(player, player.getPassword(), player.getAuthorities());
+                    auth = new UsernamePasswordAuthenticationToken(player, player.getPassword(), new WebPlayer(player).getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             }

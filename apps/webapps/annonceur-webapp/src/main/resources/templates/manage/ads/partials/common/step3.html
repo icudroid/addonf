@@ -84,20 +84,20 @@
                                     <tr ng-repeat="brandRule in model.adServices.brandRules">
                                         <td th:text="#{addonf.campaign.step3.table.body.brandRule}">Par Logo</td>
                                         <td th:inline="text">[[#{addonf.campaign.step3.between}]]&nbsp;{{brandRule.startDate | date:format}}&nbsp;[[#{addonf.campaign.step3.and}]]&nbsp;{{brandRule.endDate | date:format}}</td>
-                                        <td>{{brandRule.maxDisplayByUser}}</td>
+                                        <td>{{displayMaxDisplayByUser(brandRule)}}</td>
                                         <td>
                                             <a class="btn  btn-success" href="#" ng-click="modifyBrandRule(brandRule)"><i class="fa fa fa-pencil"></i></a>
-                                            <a class="btn  btn-danger" href="#" ng-click="removeBrandRule(brandRule)"><i class="fa fa-times"></i></a>
+                                            <a  ng-if="brandRule.canBeDelete" class="btn  btn-danger" href="#" ng-click="removeBrandRule(brandRule)"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
 
                                     <tr ng-repeat="openRule in model.adServices.openRules">
                                         <td th:text="#{addonf.campaign.step3.table.body.openRule}">Personnalisé</td>
                                         <td th:inline="text">[[#{addonf.campaign.step3.between}]]&nbsp;{{openRule.startDate | date:format}}&nbsp;[[#{addonf.campaign.step3.and}]]&nbsp;{{openRule.endDate | date:format}}</td>
-                                        <td>{{openRule.maxDisplayByUser}}</td>
+                                        <td>{{displayMaxDisplayByUser(openRule)}}</td>
                                         <td>
                                             <a class="btn  btn-success" href="#" ng-click="modifyOpenRule(openRule)"><i class="fa fa fa-pencil"></i></a>
-                                            <a class="btn  btn-danger" href="#" ng-click="removeOpenRule(openRule)"><i class="fa fa-times"></i></a>
+                                            <a ng-if="openRule.canBeDelete" class="btn  btn-danger" href="#" ng-click="removeOpenRule(openRule)"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
 

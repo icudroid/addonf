@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.service.impl;
 
-import fr.k2i.adbeback.util.ConvertUtil;
+import fr.k2i.adbeback.webapp.util.ConvertUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

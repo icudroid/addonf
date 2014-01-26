@@ -2,11 +2,9 @@ package fr.k2i.adbeback.core.business.ad;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
-import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.player.Player;
 import lombok.Data;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.io.Serializable;

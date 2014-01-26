@@ -1,21 +1,20 @@
 package fr.k2i.adbeback.core.business.ad;
 
-import java.io.Serializable;
-import java.util.*;
-
-import javax.persistence.*;
-
-
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Role;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = IMetaData.TableMetadata.BRAND)
-public class Brand extends BaseObject implements Serializable ,UserDetails{
+public class Brand extends BaseObject implements Serializable{
 	private static final long serialVersionUID = -2695302801414355764L;
 
     @Id
@@ -89,16 +88,6 @@ public class Brand extends BaseObject implements Serializable ,UserDetails{
         getRoles().add(role);
     }
 
-    /**
-     * @return GrantedAuthority[] an array of roles.
-     * @see org.springframework.security.core.userdetails.UserDetails#getAuthorities()
-     */
-    @Transient
-    public Set<GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new LinkedHashSet<GrantedAuthority>();
-        authorities.addAll(roles);
-        return authorities;
-    }
 
     @Version
     public Integer getVersion() {
@@ -250,7 +239,6 @@ public class Brand extends BaseObject implements Serializable ,UserDetails{
         return password;
     }
 
-    @Override
     public String getUsername() {
         return getEmail();
     }

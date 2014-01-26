@@ -28,7 +28,7 @@ public class Address extends BaseObject implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = IMetaData.ColumnMetadata.Address.CITY_JOIN)
-    private City city;
+    private City city = new City();
 
     @Column(length = 150)
     public String getAddress() {

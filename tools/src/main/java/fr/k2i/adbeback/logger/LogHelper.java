@@ -2,9 +2,6 @@ package fr.k2i.adbeback.logger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -28,11 +25,11 @@ public class LogHelper {
     private static final String PERF_CATEGORY = "perfs.";
     private static Logger auditLogger = LogHelper.getLogger("audit");
 
-    public static final void audit(String message, Object... args) {
+/*    public static final void audit(String message, Object... args) {
         StringBuilder messageSB = new StringBuilder(message);
         completeWithAuthentication(messageSB);
         auditLogger.info(messageSB.toString(), args);
-    }
+    }*/
 
     public static final void business(String category, String message, Object... args) {
         getLogger(BUSINESS_CATEGORY + category).info(message, args);
@@ -83,7 +80,7 @@ public class LogHelper {
     public static final Logger getLogger(Class<?> clazz) {
         return getLogger(clazz.getName());
     }
-
+/*
     public static void completeWithAuthentication(StringBuilder msg) {
         msg.append(" by ");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -96,7 +93,7 @@ public class LogHelper {
                 msg.append(" coming from " + details.getRemoteAddress());
             }
         }
-    }
+    }*/
     
     /**
      * Get a logger whose category is prefixed with "business." .

@@ -19,6 +19,19 @@ controllers.controller('Step3Ctrl', ['$scope', 'Services', 'Campaign', '$modal',
 
         $scope.model = Campaign.getCurrent();
 
+
+        $scope.displayMaxDisplayByUser = function(rule){
+            if(rule.maxDisplayByUser == null){
+                return "Pas de limite";
+            }else if(rule.maxDisplayByUser==0){
+                return "désactivée";
+            }else{
+                return rule.maxDisplayByUser;
+            }
+
+        };
+
+
         $scope.addBrandRule = function(){
 
             var brandRuleModal = $modal.open({
@@ -186,7 +199,9 @@ controllers.controller('Step3Ctrl', ['$scope', 'Services', 'Campaign', '$modal',
 
 
             }
-        }
+        };
+
+
 
 
     }
@@ -211,14 +226,16 @@ controllers.controller('AddBrandRuleCtrl', ['$scope', 'Services', '$modalInstanc
                 startDate : options.rule.startDate,
                 endDate : options.rule.endDate
             };
-            $scope.btnValidate = "valider"
+            $scope.btnValidate = "valider";
+            $scope.nbDisplay = [1,2,3,4,5,6,7,8,9,10];
         }else{
             $scope.brandRule = options.rule;
-            $scope.btnValidate = "Modifier"
+            $scope.btnValidate = "Modifier";
+            $scope.nbDisplay = [0,1,2,3,4,5,6,7,8,9,10];
         }
         $scope.selectedBrand = {};
         $scope.format = "dd/MM/yyyy";
-        $scope.nbDisplay = [1,2,3,4,5,6,7,8,9,10];
+
 
         Services.getBrands(function(data){
             $scope.brands = data;

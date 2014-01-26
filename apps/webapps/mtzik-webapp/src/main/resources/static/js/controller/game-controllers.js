@@ -22,12 +22,20 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
         angular.element(document).bind("fullscreenchange", function(e) {
             if($(document).fullScreen()===false){
-                $location.path('/resume');
+                //console.debug("resume");
+                window.location.href = addonf.base+"resume";
+                //$location.path('/resume');
             }
         });
 
 
         Game.createGame({},function(data){
+
+            if(angular.isUndefined(data.game)){
+                $(document).fullScreen(false);
+                window.location.href = addonf.base+"cart.html";
+                return;
+            }
 
             $scope.index = 0;
             $scope.adGame = data;

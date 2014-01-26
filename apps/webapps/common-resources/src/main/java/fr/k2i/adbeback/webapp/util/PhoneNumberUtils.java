@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.util;
+package fr.k2i.adbeback.webapp.util;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;

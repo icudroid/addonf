@@ -2,7 +2,6 @@ package fr.k2i.adbeback.core.business.ad;
 
 import fr.k2i.adbeback.core.business.IMetaData;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 

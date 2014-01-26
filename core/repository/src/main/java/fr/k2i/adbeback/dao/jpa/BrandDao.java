@@ -1,12 +1,18 @@
 package fr.k2i.adbeback.dao.jpa;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+import fr.k2i.adbeback.core.business.ad.QAd;
+import fr.k2i.adbeback.core.business.ad.QBrand;
+import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
+import fr.k2i.adbeback.core.business.ad.rule.QBrandRule;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -32,5 +38,21 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
         super(Brand.class);
     }
 
+    @Transactional
+    @Override
+    public List<Brand> getAllPossible(BrandRule rule) {
+        List<Brand> noDisplayWith = rule.getNoDisplayWith();
+
+        QBrand qBrand = QBrand.brand;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        query.from(qBrand);
+        if(!noDisplayWith.isEmpty()){
+            query.where(qBrand.notIn(noDisplayWith));
+        }
+
+        return query.list(qBrand);
+
+    }
 }
 

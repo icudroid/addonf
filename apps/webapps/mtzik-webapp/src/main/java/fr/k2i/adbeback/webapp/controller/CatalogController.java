@@ -55,11 +55,7 @@ public class CatalogController{
         model.put("last5", mediaFacade.last5MusicForArtist(artistId));
         model.put("showmore",false);
 
-        if(!StringUtils.isEmpty(searchCommand.getReq())){
-            model.put("musics",mediaFacade.findMusicsForArtist(artistId, searchCommand.getReq(), pageable));
-        }else{
-            model.put("musics", new PageImpl<MusicBean>(Lists.<MusicBean>newArrayList()));
-        }
+        model.put("musics",mediaFacade.findMusicsForArtist(artistId, searchCommand.getReq(), pageable));
 
         model.put("artist", artistBean);
 
@@ -78,11 +74,7 @@ public class CatalogController{
         model.put("categories",genreRepository.findAll());
 
 
-        if(!StringUtils.isEmpty(searchCommand.getReq())){
-            model.put("musics",mediaFacade.findMusicsForLabel(majorId,searchCommand.getGenreId(), searchCommand.getReq(), pageable));
-        }else{
-            model.put("musics", new PageImpl<MusicBean>(Lists.<MusicBean>newArrayList()));
-        }
+        model.put("musics",mediaFacade.findMusicsForLabel(majorId,searchCommand.getGenreId(), searchCommand.getReq(), pageable));
 
         model.put("label", productorBean);
 

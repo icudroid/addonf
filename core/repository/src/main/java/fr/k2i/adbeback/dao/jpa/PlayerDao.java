@@ -15,9 +15,6 @@ import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.player.Player;

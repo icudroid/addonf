@@ -1,12 +1,10 @@
 package fr.k2i.adbeback.core.business.ad;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
-
-
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = IMetaData.TableMetadata.PRODUCT)

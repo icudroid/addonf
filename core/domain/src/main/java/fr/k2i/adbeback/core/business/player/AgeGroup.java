@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.player;
 
 import org.joda.time.DateTime;
+import org.joda.time.Years;
 
 import java.util.Date;
 
@@ -12,6 +13,8 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public enum AgeGroup{
+    $0_9(0,9),
+    $10_14(10,14),
     $15_17(15,17),
     $18_24(18,24),
     $25_34(25,34),
@@ -43,6 +46,17 @@ public enum AgeGroup{
     public Date maxDate() {
         DateTime now = new DateTime();
         return now.minusYears(this.max).toDate();
+    }
+
+    public static AgeGroup getGroupByBirhday(Date birthday) {
+        Years years = Years.yearsBetween(new DateTime(birthday), new DateTime());
+        for (AgeGroup ageGroup : values()) {
+            int age = years.getYears();
+            if(age >=ageGroup.getMin() && age <=ageGroup.getMax()){
+                return ageGroup;
+            }
+        }
+        return null;
     }
 }
 

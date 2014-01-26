@@ -77,16 +77,44 @@ public class SignupController{
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public String onSubmit(final Player player, final BindingResult errors, final HttpServletRequest request, final HttpServletResponse response)
+    public String onSubmit(final Player player, final BindingResult errors,Map<String, Object> model, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
+
+        model.put("civilities", Sex.values());
 
         if (validator != null) { // validator is null during testing
             validator.validate(player, errors);
 
-            if (StringUtils.isBlank(player.getPassword())) {
-                errors.rejectValue("password", "errors.required", new Object[] { getText("user.password", request.getLocale()) },
-                        "Password is a required field.");
+
+            if (StringUtils.isBlank(player.getUsername())) {
+                errors.rejectValue("username", "errors.required", new Object[] { getText("user.username.required", request.getLocale()) },
+                        "Username is a required field.");
             }
+
+            if (StringUtils.isBlank(player.getEmail())) {
+                errors.rejectValue("email", "errors.required", new Object[] { getText("user.email.required", request.getLocale()) },
+                        "Email is a required field.");
+            }
+
+            if (StringUtils.isBlank(player.getPassword())) {
+                errors.rejectValue("password", "errors.required", new Object[] { getText("user.password.required", request.getLocale()) },
+                        "Password is a required field.");
+            }else if(player.getPassword().length()<=6){
+                    errors.rejectValue("password", "errors.length", new Object[] { getText("user.password.length", request.getLocale()) },
+                        "Password is a required min 7 characters");
+            }
+
+
+            if (player.getAddress().getCity().getId()==null) {
+                errors.rejectValue("address", "errors.required", new Object[] { getText("user.address.required", request.getLocale()) },
+                        "Address is a required field.");
+            }
+
+            if (player.getBirthday()==null) {
+                errors.rejectValue("birthday", "errors.required", new Object[] { getText("user.birthday.required", request.getLocale()) },
+                        "Birthday is a required field.");
+            }
+
 
             if (errors.hasErrors()) {
                 return "signup";
@@ -112,6 +140,8 @@ public class SignupController{
             return null;
         } catch (final UserExistsException e) {
             errors.rejectValue("username", "errors.existing.user",
+                    new Object[] { player.getUsername(), player.getUsername() }, "duplicate user");
+            errors.rejectValue("email", "errors.existing.user",
                     new Object[] { player.getUsername(), player.getEmail() }, "duplicate user");
 
             return "signup";
@@ -125,12 +155,12 @@ public class SignupController{
             log.debug("Sending user '" + player.getUsername() + "' an account information e-mail");
         }
 
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("user",player.getUsername());
+        Map<String, Object> modelEmail = new HashMap<String, Object>();
+        modelEmail.put("user",player.getUsername());
 
         Email.Producer producer = Email.builder()
                 .subject("Welcome")
-                .model(model)
+                .model(modelEmail)
                 .content("email/welcome")
                 .recipients(player.getEmail())
                 .noAttachements();

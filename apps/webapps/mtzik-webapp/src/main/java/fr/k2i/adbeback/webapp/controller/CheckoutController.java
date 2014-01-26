@@ -3,6 +3,7 @@ package fr.k2i.adbeback.webapp.controller;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.jpa.GenreRepository;
 import fr.k2i.adbeback.webapp.bean.CartBean;
+import fr.k2i.adbeback.webapp.facade.AdGameFacade;
 import fr.k2i.adbeback.webapp.facade.MediaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,10 @@ public class CheckoutController{
 
     @RequestMapping("/checkout.html")
     public String checkout(Map<String, Object> model,HttpServletRequest request) throws Exception {
+        CartBean cart = (CartBean) request.getSession().getAttribute(AdGameFacade.CART);
+        if(cart.getNbProduct()==0){
+            return "redirect:/cart.html";
+        }
         return "checkout";
     }
 

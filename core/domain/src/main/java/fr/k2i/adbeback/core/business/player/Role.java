@@ -1,23 +1,12 @@
 package fr.k2i.adbeback.core.business.player;
 
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import fr.k2i.adbeback.core.business.BaseObject;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.springframework.security.core.GrantedAuthority;
 
-import fr.k2i.adbeback.core.business.BaseObject;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * This class is used to represent available roles in the database.
@@ -29,7 +18,7 @@ import fr.k2i.adbeback.core.business.BaseObject;
  */
 @Entity
 @Table(name = "role")
-public class Role extends BaseObject implements Serializable, GrantedAuthority {
+public class Role extends BaseObject implements Serializable {
     private static final long serialVersionUID = 3690197650654049848L;
     private Long id;
     private String name;

@@ -116,6 +116,9 @@ public class AdGameFacade {
 
 
         CartBean cart = (CartBean) request.getSession().getAttribute(CART);
+        if(cart.getNbProduct() == 0){
+            return null;
+        }
 
         SingleGooseLevel gooseLevel = gooseLevelDao.findForNbAds(cart.getMinScore());
 

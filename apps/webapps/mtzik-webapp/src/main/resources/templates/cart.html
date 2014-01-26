@@ -27,8 +27,8 @@
     <div layout:fragment="content" id="content">
         <div class="container">
             <a class="btn btn-default btn-sm back" th:utext="#{addonf.goBack}"><i class="fa fa-arrow-left fa-fw"></i> Back to Shopping</a>
-            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/game.html}" class="btn btn-primary btn-sm" th:utext="#{addonf.cart.goGame}"><i class="fa fa-fw fa-check"></i> Play and Win</a>
-            <a sec:authorize="isAnonymous()" th:href="@{/checkout.html}" class="btn btn-primary btn-sm" th:utext="#{addonf.backTo.checkout}"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
+            <a th:if="${session.cart.nbProduct > 0}"  sec:authorize="hasRole('ROLE_USER')" th:href="@{/game.html}" class="btn btn-primary btn-sm" th:utext="#{addonf.cart.goGame}"><i class="fa fa-fw fa-check"></i> Play and Win</a>
+            <a th:if="${session.cart.nbProduct > 0}"  sec:authorize="isAnonymous()" th:href="@{/checkout.html}" class="btn btn-primary btn-sm" th:utext="#{addonf.backTo.checkout}"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
         </div>
 
     <div class="container">
@@ -65,8 +65,8 @@
                     <div class="box-generic padding-none text-center">
                         <p class="lead margin-none strong innerAll border-bottom" th:utext="#{addonf.cart.total(${session.cart.minScore})}">Total: &euro;1,195.95</p>
                         <div class="innerAll">
-                            <a id="play" sec:authorize="hasRole('ROLE_USER')" href="javascript:;" class="btn btn-block btn-primary" th:utext="#{addonf.cart.goGame}"><i class="fa fa-fw fa-check"></i> Play and Win</a>
-                            <a sec:authorize="isAnonymous()" th:href="@{/checkout.html}" class="btn btn-block btn-primary" th:utext="#{addonf.backTo.checkout}"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
+                            <a th:if="${session.cart.nbProduct > 0}" id="play" sec:authorize="hasRole('ROLE_USER')" href="javascript:;" class="btn btn-block btn-primary" th:utext="#{addonf.cart.goGame}"><i class="fa fa-fw fa-check"></i> Play and Win</a>
+                            <a th:if="${session.cart.nbProduct > 0}"  sec:authorize="isAnonymous()" th:href="@{/checkout.html}" class="btn btn-block btn-primary" th:utext="#{addonf.backTo.checkout}"><i class="fa fa-fw fa-check"></i> Go to Checkout</a>
                         </div>
                     </div>
                 </div>

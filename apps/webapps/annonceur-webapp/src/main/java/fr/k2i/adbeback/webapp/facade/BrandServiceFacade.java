@@ -9,9 +9,10 @@ import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.crypto.DESCryptoService;
+import fr.k2i.adbeback.dao.IAdGameDao;
 import fr.k2i.adbeback.dao.jpa.*;
 import fr.k2i.adbeback.logger.LogHelper;
-import fr.k2i.adbeback.util.PhoneNumberUtils;
+import fr.k2i.adbeback.webapp.util.PhoneNumberUtils;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.AdService;
 import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
@@ -95,6 +96,9 @@ public class BrandServiceFacade {
     @Value("${addonf.logo.location}")
     private String logoPath;
 
+
+    @Autowired
+    private IAdGameDao adGameDao;
 
     @Transactional
     public void enrollBrand(EnrollBrandCommand command,Locale locale){
@@ -465,7 +469,10 @@ public class BrandServiceFacade {
 
         for (AdRule adRule : ad.getRules()) {
             rules.addRule(adRule);
-            service.addService(adRule,logoPath);
+            if(adRule instanceof fr.k2i.adbeback.core.business.ad.rule.AdService){
+                boolean used = adGameDao.isGeneratedWithRule((fr.k2i.adbeback.core.business.ad.rule.AdService) adRule);
+                service.addService(adRule,logoPath,used);
+            }
         }
 
         campaignCommand.setRules(rules);

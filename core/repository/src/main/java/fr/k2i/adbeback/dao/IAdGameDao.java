@@ -2,6 +2,8 @@ package fr.k2i.adbeback.dao;
 
 import java.util.List;
 
+import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.media.Media;
 import fr.k2i.adbeback.core.business.media.Music;
@@ -30,5 +32,8 @@ public interface IAdGameDao extends IGenericDao<AbstractAdGame, Long> {
 
     @Transactional
     Boolean musicIsWonByPlayer(Player player, Long musicId);
+
+    @Transactional
+    boolean isGeneratedWithRule(AdService adRule);
 }
 

@@ -2,13 +2,10 @@ package fr.k2i.adbeback.core.business.user;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.player.Role;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -77,16 +74,6 @@ public abstract class User extends BaseObject implements Serializable {
         getRoles().add(role);
     }
 
-    /**
-     * @return GrantedAuthority[] an array of roles.
-     * @see org.springframework.security.core.userdetails.UserDetails#getAuthorities()
-     */
-    @Transient
-    public Set<GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new LinkedHashSet<GrantedAuthority>();
-        authorities.addAll(roles);
-        return authorities;
-    }
 
     @Version
     public Integer getVersion() {

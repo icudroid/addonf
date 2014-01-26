@@ -5,9 +5,6 @@ import fr.k2i.adbeback.core.business.user.User_;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
@@ -24,7 +21,7 @@ import java.util.List;
  *   the new BaseDaoHibernate implementation that uses generics.
 */
 @Repository("adminDao")
-public class AdminDao extends GenericDaoJpa<User, Long> implements fr.k2i.adbeback.dao.IAdminDao, UserDetailsService {
+public class AdminDao extends GenericDaoJpa<User, Long> implements fr.k2i.adbeback.dao.IAdminDao {
 
     /**
      * Constructor that sets the entity to User.class.
@@ -33,20 +30,6 @@ public class AdminDao extends GenericDaoJpa<User, Long> implements fr.k2i.adbeba
         super(User.class);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        CriteriaBuilderHelper<User> helper = new CriteriaBuilderHelper(getEntityManager(),User.class);
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.get(User_.username), username)
-        );
-        List users = helper.getResultList();
-
-        if (users == null || users.isEmpty()) {
-            throw new UsernameNotFoundException("user '" + username + "' not found...");
-        } else {
-            return (UserDetails) users.get(0);
-        }
-    }
 
     @Override
     public String getUserPassword(String username) {

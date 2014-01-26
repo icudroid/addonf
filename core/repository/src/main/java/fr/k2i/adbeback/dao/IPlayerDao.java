@@ -4,8 +4,6 @@ import java.util.List;
 
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.user.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
