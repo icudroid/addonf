@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
         xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout"
+        layout:decorator="layout/logged"
         ng-app="adminApp">
 <head>
     <title th:text="${title}">Title</title>
@@ -27,16 +27,15 @@
 
 
 <body>
-<div layout:fragment="content">
-    <ul class="nav nav-pills">
-        <li><a th:href="@{/}">Home</a></li>
-        <li class="active"><a th:href="@{/manage/gooseGame}">GooseGame admin</a></li>
-    </ul>
 
-    <div class="container">
-        <ng-view></ng-view>
-    </div>
+<div layout:fragment="menu">
+    <div th:replace="layout/fragment/menu(activeFirstMenu=${'gooseGame'},activeSecondMenu=${''})"></div>
+</div>
 
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{home.explain}"></h4>
+
+<div layout:fragment="content" class="col-table">
+    <ng-view></ng-view>
 </div>
 </body>
 </html>

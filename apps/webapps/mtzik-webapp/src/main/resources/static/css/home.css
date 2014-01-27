@@ -186,7 +186,7 @@
   color: #444 !important;
 }
 .text-faded {
-  color: #d7d7d7 !important;
+  color: #AAAAAA !important;
 }
 .text-muted-dark {
   color: #a2a2a2;
@@ -417,7 +417,7 @@ html {
 }
 body {
   font-family: 'Roboto Light', sans-serif;
-  background: #fff;
+  background: none repeat scroll 0 0 #FFFFFF;
   font-size: 13px;
   color: #525252;
   padding-top: 90px;
@@ -1271,7 +1271,7 @@ input[type="color"],
   -webkit-border-radius: 0 0 0 0;
   -moz-border-radius: 0 0 0 0;
   border-radius: 0 0 0 0;
-  border-color: #efefef;
+  border-color: #AAAAAA;
 }
 .uniformjs .radio .disabled input[type="radio"],
 .uniformjs .checkbox .disabled input[type="checkbox"] {
@@ -1331,7 +1331,7 @@ input[type=text],
 input[type=password],
 select,
 textarea {
-  border-color: #efefef;
+  border-color: #AAAAAA;
   color: #A7A7A7;
 }
 .control-label.center {
@@ -1381,7 +1381,7 @@ textarea {
   border-color: #efefef;
 }
 .form-control {
-  border-color: #efefef;
+  border-color: #AAAAAA;
   box-shadow: none;
 }
 .friends-search {
@@ -1908,7 +1908,7 @@ html.csstransitions.csstransforms3d #slide1 .block {
   padding: 0;
 }
 .widget.widget-tabs-icons-only .widget-head ul li {
-  color: #dadada;
+  color: #AAAAAA;
   float: left;
   display: block;
   padding: 0 10px 0 0;
@@ -3548,9 +3548,9 @@ div.glyphicons.glyphicon-regular i:before {
   -ms-transform: scale(1.05);
   transform: scale(1.05);
   z-index: 1;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
 }
 .table-pricing-3 > ul > li.active .body {
   border-color: #fdedec;
@@ -4325,7 +4325,7 @@ div.glyphicons.glyphicon-regular i:before {
   border-radius: 4px 4px 0 0;
 }
 #realestate-map-search .search-navbar h3 {
-  color: #dadada;
+  color: #AAAAAA;
 }
 #realestate-map-search .search-navbar ul {
   text-align: left;

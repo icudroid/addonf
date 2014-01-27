@@ -255,7 +255,7 @@ html {
 }
 body {
   font-family: 'Roboto Light', sans-serif;
-  background: #fff;
+  background: none repeat scroll 0 0 #FFFFFF;
   font-size: 13px;
   color: #525252;
   padding-top: 90px;

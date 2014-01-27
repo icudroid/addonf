@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      class="app">
+<head>
+    <title>Admin annonceur</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+
+    <!-- 
+    **********************************************************
+    In development, use the LESS files and the less.js compiler
+    instead of the minified CSS loaded by default.
+    **********************************************************
+    <link rel="stylesheet/less" href="../assets/less/admin/module.admin.page.dashboard_analytics.sidebar_type.discover.less" />
+    -->
+
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/bootstrap/css/bootstrap.min.css}"/>
+
+    <link rel="stylesheet"
+          th:href="@{/coral/assets/css/admin/module.admin.page.login.sidebar_type.discover.min.css}"/>
+
+
+    <script th:src="@{/coral/assets/components/library/jquery/jquery.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/modernizr/modernizr.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/less-js/less.min.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
+
+</head>
+<body class=" loginWrapper">
+
+    <!-- Main Container Fluid -->
+    <div class="container-fluid menu-hidden">
+        <!-- Content -->
+        <div id="content">
+            <div class="layout-app">
+                <!-- row-app -->
+                <div class="row row-app">
+                    <!-- col -->
+                    <!-- col-separator.box -->
+                    <div class="col-separator col-unscrollable box">
+
+                        <!-- col-table -->
+                        <div class="col-table" layout:fragment="content">
+
+                        </div>
+                        <!-- // END col-table -->
+
+                    </div>
+                    <!-- // END col-separator.box -->
+                </div>
+                <!-- // END row-app -->
+            </div>
+        </div>
+    </div>
+
+<!-- Global -->
+<script>
+    var basePath = '',
+            commonPath = '../assets/',
+            rootPath = '../',
+            DEV = false,
+            componentsPath = '../assets/components/';
+
+    var primaryColor = '#eb6a5a',
+            dangerColor = '#b55151',
+            successColor = '#609450',
+            infoColor = '#4a8bc2',
+            warningColor = '#ab7a4b',
+            inverseColor = '#45484d';
+
+    var themerPrimaryColor = primaryColor;
+</script>
+
+<script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/coral/assets/components/plugins/nicescroll/jquery.nicescroll.min.js}"></script>
+<script th:src="@{/coral/assets/components/plugins/breakpoints/breakpoints.js}"></script>
+<script th:src="@{/coral/assets/components/core/js/animations.init.js}"></script>
+<script th:src="@{/coral/assets/components/core/js/core.init.js}"></script>
+
+</body>
+</html>

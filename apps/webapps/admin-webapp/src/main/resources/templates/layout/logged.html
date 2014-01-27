@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      class="app">
+<head>
+    <title>Admin annonceur</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+
+    <!-- 
+    **********************************************************
+    In development, use the LESS files and the less.js compiler
+    instead of the minified CSS loaded by default.
+    **********************************************************
+    <link rel="stylesheet/less" href="../assets/less/admin/module.admin.page.dashboard_analytics.sidebar_type.discover.less" />
+    -->
+
+    <link rel="stylesheet" th:href="@{/coral/assets/components/library/bootstrap/css/bootstrap.min.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+
+    <script th:inline="javascript">
+        var addonf = {};
+        addonf.base = [[@{/}]];
+        addonf.static = [[${staticUrl}]];
+        addonf.token = [[${_csrf.token}]];
+    </script>
+
+    <script th:src="@{/coral/assets/components/library/jquery/jquery.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
+    <script th:src="@{/coral/assets/components/library/modernizr/modernizr.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/less-js/less.min.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
+
+</head>
+<body>
+
+<!-- Main Container Fluid -->
+<div class="container-fluid menu-hidden menu-right-hidden">
+
+<!-- Main Sidebar Menu -->
+<div id="menu" class="hidden-print hidden-xs sidebar-blue" layout:fragment="menu">
+
+    <div id="sidebar-discover-wrapper">
+        <div id="logoWrapper">
+            <a href="index.html?lang=en" id="logo" class="animated fadeInDown"><img th:src="@{/coral/assets/images/logo/app-logo-style-default.png}"/></a>
+        </div>
+        <ul class="list-unstyled">
+
+            <li>
+                <a href="#sidebar-discover-example" data-toggle="sidebar-discover"><span
+                        class="badge pull-right badge-primary">7</span><i class="fa fa-stack-exchange"></i><span>Submenus</span></a>
+
+                <div id="sidebar-discover-example" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Submenu example</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li class="active"><a href=""><i class="fa fa-flash"></i> Active</a></li>
+                        <li><a href=""><i class="fa fa-male"></i> Menu item</a></li>
+                        <li><a href=""><i class="fa fa-comments-o"></i> Menu item</a></li>
+                        <li class="hasSubmenu">
+                            <a href="#submenu" data-toggle="collapse"><span
+                                    class="badge pull-right badge-primary">30</span><i class="fa fa-envelope"></i> 2nd
+                                level</a>
+                            <ul class="collapse" id="submenu">
+                                <li><a href="">Menu item</a></li>
+                                <li><a href="">Menu item</a></li>
+                                <li><a href="">Menu item</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="active"><a href="dashboard_analytics.html?lang=en"><i
+                    class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+            <li>
+                <a href="#sidebar-discover-account" data-toggle="sidebar-discover" class="glyphicons user"><i></i><span>Account</span></a>
+
+                <div id="sidebar-discover-account" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Account</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li><a href="login.html?lang=en"><i class="fa fa-lock"></i> Login</a></li>
+                        <li><a href="signup.html?lang=en"><i class="fa fa-pencil"></i> Signup</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="profile_resume.html?lang=en"><i class="fa fa-download"></i><span>Profile / CV</span></a></li>
+            <li><a href="landing.html?lang=en"><i class="fa fa-share"></i><span>Landing</span></a></li>
+            <li><a href="employees.html?lang=en" class="glyphicons group"><i></i><span>Employees</span></a></li>
+            <li><a href="error.html?lang=en" class="glyphicons warning_sign"><i></i><span>Error</span></a></li>
+            <li><a href="ui.html?lang=en" class="glyphicons adjust_alt"><i></i><span>Elements</span></a></li>
+        </ul>
+    </div>
+
+
+</div>
+<!-- // Main Sidebar Menu END -->
+
+<!-- Main Sidebar Menu -->
+<!-- // Main Sidebar Menu END -->
+
+<!-- Content -->
+<div id="content">
+
+
+<div class="navbar hidden-print navbar-inverse box main" role="navigation">
+    <div class="user-action user-action-btn-navbar pull-left border-right">
+        <button class="btn btn-sm btn-navbar btn-primary btn-stroke"><i class="fa fa-bars fa-2x"></i></button>
+    </div>
+
+    <div class="user-action visible-xs user-action-btn-navbar pull-right">
+        <button class="btn btn-sm btn-navbar-right btn-primary"><i class="fa fa-fw fa-arrow-right"></i><span
+                class="menu-left-hidden-xs"> Modules</span></button>
+    </div>
+    <div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs">
+        <div class="dropdown username hidden-xs pull-left">
+            <a class="dropdown-toggle " data-toggle="dropdown" href="#">
+				<span class="media margin-none">
+					<span class="pull-left"><img th:src="@{/img/default/default-user.png}" alt="user" class="img-circle" /></span>
+					<span class="media-body">
+						<span sec:authentication="name">Bob</span> <span class="caret"></span>
+					</span>
+				</span>
+            </a>
+            <ul class="dropdown-menu pull-right">
+                <li><a th:href="@{/custom-logout}" th:text="#{addonf.logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<!-- // END navbar -->
+
+
+
+<div class="layout-app">
+    <div class="row row-app">
+        <div class="col-md-12">
+            <div class="col-separator col-separator-first col-unscrollable bg-none">
+
+                <div class="col-table">
+                    <h4 class="innerAll bg-white margin-none" layout:fragment="formTile">Form Wizards</h4>
+
+                    <div class="col-separator-h"></div>
+
+                    <!-- col-table-row -->
+                    <div class="col-table-row">
+                        <div class="col-app col-unscrollable">
+                            <div class="col-app" layout:fragment="content">
+                                My content
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<!-- // Content END -->
+
+<div class="clearfix"></div>
+<!-- // Sidebar menu & content wrapper END -->
+
+<!-- Footer -->
+<div id="footer" class="hidden-print">
+
+    <!--  Copyright Line -->
+    <div class="copy">&copy; 2012 - 2014 - <a href="http://www.addonf.com">Addonf</a> - All Rights Reserved. - Current
+        version: v1.0.0 </div>
+    <!--  End Copyright Line -->
+
+</div>
+<!-- // Footer END -->
+
+
+</div>
+<!-- // Main Container Fluid END -->
+
+
+<!-- Global -->
+<script>
+    var basePath = '',
+            commonPath = '../assets/',
+            rootPath = '../',
+            DEV = false,
+            componentsPath = '../assets/components/';
+
+    var primaryColor = '#eb6a5a',
+            dangerColor = '#b55151',
+            successColor = '#609450',
+            infoColor = '#4a8bc2',
+            warningColor = '#ab7a4b',
+            inverseColor = '#45484d';
+
+    var themerPrimaryColor = primaryColor;
+</script>
+
+
+
+
+<script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/coral/assets/components/plugins/nicescroll/jquery.nicescroll.min.js}"></script>
+<script th:src="@{/coral/assets/components/plugins/breakpoints/breakpoints.js}"></script>
+<script th:src="@{/coral/assets/components/core/js/animations.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/jquery.flot.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/jquery.flot.resize.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/plugins/jquery.flot.tooltip.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/custom/js/flotcharts.common.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/custom/js/flotchart-line-2.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/custom/js/flotchart-bars-horizontal.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/custom/js/flotchart-mixed-1.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/easy-pie/assets/lib/js/jquery.easy-pie-chart.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/easy-pie/assets/custom/easy-pie.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/sparkline/jquery.sparkline.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/charts/sparkline/sparkline.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/maps/vector/assets/lib/jquery-jvectormap-1.2.2.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/maps/vector/assets/lib/maps/jquery-jvectormap-world-mill-en.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/maps/vector/assets/custom/maps-vector.world-map-markers.init.js}"></script>
+
+
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/lib/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/lib/extras/TableTools/media/js/TableTools.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/lib/extras/ColVis/media/js/ColVis.min.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/custom/js/DT_bootstrap.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/datatables/assets/custom/js/datatables.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/forms/elements/fuelux-checkbox/fuelux-checkbox.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/forms/elements/bootstrap-select/assets/lib/js/bootstrap-select.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/forms/elements/bootstrap-select/assets/custom/js/bootstrap-select.init.js}"></script>
+<script th:src="@{/coral/assets/components/modules/admin/tables/classic/assets/js/tables-classic.init.js}"></script>
+<script  th:src="@{/coral/assets/components/modules/admin/forms/elements/bootstrap-datepicker/assets/lib/js/bootstrap-datepicker.js}"></script>
+
+<script th:src="@{/coral/assets/components/core/js/sidebar.main.init.js}"></script>
+<script th:src="@{/coral/assets/components/core/js/sidebar.discover.init.js}"></script>
+<script th:src="@{/coral/assets/components/core/js/core.init.js}"></script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import fr.k2i.adbeback.dao.jpa.GooseLevelDao;
 import fr.k2i.adbeback.webapp.bean.GooseLevelGame;
 import fr.k2i.adbeback.webapp.bean.JsonResultError;
 import fr.k2i.adbeback.webapp.facade.GooseGameFacade;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +59,7 @@ public class GooseGameController {
         if(createBean.getMultiple() != null && createBean.getMultiple()==true){
             return gooseGameFacade.generateMultiLevel(createBean.getStrong(),createBean.getLevel(), createBean.getMinAmount());
         }else{
-            return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel());
+            return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel(),createBean.getNbMaxAdByPlay());
         }
     }
 
@@ -94,75 +95,20 @@ public class GooseGameController {
 
 }
 
-
+@Data
 class SearchBean implements Serializable{
     private Boolean multiple;
     private Integer level;
-
-    Boolean getMultiple() {
-        return multiple;
-    }
-
-    void setMultiple(Boolean multiple) {
-        this.multiple = multiple;
-    }
-
-    Integer getLevel() {
-        return level;
-    }
-
-    void setLevel(Integer level) {
-        this.level = level;
-    }
 }
 
 
-
+@Data
 class CreateBean implements Serializable{
     private Boolean multiple;
     private Integer level;
     private Integer strong;
     private Integer nbCase;
     private Integer minAmount;
-
-    Integer getMinAmount() {
-        return minAmount;
-    }
-
-    void setMinAmount(Integer minAmount) {
-        this.minAmount = minAmount;
-    }
-
-    Integer getStrong() {
-        return strong;
-    }
-
-    void setStrong(Integer strong) {
-        this.strong = strong;
-    }
-
-    Integer getNbCase() {
-        return nbCase;
-    }
-
-    void setNbCase(Integer nbCase) {
-        this.nbCase = nbCase;
-    }
-
-    Boolean getMultiple() {
-        return multiple;
-    }
-
-    void setMultiple(Boolean multiple) {
-        this.multiple = multiple;
-    }
-
-    Integer getLevel() {
-        return level;
-    }
-
-    void setLevel(Integer level) {
-        this.level = level;
-    }
+    private Integer nbMaxAdByPlay;
 }
 

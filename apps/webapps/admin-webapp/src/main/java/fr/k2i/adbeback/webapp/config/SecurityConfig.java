@@ -37,31 +37,32 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+
+        http.authorizeRequests()
                     .antMatchers("/login").permitAll()
                     .antMatchers("/logout-success").permitAll()
+                    .antMatchers("/coral/**").permitAll()
                     .antMatchers("/lib/**").permitAll()
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/js/**").permitAll()
                     .antMatchers("/template/**").permitAll()
                     .antMatchers("/custom-logout").hasRole("ADMIN")
                     .antMatchers("/manage/**").hasRole("ADMIN")
-                    .antMatchers("/**").hasRole("ADMIN")
-                //.fullyAuthenticated()
-                    .and()
-                        .formLogin()
-                            .loginPage("/login")
-                            .failureUrl("/login?error")
-                        .permitAll()
-                    .and()
-                        .logout()
+                    .antMatchers("/**").hasRole("ADMIN");
+
+
+        http.formLogin()
+                        .loginPage("/login")
+                        .failureUrl("/login?error")
+                        .permitAll();
+
+        http.logout()
                             .deleteCookies("remove")
                             .invalidateHttpSession(false)
                             .logoutUrl("/custom-logout")
-                            .logoutSuccessUrl("/logout-success")
-                    .and()
-                        .sessionManagement()
+                            .logoutSuccessUrl("/logout-success");
+
+        http.sessionManagement()
                             .maximumSessions(1)
                             .expiredUrl("/login?expired");
     }

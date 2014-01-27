@@ -27,8 +27,8 @@
 
     <div class="container">
         <div class="row innerTB">
-            <div class="col-md-9">
-                <h5 class="text-faded margin-none" th:text="#{addonf.home.news}">News</h5>
+            <div class="col-md-9" style="border: 1px solid #AAAAAA;">
+                <h4 class="text-faded margin-none" th:text="#{addonf.home.news}">News</h4>
                 <div class="row">
 
                     <div class="col-sm-4 col-xs-6" th:each="newMusic : ${news}">
@@ -52,7 +52,6 @@
                     </div>
                 </div>
             </div>
-
             <div th:substituteby="/layout/fragment/top10"></div>
 
         </div>

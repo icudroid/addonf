@@ -33,10 +33,10 @@ public class GooseGameFacade {
 
 
     @Transactional
-    public GooseLevelGame generateSingleLevel(Integer nbCase,Integer numLevel){
+    public GooseLevelGame generateSingleLevel(Integer nbCase,Integer numLevel,Integer nbMaxAdByPlay){
         SingleGooseLevel level = new SingleGooseLevel();
         level.setLevel(numLevel);
-        level.setNbMaxAdByPlay(nbCase);
+        level.setNbMaxAdByPlay(nbMaxAdByPlay);
 
         level.startCase(new StartLevelGooseCase());
 

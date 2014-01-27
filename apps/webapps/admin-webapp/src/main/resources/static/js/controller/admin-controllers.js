@@ -74,7 +74,7 @@ adminControllers.controller('CreateCtrl', ['$scope', 'Admin', '$interval','$time
         ];
 
         $scope.create = function(){
-            Admin.create({multiple:$scope.multiple,level:$scope.level,strong:$scope.strong,nbCase:$scope.nbCase,minAmount:$scope.minAmount},function(data){
+            Admin.create({multiple:$scope.multiple,level:$scope.level,strong:$scope.strong,nbCase:$scope.nbCase,minAmount:$scope.minAmount,nbMaxAdByPlay:$scope.nbMaxAdByPlay},function(data){
                 $scope.result = data;
             });
         }
