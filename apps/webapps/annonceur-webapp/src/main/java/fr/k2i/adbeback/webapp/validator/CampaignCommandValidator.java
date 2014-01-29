@@ -6,6 +6,7 @@ import fr.k2i.adbeback.webapp.bean.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -123,13 +124,21 @@ public class CampaignCommandValidator implements Validator{
             errors.rejectValue("initialAmonut","required");
         }
         String name = command.getName();
-        if(name==null){
+        if(StringUtils.isEmpty(name)){
             errors.rejectValue("name","required");
         }
 
         if(command.getAdFile().isEmpty()){
             errors.rejectValue("adFile","required");
         }
+
+
+        if(command.getDisplayAd().equals(AdDisplay.STATIC)){
+            if(command.getDisplayDuration()<10 || command.getDisplayDuration()>30){
+                errors.rejectValue("displayDuration","more.than.10.seconds");
+            }
+        }
+
 
     }
 

@@ -12,6 +12,8 @@
     <script th:src="@{/lib/angular-1.2.0/angular-resource.js}"></script>
     <script th:src="@{/lib/angular-1.2.0/angular-route.js}"></script>
 
+    <script th:src="@{/lib/angular-1.2.0/i18n/angular-locale_fr-fr.js}"></script>
+
     <script th:src="@{/lib/ui-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.js}"></script>
 
     <script th:inline="javascript" th:with="df=#{${'yyyy-MM-dd'}}">
@@ -91,7 +93,7 @@
                                                         [[#{addonf.campaign.image.label}]]
                                                     </label>
                                                 </div>
-                                                <div class="col-md-8" id="durationBlock" ng-show="model.displayAd == 'STATIC'">
+                                                <div id="durationBlock" ng-show="model.displayAd == 'STATIC'"  th:class="${#fields.hasErrors('displayDuration')}? 'form-group has-error col-md-8':'form-group col-md-8'">
                                                     <label for="adFile" class="control-label" th:text="#{addonf.campaign.display.duration}">Durée d'affichage de l'image en secondes</label>
                                                     <div class="input-group">
                                                         <input class="form-control" type="number" th:field="*{displayDuration}"/>
@@ -130,10 +132,10 @@
                                                 <div th:class="${#fields.hasErrors('startDate')}? 'form-group has-error':'form-group'">
                                                     <label for="startDate" class="control-label" th:text="#{addonf.campaign.startDate}" ng-readonly="cannotChangeStartDate">Date de début</label>
                                                     <div class="input-group ">
-                                                        <input id="startDate" name="startDate" type="text" class="form-control" min="minDate" datepicker-popup="{{format}}" ng-model="model.startDate" is-open="startDatepicker.opened"  close-text="Fermer" />
-                                                        <div class="input-group-btn"><button class="btn" ng-click="openDate(startDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
-                                                        <span class="help-block" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">Error</span>
+                                                        <input id="startDate" name="startDate" type="text" class="form-control" min="minDate" datepicker-popup="{{format}}" ng-model="model.startDate" is-open="startDatepicker.opened"  close-text="Fermer" show-button-bar="false" readonly="true"/>
+                                                        <div class="input-group-btn"><button  type="button" class="btn" ng-click="openDate(startDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
                                                     </div>
+                                                    <span class="help-block" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">Error</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -141,10 +143,10 @@
                                                     <label for="endDate" class="control-label" th:text="#{addonf.campaign.endDate}">Date de fin</label>
 
                                                     <div class="input-group">
-                                                        <input id="endDate" name="endDate" type="text" class="form-control" min="minDate" datepicker-popup="{{format}}" ng-model="model.endDate" is-open="endDatepicker.opened"  close-text="Fermer" />
-                                                        <div class="input-group-btn"><button class="btn" ng-click="openDate(endDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
-                                                        <span class="help-block" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">Error</span>
+                                                        <input id="endDate" name="endDate" type="text" class="form-control" min="minDate" datepicker-popup="{{format}}" ng-model="model.endDate" is-open="endDatepicker.opened"  close-text="Fermer" show-button-bar="false" readonly="true"/>
+                                                        <div class="input-group-btn"><button type="button" class="btn" ng-click="openDate(endDatepicker)"><i class="glyphicon glyphicon-calendar"></i></button></div>
                                                     </div>
+                                                    <span class="help-block" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">Error</span>
 
                                                 </div>
                                             </div>

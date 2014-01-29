@@ -209,8 +209,8 @@ controllers.controller('Step3Ctrl', ['$scope', 'Services', 'Campaign', '$modal',
 
 
 
-controllers.controller('AddBrandRuleCtrl', ['$scope', 'Services', '$modalInstance', 'options',
-    function($scope, Services, $modalInstance ,options) {
+controllers.controller('AddBrandRuleCtrl', ['$scope', 'Services', '$modalInstance', '$timeout','options',
+    function($scope, Services, $modalInstance , $timeout, options) {
         $scope.formatImage = [{title : 'Image files', extensions : 'jpg,jpeg,gif,png'}];
         $scope.base=addonf.base;
         $scope.brands = [];

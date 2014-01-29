@@ -5,13 +5,13 @@
         {{match.model.zipcode}} {{match.model.city}}, {{match.model.country.code}}
     </a>
 </script>
-
+<form role="form" autocomplete="off" ng-submit="ok()">
 <div class="modal-header">
     <h3>Dans quelle ville voulez vous que votre publicité soit affichée ?</h3>
 </div>
 <div class="modal-body">
 
-    <form role="form">
+
 
         <div class="form-group">
             <label for="citySearch" class="col-sm-2 control-label">Ville</label>
@@ -26,15 +26,18 @@
             <div class="col-sm-10">
                 <input id="around" type="number" ng-model="selectedCity.around" placeholder="Ex : 10" class="form-control" />
             </div>
+            <span class="help-block" ng-show="errorAround">Dois être de minimum 10 kilomètres</span>
+
         </div>
         <div class="clearfix"></div>
-    </form>
+
 
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">Ajouter</button>
+    <button class="btn btn-primary">Ajouter</button>
     <button class="btn btn-warning" ng-click="cancel()">Annuler</button>
 </div>
+</form>
 </body>
 </html>

@@ -17,7 +17,10 @@ controllers.controller('Step2Ctrl', ['$scope', 'Services', 'Campaign', '$modal',
                         });
 
 
-    $scope.model = Campaign.getCurrent();
+    $scope.model = Campaign.getCurrent(function(){
+        $scope.alreadySex = ($scope.model.rules.sexRule != null);
+        $scope.alreadyAge = ($scope.model.rules.ageRule != null);
+    });
 
     Services.getSexes(function(data){
         $scope.sexes = data;
@@ -213,7 +216,6 @@ controllers.controller('Step2Ctrl', ['$scope', 'Services', 'Campaign', '$modal',
     };
 
 
-
     }
 ]);
 
@@ -250,6 +252,8 @@ controllers.controller('AddCityRuleCtrl', ['$scope', 'Services', '$modalInstance
             around: 0
         };
 
+        $scope.errorAround = false;
+
         $scope.getCitiesByName = function(val){
             return $http.get(addonf.base+'getTownsByName/'+val ,{
                 params: {
@@ -270,7 +274,12 @@ controllers.controller('AddCityRuleCtrl', ['$scope', 'Services', '$modalInstance
         if($scope.selectedCity.city==null || $scope.selectedCity.around==null){
          window.alert("Données incomplètes");
         }else{
-            $modalInstance.close($scope.selectedCity);
+            if($scope.selectedCity.around<10){
+                $scope.errorAround = true;
+            }else{
+                $modalInstance.close($scope.selectedCity);
+            }
+
         }
     };
 
@@ -312,11 +321,24 @@ controllers.controller('SetAgeRuleCtrl', ['$scope', 'Services', '$modalInstance'
             ageMin: 18,
             ageMax: 99
         };
+        $scope.errorMin = false;
+        $scope.errorMax = false;
 
         $scope.ok = function () {
             if($scope.ageRule.ageMin==null ||$scope.ageRule.ageMax==null){
                 window.alert("Données incomplètes");
             }else{
+
+                if($scope.ageRule.ageMin <13){
+                    $scope.errorMin = true;
+                    return;
+                }
+
+                if($scope.ageRule.ageMax >120){
+                    $scope.errorMax = true;
+                    return;
+                }
+
                 $modalInstance.close( $scope.ageRule);
             }
 

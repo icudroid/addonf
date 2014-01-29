@@ -59,7 +59,7 @@ public class GooseGameController {
         if(createBean.getMultiple() != null && createBean.getMultiple()==true){
             return gooseGameFacade.generateMultiLevel(createBean.getStrong(),createBean.getLevel(), createBean.getMinAmount());
         }else{
-            return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel(),createBean.getNbMaxAdByPlay());
+            return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel(),createBean.getNbError());
         }
     }
 
@@ -109,6 +109,6 @@ class CreateBean implements Serializable{
     private Integer strong;
     private Integer nbCase;
     private Integer minAmount;
-    private Integer nbMaxAdByPlay;
+    private Integer nbError;
 }
 
