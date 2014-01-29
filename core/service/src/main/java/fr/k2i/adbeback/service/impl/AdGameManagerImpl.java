@@ -252,14 +252,16 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 				OpenPossibility pp = new OpenPossibility();
 				pp.setAd(ad);
 				if (correct == i) {
-					pp.setAnswer(or.getCorrect().getResponse());
+					pp.setAnswerText(or.getCorrect().getResponse());
+                    pp.setAnswerImage(or.getCorrect().getImage());
 				} else {
 					int ramdom;
 					do {
 						ramdom = ramRandom.nextInt(responses.size());
 					} while (answers.contains(ramdom));
 					answers.add(ramdom);
-					pp.setAnswer(responses.get(ramdom).getResponse());
+					pp.setAnswerText(responses.get(ramdom).getResponse());
+                    pp.setAnswerImage(responses.get(ramdom).getImage());
 				}
 				possibilities.add(pp);
 			}

@@ -48,7 +48,7 @@
             </td>
             <td>
                                         <span th:each="genre,iterStat : ${music.categories}">
-                                            <span th:utext="#{'addonf.reference.'+${genre.codeGenre}}"></span>
+                                            <span th:utext="#{'addonf.reference.genre.'+${genre.codeGenre}}"></span>
                                             <span th:if="${!iterStat.last}">, </span>
                                         </span>
             </td>

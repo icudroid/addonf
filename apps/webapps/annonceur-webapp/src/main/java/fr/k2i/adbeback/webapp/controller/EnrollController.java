@@ -3,7 +3,7 @@ package fr.k2i.adbeback.webapp.controller;
 import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.crypto.DESCryptoService;
-import fr.k2i.adbeback.dao.jpa.CountryRepository;
+import fr.k2i.adbeback.dao.ICountryDao;
 import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.webapp.bean.EnrollBrandCommand;
 import fr.k2i.adbeback.webapp.facade.BrandServiceFacade;
@@ -33,7 +33,7 @@ import java.util.*;
 public class EnrollController {
 
     @Autowired
-    private CountryRepository countryRepository;
+    private ICountryDao countryDao;
 
 
     @Autowired
@@ -60,7 +60,7 @@ public class EnrollController {
     @ModelAttribute("values")
     public Map<String,Object> model(){
         Map<String,Object> model = new HashMap<String, Object>();
-        Iterable<Country> all = countryRepository.findAll();
+        Iterable<Country> all = countryDao.getAll();
         List<String> countries = new ArrayList<String>();
         Iterator<Country> iterator = all.iterator();
         while (iterator.hasNext()) {

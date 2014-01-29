@@ -7,8 +7,8 @@ import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
 import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
 import fr.k2i.adbeback.dao.IAdDao;
+import fr.k2i.adbeback.dao.IBrandDao;
 import fr.k2i.adbeback.dao.IStatisticsDao;
-import fr.k2i.adbeback.dao.jpa.BrandRepository;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class StatisticsFacade {
     private IStatisticsDao statisticsDao;
 
     @Autowired
-    private BrandRepository brandRepository;
+    private IBrandDao brandDao;
 
     @Autowired
     private IAdDao adDao;

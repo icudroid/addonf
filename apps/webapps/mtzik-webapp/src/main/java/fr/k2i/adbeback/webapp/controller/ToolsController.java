@@ -4,8 +4,8 @@ import fr.k2i.adbeback.core.business.LabelValue;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.core.business.player.Sex;
-import fr.k2i.adbeback.dao.jpa.CityRepository;
-import fr.k2i.adbeback.dao.jpa.CountryRepository;
+import fr.k2i.adbeback.dao.ICityDao;
+import fr.k2i.adbeback.dao.ICountryDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -28,10 +28,10 @@ import java.util.List;
 public class ToolsController {
 
     @Autowired
-    private CityRepository cityRepository;
+    private ICityDao cityDao;
 
     @Autowired
-    private CountryRepository countryRepository;
+    private ICountryDao countryDao;
 
     @Autowired
     private MessageSource messageSource;
@@ -41,7 +41,7 @@ public class ToolsController {
     @RequestMapping("/getTowns/{country}/{postalCode}")
     public @ResponseBody
     List<String> getTowns(@PathVariable("country") String country, @PathVariable("postalCode") String postalCode) {
-        List<City> cities = cityRepository.findByZipcodeAndCountry_Code(postalCode, country);
+        List<City> cities = cityDao.findByZipcodeAndCountry_Code(postalCode, country);
         List<String> res = new ArrayList<String>();
         for (City city : cities) {
             res.add(city.getCity());
@@ -53,7 +53,7 @@ public class ToolsController {
     @RequestMapping("/getCountries")
     public @ResponseBody
     List<LabelValue> getCountries(HttpServletRequest request) {
-        Iterable<Country> iterable = countryRepository.findAll();
+        Iterable<Country> iterable = countryDao.getAll();
 
         List<LabelValue> res = new ArrayList<LabelValue>();
         for (Country country : iterable) {
@@ -66,7 +66,7 @@ public class ToolsController {
     @RequestMapping("/getTownsByName/{city}")
     public @ResponseBody
     List<City> getTownsByName(@PathVariable("city") String city) {
-        return cityRepository.findByCityStartingWith(city);
+        return cityDao.findByCityStartingWith(city);
     }
 
 

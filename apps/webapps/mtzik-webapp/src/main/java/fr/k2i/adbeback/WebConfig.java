@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package fr.k2i.adbeback.webapp.config;
+package fr.k2i.adbeback;
 
 
+import fr.k2i.adbeback.webapp.config.AbstractWebConfig;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,7 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
@@ -47,6 +49,7 @@ import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
 import javax.sql.DataSource;
 
 @Configuration
+@EnableTransactionManagement
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "fr.k2i.adbeback")
 @PropertySource(value = {"classpath:application.properties","classpath:mail.properties"})

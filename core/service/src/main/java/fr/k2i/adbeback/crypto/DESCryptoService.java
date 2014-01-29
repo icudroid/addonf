@@ -6,8 +6,8 @@ import fr.k2i.adbeback.core.business.otp.OTPSecurity;
 import fr.k2i.adbeback.core.business.otp.OneTimePassword;
 import fr.k2i.adbeback.core.business.otp.OtpAction;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.dao.IOTPSecurityDao;
 import fr.k2i.adbeback.dao.IOneTimePasswordDao;
-import fr.k2i.adbeback.dao.jpa.OTPSecurityRepository;
 import fr.k2i.adbeback.logger.LogHelper;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -48,7 +48,7 @@ public class DESCryptoService {
     private String passphrase;
 
     @Autowired
-    private OTPSecurityRepository optSecurityRepository;
+    private IOTPSecurityDao otpSecurityDao;
 
 
     @Autowired
@@ -112,7 +112,7 @@ public class DESCryptoService {
 
     @Transactional
     public String generateOtpConfirm(String toEncodeStr, Brand brand, int expirationHours){
-        OTPBrandSecurityConfirm optSecurity =  optSecurityRepository.findByBrand(brand);
+        OTPBrandSecurityConfirm optSecurity =  otpSecurityDao.findByBrand(brand);
 
 
         if(optSecurity==null){
@@ -122,7 +122,7 @@ public class DESCryptoService {
             optSecurity.setKey(key);
             optSecurity.setBrand(brand);
             optSecurity.expirationInHours(expirationHours);
-            optSecurityRepository.save(optSecurity);
+            otpSecurityDao.save(optSecurity);
         }if(optSecurity.getExpirationDate().before(new Date())){//si le token est expiré
             optSecurity.computeNewExpirationInHours(expirationHours);
         }

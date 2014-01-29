@@ -1,7 +1,7 @@
 package fr.k2i.adbeback.webapp.controller;
 
 import fr.k2i.adbeback.dao.IAdGameDao;
-import fr.k2i.adbeback.dao.jpa.GenreRepository;
+import fr.k2i.adbeback.dao.ICategoryDao;
 import fr.k2i.adbeback.webapp.bean.myaccount.ChangePwdBean;
 import fr.k2i.adbeback.webapp.bean.search.SearchCommand;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
@@ -34,7 +34,7 @@ public class MyAccountController {
     private PlayerFacade playerFacade;
 
     @Autowired
-    private GenreRepository genreRepository;
+    private ICategoryDao categoryDao;
 
     @Autowired
     private AdGameFacade adGameFacade;
@@ -46,7 +46,7 @@ public class MyAccountController {
     @RequestMapping(value = "/redownload")
     public String redownload(@ModelAttribute("search")SearchCommand searchCommand, Pageable pageable, Map<String, Object> model){
         model.put("musics", adGameDao.getDownloadedMusic(playerFacade.getCurrentPlayer(),searchCommand.getGenreId(), searchCommand.getReq(),pageable));
-        model.put("categories",genreRepository.findAll());
+        model.put("categories",categoryDao.getAll());
         return "account/redownload";
     }
 

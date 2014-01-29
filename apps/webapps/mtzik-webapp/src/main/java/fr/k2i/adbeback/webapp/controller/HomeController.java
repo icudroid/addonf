@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.webapp.controller;
 
-import fr.k2i.adbeback.dao.jpa.GenreRepository;
+import fr.k2i.adbeback.dao.ICategoryDao;
 import fr.k2i.adbeback.webapp.bean.CartBean;
 import fr.k2i.adbeback.webapp.facade.MediaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class HomeController{
     private MediaFacade mediaFacade;
 
     @Autowired
-    private GenreRepository genreRepository;
+    private ICategoryDao categoryDao;
 
 
     @Value(value ="${addonf.bestdl.home.max:9}" )
@@ -39,7 +39,7 @@ public class HomeController{
         model.put("pushes", mediaFacade.getHomePush());
         model.put("news", mediaFacade.getNewMusics(maxHomeBestDl));
         model.put("top10", mediaFacade.getBestMusicDownload(null,10));
-        model.put("categories",genreRepository.findAll());
+        model.put("categories",categoryDao.getAll());
         return "home";
     }
 

@@ -32,6 +32,14 @@
                                 <label for="pwd" th:text="#{addonf.login.password.label}">Password</label>
                                 <input class="form-control" type="password" id="pwd" name="password" th:placeholder="#{addonf.login.password.placeholder}" />
                             </div>
+
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="SPRING_SECURITY_REMEMBER_ME_COOKIE" /> Remember me
+                                </label>
+                            </div>
+
                             <input type="hidden"
                                    th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             <button type="submit" class="btn btn-primary btn-block" th:text="#{addonf.login.btn}">Login</button>
@@ -45,6 +53,7 @@
                     <div class="innerAll">
                         <a th:href="@{/signup.html}" class="btn btn-info" th:utext="#{addonf.login.create.btn}">Create a new account? <i class="fa fa-pencil"></i> </a>
                         <div class="separator"></div>
+                        <a th:href="@{/getForgottenPwd}" class="btn btn-link" th:utext="#{addonf.login.forgotten.btn}">Forgotten password</a>
                     </div>
                 </div>
                 <div class="clearfix"></div>

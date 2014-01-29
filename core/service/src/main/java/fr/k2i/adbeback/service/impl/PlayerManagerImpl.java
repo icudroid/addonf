@@ -6,9 +6,10 @@ import fr.k2i.adbeback.core.business.otp.OneTimePassword;
 import fr.k2i.adbeback.core.business.otp.OtpAction;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
 import fr.k2i.adbeback.core.business.player.WebPlayer;
+import fr.k2i.adbeback.dao.ICountryDao;
 import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import fr.k2i.adbeback.dao.IPlayerDao;
-import fr.k2i.adbeback.dao.jpa.CountryRepository;
+import fr.k2i.adbeback.dao.jpa.CountryDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -30,17 +31,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implements PlayerManager {
     private PasswordEncoder passwordEncoder;
     private IPlayerDao playerDao;
-    private CountryRepository countryRepository;
+    @Autowired
+    private ICountryDao countryDao;
     @Autowired(required = false)
     private SaltSource saltSource;
     @Autowired
     private IOneTimePasswordDao oneTimePasswordDao;
 
-
-    @Autowired
-    public void setCountryRepository(CountryRepository countryRepository) {
-		this.countryRepository = countryRepository;
-	}
 
 	@Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {

@@ -2,8 +2,8 @@ package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.country.Country;
-import fr.k2i.adbeback.dao.jpa.CityRepository;
-import fr.k2i.adbeback.dao.jpa.CountryRepository;
+import fr.k2i.adbeback.dao.ICityDao;
+import fr.k2i.adbeback.dao.ICountryDao;
 import fr.k2i.adbeback.logger.LogHelper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +29,10 @@ public class ImportServiceFacade {
 
 
     @Autowired
-    private CityRepository cityRepository;
+    private ICityDao cityDao;
 
     @Autowired
-    private CountryRepository countryRepository;
+    private ICountryDao countryDao;
 
 
     @Transactional

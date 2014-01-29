@@ -10,7 +10,6 @@ import fr.k2i.adbeback.core.business.media.Music;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.*;
-import fr.k2i.adbeback.dao.jpa.AdRuleRepository;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
 import fr.k2i.adbeback.webapp.bean.*;
@@ -65,7 +64,7 @@ public class AdGameFacade {
     private IAdDao adDao;
 
     @Autowired
-    private AdRuleRepository adRuleRepository;
+    private IAdRuleDao adRuleDao;
 
     @Autowired
     private IGooseGameDao gooseGameDao;
@@ -148,22 +147,23 @@ public class AdGameFacade {
                 if (possibility instanceof BrandPossibility) {
                     BrandPossibility p = (BrandPossibility) possibility;
                     pb.setType(0);
-                    pb.setAnswer(p.getBrand().getLogo());
+                    pb.setAnswerImage(p.getBrand().getLogo());
                 }
                 if (possibility instanceof ProductPossibility) {
                     ProductPossibility p = (ProductPossibility) possibility;
                     if (p.getProduct().getLogo() == null) {
                         pb.setType(2);
-                        pb.setAnswer(p.getProduct().getName());
+                        pb.setAnswerText(p.getProduct().getName());
                     } else {
-                        pb.setAnswer(p.getProduct().getLogo());
+                        pb.setAnswerImage(p.getProduct().getLogo());
                         pb.setType(1);
                     }
                 }
                 if (possibility instanceof OpenPossibility) {
                     OpenPossibility p = (OpenPossibility) possibility;
                     pb.setType(3);
-                    pb.setAnswer(p.getAnswer());
+                    pb.setAnswerImage(p.getAnswerImage());
+                    pb.setAnswerText(p.getAnswerText());
                 }
 
                 pb.setId(possibility.getId());
@@ -341,7 +341,7 @@ public class AdGameFacade {
     private AdRule doStat(HttpServletRequest request, Integer index, Player currentPlayer) {
         Map<Integer, AdChoise> choises = (Map<Integer, AdChoise>) request.getSession().getAttribute(AD_CHOISES);
         AdChoise adChoise = choises.get(index);
-        AdRule adRule = adRuleRepository.findOne(adChoise.getGeneratedBy().getId());
+        AdRule adRule = adRuleDao.get(adChoise.getGeneratedBy().getId());
 
 
         ViewedAd viewedAd = viewedAdDao.findForToday(currentPlayer, (AdService) adRule);

@@ -11,14 +11,14 @@
 	<url>http://www.adbeback.com</url>
 
 	<prerequisites>
-		<maven>2.2.1</maven>
+        <maven>3.0.0</maven>
 	</prerequisites>
 
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>0.5.0.M7</version>
+        <version>1.0.0.RC1</version>
     </parent>
 
 
@@ -27,12 +27,12 @@
             <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
-                <version>1.5</version>
+                <version>1.7</version>
             </dependency>
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
-                <version>1.4.1</version>
+                <version>1.4.5</version>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
@@ -70,7 +70,7 @@
             <dependency>
                 <groupId>com.googlecode.libphonenumber</groupId>
                 <artifactId>libphonenumber</artifactId>
-                <version>4.6</version>
+                <version>5.8</version>
             </dependency>
 
 

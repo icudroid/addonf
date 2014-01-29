@@ -1,22 +1,3 @@
-@import '../../../assets/components/library/bootstrap/css/bootstrap.min.css';
-@import '../../../assets/components/library/icons/fontawesome/assets/css/font-awesome.min.css';
-@import '../../../assets/components/library/icons/glyphicons/assets/css/glyphicons_regular.css';
-@import '../../../assets/components/library/icons/glyphicons/assets/css/glyphicons_social.css';
-@import '../../../assets/components/library/icons/glyphicons/assets/css/glyphicons_filetypes.css';
-@import '../../../assets/components/library/animate/animate.min.css';
-@import '../../../assets/components/plugins/owl-carousel/owl.carousel.css';
-@import '../../../assets/components/plugins/owl-carousel/owl.theme.css';
-@import '../../../assets/components/modules/admin/forms/elements/uniform/assets/lib/css/uniform.default.css';
-@import '../../../assets/components/library/jquery-ui/css/jquery-ui.min.css';
-@import '../../../assets/components/modules/admin/forms/elements/bootstrap-select/assets/lib/css/bootstrap-select.css';
-/* --- LOADING [css.bootstrap.min] from assets/components/library/bootstrap/css/bootstrap.min.css */
-/* --- LOADING [css.font-awesome.min] from assets/components/library/icons/fontawesome/assets/css/font-awesome.min.css */
-/* --- LOADING [css.glyphicons_regular] from assets/components/library/icons/glyphicons/assets/css/glyphicons_regular.css */
-/* --- LOADING [css.glyphicons_social] from assets/components/library/icons/glyphicons/assets/css/glyphicons_social.css */
-/* --- LOADING [css.glyphicons_filetypes] from assets/components/library/icons/glyphicons/assets/css/glyphicons_filetypes.css */
-/* --- LOADING [less.variables] from assets/components/core/less/variables.less */
-/* --- LOADING [less.mixins] from assets/components/core/less/mixins.less */
-/* --- LOADING [less.helpers] from assets/components/core/less/helpers.less */
 .innerLR {
   padding-left: 10px;
   padding-right: 10px;
@@ -3093,9 +3074,8 @@ div.glyphicons.glyphicon-regular i:before {
 #slide1 {
   padding: 140px 0;
   background-color: #ffffff;
-  background-image: url('../../img/bk.png');
+  background: url('../../img/bk.png') no-repeat scroll 0 0 / 100% 100% rgba(0, 0, 0, 0);
   background-position: 100% 20%;
-  background-repeat: no-repeat;
 }
 #slide1 h1 {
   font-size: 3.5em;

@@ -146,7 +146,15 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         };
 
 
-}]);
+        $scope.hasType3HasImage = function(possibility){
+            return possibility.type==3 && possibility.answerImage!=null;
+        }
+
+        $scope.hasType3Hastext = function(possibility){
+            return possibility.type==3 && possibility.answerText!=null;
+        }
+
+    }]);
 
 
 

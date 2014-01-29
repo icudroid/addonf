@@ -19,7 +19,7 @@ import java.util.Date;
  */
 @Data
 @Entity
-@DiscriminatorValue("Viewed")
+@DiscriminatorValue("Validated")
 public class StatisticsValidated extends Statistics{
 
     public StatisticsValidated(){

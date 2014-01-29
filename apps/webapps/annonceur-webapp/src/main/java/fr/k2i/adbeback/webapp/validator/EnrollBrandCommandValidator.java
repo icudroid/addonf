@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.webapp.validator;
 
-import fr.k2i.adbeback.dao.jpa.BrandRepository;
+import fr.k2i.adbeback.dao.IBrandDao;
 import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.webapp.util.PhoneNumberUtils;
 import fr.k2i.adbeback.webapp.util.SirenSiretValidator;
@@ -44,7 +44,7 @@ public class EnrollBrandCommandValidator implements Validator{
 
 
     @Autowired
-    private BrandRepository brandRepository;
+    private IBrandDao brandDao;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -68,7 +68,7 @@ public class EnrollBrandCommandValidator implements Validator{
         if(StringUtils.isEmpty(command.getName())){
                     errors.rejectValue("name","required");
         }else{
-            if(brandRepository.findByName(command.getName())!=null){
+            if(brandDao.findByName(command.getName())!=null){
                 errors.rejectValue("name","exist");
             }
         }
@@ -109,7 +109,7 @@ public class EnrollBrandCommandValidator implements Validator{
         if(StringUtils.isEmpty(contact.getEmail())){
             errors.rejectValue("contact.email","required");
         }else{
-            if(brandRepository.findByEmail(contact.getEmail())!=null){
+            if(brandDao.findByEmail(contact.getEmail())!=null){
                 errors.rejectValue("contact.email","exist");
             }
         }
@@ -142,7 +142,7 @@ public class EnrollBrandCommandValidator implements Validator{
         if(StringUtils.isEmpty(command.getSiret())){
             errors.rejectValue("siret","required");
         }else{
-            if(brandRepository.findBySiret(command.getSiret())!=null){
+            if(brandDao.findBySiret(command.getSiret())!=null){
                 errors.rejectValue("siret","exist");
             }
             sirenSiretValidator.validateSiret(command.getSiret(),errors,"siret");

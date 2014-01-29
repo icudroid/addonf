@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.webapp.config;
+package fr.k2i.adbeback;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

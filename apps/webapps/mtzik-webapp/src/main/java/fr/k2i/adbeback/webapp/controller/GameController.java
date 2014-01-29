@@ -3,7 +3,6 @@ package fr.k2i.adbeback.webapp.controller;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.AdGameMedia;
 import fr.k2i.adbeback.core.business.media.Media;
-import fr.k2i.adbeback.dao.jpa.GenreRepository;
 import fr.k2i.adbeback.webapp.bean.CartBean;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
 import fr.k2i.adbeback.webapp.facade.MediaFacade;

@@ -120,7 +120,7 @@
                 <div class="col-md-4">
                     <div class="row box-generic padding-none">
                         <div class="col-md-4">
-                            <img style="height: 62px;width:100%;" th:if="${label.photo !=null}" th:src="@{${session.staticUrl}+'productor/'+${productor.photo}}" />
+                            <img style="height: 62px;width:100%;" th:if="${label.photo !=null}" th:src="@{${session.staticUrl}+'productor/'+${label.photo}}" />
                             <img style="height: 62px;width:100%;" th:if="${label.photo ==null}" th:src="@{${session.staticUrl}+'productor/default.png'}" />
                         </div>
                         <div class="col-md-8">

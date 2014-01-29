@@ -37,6 +37,7 @@ public class GooseGameFacade {
         SingleGooseLevel level = new SingleGooseLevel();
         level.setLevel(numLevel);
         level.setNbMaxAdByPlay(nbMaxAdByPlay);
+        level.setMinScore(nbCase);
 
         level.startCase(new StartLevelGooseCase());
 

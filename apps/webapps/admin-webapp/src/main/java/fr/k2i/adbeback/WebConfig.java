@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package fr.k2i.adbeback.webapp.config;
+package fr.k2i.adbeback;
 
 
+import fr.k2i.adbeback.webapp.config.AbstractWebConfig;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +50,7 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "fr.k2i.adbeback")
 @PropertySource(value = {"classpath:application.properties","classpath:mail.properties"})
-public class WebConfig extends  AbstractWebConfig{
+public class WebConfig extends AbstractWebConfig {
 
     @Bean
     public SecurityConfig securityConfig() {

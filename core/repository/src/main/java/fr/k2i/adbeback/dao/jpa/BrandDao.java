@@ -27,10 +27,6 @@ import java.util.List;
 @Repository("brandDao")
 public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeback.dao.IBrandDao {
 
-    @Autowired
-    private BrandRepository brandRepository;
-
-
     /**
      * Constructor that sets the entity to User.class.
      */
@@ -53,6 +49,30 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
 
         return query.list(qBrand);
 
+    }
+
+    @Override
+    public Brand findByName(String name) {
+        QBrand qBrand = QBrand.brand;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qBrand).where(qBrand.name.eq(name));
+        return query.uniqueResult(qBrand);
+    }
+
+    @Override
+    public Brand findByEmail(String email) {
+        QBrand qBrand = QBrand.brand;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qBrand).where(qBrand.email.eq(email));
+        return query.uniqueResult(qBrand);
+    }
+
+    @Override
+    public Brand findBySiret(String siret) {
+        QBrand qBrand = QBrand.brand;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qBrand).where(qBrand.siret.eq(siret));
+        return query.uniqueResult(qBrand);
     }
 }
 

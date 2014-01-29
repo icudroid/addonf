@@ -1,10 +1,14 @@
 package fr.k2i.adbeback.webapp.config;
 
 import fr.k2i.adbeback.application.services.mail.config.EmailConfig;
+import org.hibernate.validator.internal.engine.ValidatorImpl;
 import org.springframework.boot.autoconfigure.jdbc.TomcatDataSourceConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import javax.validation.Validator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,6 +36,11 @@ public abstract class AbstractWebConfig {
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
+    }
+
+    @Bean
+    public Validator validator(){
+        return new LocalValidatorFactoryBean();
     }
 
 }

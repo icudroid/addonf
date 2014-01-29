@@ -36,10 +36,12 @@
         </div>
         <div class="col-md-3 btn-result" style="height: 100%;margin: 0 auto;">
             <button ng-repeat="possibility in current.possibilities" ng-click="userResponse(possibility)" class="col-md-12 btn btn-default" style="height: 32%;{{doMargin($index )}}">
-                <img ng-if="possibility.type==0" ng-src="{{base}}logo/{{possibility.answer}}" style="max-height: 90%;max-width: 90%;"/>
-                <img ng-if="possibility.type==1" ng-src="{{base}}logo/{{possibility.answer}}" style="max-height: 90%;max-widht: 90%;"/>
-                <span ng-if="possibility.type==2">{{possibility.answer}}</span>
-                <span ng-if="possibility.type==3">{{possibility.answer}}</span>
+                <img ng-if="possibility.type==0" ng-src="{{base}}logo/{{possibility.answerImage}}" style="max-height: 90%;max-width: 90%;"/>
+                <img ng-if="possibility.type==1" ng-src="{{base}}logo/{{possibility.answerImage}}" style="max-height: 90%;max-widht: 90%;"/>
+                <span ng-if="possibility.type==2">{{possibility.answerText}}</span>
+
+                <img ng-if="hasType3HasImage(possibility)" ng-src="{{base}}logo/{{possibility.answerImage}}" style="max-height: 90%;max-widht: 90%;"/>
+                <span ng-if="hasType3HasText(possibility)">{{possibility.answerText}}</span>
             </button>
         </div>
     </div>

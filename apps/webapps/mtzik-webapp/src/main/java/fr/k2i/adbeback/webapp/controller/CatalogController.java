@@ -1,7 +1,7 @@
 package fr.k2i.adbeback.webapp.controller;
 
 import com.google.common.collect.Lists;
-import fr.k2i.adbeback.dao.jpa.GenreRepository;
+import fr.k2i.adbeback.dao.ICategoryDao;
 import fr.k2i.adbeback.webapp.bean.CartBean;
 import fr.k2i.adbeback.webapp.bean.search.ArtistBean;
 import fr.k2i.adbeback.webapp.bean.search.MusicBean;
@@ -35,7 +35,7 @@ public class CatalogController{
     private MediaFacade mediaFacade;
 
     @Autowired
-    private GenreRepository genreRepository;
+    private ICategoryDao categoryDao;
 
 
 
@@ -71,7 +71,7 @@ public class CatalogController{
         model.put("nbArtist", mediaFacade.countArtistForLabel(majorId));
         model.put("last10", mediaFacade.last10MusicForLabel(majorId));
         model.put("showmore",false);
-        model.put("categories",genreRepository.findAll());
+        model.put("categories",categoryDao.getAll());
 
 
         model.put("musics",mediaFacade.findMusicsForLabel(majorId,searchCommand.getGenreId(), searchCommand.getReq(), pageable));

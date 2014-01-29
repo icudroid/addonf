@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import fr.k2i.adbeback.core.business.media.Artist;
 import fr.k2i.adbeback.core.business.media.Music;
 import fr.k2i.adbeback.core.business.media.Productor;
+import fr.k2i.adbeback.dao.ICategoryDao;
 import fr.k2i.adbeback.dao.IMediaDao;
-import fr.k2i.adbeback.dao.jpa.GenreRepository;
 import fr.k2i.adbeback.webapp.bean.CartBean;
 import fr.k2i.adbeback.webapp.bean.search.ArtistBean;
 import fr.k2i.adbeback.webapp.bean.search.MusicBean;
@@ -40,7 +40,7 @@ public class SearchController{
     @Autowired
     private IMediaDao mediaDao;
     @Autowired
-    private GenreRepository genreRepository;
+    private ICategoryDao categoryDao;
 
     @Autowired
     private MediaFacade mediaFacade;
@@ -71,7 +71,7 @@ public class SearchController{
         }
         model.put("cart", cart);
         model.put("staticUrl",staticUrl);
-        model.put("categories",genreRepository.findAll());
+        model.put("categories",categoryDao.getAll());
         model.put("query", req);
         model.put("showmore", true);
 
@@ -91,7 +91,7 @@ public class SearchController{
     public String search(@PathVariable String what, @ModelAttribute("search")SearchCommand searchCommand,Pageable pageable, Map<String, Object> model,HttpServletRequest request) throws Exception {
 
         model.put("staticUrl",staticUrl);
-        model.put("categories",genreRepository.findAll());
+        model.put("categories",categoryDao.getAll());
         model.put("showmore", false);
 
 

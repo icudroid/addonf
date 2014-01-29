@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.webapp.config;
+package fr.k2i.adbeback;
 
 import fr.k2i.adbeback.webapp.bean.CartBean;
 import org.apache.commons.logging.Log;

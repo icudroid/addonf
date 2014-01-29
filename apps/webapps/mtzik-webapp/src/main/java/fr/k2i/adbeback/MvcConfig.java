@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.webapp.config;
+package fr.k2i.adbeback;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

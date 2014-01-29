@@ -12,7 +12,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.spring3.SpringTemplateEngine;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;

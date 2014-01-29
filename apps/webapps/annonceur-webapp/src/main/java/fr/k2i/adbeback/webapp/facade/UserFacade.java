@@ -1,21 +1,39 @@
 package fr.k2i.adbeback.webapp.facade;
 
+import fr.k2i.adbeback.application.services.mail.IMailEngine;
+import fr.k2i.adbeback.application.services.mail.dto.Email;
+import fr.k2i.adbeback.application.services.mail.exception.SendException;
 import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
+import fr.k2i.adbeback.core.business.otp.OneTimePassword;
+import fr.k2i.adbeback.core.business.otp.OtpAction;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.WebUser;
+import fr.k2i.adbeback.crypto.DESCryptoService;
+import fr.k2i.adbeback.dao.IBrandDao;
+import fr.k2i.adbeback.dao.IOTPSecurityDao;
+import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import fr.k2i.adbeback.dao.IPlayerDao;
-import fr.k2i.adbeback.dao.jpa.BrandRepository;
+import fr.k2i.adbeback.service.BrandManager;
+import fr.k2i.adbeback.webapp.bean.ChangePwdBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -29,11 +47,36 @@ import java.util.UUID;
 public class UserFacade {
 
     @Autowired
-    private BrandRepository brandRepository;
+    private BrandManager brandManager;
+
+    @Autowired
+    private IBrandDao brandDao;
+
+    @Autowired
+    private MessageSource messageSource;
+
+
+    @Autowired
+    private DESCryptoService desCryptoService;
+
+    @Autowired
+    private IMailEngine mailEngine;
+
 
     @Value("${addonf.logo.location}")
     private String logoPath;
 
+
+    @Value("${addonf.base.url}")
+    private String urlBase;
+
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    private IOTPSecurityDao securityDao;
 
     @Transactional
     public Brand getCurrentUser() throws Exception{
@@ -42,7 +85,7 @@ public class UserFacade {
             throw new Exception("Please check configuration. Should be Brand in the principal.");
         }
 
-        return brandRepository.findOne(((WebUser) principal).getUser().getId());
+        return brandDao.get(((WebUser) principal).getUser().getId());
     }
 
     protected Authentication getAuthenticationPlayer() {
@@ -81,4 +124,80 @@ public class UserFacade {
         fos.close();
         return path;
     }
+
+
+
+    @Transactional
+    public void sendForgottenPasswd(String username,HttpServletRequest request) throws SendException {
+        Brand user = brandDao.findByEmail(username);
+
+        if(user != null){
+
+            Map<String, Object> modelEmail = new HashMap<String, Object>();
+            String endUrl = desCryptoService.generateOtpConfirm(user.getUsername(), user, 48);
+            modelEmail.put("name",user.getUsername());
+            modelEmail.put("url",urlBase+"pwdinit/"+endUrl);
+            Email forgottenPasswd = Email.builder()
+                    .subject("Mot de passe oublié")
+                    .model(modelEmail)
+                    .content("email/forgottenPasswd")
+                    .recipients(user.getEmail())
+                    .noAttachements()
+                    .build();
+
+            try{
+                mailEngine.sendMessage(forgottenPasswd,request.getLocale());
+            }catch (Exception e){
+
+            }
+        }
+
+    }
+
+
+
+    @Transactional
+    public boolean isValidateOtp(String username, String key){
+        Brand user = brandDao.findByEmail(username);
+        if(user ==null){
+            return false;
+        }
+        OTPBrandSecurityConfirm otp = securityDao.findByBrand(user);
+        if(otp == null){
+            return false;
+        }
+        if(!otp.getKey().equals(key)){
+            return false;
+        }
+
+        return true;
+    }
+
+
+    @Transactional
+    public void changePasswd(String username, String password) {
+        brandManager.changePasswd(username, password);
+    }
+
+    @Transactional
+    public void changePasswd(String password) throws Exception {
+        brandManager.changePasswd(getCurrentUser(), password);
+    }
+
+    public void validateChangePwdBean(ChangePwdBean changePwdBean, Errors errors,Locale locale) throws Exception {
+
+        if(!errors.hasErrors()){
+            String password = getCurrentUser().getPassword();
+            String old = passwordEncoder.encodePassword(changePwdBean.getOldPassword(), null);
+            if(!password.equals(old)){
+                errors.rejectValue("oldPassword","notMatch",messageSource.getMessage("addonf.notMatch",null,locale));
+            }
+
+            if(!changePwdBean.getNewConfirmPassword().equals(changePwdBean.getNewPassword())){
+                errors.rejectValue("newConfirmPassword","notMatch",messageSource.getMessage("addonf.notMatch",null,locale));
+            }
+        }
+
+    }
+
 }

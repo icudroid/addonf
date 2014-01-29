@@ -9,7 +9,7 @@ import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.crypto.DESCryptoService;
-import fr.k2i.adbeback.dao.IAdGameDao;
+import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.dao.jpa.*;
 import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.webapp.util.PhoneNumberUtils;
@@ -46,13 +46,13 @@ public class BrandServiceFacade {
     private static Logger logger = LogHelper.getLogger(BrandServiceFacade.class);
 
     @Autowired
-    private BrandRepository brandRepository;
+    private IBrandDao brandDao;
 
     @Autowired
-    private CityRepository cityRepository;
+    private ICityDao cityDao;
 
     @Autowired
-    private CountryRepository countryRepository;
+    private ICountryDao countryDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -68,7 +68,7 @@ public class BrandServiceFacade {
     private DESCryptoService desCryptoService;
 
     @Autowired
-    private OTPSecurityRepository otpSecurityRepository;
+    private IOTPSecurityDao securityDao;
 
 
     @Value("${brand.base.confirm.url}")
@@ -80,7 +80,7 @@ public class BrandServiceFacade {
 
 
     @Autowired
-    private AdRepository adRepository;
+    private IAdDao adDao;
 
     @Autowired
     private UserFacade userFacade;
@@ -110,7 +110,7 @@ public class BrandServiceFacade {
         AddressBean addressBean = command.getAddress();
         Address address =new Address();
         address.setAddress(addressBean.getStreet());
-        address.setCity(cityRepository.findByZipcodeAndCityAndCountry_Code(addressBean.getZipcode(), addressBean.getCity(), addressBean.getCountry()));
+        address.setCity(cityDao.findByZipcodeAndCityAndCountry_Code(addressBean.getZipcode(), addressBean.getCity(), addressBean.getCountry()));
         brand.setAddress(address);
 
         Contact contact = new Contact();
@@ -137,7 +137,7 @@ public class BrandServiceFacade {
 
         brand.addRole(roleDao.getRoleByName(Constants.ANNONCEUR_ROLE));
 
-        brandRepository.save(brand);
+        brandDao.save(brand);
 
         String url = baseUrl + desCryptoService.generateOtpConfirm(command.getName() + "|" + contactBean.getEmail(), brand, 48);
 
@@ -148,7 +148,7 @@ public class BrandServiceFacade {
         Email email = Email.builder()
                                         .subject(messageSource.getMessage("mail.enrolled.annonceur", new Object[]{}, locale))
                                         .model(model)
-                                        .content("annonceur_enrolled")
+                                        .content("email/annonceur_enrolled")
                                         .recipients(contactBean.getEmail())
                                         .noAttachements()
                                         .build();
@@ -165,7 +165,7 @@ public class BrandServiceFacade {
         Brand brand = userFacade.getCurrentUser();
 
         List<AdBean> res = new ArrayList<AdBean>();
-        List<Ad> ads = adRepository.findByBrand(brand);
+        List<Ad> ads = adDao.findByBrand(brand);
 
         for (Ad ad : ads) {
             res.add(new AdBean(ad));
@@ -178,7 +178,7 @@ public class BrandServiceFacade {
         Brand brand = userFacade.getCurrentUser();
 
         List<AdBean> res = new ArrayList<AdBean>();
-        Page<Ad> ads = adRepository.findByBrand(brand,pageable);
+        Page<Ad> ads = adDao.findByBrand(brand,pageable);
 
         for (Ad ad : ads) {
             res.add(new AdBean(ad));
@@ -199,7 +199,7 @@ public class BrandServiceFacade {
         InformationCommand information = campaignCommand.getInformation();
 
         if(information.getId()!=null){
-            ad = adRepository.findOne(information.getId());
+            ad = adDao.get(information.getId());
         }else {
             if (AdDisplay.VIDEO.equals(information.getDisplayAd())){
                 ad = new VideoAd();
@@ -238,12 +238,12 @@ public class BrandServiceFacade {
             deleteNotNeededCityRule(ad, restrictionRules.getCityRules());
             deleteNotNeededAgeRule(ad, restrictionRules.getAgeRule());
             deleteNotNeededSexyRule(ad, restrictionRules.getSexRule());
-            adRepository.save(ad);
+            adDao.save(ad);
         }
 
         for (CountryRuleBean countryRule : restrictionRules.getCountryRules()) {
             CountryRule c = new CountryRule();
-            c.setCountry(countryRepository.findByCode(countryRule.getCountry().getCode()));
+            c.setCountry(countryDao.findByCode(countryRule.getCountry().getCode()));
             ad.addRule(c);
         }
 
@@ -251,7 +251,7 @@ public class BrandServiceFacade {
         for (CityRuleBean cityRule : restrictionRules.getCityRules()) {
             CityRule c = new CityRule();
             c.setAround(cityRule.getAround());
-            c.setCity(cityRepository.findOne(cityRule.getCity().getId()));
+            c.setCity(cityDao.get(cityRule.getCity().getId()));
             ad.addRule(c);
         }
 
@@ -298,7 +298,7 @@ public class BrandServiceFacade {
             b.getNoDisplayWith().clear();
             List<BrandBean> noDisplayWith = brandRule.getNoDisplayWith();
             for (BrandBean bNo : noDisplayWith) {
-                b.addNoDisplayWith(brandRepository.findOne(bNo.getId()));
+                b.addNoDisplayWith(brandDao.get(bNo.getId()));
             }
             ad.addRule(b);
         }
@@ -336,7 +336,9 @@ public class BrandServiceFacade {
             List<AdResponseBean> responses = openRule.getResponses();
             for (AdResponseBean response : responses) {
                 AdResponse adResponse = new AdResponse();
-                adResponse.setImage(saveFile(response.getImage().getContent(),logoPath));
+                if(response.getImage()!=null){
+                    adResponse.setImage(saveFile(response.getImage().getContent(),logoPath));
+                }
                 adResponse.setResponse(response.getResponse());
                 o.addResponse(adResponse);
                 if(response.isCorrect()){
@@ -347,7 +349,7 @@ public class BrandServiceFacade {
             ad.addRule(o);
         }
 
-        adRepository.save(ad);
+        adDao.save(ad);
 
     }
 
@@ -436,7 +438,7 @@ public class BrandServiceFacade {
         CampaignCommand campaignCommand = new CampaignCommand();
 
         Brand brand = userFacade.getCurrentUser();
-        Ad ad = adRepository.findOne(idAd);
+        Ad ad = adDao.get(idAd);
 
         if(!ad.getBrand().equals(brand)){
             throw new Exception("Not authorize to change this ad");
@@ -490,8 +492,8 @@ public class BrandServiceFacade {
 
     @Transactional
     public ConfirmationRegistration confirmRegistration(String email, String name, String code) {
-        Brand brand = brandRepository.findByEmail(email);
-        OTPBrandSecurityConfirm otp = otpSecurityRepository.findByBrand(brand);
+        Brand brand = brandDao.findByEmail(email);
+        OTPBrandSecurityConfirm otp = securityDao.findByBrand(brand);
         if(otp == null){
             return ConfirmationRegistration.KO;
         }else if(otp.getKey().equals(code)){

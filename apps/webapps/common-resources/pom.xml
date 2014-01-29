@@ -28,6 +28,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+<!--
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>-->
+
+
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
@@ -48,10 +55,11 @@
         <artifactId>mysql-connector-java</artifactId>
     </dependency>
 
-    <!--        <dependency>
+    <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
             </dependency>
+    <!--
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -71,19 +79,15 @@
     </dependency>
 
     <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
-
-    <dependency>
         <groupId>commons-dbcp</groupId>
         <artifactId>commons-dbcp</artifactId>
     </dependency>
 
     <dependency>
         <groupId>org.thymeleaf</groupId>
-        <artifactId>thymeleaf-spring3</artifactId>
+        <artifactId>thymeleaf-spring4</artifactId>
     </dependency>
+
     <dependency>
         <groupId>nz.net.ultraq.thymeleaf</groupId>
         <artifactId>thymeleaf-layout-dialect</artifactId>

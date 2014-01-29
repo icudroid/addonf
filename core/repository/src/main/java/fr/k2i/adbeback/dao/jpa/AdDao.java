@@ -18,6 +18,9 @@ import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
@@ -239,6 +242,14 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.eq(brand));
         return query.list(qAd);
+    }
+
+    @Override
+    public Page<Ad> findByBrand(Brand brand, Pageable pageable) {
+        QAd qAd = QAd.ad;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qAd).where(qAd.brand.eq(brand));
+        return new PageImpl<Ad>(query.list(qAd),pageable,query.count());
     }
 
 

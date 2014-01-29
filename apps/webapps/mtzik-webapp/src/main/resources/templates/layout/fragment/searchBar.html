@@ -18,7 +18,7 @@
                     <input type="hidden" th:value="${musics.getSize()}" name="size" id="size"/>
                     <select class="genre-select" th:attr="data-placeholder=#{addonf.genre.select}" th:field="*{genreId}" >
                         <option value="-1"></option>
-                        <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.'+${category.codeGenre}}">Catégorie</span></option>
+                        <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.genre.'+${category.codeGenre}}">Catégorie</span></option>
                     </select>
                     <div class="separator"></div>
                     <div class="input-group col-md-12">
@@ -62,7 +62,7 @@
                     <input type="hidden" th:value="${musics.getSize()}" name="size" id="size"/>
                     <select class="genre-select" th:attr="data-placeholder=#{addonf.genre.select}" th:field="*{genreId}" >
                         <option value="-1"></option>
-                        <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.'+${category.codeGenre}}">Catégorie</span></option>
+                        <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.genre.'+${category.codeGenre}}">Catégorie</span></option>
                     </select>
                     <div class="separator"></div>
                     <div class="input-group col-md-12">
@@ -93,7 +93,7 @@
 
                     <select class="genre-select" th:attr="data-placeholder=#{addonf.genre.select}" th:field="*{genreId}" >
                         <option value="-1"></option>
-                        <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.'+${category.codeGenre}}">Catégorie</span></option>
+                        <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.genre.'+${category.codeGenre}}">Catégorie</span></option>
                     </select>
                     <div class="separator"></div>
                     <div class="input-group col-md-12">
@@ -126,7 +126,7 @@
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     <select class="genre-select" th:attr="data-placeholder=#{addonf.genre.select}" th:field="*{genreId}" >
                         <option value="-1"></option>
-                        <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.'+${category.codeGenre}}">Catégorie</span></option>
+                        <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.genre.'+${category.codeGenre}}">Catégorie</span></option>
                     </select>
                     <div class="separator"></div>
                     <div class="input-group col-md-12">

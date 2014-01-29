@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.webapp.config;
+package fr.k2i.adbeback;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +14,10 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 @Configuration
 @Order(Ordered.LOWEST_PRECEDENCE - 8)
@@ -27,8 +31,13 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public UserDetailsService webUserServiceDetail(){
+        return (UserDetailsService) context.getBean("webUserDao");
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(org.springframework.security.config.annotation.ObjectPostProcessor<Object> objectPostProcessor) throws Exception {
-        DaoAuthenticationConfigurer<AuthenticationManagerBuilder,UserDetailsService> builder = new AuthenticationManagerBuilder(objectPostProcessor).userDetailsService((UserDetailsService) context.getBean("webUserDao"));
+        DaoAuthenticationConfigurer<AuthenticationManagerBuilder,UserDetailsService> builder = new AuthenticationManagerBuilder(objectPostProcessor).userDetailsService(webUserServiceDetail());
         builder.passwordEncoder(passwordEncoder());
 
         return builder.and().build();
@@ -45,6 +54,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/confirmEnroll/**").permitAll()
                 .antMatchers("/getTowns/**").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/getForgottenPwd").permitAll()
+                .antMatchers("/pwdinit/**").permitAll()
+
 
 
                 .antMatchers("/logout-success").permitAll()
@@ -55,8 +67,12 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/img/**").permitAll()
                 .antMatchers("/template/**").permitAll()
 
-                .antMatchers("/custom-logout").hasRole("ANNONCEUR")
-                .antMatchers("/**").hasRole("ANNONCEUR");
+                .anyRequest().authenticated();
+
+/*                .antMatchers("/custom-logout").hasRole("ANNONCEUR")
+                .antMatchers("*//**").hasRole("ANNONCEUR");*/
+
+
 
         http.formLogin()
                 .loginPage("/login")
@@ -73,6 +89,14 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .maximumSessions(1)
                 .expiredUrl("/login?expired");
 
+        http.rememberMe()
+                .tokenValiditySeconds(60*60*24)
+                .key("__0n3K3y!!")
+                .useSecureCookie(true)
+                .userDetailsService(webUserServiceDetail());
     }
+
+
+
 
 }
