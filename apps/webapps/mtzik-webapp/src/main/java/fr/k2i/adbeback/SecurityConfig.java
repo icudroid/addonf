@@ -211,7 +211,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement()
                     .maximumSessions(1)
-                    .expiredUrl("/login?expired");
+                    .expiredUrl("/");
 
         http.anonymous()
                 .authenticationFilter(anonymousAuthFilter());
