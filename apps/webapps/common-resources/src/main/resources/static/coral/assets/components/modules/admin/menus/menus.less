@@ -40,7 +40,7 @@
 }
 
 #menu {
-	width: @menuSidebarWidth;
+	// width: @menuSidebarWidth;
 	position: fixed;
 	height: 100%;
 	background: @inverseColor;
@@ -130,17 +130,20 @@
 	}
 }
 
-.menu-hidden {
-	#footer {
-		left: 0;
-		right: 0;
-	}
-	.navbar.main {
-		left: 0 !important;
-		right: 0 !important;
-	}
-	#content {
-		margin: 0;
+.sidebar.sidebar-fusion,
+.sidebar.sidebar-discover {
+	.menu-hidden {
+		#footer {
+			left: 0;
+			right: 0;
+		}
+		.navbar.main {
+			left: 0 !important;
+			right: 0 !important;
+		}
+		#content {
+			margin: 0;
+		}
 	}
 }
 

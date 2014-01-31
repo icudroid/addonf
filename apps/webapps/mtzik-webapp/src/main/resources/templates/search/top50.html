@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/chosen-mtzik.css}"/>
     <script th:src="@{/lib/chosen-1.0/chosen.jquery.js}"></script>
 
-
+    <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
 
     <script>
         $(function(){
@@ -59,6 +59,9 @@
 </div>
 
     <div layout:fragment="content" id="content">
+        <div class="container innerTB inner-2x">
+            <div th:substituteby="/layout/fragment/bugPush"></div>
+        </div>
 
           <div class="container" th:if="${musics.getTotalElements() > 0}">
               <div th:substituteby="/layout/fragment/musics"></div>

@@ -9,10 +9,11 @@
 	// handle menu toggle button action
 	window.toggleMenuHidden = function()
 	{
-		if ($('.container-fluid.menu-right-visible').length)
-			$('.container-fluid').removeClass('menu-right-visible');
+		if ($('.menu-right-visible').length)
+			$('body').removeClass('menu-right-visible');
 
-		$('.container-fluid').toggleClass('menu-hidden menu-left-visible');
+		$('.container-fluid').toggleClass('menu-hidden');
+		$('body').toggleClass('menu-left-visible');
 		$('#menu').removeClass('hidden-xs');
 
 		resizeNiceScroll();

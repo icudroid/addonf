@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="widget-body padding-none">
                                     <a th:href="@{/product.html(musicId=${push.id})}" class="thumb">
-                                        <img th:src="@{${session.staticUrl}+'jacket/'+${push.jacket}}" alt="Jacket" class="img-responsive" />
+                                        <img th:src="@{${session.staticUrl}+'jacket/'+${push.jacket}}" alt="Jacket"  />
                                     </a>
                                     <div class="description">
                                         <a href="#" class="btn btn-primary btn-circle pull-right addToCart"  th:attr="data-music=${push.id}"><i class="fa fa-shopping-cart"></i></a>

@@ -1,4 +1,11 @@
 var igms = false;
+
+if (typeof initGoogleMaps != 'undefined' && typeof google != 'undefined')
+{
+	igms = true;
+	initGoogleMaps();
+}
+
 function initScripts()
 {
 	if (igms) return;

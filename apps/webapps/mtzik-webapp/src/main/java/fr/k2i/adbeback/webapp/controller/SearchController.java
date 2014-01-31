@@ -94,6 +94,8 @@ public class SearchController{
         model.put("categories",categoryDao.getAll());
         model.put("showmore", false);
 
+        model.put("pushes", mediaFacade.getHomePush());
+
 
         if("music".equals(what)){
             if(!StringUtils.isEmpty(searchCommand.getReq())){

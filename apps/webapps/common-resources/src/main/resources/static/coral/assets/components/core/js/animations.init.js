@@ -1,6 +1,5 @@
-(function($)
+(function($, window)
 {
-
 	window.animations = true;
 
 	// handles Animate
@@ -28,19 +27,8 @@
 	  	});
 	}
 
-	// animate only after page finished loading
-	$(window).on('load', function()
+	window.animateElements = function()
 	{
-
-		dataAnimate();
-
-		if (typeof $.fn.appear != 'undefined')
-		{
-			setTimeout(function(){
-				$.force_appear();
-			}, 500);
-		}
-
 		// restore visibility
 		$(".layout-app, #menu, #menu-top, #menu_kis, .navbar.main, #footer").css('visibility', 'visible').show();
 
@@ -48,7 +36,7 @@
 		if (Modernizr.touch)
 			return;
 
-		// // disable animations if browser doesn't support css transitions & 3d transforms
+		// disable animations if browser doesn't support css transitions & 3d transforms
 		if (!$('html.csstransitions.csstransforms3d').length)
 			return;
 
@@ -56,7 +44,10 @@
 		$("#menu").addClass('animated fadeInLeft');
 
 		// animate 2nd sidebar
-		$("#menu_kis").addClass('animated fadeInRight');
+		if (!$('.menu-right-visible').length)
+			$("#menu_kis").addClass('animated fadeInRight');
+		else
+			$("#menu_kis").removeClass('animated fadeInRight');
 
 		// animate main navbar & footer
 		$(".navbar.main, #footer").addClass('animated fadeInUp');
@@ -158,11 +149,33 @@
 
 		// animate tabs
 		$('.widget-tabs .tab-pane').addClass('animated fadeInUp');
+	}
+
+	// animate only after page finished loading
+	$(window).on('load', function()
+	{
+
+		dataAnimate();
+
+		if (typeof $.fn.appear != 'undefined')
+		{
+			setTimeout(function(){
+				$.force_appear();
+			}, 500);
+		}
+
+		animateElements();
 
 		// animate page exits
-		/*$('body')
+		$('body')
 		.on('click', 'a', function(e)
 		{
+			if (typeof $.LazyJaxDavis != 'undefined')
+				return true;
+
+			if ($(this).is('.ajaxify')) 
+				return true;
+
 			if ($(this).is('[data-edit]') || $(this).is('[data-gallery]') || $(this).is('.no-ajaxify') || $(this).is('[data-toggle]') || $(this).is('[data-dismiss]') || $(this).attr('target') == '_blank')
 				return true;
 
@@ -175,7 +188,8 @@
 			if ($(this).attr('href') == '#')
 				return true;
 
-			if ($(this).attr('href') == 'javascript:void(0)')
+			if ($(this).attr('href').substring(0,11) == "javascript:")
+    			return true;
 
 			e.preventDefault();
 			var t = $(this);
@@ -189,15 +203,15 @@
 					location = t.attr('href');
 			}, 
 			500);
-		});*/
+		});
 
 		// resize nicescroll areas after animations ended
-		setTimeout(function(){
-			$('.hasNiceScroll, #menu_kis, #menu').getNiceScroll().show().resize();
-
+		setTimeout(function()
+		{
+			resizeNiceScroll();
 			if ($(window).width() < 992)
 				disableContentNiceScroll();
 		}, 1000);
 	});
 
-})(jQuery);
+})(jQuery, window);

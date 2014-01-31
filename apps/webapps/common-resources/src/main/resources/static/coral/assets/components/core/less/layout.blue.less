@@ -13,9 +13,12 @@
 	}
 	.bg-gray,
 	.widget-stats.widget-stats-gray,
-	.email .email-item-list .list-group-item.active {
+	.email .email-item-list .list-group-item.active,
+	.table-striped tbody tr:nth-child(even) td, 
+	.table-striped tbody tr:nth-child(even) th {
 		background: lighten(@containerBgBlue, 4%) !important;
 	}
+	.bg-gray-hover:hover,
 	.tickets:hover,
 	ul.friends-list li:hover {
 		background: lighten(@containerBgBlue, 4%);

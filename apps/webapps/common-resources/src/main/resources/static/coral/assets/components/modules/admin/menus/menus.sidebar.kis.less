@@ -114,13 +114,15 @@
 	}
 }
 
-.menu-right-visible,
-.menu-right-visible.menu-right-hidden {
-	@menuSidebarKisWidth: 70px;
-	#menu_kis {
-		display: block !important;
-		visibility: visible !important;
-		width: @menuSidebarKisWidth;
+.sidebar.sidebar-kis {
+	.menu-right-visible,
+	.menu-right-visible.menu-right-hidden {
+		@menuSidebarKisWidth: 70px;
+		#menu_kis {
+			display: block !important;
+			visibility: visible !important;
+			width: @menuSidebarKisWidth;
+		}
 	}
 }
 
@@ -131,40 +133,48 @@
 }
 
 @media (min-width: 768px) {
-	@menuSidebarKisWidth: 70px;
-	.app .navbar.main {
-		right: @menuSidebarKisWidth !important;
+	.sidebar.sidebar-kis {
+		@menuSidebarKisWidth: 70px;
+		&.app .navbar.main {
+			right: @menuSidebarKisWidth !important;
+		}
 	}
 }
 
 @media (min-width: 768px)
 {
-	.menu-right-hidden {
-		@menuSidebarKisWidth: 0;
-		#menu_kis {
-			width: @menuSidebarKisWidth;
+	.sidebar.sidebar-kis {
+		.menu-right-hidden {
+			@menuSidebarKisWidth: 0;
+			#menu_kis {
+				width: @menuSidebarKisWidth;
+			}
+			.navbar.main {
+				right: @menuSidebarKisWidth !important;
+			}
 		}
+	}
+}
+
+.app .menu-right-visible {
+	&,
+	&.menu-hidden,
+	&.menu-right-hidden {
+		@menuSidebarKisWidth: 70px;
 		.navbar.main {
 			right: @menuSidebarKisWidth !important;
 		}
 	}
 }
 
-.app .menu-right-visible,
-.app .menu-right-visible.menu-hidden,
-.app .menu-right-visible.menu-right-hidden {
-	@menuSidebarKisWidth: 70px;
-	.navbar.main {
-		right: @menuSidebarKisWidth !important;
-	}
-}
-
 @media (min-width: 768px) {
-	@menuSidebarKisWidth: 70px;
-	#footer {
-		right: @menuSidebarKisWidth !important;
-	}
-	#content {
-		margin-right: @menuSidebarKisWidth !important;
+	.sidebar.sidebar-kis {
+		@menuSidebarKisWidth: 70px;
+		#footer {
+			right: @menuSidebarKisWidth !important;
+		}
+		#content {
+			margin-right: @menuSidebarKisWidth !important;
+		}
 	}
 }

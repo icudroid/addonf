@@ -4,16 +4,33 @@
 @footerHeight: 48px;
 #footer {
 	font-weight: 700;
-	position: fixed;
+	position: relative;
 	overflow: hidden;
-	z-index: 10000;
 	background: @footerBg;
 	text-align: center;
 	padding: 0 10px;
 	height: @footerHeight;
 	line-height: @footerHeight;
-	bottom: 0;
-	left: @menuSidebarWidth;
-	right: 0;
 	a { color: #686868; text-decoration: underline; }
+}
+
+.footer-sticky {
+	#footer {
+		position: fixed;
+		z-index: 10000;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+}
+
+.sidebar.sidebar-fusion {
+	#footer {
+		left: @menuSidebarFusionWidth;
+	}
+}
+.sidebar.sidebar-discover {
+	#footer {
+		left: @menuSidebarDiscoverWidth;
+	}
 }

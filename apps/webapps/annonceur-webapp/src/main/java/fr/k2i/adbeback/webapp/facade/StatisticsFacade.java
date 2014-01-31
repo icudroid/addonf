@@ -61,8 +61,8 @@ public class StatisticsFacade {
             throw new Exception("bad user");
         }
 
-        long global = statisticsDao.nbGlobal(ad);
-        long validated = statisticsDao.nbValidated(ad);
+        long global = statisticsDao.nbGlobal(ad,null,null,null);
+        long validated = statisticsDao.nbValidated(ad,null,null,null);
 
         model.put("global",global);
         model.put("validated",validated);

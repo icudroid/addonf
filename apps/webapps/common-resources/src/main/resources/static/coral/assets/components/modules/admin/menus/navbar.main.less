@@ -4,9 +4,19 @@
 	.navbar.main {
 		position: fixed;
 		top: @layoutAppSeparator;
-		left: @menuSidebarWidth;
+		left: 0;
 		right: 0;
 		margin: 0;
+	}
+	&.sidebar.sidebar-fusion {
+		.navbar.main {
+			left: @menuSidebarFusionWidth;
+		}
+	}
+	&.sidebar.sidebar-discover {
+		.navbar.main {
+			left: @menuSidebarDiscoverWidth;
+		}
 	}
 }
 

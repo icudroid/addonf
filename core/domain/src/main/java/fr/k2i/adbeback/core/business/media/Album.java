@@ -2,17 +2,18 @@ package fr.k2i.adbeback.core.business.media;
 
 import lombok.Data;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DiscriminatorValue("album")
 @Data
 public class Album extends Media {
 	private static final long serialVersionUID = -8195169031786628618L;
+    @OneToMany(cascade=CascadeType.ALL)
+    @MapKey(name = "trackNumber")
+    private Map<Integer,Music> musics;
 
 /*	private List<Music> musics;
 

@@ -4,7 +4,7 @@ if (window.location != window.parent.location)
 
 (function($, window)
 {
-
+	// fix for safari back button issue
 	window.onunload = function(){};
 
 	$.expr[':'].scrollable = function( elem ) 
@@ -20,9 +20,6 @@ if (window.location != window.parent.location)
       
       return scrollable;
     };
-
-	if (!Modernizr.touch && $('[href="#template-options"][data-auto-open]').length)
-		$('#template-options').collapse('show');
 
 	window.beautify = function (source)
 	{
@@ -79,6 +76,9 @@ if (window.location != window.parent.location)
 
 	window.resizeNiceScroll = function()
 	{
+		if (typeof $.fn.niceScroll == 'undefined')
+			return;
+
 		setTimeout(function(){
 			$('.hasNiceScroll, #menu_kis, #menu').getNiceScroll().show().resize();
 			if ($('.container-fluid').is('.menu-hidden'))
@@ -108,18 +108,6 @@ if (window.location != window.parent.location)
 	if ($('.prettyprint').length && typeof prettyPrint != 'undefined')
 		prettyPrint();
 	
-	// show/hide toggle buttons
-	$('[data-toggle="hide"]').click(function()
-	{
-		if ($(this).is('.bootboxTarget'))
-			bootbox.alert($($(this).attr('data-target')).html());
-		else {
-			$($(this).attr('data-target')).toggleClass('hide');
-			if ($(this).is('.scrollTarget') && !$($(this).attr('data-target')).is('.hide'))
-				scrollTo($(this).attr('data-target'));
-		}
-	});
-
 	$('[data-toggle="scrollTo"]').on('click', function(e){
 		e.preventDefault();
 		scrollTo($(this).attr('href'));
@@ -142,6 +130,9 @@ if (window.location != window.parent.location)
 		if ($('html').is('.ie') || Modernizr.touch)
 			return;
 
+		if (typeof $.fn.niceScroll == 'undefined')
+			return;
+
 		if (typeof hide == 'undefined')
 			var hide = true;
 
@@ -160,9 +151,7 @@ if (window.location != window.parent.location)
 				cursorborder: "none",
 				cursorborderradius: "0",
 				cursorcolor: primaryColor
-			}).scroll(function(){
-                $(this).getNiceScroll().resize();
-            });
+			});
 
 			if (hide == true)
 				$(this).getNiceScroll().hide();
@@ -181,23 +170,32 @@ if (window.location != window.parent.location)
 	if ($('html').is('.ie'))
 		$('html').removeClass('app');
 
-	$('#menu > div')
-	.add('#menu_kis > div')
-	.addClass('hasNiceScroll')
-	.niceScroll({
-		horizrailenabled: false, 
-		zindex: 2,
-		cursorborder: "none",
-		cursorborderradius: "0",
-		cursorcolor: primaryColor
-	}).hide();
+	if (typeof $.fn.niceScroll != 'undefined')
+	{
+		$('#menu > div')
+		.add('#menu_kis > div')
+		.addClass('hasNiceScroll')
+		.niceScroll({
+			horizrailenabled: false, 
+			zindex: 2,
+			cursorborder: "none",
+			cursorborderradius: "0",
+			cursorcolor: primaryColor
+		}).hide();
+	}
 
-	$('body')
-	.on('mouseenter', '[data-toggle="dropdown"].dropdown-hover', function()
-	{ 
-		if (!$(this).parent('.dropdown').is('.open'))
-			$(this).click();
-	});
+	if (typeof coreInit == 'undefined')
+	{
+		$('body')
+		.on('mouseenter', '[data-toggle="dropdown"].dropdown-hover', function()
+		{ 
+			if (!$(this).parent('.dropdown').is('.open'))
+				$(this).click();
+		});
+	}
+	else {
+		$('[data-toggle="dropdown"]').dropdown();
+	}
 
 	$('.navbar.main')
 	.add('#menu-top')
@@ -206,7 +204,7 @@ if (window.location != window.parent.location)
 	});
 
 	$('[data-height]').each(function(){
-		$(this).height($(this).data('height'));
+		$(this).css({ 'height': $(this).data('height') });
 	});
 
 	$('.app [data-toggle="tab"]')
@@ -244,10 +242,7 @@ if (window.location != window.parent.location)
 
 	$(window).setBreakpoints({
 		distinct: false,
-		breakpoints: [
-			768,
-			992
-		]
+		breakpoints: [ 768, 992 ]
 	});
 
 	$(window).bind('exitBreakpoint768',function() {		
@@ -269,9 +264,13 @@ if (window.location != window.parent.location)
 	$(window).bind('enterBreakpoint992',function() {
 		enableContentNiceScroll(false);
 	});
-	
+
+	window.coreInit = true;
+
 	$(window).on('load', function()
 	{
+		window.loadTriggered = true;
+
 		if ($(window).width() < 992)
 			$('.hasNiceScroll').getNiceScroll().stop();
 
@@ -288,6 +287,15 @@ if (window.location != window.parent.location)
 			Holder.add_theme("dark", {background:"#424242", foreground:"#aaa", size:9}).run();
 			Holder.add_theme("white", {background:"#fff", foreground:"#c9c9c9", size:9}).run();
 		}
+
+		if ($('.scripts-async').length)
+			$('.scripts-async .container-fluid').css('visibility', 'visible');
 	});
+
+	// weird chrome bug, sometimes the window load event isn't triggered
+	setTimeout(function(){
+		if (!window.loadTriggered)
+			$(window).trigger('load');
+	}, 2000);
 
 })(jQuery, window);

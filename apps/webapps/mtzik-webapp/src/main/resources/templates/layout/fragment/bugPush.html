@@ -1,3 +1,18 @@
+<script type="text/javascript">
+
+
+    $(function(){
+        $("#owl-catalog").owlCarousel({
+            autoPlay: 5000,
+            items: 1
+        })
+        .find('a').on('click', function(e){
+            e.stopPropagation();
+        });
+    });
+
+</script>
+
 <div id="owl-catalog" class="owl-carousel owl-theme">
 
     <div class="item" th:each="push : ${pushes}">
@@ -21,10 +36,6 @@
                             <div class="clearfix"></div>
                             <div class="separator"></div>
 
-                            <p class="innerTB" th:utext="${push.description}}">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Laboriosam, illo, labore, a, dolorum doloribus dignissimos vitae esse sint ipsum
-                                eos non repellat possimus saepe quod neque aliquam fugiat reiciendis
-                                cupiditate.</p>
 
                             <a href="#" class="btn btn-primary addToCart" th:utext="#{addonf.product.addToCart}" th:attr="data-music=${push.id}"><i class="fa fa-plus"></i> Add to Cart</a>&nbsp;&nbsp;
                             <a href="#" class="btn btn-primary playMusic" th:utext="#{addonf.product.playMusic}" th:attr="data-music=${push.id}"><i class="fa fa-play"></i> Play</a>

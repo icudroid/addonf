@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>CORAL Template (v1.9.4)</title>
+	<title>CORAL Template (v1.9.6)</title>
 	
 	<!-- Meta -->
 	<meta charset="UTF-8" />
@@ -25,13 +25,13 @@
 
 	
 	
-	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.4"></script>
-<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.4"></script>
-<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.4"></script>
-<script src="../assets/components/library/angular/angular.min.js?v=v1.9.4"></script>
+	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/library/angular/angular.min.js?v=v1.9.6&sv=v0.0.1"></script>
 </head>
 <body id="docs">
 <!-- Fixed navbar -->
@@ -54,6 +54,7 @@
             <li><a href="component.core.html">Complete</a></li>
           </ul>
         </li>
+        <li><a href="http://www.mosaicpro.biz/blog/tutorials" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Online Guides</a></li>
       </ul>
       <!-- <ul class="nav navbar-nav navbar-right">
         <li><a href="../navbar/">Default</a></li>
@@ -134,9 +135,9 @@
 																						<div class="tab-pane" id="styles-f550ed9de56452a1a44ded808ea86311">
 
 												<h4>Code</h4>
-												<pre class="prettyprint">@import &quot;assets/components/modules/admin/social/assets/less/social.less&quot;;
+												<pre class="prettyprint">@import &quot;http://localhost/shared/components/modules/admin/social/assets/less/social.less&quot;;
 @import &quot;assets/components/core/less/widgets.less&quot;;
-@import &quot;assets/components/modules/admin/ui/buttons/assets/buttons.less&quot;;</pre>
+@import &quot;assets/components/common/ui/buttons/assets/buttons.less&quot;;</pre>
 												<hr class="separator"/>
 
 												<h4>Usage</h4>
@@ -197,7 +198,7 @@
 																						<div class="tab-pane" id="styles-3120622e6d8afde0f0caff6a68235178">
 
 												<h4>Code</h4>
-												<pre class="prettyprint">@import &quot;assets/components/modules/admin/social/assets/less/social.less&quot;;
+												<pre class="prettyprint">@import &quot;http://localhost/shared/components/modules/admin/social/assets/less/social.less&quot;;
 @import &quot;assets/components/core/less/widgets.less&quot;;</pre>
 												<hr class="separator"/>
 
@@ -237,7 +238,7 @@
 											<div class="tab-pane active" id="preview-1e09cabbd0d25b40ebd4afc2b2b1dc22">
 												<div class="widget activity-line">
 	<div class="widget-body padding-none">
-		<div class="activity-status">
+		<div class="activity-status border-bottom">
 			<div class="activity-author"><a href="#"><img src="../assets/images/avatar-large.jpg" alt="..." width="50"></a></div>
 			<div class="text">
 				<a href="#">Adrian Demian</a> posted on 
@@ -245,15 +246,14 @@
 				<span class="glyphicons calendar"><i></i> on 16 September 2013 </span>
 			</div>
 			<div class="clearfix"></div>
-		</div>	
-		<div class="activity-content border-top border-bottom">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus ipsum non ligula tincidunt laoreet.as nec mauris lacus.</div>
+		</div>
+		<div class="bg-gray border-bottom margin-none">	
+			<p class="bg-gray innerAll margin-none"><i class="fa fa-2x fa-comments pull-left"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus ipsum<br/><small><em><abbr>- <a href="">mosaicpro </a> December 12, 2011</abbr></em></small></p>
+		</div>
+		<div class="bg-gray border-bottom margin-none">	
+			<p class="bg-gray innerAll margin-none"><i class="fa fa-2x fa-comments pull-left"></i> Lorem ipsum dolor sit am ipsum<br/><small><em><abbr>- <a href="">mosaicpro </a> December 12, 2011</abbr></em></small></p>
+		</div>
 		<div class="innerAll">
-			<div class="activity-comments">	
-				<p class="bg-gray innerAll half"><i class="fa fa-2x fa-comments pull-left"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus ipsum <abbr>- <a href="">mosaicpro </a> December 12, 2011</abbr></p>
-			</div>
-			<div class="activity-comments">	
-				<p class="bg-gray innerAll half"><i class="fa fa-2x fa-comments pull-left"></i> Lorem ipsum dolor sit am ipsum <abbr>- <a href="">mosaicpro </a> December 12, 2011</abbr></p>
-			</div>
 			<input class="form-control input-sm" placeholder="Comment here..."/>
 		</div>
 		<div class="clearfix"></div>
@@ -264,7 +264,7 @@
 											<div class="tab-pane" id="source-1e09cabbd0d25b40ebd4afc2b2b1dc22">
 												<pre class="prettyprint">&lt;div class=&quot;widget activity-line&quot;&gt;
 	&lt;div class=&quot;widget-body padding-none&quot;&gt;
-		&lt;div class=&quot;activity-status&quot;&gt;
+		&lt;div class=&quot;activity-status border-bottom&quot;&gt;
 			&lt;div class=&quot;activity-author&quot;&gt;&lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;../assets/images/avatar-large.jpg&quot; alt=&quot;...&quot; width=&quot;50&quot;&gt;&lt;/a&gt;&lt;/div&gt;
 			&lt;div class=&quot;text&quot;&gt;
 				&lt;a href=&quot;#&quot;&gt;Adrian Demian&lt;/a&gt; posted on 
@@ -272,15 +272,14 @@
 				&lt;span class=&quot;glyphicons calendar&quot;&gt;&lt;i&gt;&lt;/i&gt; on 16 September 2013 &lt;/span&gt;
 			&lt;/div&gt;
 			&lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;
-		&lt;/div&gt;	
-		&lt;div class=&quot;activity-content border-top border-bottom&quot;&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus ipsum non ligula tincidunt laoreet.as nec mauris lacus.&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class=&quot;bg-gray border-bottom margin-none&quot;&gt;	
+			&lt;p class=&quot;bg-gray innerAll margin-none&quot;&gt;&lt;i class=&quot;fa fa-2x fa-comments pull-left&quot;&gt;&lt;/i&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus ipsum&lt;br/&gt;&lt;small&gt;&lt;em&gt;&lt;abbr&gt;- &lt;a href=&quot;&quot;&gt;mosaicpro &lt;/a&gt; December 12, 2011&lt;/abbr&gt;&lt;/em&gt;&lt;/small&gt;&lt;/p&gt;
+		&lt;/div&gt;
+		&lt;div class=&quot;bg-gray border-bottom margin-none&quot;&gt;	
+			&lt;p class=&quot;bg-gray innerAll margin-none&quot;&gt;&lt;i class=&quot;fa fa-2x fa-comments pull-left&quot;&gt;&lt;/i&gt; Lorem ipsum dolor sit am ipsum&lt;br/&gt;&lt;small&gt;&lt;em&gt;&lt;abbr&gt;- &lt;a href=&quot;&quot;&gt;mosaicpro &lt;/a&gt; December 12, 2011&lt;/abbr&gt;&lt;/em&gt;&lt;/small&gt;&lt;/p&gt;
+		&lt;/div&gt;
 		&lt;div class=&quot;innerAll&quot;&gt;
-			&lt;div class=&quot;activity-comments&quot;&gt;	
-				&lt;p class=&quot;bg-gray innerAll half&quot;&gt;&lt;i class=&quot;fa fa-2x fa-comments pull-left&quot;&gt;&lt;/i&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus ipsum &lt;abbr&gt;- &lt;a href=&quot;&quot;&gt;mosaicpro &lt;/a&gt; December 12, 2011&lt;/abbr&gt;&lt;/p&gt;
-			&lt;/div&gt;
-			&lt;div class=&quot;activity-comments&quot;&gt;	
-				&lt;p class=&quot;bg-gray innerAll half&quot;&gt;&lt;i class=&quot;fa fa-2x fa-comments pull-left&quot;&gt;&lt;/i&gt; Lorem ipsum dolor sit am ipsum &lt;abbr&gt;- &lt;a href=&quot;&quot;&gt;mosaicpro &lt;/a&gt; December 12, 2011&lt;/abbr&gt;&lt;/p&gt;
-			&lt;/div&gt;
 			&lt;input class=&quot;form-control input-sm&quot; placeholder=&quot;Comment here...&quot;/&gt;
 		&lt;/div&gt;
 		&lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;
@@ -293,7 +292,7 @@
 																						<div class="tab-pane" id="styles-1e09cabbd0d25b40ebd4afc2b2b1dc22">
 
 												<h4>Code</h4>
-												<pre class="prettyprint">@import &quot;assets/components/modules/admin/social/assets/less/social.less&quot;;
+												<pre class="prettyprint">@import &quot;http://localhost/shared/components/modules/admin/social/assets/less/social.less&quot;;
 @import &quot;assets/components/core/less/widgets.less&quot;;</pre>
 												<hr class="separator"/>
 
@@ -359,7 +358,7 @@
 																						<div class="tab-pane" id="styles-1c67c70d44e9b4e52943f8b541f751fc">
 
 												<h4>Code</h4>
-												<pre class="prettyprint">@import &quot;assets/components/modules/admin/social/assets/less/social.less&quot;;
+												<pre class="prettyprint">@import &quot;http://localhost/shared/components/modules/admin/social/assets/less/social.less&quot;;
 @import &quot;assets/components/core/less/widgets.less&quot;;</pre>
 												<hr class="separator"/>
 
@@ -410,7 +409,7 @@
 				<div class="innerAll muted">
 					<a href="" class="pull-right"><div class="label label-primary"><em>FOLLOW</em></div></a>
 					<a><h4 class="strong muted text-uppercase">Adrian Demian</h4></a>
-					<ul class="list-unstyled fa-ul margin-bottom-none">
+					<ul class="fa-ul margin-bottom-none">
 						<li><i class="fa fa-li fa-suitcase"></i> Working at <a href="http://www.mosaicpro.biz">MosaicPro</a></li>
 						<li><i class="fa fa-li fa-certificate"></i> Adobe  Certification</li>
 					</ul>
@@ -436,7 +435,7 @@
 				&lt;div class=&quot;innerAll muted&quot;&gt;
 					&lt;a href=&quot;&quot; class=&quot;pull-right&quot;&gt;&lt;div class=&quot;label label-primary&quot;&gt;&lt;em&gt;FOLLOW&lt;/em&gt;&lt;/div&gt;&lt;/a&gt;
 					&lt;a&gt;&lt;h4 class=&quot;strong muted text-uppercase&quot;&gt;Adrian Demian&lt;/h4&gt;&lt;/a&gt;
-					&lt;ul class=&quot;list-unstyled fa-ul margin-bottom-none&quot;&gt;
+					&lt;ul class=&quot;fa-ul margin-bottom-none&quot;&gt;
 						&lt;li&gt;&lt;i class=&quot;fa fa-li fa-suitcase&quot;&gt;&lt;/i&gt; Working at &lt;a href=&quot;http://www.mosaicpro.biz&quot;&gt;MosaicPro&lt;/a&gt;&lt;/li&gt;
 						&lt;li&gt;&lt;i class=&quot;fa fa-li fa-certificate&quot;&gt;&lt;/i&gt; Adobe  Certification&lt;/li&gt;
 					&lt;/ul&gt;
@@ -453,7 +452,7 @@
 																						<div class="tab-pane" id="styles-2654abd8637b0d4481ca77f11b4ffbcc">
 
 												<h4>Code</h4>
-												<pre class="prettyprint">@import &quot;assets/components/modules/admin/social/assets/less/social.less&quot;;
+												<pre class="prettyprint">@import &quot;http://localhost/shared/components/modules/admin/social/assets/less/social.less&quot;;
 @import &quot;assets/components/core/less/widgets.less&quot;;</pre>
 												<hr class="separator"/>
 
@@ -517,7 +516,7 @@
 																						<div class="tab-pane" id="styles-c4fd944c8c55328fbea478b3b649c9bb">
 
 												<h4>Code</h4>
-												<pre class="prettyprint">@import &quot;assets/components/modules/admin/social/assets/less/social.less&quot;;
+												<pre class="prettyprint">@import &quot;http://localhost/shared/components/modules/admin/social/assets/less/social.less&quot;;
 @import &quot;assets/components/core/less/widgets.less&quot;;</pre>
 												<hr class="separator"/>
 
@@ -558,20 +557,20 @@
 												<div class="widget widget-heading-simple widget-body-white">
 	<div class="widget-body padding-none">
 		
-		<div class="innerAll">
-			<div class="muted separator bottom">
-				<div class="pull-right label label-default"> <em>3 days ago</em></div>
-				<h5 class="strong muted text-uppercase"><i class="fa fa-user "></i> Adrian Demian</h5>
-				<span>on <a href="#">CORAL Template</a><span>
-			</div>
+		<div class="innerAll border-bottom">
+			<div class="pull-right label label-default"> <em>3 days ago</em></div>
+			<h5 class="strong muted text-uppercase"><i class="fa fa-user "></i> Adrian Demian</h5>
+			<span>on <a href="#">CORAL Template</a><span>
+		</div>
+		<div class="innerAll border-bottom">
 			<p class="margin-none">Make use of a super basic HTML template, or dive into a few examples we've started for you. We encourage folks to iterate on these examples and not simply use them as an end result.</p>
 		</div>
 		<div class="bg-inverse">
 			<img data-src="holder.js/100%x200/dark" class="img-clean" />
 		</div>
-		<div class="bottom-social border-bottom innerAll half bg-gray">
-			<a href=""><i class="fa fa-comment"></i> Comment</a> 
-			<a href=""><i class="fa fa-share"></i> Share Post</a>
+		<div class="border-bottom innerAll bg-gray">
+			<a href="" class="text-primary"><i class="fa fa-comment"></i> Comment</a> &nbsp;
+			<a href="" class="text-primary"><i class="fa fa-share"></i> Share Post</a>
 		</div>
 		
 		<div class="innerAll">
@@ -613,25 +612,26 @@
 </div>
 
 
+
 											</div>
 											<div class="tab-pane" id="source-46090bddfe2a8716cd65930afe74f8be">
 												<pre class="prettyprint">&lt;div class=&quot;widget widget-heading-simple widget-body-white&quot;&gt;
 	&lt;div class=&quot;widget-body padding-none&quot;&gt;
 		
-		&lt;div class=&quot;innerAll&quot;&gt;
-			&lt;div class=&quot;muted separator bottom&quot;&gt;
-				&lt;div class=&quot;pull-right label label-default&quot;&gt; &lt;em&gt;3 days ago&lt;/em&gt;&lt;/div&gt;
-				&lt;h5 class=&quot;strong muted text-uppercase&quot;&gt;&lt;i class=&quot;fa fa-user &quot;&gt;&lt;/i&gt; Adrian Demian&lt;/h5&gt;
-				&lt;span&gt;on &lt;a href=&quot;#&quot;&gt;CORAL Template&lt;/a&gt;&lt;span&gt;
-			&lt;/div&gt;
+		&lt;div class=&quot;innerAll border-bottom&quot;&gt;
+			&lt;div class=&quot;pull-right label label-default&quot;&gt; &lt;em&gt;3 days ago&lt;/em&gt;&lt;/div&gt;
+			&lt;h5 class=&quot;strong muted text-uppercase&quot;&gt;&lt;i class=&quot;fa fa-user &quot;&gt;&lt;/i&gt; Adrian Demian&lt;/h5&gt;
+			&lt;span&gt;on &lt;a href=&quot;#&quot;&gt;CORAL Template&lt;/a&gt;&lt;span&gt;
+		&lt;/div&gt;
+		&lt;div class=&quot;innerAll border-bottom&quot;&gt;
 			&lt;p class=&quot;margin-none&quot;&gt;Make use of a super basic HTML template, or dive into a few examples we've started for you. We encourage folks to iterate on these examples and not simply use them as an end result.&lt;/p&gt;
 		&lt;/div&gt;
 		&lt;div class=&quot;bg-inverse&quot;&gt;
 			&lt;img data-src=&quot;holder.js/100%x200/dark&quot; class=&quot;img-clean&quot; /&gt;
 		&lt;/div&gt;
-		&lt;div class=&quot;bottom-social border-bottom innerAll half bg-gray&quot;&gt;
-			&lt;a href=&quot;&quot;&gt;&lt;i class=&quot;fa fa-comment&quot;&gt;&lt;/i&gt; Comment&lt;/a&gt; 
-			&lt;a href=&quot;&quot;&gt;&lt;i class=&quot;fa fa-share&quot;&gt;&lt;/i&gt; Share Post&lt;/a&gt;
+		&lt;div class=&quot;border-bottom innerAll bg-gray&quot;&gt;
+			&lt;a href=&quot;&quot; class=&quot;text-primary&quot;&gt;&lt;i class=&quot;fa fa-comment&quot;&gt;&lt;/i&gt; Comment&lt;/a&gt; &amp;nbsp;
+			&lt;a href=&quot;&quot; class=&quot;text-primary&quot;&gt;&lt;i class=&quot;fa fa-share&quot;&gt;&lt;/i&gt; Share Post&lt;/a&gt;
 		&lt;/div&gt;
 		
 		&lt;div class=&quot;innerAll&quot;&gt;
@@ -673,14 +673,16 @@
 &lt;/div&gt;
 
 
+
 </pre>
 											</div>
 
 																						<div class="tab-pane" id="styles-46090bddfe2a8716cd65930afe74f8be">
 
 												<h4>Code</h4>
-												<pre class="prettyprint">@import &quot;assets/components/modules/admin/social/assets/less/social.less&quot;;
-@import &quot;assets/components/core/less/widgets.less&quot;;</pre>
+												<pre class="prettyprint">@import &quot;http://localhost/shared/components/modules/admin/social/assets/less/social.less&quot;;
+@import &quot;assets/components/core/less/widgets.less&quot;;
+@import &quot;http://localhost/shared/components/common/widgets/lists/list-group/assets/custom/less/list-group.less&quot;;</pre>
 												<hr class="separator"/>
 
 												<h4>Usage</h4>
@@ -704,7 +706,7 @@
 													<h3>Scripts</h3>
 													<p><span class="label label-default">BODY</span> You should include the following scripts at the end of the HTML document, right before the closing <code>&lt;/body&gt;</code> tag.</p>
 
-													<pre class="prettyprint">&lt;script src=&quot;assets/components/plugins/holder/holder.js?v=v1.9.4&quot;&gt;&lt;/script&gt;</pre>
+													<pre class="prettyprint">&lt;script src=&quot;assets/components/plugins/holder/holder.js?v=v1.9.6&amp;sv=v0.0.1&quot;&gt;&lt;/script&gt;</pre>
 
 											</div>
 											
@@ -736,7 +738,7 @@
 				<div class="innerAll muted">
 					<a href="" class="pull-right"><span class="label label-success"> <em>FOLLOW</em></span></a>
 					<h4 class="strong muted text-uppercase">Adrian Demian</h4>
-					<ul class="list-unstyled fa-ul margin-bottom-none">
+					<ul class="fa-ul margin-bottom-none">
 						<li><i class="fa fa-li fa-suitcase"></i> Working at <a href="http://www.mosaicpro.biz">MosaicPro</a></li>
 						<li><i class="fa fa-li fa-certificate"></i> Adobe  Certification</li>
 					</ul>
@@ -758,7 +760,7 @@
 				&lt;div class=&quot;innerAll muted&quot;&gt;
 					&lt;a href=&quot;&quot; class=&quot;pull-right&quot;&gt;&lt;span class=&quot;label label-success&quot;&gt; &lt;em&gt;FOLLOW&lt;/em&gt;&lt;/span&gt;&lt;/a&gt;
 					&lt;h4 class=&quot;strong muted text-uppercase&quot;&gt;Adrian Demian&lt;/h4&gt;
-					&lt;ul class=&quot;list-unstyled fa-ul margin-bottom-none&quot;&gt;
+					&lt;ul class=&quot;fa-ul margin-bottom-none&quot;&gt;
 						&lt;li&gt;&lt;i class=&quot;fa fa-li fa-suitcase&quot;&gt;&lt;/i&gt; Working at &lt;a href=&quot;http://www.mosaicpro.biz&quot;&gt;MosaicPro&lt;/a&gt;&lt;/li&gt;
 						&lt;li&gt;&lt;i class=&quot;fa fa-li fa-certificate&quot;&gt;&lt;/i&gt; Adobe  Certification&lt;/li&gt;
 					&lt;/ul&gt;
@@ -774,7 +776,7 @@
 																						<div class="tab-pane" id="styles-06d7f9980807f5d4bfa8a4be7d4ae7ca">
 
 												<h4>Code</h4>
-												<pre class="prettyprint">@import &quot;assets/components/modules/admin/social/assets/less/social.less&quot;;
+												<pre class="prettyprint">@import &quot;http://localhost/shared/components/modules/admin/social/assets/less/social.less&quot;;
 @import &quot;assets/components/core/less/widgets.less&quot;;</pre>
 												<hr class="separator"/>
 
@@ -823,14 +825,14 @@
 	var themerPrimaryColor = primaryColor;
 	</script>
 
-	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/slimscroll/jquery.slimscroll.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/holder/holder.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/docs/docs/assets/angular/app/ng.app.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/docs/assets/angular/filters/ng.filter.isarray.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/docs/assets/angular/controllers/ng.ctrl.components.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/docs/docs/assets/angular/directives/ng.docs.directive.components.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/prettyprint/assets/js/prettify.js?v=v1.9.4"></script>
-<script src="../assets/components/core/js/core.init.js?v=v1.9.4"></script>
+	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/plugins/slimscroll/jquery.slimscroll.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/plugins/holder/holder.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/modules/docs/docs/assets/angular/app/ng.app.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/modules/docs/assets/angular/filters/ng.filter.isarray.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/modules/docs/assets/angular/controllers/ng.ctrl.components.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/modules/docs/docs/assets/angular/directives/ng.docs.directive.components.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/plugins/prettyprint/assets/js/prettify.js?v=v1.9.6&sv=v0.0.1"></script>
+<script src="../assets/components/core/js/core.init.js?v=v1.9.6"></script>
 </body>
 </html>

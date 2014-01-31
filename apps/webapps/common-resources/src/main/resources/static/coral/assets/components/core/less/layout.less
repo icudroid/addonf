@@ -268,14 +268,11 @@ div[class*="col-lg-"] { padding: 0 @layoutAppSeparator/2; }
 			height: 100%; 
 			overflow: hidden;
 		}
-		#content {
-			height: 100%;
-			// padding: 0;
-		}
+		#content { height: 100%; }
 		.layout-app {
 			position: absolute;
-			.layoutAppTop(@navbarMainHeight);
-			bottom: @footerHeight;
+			top: @layoutAppTop;
+			bottom: 0;
 			width: 100%;
 			
 			.col-table {
@@ -338,6 +335,16 @@ div[class*="col-lg-"] { padding: 0 @layoutAppSeparator/2; }
 			.col-unscrollable { overflow-y: hidden; }
 		}
 	}
+	html.app.footer-sticky {
+		.layout-app {
+			bottom: @footerHeight;
+		}
+	}
+	html.app.navbar-sticky {
+		.layout-app {
+			.layoutAppTop(@navbarMainHeight);
+		}
+	}
 }
 
 // Content
@@ -357,12 +364,31 @@ div[class*="col-lg-"] { padding: 0 @layoutAppSeparator/2; }
 	overflow: hidden;
 	min-width: 320px;
 	min-height: 500px;
-	margin: 0 @menuSidebarKisWidth 0 @menuSidebarWidth;
-	padding: 0 0 @footerHeight;
 	background: @containerBg;
 	z-index: 1;
 }
-.app #content {
+.footer-sticky {
+	#content {
+		padding: 0 0 @footerHeight; 
+	}
+}
+.sidebar.sidebar-fusion {
+	#content {
+		margin-left: @menuSidebarFusionWidth;
+	}
+}
+.sidebar.sidebar-discover {
+	#content {
+		margin-left: @menuSidebarDiscoverWidth;
+	}
+}
+.sidebar.sidebar-kis {
+	#content {
+		margin-right: @menuSidebarKisWidth;
+	}
+}
+
+.app.navbar-sticky #content {
 	.contentPaddingTop(@navbarMainHeight);
 }
 
@@ -381,26 +407,30 @@ div[class*="col-lg-"] { padding: 0 @layoutAppSeparator/2; }
 
 @media (min-width: 768px)
 {
-	.menu-right-hidden {
-		@menuSidebarKisWidth: 0;
+	.sidebar.sidebar-kis {
+		.menu-right-hidden {
+			@menuSidebarKisWidth: 0;
+			#footer {
+				right: @menuSidebarKisWidth !important;
+			}
+			#content {
+				margin-right: @menuSidebarKisWidth !important;
+			}
+		}
+	}
+}
+
+.sidebar.sidebar-kis {
+	.menu-right-visible,
+	.menu-right-visible.menu-hidden,
+	.menu-right-visible.menu-right-hidden {
+		@menuSidebarKisWidth: 70px;
 		#footer {
 			right: @menuSidebarKisWidth !important;
 		}
 		#content {
 			margin-right: @menuSidebarKisWidth !important;
 		}
-	}
-}
-
-.menu-right-visible,
-.menu-right-visible.menu-hidden,
-.menu-right-visible.menu-right-hidden {
-	@menuSidebarKisWidth: 70px;
-	#footer {
-		right: @menuSidebarKisWidth !important;
-	}
-	#content {
-		margin-right: @menuSidebarKisWidth !important;
 	}
 }
 
@@ -414,3 +444,4 @@ div[class*="col-lg-"] { padding: 0 @layoutAppSeparator/2; }
 
 .fa-6x { font-size: 80px; }
 .nicescroll-rails { display: none; }
+.ui-tooltip { display: none !important; }

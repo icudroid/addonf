@@ -5,24 +5,23 @@
 <!--[if gt IE 8]> <html class=""> <![endif]-->
 <!--[if !IE]><!--><html class=""><!-- <![endif]-->
 <head>
-	<title>CORAL Front Template (v1.9.4)</title>
+	<title>CORAL Front Template (v1.9.6)</title>
 	
 	<!-- Meta -->
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 	
-	
 	<!-- 
 	**********************************************************
 	In development, use the LESS files and the less.js compiler
 	instead of the minified CSS loaded by default.
 	**********************************************************
-	<link rel="stylesheet/less" href="../assets/less/realestate/module.realestate.page.agent.sidebar_type.fusion.less" />
+	<link rel="stylesheet/less" href="../assets/less/realestate/module.realestate.stylesheet-complete.sidebar_type.fusion.less" />
 	-->
 
 		<!--[if lt IE 9]><link rel="stylesheet" href="../assets/components/library/bootstrap/css/bootstrap.min.css" /><![endif]-->
-	<link rel="stylesheet" href="../assets/css/realestate/module.realestate.page.agent.sidebar_type.fusion.min.css" />
+	<link rel="stylesheet" href="../assets/css/realestate/module.realestate.stylesheet-complete.sidebar_type.fusion.min.css" />
 	
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -30,26 +29,67 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
+	<script src="../assets/components/plugins/ajaxify/script.min.js?v=v1.9.6&sv=v0.0.1"></script>
 
-	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.4"></script>
-<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.4"></script>
-<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.4"></script>
-<script src="../assets/components/library/jquery-ui/js/jquery-ui.min.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js?v=v1.9.4"></script>
-	<script src="../assets/components/library/jquery/jquery.min.js?v=v1.9.4"></script>
-<script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.4"></script>
-<script src="../assets/components/library/modernizr/modernizr.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/less-js/less.min.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.4"></script>
-<script src="../assets/components/library/jquery-ui/js/jquery-ui.min.js?v=v1.9.4"></script>
-<script src="../assets/components/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js?v=v1.9.4"></script>	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
+<script>var App = {};</script>
+
+<script data-id="App.Scripts">
+App.Scripts = {
+
+	/* CORE scripts always load first; */
+	core: [
+		'../assets/components/library/jquery/jquery.min.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/library/modernizr/modernizr.js?v=v1.9.6&sv=v0.0.1'
+	],
+
+	/* PLUGINS_DEPENDENCY always load after CORE but before PLUGINS; */
+	plugins_dependency: [
+		'../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/library/jquery-ui/js/jquery-ui.min.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/library/jquery/jquery-migrate.min.js?v=v1.9.6&sv=v0.0.1'
+	],
+
+	/* PLUGINS always load after CORE and PLUGINS_DEPENDENCY, but before the BUNDLE / initialization scripts; */
+	plugins: [
+		'../assets/components/plugins/ajaxify/davis.min.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/plugins/ajaxify/jquery.lazyjaxdavis.min.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/plugins/preload/pace/pace.min.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/plugins/less-js/less.min.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js?v=v1.9.6&sv=v0.0.1'
+	],
+
+	/* The initialization scripts always load last and are automatically and dynamically loaded when AJAX navigation is enabled; */
+	bundle: [
+		'../assets/components/plugins/ajaxify/ajaxify.init.js?v=v1.9.6', 
+		'../assets/components/core/js/preload.pace.init.js?v=v1.9.6', 
+		'../assets/components/common/sliders/jqueryui-sliders/assets/custom/js/jqueryui-sliders.init.js?v=v1.9.6&sv=v0.0.1', 
+		'../assets/components/modules/front/core/assets/js/front.core.init.js?v=v1.9.6'
+	]
+
+};
+</script>
+
+<script>
+$script(App.Scripts.core, 'core');
+
+$script.ready(['core'], function(){
+	$script(App.Scripts.plugins_dependency, 'plugins_dependency');
+});
+$script.ready(['core', 'plugins_dependency'], function(){
+	$script(App.Scripts.plugins, 'plugins');
+});
+$script.ready(['core', 'plugins_dependency', 'plugins'], function(){
+	$script(App.Scripts.bundle, 'bundle');
+});
+</script>
+	<script>if (/*@cc_on!@*/false && document.documentMode === 10) { document.documentElement.className+=' ie ie10'; }</script>
 	
 </head>
 <body>
+
+	<div class="container-fluid">
 
 	<div id="menu-top">
 	<div class="container">
@@ -62,9 +102,9 @@
 		</ul>
 		<ul class="colors pull-right hidden-xs">
 			
-						<li class="active"><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=style-default" style="background-color: #eb6a5a"><span class="hide">style-default</span></a></li>
-						<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=green" style="background-color: #87c844"><span class="hide">green</span></a></li>
-						<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=coral" style="background-color: #7eccc2"><span class="hide">coral</span></a></li>
+						<li class="active"><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=style-default" style="background-color: #eb6a5a" class="no-ajaxify"><span class="hide">style-default</span></a></li>
+						<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=green" style="background-color: #87c844" class="no-ajaxify"><span class="hide">green</span></a></li>
+						<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=coral" style="background-color: #7eccc2" class="no-ajaxify"><span class="hide">coral</span></a></li>
 			
 			<li class="dropdown">
 				<a href="" data-toggle="dropdown" class="dropdown-toggle">
@@ -74,26 +114,26 @@
 					<span class="color info"></span>
 				</a>
 				<ul class="dropdown-menu pull-right">
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=alizarin-crimson"><span class="color" style="background-color: #F06F6F"></span> alizarin-crimson</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=blue-gray"><span class="color" style="background-color: #7293CF"></span> blue-gray</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=brown"><span class="color" style="background-color: #d39174"></span> brown</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=purple-gray"><span class="color" style="background-color: #AF86B9"></span> purple-gray</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=purple-wine"><span class="color" style="background-color: #CC6788"></span> purple-wine</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=green-army"><span class="color" style="background-color: #9FB478"></span> green-army</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=black-and-white"><span class="color" style="background-color: #979797"></span> black-and-white</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=amazon"><span class="color" style="background-color: #8BC4B9"></span> amazon</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=amber"><span class="color" style="background-color: #CACA8A"></span> amber</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=android-green"><span class="color" style="background-color: #A9C784"></span> android-green</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=antique-brass"><span class="color" style="background-color: #B3998A"></span> antique-brass</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=antique-bronze"><span class="color" style="background-color: #8D8D6E"></span> antique-bronze</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=artichoke"><span class="color" style="background-color: #B0B69D"></span> artichoke</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=atomic-tangerine"><span class="color" style="background-color: #F19B69"></span> atomic-tangerine</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=bazaar"><span class="color" style="background-color: #98777B"></span> bazaar</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=bistre-brown"><span class="color" style="background-color: #C3A961"></span> bistre-brown</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=bittersweet"><span class="color" style="background-color: #d6725e"></span> bittersweet</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=blueberry"><span class="color" style="background-color: #7789D1"></span> blueberry</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=bud-green"><span class="color" style="background-color: #6fa362"></span> bud-green</a></li>
-										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.4&sidebar_type=fusion&skin=burnt-sienna"><span class="color" style="background-color: #E4968A"></span> burnt-sienna</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=alizarin-crimson" class="no-ajaxify"><span class="color" style="background-color: #F06F6F"></span> alizarin-crimson</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=blue-gray" class="no-ajaxify"><span class="color" style="background-color: #7293CF"></span> blue-gray</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=brown" class="no-ajaxify"><span class="color" style="background-color: #d39174"></span> brown</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=purple-gray" class="no-ajaxify"><span class="color" style="background-color: #AF86B9"></span> purple-gray</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=purple-wine" class="no-ajaxify"><span class="color" style="background-color: #CC6788"></span> purple-wine</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=green-army" class="no-ajaxify"><span class="color" style="background-color: #9FB478"></span> green-army</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=black-and-white" class="no-ajaxify"><span class="color" style="background-color: #979797"></span> black-and-white</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=amazon" class="no-ajaxify"><span class="color" style="background-color: #8BC4B9"></span> amazon</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=amber" class="no-ajaxify"><span class="color" style="background-color: #CACA8A"></span> amber</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=android-green" class="no-ajaxify"><span class="color" style="background-color: #A9C784"></span> android-green</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=antique-brass" class="no-ajaxify"><span class="color" style="background-color: #B3998A"></span> antique-brass</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=antique-bronze" class="no-ajaxify"><span class="color" style="background-color: #8D8D6E"></span> antique-bronze</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=artichoke" class="no-ajaxify"><span class="color" style="background-color: #B0B69D"></span> artichoke</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=atomic-tangerine" class="no-ajaxify"><span class="color" style="background-color: #F19B69"></span> atomic-tangerine</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=bazaar" class="no-ajaxify"><span class="color" style="background-color: #98777B"></span> bazaar</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=bistre-brown" class="no-ajaxify"><span class="color" style="background-color: #C3A961"></span> bistre-brown</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=bittersweet" class="no-ajaxify"><span class="color" style="background-color: #d6725e"></span> bittersweet</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=blueberry" class="no-ajaxify"><span class="color" style="background-color: #7789D1"></span> blueberry</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=bud-green" class="no-ajaxify"><span class="color" style="background-color: #6fa362"></span> bud-green</a></li>
+										<li><a href="?module=realestate&page=agent&url_rewrite=&build=&v=v1.9.6&sidebar_type=fusion&skin=burnt-sienna" class="no-ajaxify"><span class="color" style="background-color: #E4968A"></span> burnt-sienna</a></li>
 									</ul>
 			</li>
 		</ul>
@@ -159,37 +199,37 @@
 </div>
 
 
-<div id="content">
-	<div class="innerTB border-bottom inner-2x">
-		<div class="container">
-			
-			<div class="media margin-none innerAll">
-				<div class="pull-left innerAll">
-					<img src="../assets/images/people/100/2.jpg" alt="" class="img-responsive img-circle" />
-				</div>
-				<div class="media-body">
-					<div class="pull-right innerAll half hidden-xs">
-						<div class="innerTB">
-							<div class="btn-group-vertical btn-group-sm">
-								<button class="btn btn-inverse">About</button>
-								<button class="btn btn-default">Contact</button>
-							</div>
+
+	<div id="content">
+<div class="innerTB border-bottom inner-2x">
+	<div class="container">
+		
+		<div class="media margin-none innerAll">
+			<div class="pull-left innerAll">
+				<img src="../assets/images/people/100/2.jpg" alt="" class="img-responsive img-circle" />
+			</div>
+			<div class="media-body">
+				<div class="pull-right innerAll half hidden-xs">
+					<div class="innerTB">
+						<div class="btn-group-vertical btn-group-sm">
+							<button class="btn btn-inverse">About</button>
+							<button class="btn btn-default">Contact</button>
 						</div>
 					</div>
-					<div class="innerAll half media margin-none">
-						<h3 class="strong innerTB">Renzo Skyler</h3>
-						<div class="pull-left innerLR half">
-							<p class="margin-none">Agent at</p>
-							<p class="strong">Company, Inc</p>
-						</div>
-						<div class="media-body border-left innerLR hidden-xs">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, laborum, similique, accusantium culpa numquam beatae ad minus quis quas vel eum deserunt architecto id temporibus tempore maiores eligendi dolores porro suscipit incidunt provident mollitia ex non harum doloribus optio dolore earum quibusdam nihil ipsam maxime magnam recusandae sequi fugit possimus!
-						</div>
+				</div>
+				<div class="innerAll half media margin-none">
+					<h3 class="strong innerTB">Renzo Skyler</h3>
+					<div class="pull-left innerLR half">
+						<p class="margin-none">Agent at</p>
+						<p class="strong">Company, Inc</p>
+					</div>
+					<div class="media-body border-left innerLR hidden-xs">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, laborum, similique, accusantium culpa numquam beatae ad minus quis quas vel eum deserunt architecto id temporibus tempore maiores eligendi dolores porro suscipit incidunt provident mollitia ex non harum doloribus optio dolore earum quibusdam nihil ipsam maxime magnam recusandae sequi fugit possimus!
 					</div>
 				</div>
 			</div>
-
 		</div>
+
 	</div>
 </div>
 <div class="bg-gray innerTB border-bottom inner-2x">
@@ -244,7 +284,7 @@
                             <div class="description border-bottom">
                                 <a href="" class="btn btn-primary btn-circle pull-right"><i class="fa fa-eye"></i></a>
                                 <h5 class="text-uppercase">Property for sale</h5>
-                                <span class="text-primary">&euro;288,962.00</span>
+                                <span class="text-primary">&euro;116,980.00</span>
                             </div>
                             <div class="innerAll bg-gray">
                                                                 <i class="fa fa-fw icon-home-fill-1"></i> Agency
@@ -263,7 +303,7 @@
                             <div class="description border-bottom">
                                 <a href="" class="btn btn-primary btn-circle pull-right"><i class="fa fa-eye"></i></a>
                                 <h5 class="text-uppercase">Property for sale</h5>
-                                <span class="text-primary">&euro;237,630.00</span>
+                                <span class="text-primary">&euro;70,284.00</span>
                             </div>
                             <div class="innerAll bg-gray">
                                                                 <i class="fa fa-fw icon-home-fill-1"></i> Agency
@@ -282,7 +322,7 @@
                             <div class="description border-bottom">
                                 <a href="" class="btn btn-primary btn-circle pull-right"><i class="fa fa-eye"></i></a>
                                 <h5 class="text-uppercase">Property for sale</h5>
-                                <span class="text-primary">&euro;280,344.00</span>
+                                <span class="text-primary">&euro;290,498.00</span>
                             </div>
                             <div class="innerAll bg-gray">
                                                                 <i class="fa fa-fw icon-user-1"></i> Individual
@@ -307,7 +347,7 @@
                             <div class="description border-bottom">
                                 <a href="" class="btn btn-primary btn-circle pull-right"><i class="fa fa-eye"></i></a>
                                 <h5 class="text-uppercase">Residential Home</h5>
-                                <span class="text-primary">&euro;207,231.00</span>
+                                <span class="text-primary">&euro;71,539.00</span>
                             </div>
                             <div class="innerAll bg-gray">
                                                                 <i class="fa fa-fw icon-user-1"></i> Individual
@@ -326,7 +366,7 @@
                             <div class="description border-bottom">
                                 <a href="" class="btn btn-primary btn-circle pull-right"><i class="fa fa-eye"></i></a>
                                 <h5 class="text-uppercase">Superb Backyard</h5>
-                                <span class="text-primary">&euro;260,566.00</span>
+                                <span class="text-primary">&euro;108,085.00</span>
                             </div>
                             <div class="innerAll bg-gray">
                                                                 <i class="fa fa-fw icon-home-fill-1"></i> Agency
@@ -345,7 +385,7 @@
                             <div class="description border-bottom">
                                 <a href="" class="btn btn-primary btn-circle pull-right"><i class="fa fa-eye"></i></a>
                                 <h5 class="text-uppercase">Appartments</h5>
-                                <span class="text-primary">&euro;86,787.00</span>
+                                <span class="text-primary">&euro;166,985.00</span>
                             </div>
                             <div class="innerAll bg-gray">
                                                                 <i class="fa fa-fw icon-user-1"></i> Individual
@@ -406,9 +446,9 @@
 					
 				</div>
 				<div class="separator"></div>
-                
-                <h5 class="text-faded text-uppercase">Browse all properties</h5>
-                <ul class="list-group list-group-1 margin-none">
+	            
+	            <h5 class="text-faded text-uppercase">Browse all properties</h5>
+	            <ul class="list-group list-group-1 margin-none">
 	<li class="list-group-item active"><a href="#"><span class="badge badge-primary pull-right hidden-md">13</span><i class="fa fa-user"></i> For Rent</a></li>
 	<li class="list-group-item"><a href="#"><span class="badge pull-right badge-primary hidden-md">13</span><i class="fa fa-book"></i> For Sale</a></li>
 	<li class="list-group-item"><a href="#"><span class="badge pull-right badge-primary hidden-md">2</span><i class="fa fa-envelope"></i> Comercial</a></li>
@@ -428,7 +468,7 @@
 
 										<div class="list-item box-generic">
 						<a href="#" class="thumbnail"><img src="../assets/images/realestate/photodune-197173-residential-home-xs.jpg" class="img-responsive"><span class="caption">7 photos</span></a>
-						<a href="" class="item-title">Residential Home							<span class="price lead pull-right"> &euro;227,986.00</span>
+						<a href="" class="item-title">Residential Home							<span class="price lead pull-right"> &euro;51,116.00</span>
 						</a>
 						<div class="when"><i class="icon-time-clock"></i> 1 Day Ago</div>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, voluptas, assumenda, dolorem magnam minima repudiandae est perspiciatis explicabo fuga a dolorum voluptates earum quidem distinctio quisquam optio adipisci. Facilis, dolor.</p>
@@ -444,7 +484,7 @@
 					</div>
 										<div class="list-item box-generic">
 						<a href="#" class="thumbnail"><img src="../assets/images/realestate/photodune-3979102-superb-backyard-xs.jpg" class="img-responsive"><span class="caption">7 photos</span></a>
-						<a href="" class="item-title">Superb Backyard							<span class="price lead pull-right"> &euro;215,052.00</span>
+						<a href="" class="item-title">Superb Backyard							<span class="price lead pull-right"> &euro;198,495.00</span>
 						</a>
 						<div class="when"><i class="icon-time-clock"></i> 1 Day Ago</div>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, voluptas, assumenda, dolorem magnam minima repudiandae est perspiciatis explicabo fuga a dolorum voluptates earum quidem distinctio quisquam optio adipisci. Facilis, dolor.</p>
@@ -460,7 +500,7 @@
 					</div>
 										<div class="list-item box-generic">
 						<a href="#" class="thumbnail"><img src="../assets/images/realestate/photodune-2238345-apartments-xs.jpg" class="img-responsive"><span class="caption">7 photos</span></a>
-						<a href="" class="item-title">Appartments							<span class="price lead pull-right"> &euro;113,142.00</span>
+						<a href="" class="item-title">Appartments							<span class="price lead pull-right"> &euro;204,150.00</span>
 						</a>
 						<div class="when"><i class="icon-time-clock"></i> 1 Day Ago</div>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, voluptas, assumenda, dolorem magnam minima repudiandae est perspiciatis explicabo fuga a dolorum voluptates earum quidem distinctio quisquam optio adipisci. Facilis, dolor.</p>
@@ -476,7 +516,7 @@
 					</div>
 										<div class="list-item box-generic">
 						<a href="#" class="thumbnail"><img src="../assets/images/realestate/photodune-1112879-modern-kitchen-in-luxury-mansion-xs.jpg" class="img-responsive"><span class="caption">7 photos</span></a>
-						<a href="" class="item-title">Luxury Mansion							<span class="price lead pull-right"> &euro;52,330.00</span>
+						<a href="" class="item-title">Luxury Mansion							<span class="price lead pull-right"> &euro;73,070.00</span>
 						</a>
 						<div class="when"><i class="icon-time-clock"></i> 1 Day Ago</div>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, voluptas, assumenda, dolorem magnam minima repudiandae est perspiciatis explicabo fuga a dolorum voluptates earum quidem distinctio quisquam optio adipisci. Facilis, dolor.</p>
@@ -495,49 +535,51 @@
 			</div>
 
 		</div>
-
 	</div>
 </div>
 
 
 
 
+			<div id="footer" class="hidden-print">
+				<div class="container">
+					
+					<ul class="list-unstyled center">
+			        	<li ><a href="index.html?lang=en">Home</a></li>
+			        	<li><a href="listing.html?lang=en">Listing</a></li>
+		                <li><a href="map.html?lang=en">Map</a></li>
+		                <li class="active"><a href="agent.html?lang=en">Agents</a></li>
+					</ul>
+					<div class="copy">Copyright &copy; 2013 CORAL. All Rights Reserved.</div>
+				
+					<div class="copy margin-none"><a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.9.6 / <a target="_blank" href="../assets/../../CHANGELOG.txt">changelog</a></div>
 
-	<div id="footer" class="hidden-print">
-		<div class="container">
-			
-			<ul class="list-unstyled center">
-	        	<li ><a href="index.html?lang=en">Home</a></li>
-	        	<li><a href="listing.html?lang=en">Listing</a></li>
-                <li><a href="map.html?lang=en">Map</a></li>
-                <li class="active"><a href="agent.html?lang=en">Agents</a></li>
-			</ul>
-			<div class="copy">Copyright &copy; 2013 CORAL. All Rights Reserved.</div>
-		
-			<div class="copy margin-none"><a href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current version: v1.9.4 / <a target="_blank" href="../assets/../../CHANGELOG.txt">changelog</a></div>
-
-		</div>		
+				</div>		
+			</div>
+		</div>
 	</div>
 
 	<!-- Global -->
-	<script>
+	<script data-id="App.Config">
 	var basePath = '',
 		commonPath = '../assets/',
 		rootPath = '../',
 		DEV = false,
-		componentsPath = '../assets/components/';
+		componentsPath = '../assets/components/',
+		layoutApp = false,
+		module = 'realestate';
 	
 	var primaryColor = '#eb6a5a',
 		dangerColor = '#b55151',
 		successColor = '#609450',
+		infoColor = '#4a8bc2',
 		warningColor = '#ab7a4b',
 		inverseColor = '#45484d';
 	
 	var themerPrimaryColor = primaryColor;
 	</script>
 	
-	<script src="../assets/components/library/bootstrap/js/bootstrap.min.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/admin/sliders/jqueryui-sliders/assets/custom/js/jqueryui-sliders.init.js?v=v1.9.4"></script>
-<script src="../assets/components/modules/front/core/assets/js/front.core.init.js?v=v1.9.4"></script>	
+		
+
 </body>
 </html>
