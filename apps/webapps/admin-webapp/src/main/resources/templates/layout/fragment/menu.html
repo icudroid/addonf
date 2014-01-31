@@ -7,6 +7,7 @@
         <ul class="list-unstyled">
             <li th:class="${activeFirstMenu == 'home'}?'active':''"><a th:href="@{/}" th:text="#{menu.home}">Home</a></li>
             <li th:class="${activeFirstMenu == 'gooseGame'}?'active':''"><a th:href="@{/manage/gooseGame}" th:text="#{menu.goosegame.logo}">GooseGame admin</a></li>
+            <li th:class="${activeFirstMenu == 'doStat'}?'active':''"><a th:href="@{/doStat}" th:text="#{menu.doStat}">doStat</a></li>
 <!--
             <li th:class="${activeFirstMenu == 'ads'}?'active':''">
                 <a href="#sidebar-discover-example" data-toggle="sidebar-discover" th:utext="#{menu.manage.ad}">

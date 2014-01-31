@@ -3,6 +3,7 @@ package fr.k2i.adbeback.dao;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
+import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.core.business.statistic.Statistics;
 import fr.k2i.adbeback.core.business.statistic.StatisticsValidated;
 import fr.k2i.adbeback.core.business.statistic.StatisticsViewed;
@@ -17,86 +18,113 @@ import java.util.List;
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
 public interface IStatisticsDao extends IGenericDao<Statistics, Long> {
+    List<StatisticsViewed> doStatisticsViewedForDay(Date day);
+    List<StatisticsValidated> doStatisticsValidatedForDay(Date day);
+    void removeAllInDay(Date day);
 
+    List<StatisticsDao.StatisticsAge> nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, AdService service);
+    List<StatisticsDao.StatisticsAge> nbValidatedGroupByGroupAge(Ad ad, Date start, Date end, AdService service);
 
-    long nbGlobal(Ad ad, Date start, Date end);
+    List<StatisticsDao.StatisticsAgeSex> nbGlobalGroupByGroupAgeAndSex(Ad ad, Date start, Date end, AdService service);
+    List<StatisticsDao.StatisticsAgeSex> nbValidatedGroupByGroupAgeAndSex(Ad ad, Date start, Date end, AdService service);
 
-    List<StatisticsDao.Statistics> nbGlobalGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service);
+    List<StatisticsDao.StatisticsCity> nbGlobalGroupByCity(Ad ad, Date start, Date end, AdService service);
+    List<StatisticsDao.StatisticsCity> nbValidatedGroupByCity(Ad ad, Date start, Date end, AdService service);
 
-    List<StatisticsDao.StatisticsAge> nbGlobalGroupByGroupAge(Ad ad, Date start, Date end);
+    List<StatisticsDao.StatisticsSex> nbGlobalGroupBySex(Ad ad, Date start, Date end, AdService service);
+    List<StatisticsDao.StatisticsSex> nbValidatedGroupBySex(Ad ad, Date start, Date end, AdService service);
 
-    StatisticsDao.StatisticsAge nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup);
-
-    List<StatisticsDao.StatisticsCity> nbGlobalGroupByCity(Ad ad, Date start, Date end);
-
-
-
-
-
-    long nbValidated(Ad ad, Date start, Date end);
-
-    List<StatisticsDao.Statistics> nbValidatedGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service);
-
-    List<StatisticsDao.StatisticsAge> nbValidatedGroupByGroupAge(Ad ad, Date start, Date end);
-
-    StatisticsDao.StatisticsAge nbValidatedGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup);
-
-    List<StatisticsDao.StatisticsCity> nbValidatedGroupByCity(Ad ad, Date start, Date end);
+    long nbGlobal(Ad ad, Date start, Date end,AdService service);
+    long nbValidated(Ad ad, Date start, Date end,AdService service);
 
 
 
+/*    List<StatisticsViewed> doStatisticsViewedForDay(Date day);
 
-
-    long nbNotValidated(Ad ad, Date start, Date end);
-
-    List<StatisticsDao.Statistics> nbNotValidatedGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service);
-
-    StatisticsDao.StatisticsAge nbNotValidatedGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup);
-
-    List<StatisticsDao.StatisticsAge> nbNotValidatedGroupByGroupAge(Ad ad, Date start, Date end);
-
-    List<StatisticsDao.StatisticsCity> nbNotValidatedGroupByCity(Ad ad, Date start, Date end);
-
+    List<StatisticsValidated> doStatisticsValidatedForDay(Date day);
 
     long nbGlobal(Ad ad);
 
-    List<StatisticsDao.Statistics> nbGlobalGroupByService(Ad ad, Class<? extends AdService> service);
+    long nbGlobal(Ad ad, Date start, Date end);
 
     List<StatisticsDao.Statistics> nbGlobalGroupByService(Ad ad);
 
+    List<StatisticsDao.Statistics> nbGlobalGroupByService(Ad ad, Class<? extends AdService> service);
+
+    List<StatisticsDao.Statistics> nbGlobalGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service);
+
+    StatisticsDao.Statistics nbGlobalForService(Ad ad, AdService service);
+
+    StatisticsDao.Statistics nbGlobalForService(Ad ad, Date start, Date end, AdService service);
+
     StatisticsDao.StatisticsAge nbGlobalGroupByGroupAge(Ad ad, AgeGroup ageGroup);
+
+    StatisticsDao.StatisticsAge nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup);
+
+    StatisticsDao.StatisticsAgeSex nbGlobalGroupByGroupAgeAndSex(Ad ad, AgeGroup ageGroup, Sex sex);
+
+    StatisticsDao.StatisticsAgeSex nbGlobalGroupByGroupAgeAndSex(Ad ad, Date start, Date end, AgeGroup ageGroup, Sex sex);
 
     List<StatisticsDao.StatisticsAge> nbGlobalGroupByGroupAge(Ad ad);
 
+    List<StatisticsDao.StatisticsAge> nbGlobalGroupByGroupAge(Ad ad, Date start, Date end);
+
+    List<StatisticsDao.StatisticsAgeSex> nbGlobalGroupByGroupAgeAndSex(Ad ad);
+
+    List<StatisticsDao.StatisticsAgeSex> nbGlobalGroupByGroupAgeAndSex(Ad ad, Date start, Date end);
+
     List<StatisticsDao.StatisticsCity> nbGlobalGroupByCity(Ad ad);
 
+    List<StatisticsDao.StatisticsCity> nbGlobalGroupByCity(Ad ad, Date start, Date end);
+
+    List<StatisticsDao.StatisticsAge> nbGlobalGroupByGroupAgeForService(Ad ad, AdService service);
+
     long nbValidated(Ad ad);
+
+    long nbValidated(Ad ad, Date start, Date end);
 
     List<StatisticsDao.Statistics> nbValidatedGroupByService(Ad ad);
 
     List<StatisticsDao.Statistics> nbValidatedGroupByService(Ad ad, Class<? extends AdService> service);
 
+    List<StatisticsDao.Statistics> nbValidatedGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service);
+
+    StatisticsDao.Statistics nbValidatedForService(Ad ad, AdService service);
+
+    StatisticsDao.Statistics nbValidatedForService(Ad ad, Date start, Date end, AdService service);
+
     StatisticsDao.StatisticsAge nbValidatedGroupByGroupAge(Ad ad, AgeGroup ageGroup);
+
+    StatisticsDao.StatisticsAge nbValidatedGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup);
+
+    StatisticsDao.StatisticsAgeSex nbValidatedGroupByGroupAgeAndSex(Ad ad, AgeGroup ageGroup, Sex sex);
+
+    StatisticsDao.StatisticsAgeSex nbValidatedGroupByGroupAgeAndSex(Ad ad, Date start, Date end, AgeGroup ageGroup, Sex sex);
 
     List<StatisticsDao.StatisticsAge> nbValidatedGroupByGroupAge(Ad ad);
 
+    List<StatisticsDao.StatisticsAge> nbValidatedGroupByGroupAge(Ad ad, Date start, Date end);
+
+    List<StatisticsDao.StatisticsAgeSex> nbValidatedGroupByGroupAgeAndSex(Ad ad);
+
+    List<StatisticsDao.StatisticsAgeSex> nbValidatedGroupByGroupAgeAndSex(Ad ad, Date start, Date end);
+
     List<StatisticsDao.StatisticsCity> nbValidatedGroupByCity(Ad ad);
 
-    long nbNotValidated(Ad ad);
+    List<StatisticsDao.StatisticsCity> nbValidatedGroupByCity(Ad ad, Date start, Date end);
 
-    List<StatisticsDao.Statistics> nbNotValidatedGroupByService(Ad ad);
+    List<StatisticsDao.StatisticsAgeSex> nbGlobalGroupByGroupAgeAndSexForService(Ad ad, AdService service);
 
-    List<StatisticsDao.Statistics> nbNotValidatedGroupByService(Ad ad, Class<? extends AdService> service);
+    List<StatisticsDao.StatisticsAgeSex> nbValidatedGroupByGroupAgeAndSexForService(Ad ad, AdService service);
 
-    StatisticsDao.StatisticsAge nbNotValidatedGroupByGroupAge(Ad ad, AgeGroup ageGroup);
+    List<StatisticsDao.StatisticsAge> nbValidatedGroupByGroupAgeForService(Ad ad, AdService service);
 
-    List<StatisticsDao.StatisticsAge> nbNotValidatedGroupByGroupAge(Ad ad);
+    void removeAllInDay(Date day);
 
-    List<StatisticsDao.StatisticsCity> nbNotValidatedGroupByCity(Ad ad);
+    List<StatisticsDao.StatisticsAge> nbGlobalGroupByGroupAgeForService(Ad ad, Date start, Date end, AdService service);
+
+    List<StatisticsDao.StatisticsAge> nbValidatedGroupByGroupAgeForService(Ad ad, Date start, Date end, AdService service);*/
 
 
-    List<StatisticsValidated> doStatisticsValidatedForDay(Date day);
-
-    List<StatisticsViewed> doStatisticsViewedForDay(Date day);
 }
 

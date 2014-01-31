@@ -5,6 +5,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.SimplePath;
@@ -16,9 +17,7 @@ import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Sex;
-import fr.k2i.adbeback.core.business.statistic.Statistics;
-import fr.k2i.adbeback.core.business.statistic.StatisticsValidated;
-import fr.k2i.adbeback.core.business.statistic.StatisticsViewed;
+import fr.k2i.adbeback.core.business.statistic.*;
 import fr.k2i.adbeback.dao.IStatisticsDao;
 import lombok.Data;
 import org.joda.time.*;
@@ -59,6 +58,31 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
     @Data
+    public class StatisticsSex{
+        private Sex sex;
+        private Long count;
+
+        public StatisticsSex(Sex sex, Long count) {
+            this.sex = sex;
+            this.count = count;
+        }
+    }
+
+    @Data
+    public class StatisticsAgeSex{
+        private AgeGroup ageGroup;
+        private Sex sex;
+        private Long count;
+
+        public StatisticsAgeSex(AgeGroup ageGroup, Sex sex, Long count) {
+            this.ageGroup = ageGroup;
+            this.sex = sex;
+            this.count = count;
+        }
+    }
+
+
+    @Data
     public class StatisticsCity{
         private City city;
         private Long count;
@@ -67,6 +91,13 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
             this.city = city;
             this.count = count;
         }
+    }
+
+
+    @Override
+    public void removeAllInDay(Date day) {
+        Query query= getEntityManager().createQuery("delete Statistics where day = :day").setParameter("day", day);
+        query.executeUpdate();
     }
 
 
@@ -129,34 +160,299 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
 
+    private BooleanExpression globalDefaultPredicat(Ad ad, Date start, Date end, QStatistics qStatistics) {
+        BooleanExpression predicat = qStatistics.service.ad.eq(ad);
+        if(start != null && end != null){
+            predicat.and(qStatistics.day.between(start, end));
+        }else if(start != null && end == null){
+            predicat.and(qStatistics.day.gt(start));
+        }else if(start == null && end != null){
+            predicat.and(qStatistics.day.lt(end));
+        }
+        return predicat;
+    }
 
+
+
+    private BooleanExpression validatedDefaultPredicat(Ad ad, Date start, Date end, QStatisticsValidated qStatistics) {
+        BooleanExpression predicat = qStatistics.service.ad.eq(ad);
+        if(start != null && end != null){
+            predicat.and(qStatistics.day.between(start, end));
+        }else if(start != null && end == null){
+            predicat.and(qStatistics.day.gt(start));
+        }else if(start == null && end != null){
+            predicat.and(qStatistics.day.lt(end));
+        }
+        return predicat;
+    }
+
+
+
+
+
+
+    @Override
+    public List<StatisticsAge> nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, AdService service) {
+        QStatistics qStatistics = QStatistics.statistics;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.ageGroup);
+
+        List<Tuple> list = query.list(qStatistics.count(), qStatistics.ageGroup);
+        List<StatisticsAge> res = new ArrayList<StatisticsAge>();
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            AgeGroup ageGroup = tuple.get(qStatistics.ageGroup);
+            res.add(new StatisticsAge(ageGroup,count));
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<StatisticsAge> nbValidatedGroupByGroupAge(Ad ad, Date start, Date end, AdService service) {
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.ageGroup);
+
+        List<Tuple> list = query.list(qStatistics.count(), qStatistics.ageGroup);
+        List<StatisticsAge> res = new ArrayList<StatisticsAge>();
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            AgeGroup ageGroup = tuple.get(qStatistics.ageGroup);
+            res.add(new StatisticsAge(ageGroup,count));
+        }
+
+        return res;
+
+    }
+
+    @Override
+    public List<StatisticsAgeSex> nbGlobalGroupByGroupAgeAndSex(Ad ad, Date start, Date end, AdService service) {
+        QStatistics qStatistics = QStatistics.statistics;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.ageGroup).groupBy(qStatistics.sex);
+
+        List<Tuple> list = query.list(qStatistics.count(), qStatistics.ageGroup,qStatistics.sex);
+        List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            AgeGroup ageGroup = tuple.get(qStatistics.ageGroup);
+            Sex sex = tuple.get(qStatistics.sex);
+            res.add(new StatisticsAgeSex(ageGroup,sex,count));
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<StatisticsAgeSex> nbValidatedGroupByGroupAgeAndSex(Ad ad, Date start, Date end, AdService service) {
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.ageGroup).groupBy(qStatistics.sex);
+
+        List<Tuple> list = query.list(qStatistics.count(), qStatistics.ageGroup,qStatistics.sex);
+        List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            AgeGroup ageGroup = tuple.get(qStatistics.ageGroup);
+            Sex sex = tuple.get(qStatistics.sex);
+            res.add(new StatisticsAgeSex(ageGroup,sex,count));
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<StatisticsCity> nbGlobalGroupByCity(Ad ad, Date start, Date end, AdService service) {
+        QStatistics qStatistics = QStatistics.statistics;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.city);
+
+        List<Tuple> list = query.list(qStatistics.count(), qStatistics.city);
+        List<StatisticsCity> res = new ArrayList<StatisticsCity>();
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            City city = tuple.get(qStatistics.city);
+            res.add(new StatisticsCity(city,count));
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<StatisticsCity> nbValidatedGroupByCity(Ad ad, Date start, Date end, AdService service) {
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.city);
+
+        List<Tuple> list = query.list(qStatistics.count(), qStatistics.city);
+        List<StatisticsCity> res = new ArrayList<StatisticsCity>();
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            City city = tuple.get(qStatistics.city);
+            res.add(new StatisticsCity(city,count));
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<StatisticsSex> nbGlobalGroupBySex(Ad ad, Date start, Date end, AdService service) {
+        QStatistics qStatistics = QStatistics.statistics;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.sex);
+
+        List<Tuple> list = query.list(qStatistics.count(), qStatistics.sex);
+        List<StatisticsSex> res = new ArrayList<StatisticsSex>();
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            Sex sex = tuple.get(qStatistics.sex);
+            res.add(new StatisticsSex(sex,count));
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<StatisticsSex> nbValidatedGroupBySex(Ad ad, Date start, Date end, AdService service) {
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.sex);
+
+        List<Tuple> list = query.list(qStatistics.count(), qStatistics.sex);
+        List<StatisticsSex> res = new ArrayList<StatisticsSex>();
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            Sex sex = tuple.get(qStatistics.sex);
+            res.add(new StatisticsSex(sex,count));
+        }
+
+        return res;
+    }
+
+    @Override
+    public long nbGlobal(Ad ad, Date start, Date end, AdService service) {
+        QStatistics qStatistics = QStatistics.statistics;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        return query.count();
+    }
+
+    @Override
+    public long nbValidated(Ad ad, Date start, Date end, AdService service) {
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        return query.count();
+    }
+
+
+    /*****************************************************************************************************************/
+
+
+/*
     @Override
     public long nbGlobal(Ad ad) {
         return nbGlobal(ad,null,null);
     }
 
-
     @Override
     public long nbGlobal(Ad ad, Date start, Date end){
-        QViewedAd viewedAd = QViewedAd.viewedAd;
-
+        QStatistics qStatistics = QStatistics.statistics;
         JPAQuery query = new JPAQuery(getEntityManager());
-        BooleanExpression predicat = viewedAd.adRule.ad.eq(ad);
-        if(start != null && end != null){
-            predicat.and(viewedAd.date.between(start, end));
-        }else if(start != null && end == null){
-            predicat.and(viewedAd.date.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(viewedAd.date.lt(end));
-        }
-
-        query.from(viewedAd)
-                .where(
-                        predicat
-
-                );
+        query.from(qStatistics);
+        query.where(globalDefaultPredicat(ad, start, end, qStatistics));
         return query.count();
     }
+
 
 
     @Override
@@ -170,37 +466,24 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
         return nbGlobalGroupByService(ad,null,null,service);
     }
 
-        @Override
+    @Override
     public List<Statistics> nbGlobalGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service){
-        QViewedAd viewedAd = QViewedAd.viewedAd;
-
+        QStatistics qStatistics = QStatistics.statistics;
         JPAQuery query = new JPAQuery(getEntityManager());
-
-        BooleanExpression predicat = viewedAd.adRule.ad.eq(ad);
-        if(start != null && end != null){
-            predicat.and(viewedAd.date.between(start, end));
-        }else if(start != null && end == null){
-            predicat.and(viewedAd.date.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(viewedAd.date.lt(end));
-        }
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
 
         if(service!=null){
-            predicat = predicat.and(viewedAd.adRule.instanceOf(service));
+            predicat = predicat.and(qStatistics.service.instanceOf(service));
         }
 
+        query.from(qStatistics).where(predicat);
 
-        query.from(viewedAd)
-                .where(
-                        predicat
-                );
-
-        query.groupBy(viewedAd.adRule);
+        query.groupBy(qStatistics.service);
         List<Statistics> res = new ArrayList<Statistics>();
-        List<Tuple> list = query.list(viewedAd.count(),viewedAd.adRule);
+        List<Tuple> list = query.list(qStatistics.count(),qStatistics.service);
         for (Tuple tuple : list) {
-            Long count = tuple.get(viewedAd.count());
-            AdService adService = tuple.get(viewedAd.adRule);
+            Long count = tuple.get(qStatistics.count());
+            AdService adService = tuple.get(qStatistics.service);
             res.add(new Statistics(adService,count));
         }
 
@@ -208,32 +491,45 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
     }
 
 
+
+
+
     @Override
     public StatisticsAge nbGlobalGroupByGroupAge(Ad ad, AgeGroup ageGroup) {
         return nbGlobalGroupByGroupAge(ad,null,null,ageGroup);
     }
 
-        @Override
+    @Override
     public StatisticsAge nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup) {
-        QViewedAd viewedAd = QViewedAd.viewedAd;
-
+        QStatistics qStatistics = QStatistics.statistics;
         JPAQuery query = new JPAQuery(getEntityManager());
-        BooleanExpression predicat = viewedAd.adRule.ad.eq(ad);
-        if(start != null && end != null){
-            predicat.and(viewedAd.date.between(start, end));
-        }else if(start != null && end == null){
-            predicat.and(viewedAd.date.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(viewedAd.date.lt(end));
-        }
 
-        query.from(viewedAd)
-                .where(
-                        predicat.and(viewedAd.player.birthday.between(ageGroup.minDate(), ageGroup.maxDate()))
-                );
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
 
-        return new StatisticsAge(ageGroup,query.uniqueResult(viewedAd.count()));
+        query.from(qStatistics).where(predicat.and(qStatistics.ageGroup.eq(ageGroup)));
+
+        return new StatisticsAge(ageGroup,query.uniqueResult(qStatistics.count()));
     }
+
+
+
+    @Override
+    public StatisticsAgeSex nbGlobalGroupByGroupAgeAndSex(Ad ad, AgeGroup ageGroup, Sex sex) {
+        return nbGlobalGroupByGroupAgeAndSex(ad, null, null, ageGroup, sex);
+    }
+
+    @Override
+    public StatisticsAgeSex nbGlobalGroupByGroupAgeAndSex(Ad ad, Date start, Date end, AgeGroup ageGroup, Sex sex) {
+        QStatistics qStatistics = QStatistics.statistics;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
+
+        query.from(qStatistics).where(predicat.and(qStatistics.ageGroup.eq(ageGroup)).and(qStatistics.sex.eq(sex)));
+
+        return new StatisticsAgeSex(ageGroup,sex,query.uniqueResult(qStatistics.count()));
+    }
+
 
 
     @Override
@@ -242,7 +538,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
     }
 
 
-        @Override
+    @Override
     public List<StatisticsAge> nbGlobalGroupByGroupAge(Ad ad, Date start, Date end) {
 
         List<StatisticsAge> res = new ArrayList<StatisticsAge>();
@@ -255,86 +551,79 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
     @Override
-    public List<StatisticsCity> nbGlobalGroupByCity(Ad ad) {
-        return nbGlobalGroupByCity(ad,null,null);
+    public List<StatisticsAgeSex> nbGlobalGroupByGroupAgeAndSex(Ad ad) {
+        return nbGlobalGroupByGroupAgeAndSex(ad,(Date)null,(Date)null);
     }
 
-        @Override
-    public List<StatisticsCity> nbGlobalGroupByCity(Ad ad, Date start, Date end) {
-        QViewedAd viewedAd = QViewedAd.viewedAd;
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+    @Override
+    public List<StatisticsAgeSex> nbGlobalGroupByGroupAgeAndSex(Ad ad, Date start, Date end) {
 
-        BooleanExpression predicat = viewedAd.adRule.ad.eq(ad);
-        if(start != null && end != null){
-            predicat.and(viewedAd.date.between(start, end));
-        }else if(start != null && end == null){
-            predicat.and(viewedAd.date.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(viewedAd.date.lt(end));
-        }
-
-        query.from(viewedAd)
-                .where(
-                        predicat
-                );
-
-        query.groupBy(viewedAd.player.address.city);
-        query.having(viewedAd.player.count().gt(0));
-
-        List<Tuple> list = query.list(viewedAd.count(), viewedAd.player.address.city);
-        List<StatisticsCity> res =new ArrayList<StatisticsCity>();
-        for (Tuple tuple : list) {
-            res.add(new StatisticsCity(tuple.get(viewedAd.player.address.city),tuple.get(viewedAd.count())));
+        List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
+        for (AgeGroup ageGroup : AgeGroup.values()) {
+            Sex[] values = Sex.values();
+            for (Sex sex : values) {
+                res.add(nbGlobalGroupByGroupAgeAndSex(ad, start, end, ageGroup, sex));
+            }
         }
 
         return res;
     }
 
 
-    /***************************************************************************************************************/
 
     @Override
-    public long nbValidated(Ad ad){
-        return nbValidated(ad,null,null);
+    public List<StatisticsCity> nbGlobalGroupByCity(Ad ad) {
+        return nbGlobalGroupByCity(ad,null,null);
     }
 
+    @Override
+    public List<StatisticsCity> nbGlobalGroupByCity(Ad ad, Date start, Date end) {
+        QStatistics qStatistics = QStatistics.statistics;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.city);
+
+        List<Tuple> list = query.list(qStatistics.count(),qStatistics.city);
+        List<StatisticsCity> res =new ArrayList<StatisticsCity>();
+        for (Tuple tuple : list) {
+            res.add(new StatisticsCity(tuple.get(qStatistics.city),tuple.get(qStatistics.count())));
+        }
+
+        return res;
+    }
+
+
+
+    */
+/***************************************************************************************************************//*
+
+
+
+
+
+
+
+
+    @Override
+    public long nbValidated(Ad ad) {
+        return nbGlobal(ad,null,null);
+    }
 
     @Override
     public long nbValidated(Ad ad, Date start, Date end){
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
-
-        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        PathBuilder<AdResponsePlayer> answer = new PathBuilder<AdResponsePlayer>(AdResponsePlayer.class, "answer");
-
-        jpaQuery.from(game).join(game.choises,choise).join(game.score.answers,answer);
-
-        BooleanExpression predicat = choise.get("generatedBy.ad").eq(ad).and(answer.get("response").eq(choise.get("correct")));
-
-        if(start != null && end != null){
-            predicat.and(game.generated.between(start,end));
-        }else if(start != null && end == null){
-            predicat.and(game.generated.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(game.generated.lt(end));
-        }
-
-
-        jpaQuery.where(
-                predicat
-        );
-
-/*        Query query = getEntityManager().createQuery("select count(answer) from AbstractAdGame game join game.choises  as choise join game.score.answers as answer where choise.generatedBy.ad=:ad and game.generated between :start and :end and answer.response = choise.correct");
-        query.setParameter("ad",ad);
-        query.setParameter("end",end);
-        query.setParameter("start",start);
-        return (Long) query.getSingleResult();*/
-
-        return jpaQuery.uniqueResult(answer.count());
-
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qStatistics);
+        query.where(validatedDefaultPredicat(ad, start, end, qStatistics));
+        return query.count();
     }
+
+
 
     @Override
     public List<Statistics> nbValidatedGroupByService(Ad ad){
@@ -347,75 +636,59 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
         return nbValidatedGroupByService(ad,null,null,service);
     }
 
-        @Override
+    @Override
     public List<Statistics> nbValidatedGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service){
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
 
-
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
-
-        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        PathBuilder<AdResponsePlayer> answer = new PathBuilder<AdResponsePlayer>(AdResponsePlayer.class, "answer");
-
-        jpaQuery.from(game).join(game.choises,choise).join(game.score.answers,answer);
-
-        BooleanExpression predicat = choise.get("generatedBy.ad").eq(ad).and(answer.get("response").eq(choise.get("correct"))).and(choise.get("generatedBy").instanceOf(service));
-
-        if(start != null && end != null){
-            predicat.and(game.generated.between(start,end));
-        }else if(start != null && end == null){
-            predicat.and(game.generated.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(game.generated.lt(end));
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.instanceOf(service));
         }
 
+        query.from(qStatistics).where(predicat);
 
-        jpaQuery.where(
-                predicat
-        );
-
-        jpaQuery.groupBy(choise.get("generatedBy"));
-
-        /*StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("select count(answer), choise.generatedBy from AbstractAdGame game join game.choises  as choise join game.score.answers as answer where choise.generatedBy.ad=:ad and game.generated between :start and :end and answer.response = choise.correct ");
-
-        if(BrandRule.class.equals(service)){
-            queryBuilder.append(" and choise.generatedBy.class = BrandRule ");
-        }else if(OpenRule.class.equals(service)){
-            queryBuilder.append(" and choise.generatedBy.class = OpenRule ");
-        }else if(service == null){
-
-        }else{
-            return new ArrayList<Statistics>();
+        query.groupBy(qStatistics.service);
+        List<Statistics> res = new ArrayList<Statistics>();
+        List<Tuple> list = query.list(qStatistics.count(),qStatistics.service);
+        for (Tuple tuple : list) {
+            Long count = tuple.get(qStatistics.count());
+            AdService adService = tuple.get(qStatistics.service);
+            res.add(new Statistics(adService,count));
         }
-
-        queryBuilder.append(" group by choise.generatedBy");
-
-        Query query = getEntityManager().createQuery(queryBuilder.toString());
-        query.setParameter("ad",ad);
-        query.setParameter("end",end);
-        query.setParameter("start",start);
-
-
-        List resultList = query.getResultList();
-
-        List<Statistics> res =new ArrayList<Statistics>();
-
-        for (Object o : resultList) {
-            Object result[] = (Object[]) o;
-            res.add(new Statistics((AdService)result[1],(Long)result[0]));
-        }*/
-        List<Statistics> res =new ArrayList<Statistics>();
-
-        List<Tuple> tuples = jpaQuery.list(answer.count(), choise.get("generatedBy"));
-        for (Tuple tuple : tuples) {
-            res.add(new Statistics((AdService)tuple.get(choise.get("generatedBy")),tuple.get(answer.count())));
-        }
-
 
         return res;
     }
+
+
+    @Override
+    public Statistics nbValidatedForService(Ad ad, AdService service){
+        return nbValidatedForService(ad, null, null, service);
+    }
+
+    @Override
+    public Statistics nbValidatedForService(Ad ad, Date start, Date end, AdService service){
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
+
+        if(service!=null){
+            predicat = predicat.and(qStatistics.service.eq(service));
+        }
+
+        query.from(qStatistics).where(predicat);
+
+        query.groupBy(qStatistics.service);
+        List<Statistics> res = new ArrayList<Statistics>();
+        Tuple tuple= query.uniqueResult(qStatistics.count(),qStatistics.service);
+
+        Long count = tuple.get(qStatistics.count());
+        AdService adService = tuple.get(qStatistics.service);
+        return  new Statistics(adService,count);
+
+    }
+
 
 
     @Override
@@ -423,58 +696,37 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
         return nbValidatedGroupByGroupAge(ad,null,null,ageGroup);
     }
 
-
     @Override
     public StatisticsAge nbValidatedGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup) {
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
 
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
 
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
+        query.from(qStatistics).where(predicat.and(qStatistics.ageGroup.eq(ageGroup)));
 
-        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        PathBuilder<AdResponsePlayer> answer = new PathBuilder<AdResponsePlayer>(AdResponsePlayer.class, "answer");
-
-        jpaQuery.from(game).join(game.choises,choise).join(game.score.answers,answer);
-
-
-        BooleanExpression predicat = choise.get("generatedBy.ad").eq(ad).and(answer.get("response").eq(choise.get("correct"))).and(game.player.birthday.between(ageGroup.minDate(),ageGroup.maxDate()));
-
-        if(start != null && end != null){
-            predicat.and(game.generated.between(start,end));
-        }else if(start != null && end == null){
-            predicat.and(game.generated.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(game.generated.lt(end));
-        }
-
-
-        jpaQuery.where(
-                predicat
-        );
-
-
-
-        return new StatisticsAge(ageGroup, jpaQuery.uniqueResult(answer.count()));
-
-
-        /*Query query = getEntityManager().createQuery("select count(answer) from AbstractAdGame game " +
-                                                                "join game.choises  as choise " +
-                                                                "join game.score.answers as answer " +
-                                                                "join game.player as player " +
-                                                                "where " +
-                                                                    "player.birthday between :min and :max " +
-                                                                    "and choise.generatedBy.ad=:ad " +
-                                                                    "and game.generated between :start and :end " +
-                                                                    "and answer.response = choise.correct ");
-        query.setParameter("ad",ad);
-        query.setParameter("end",end);
-        query.setParameter("start",start);
-        query.setParameter("min",ageGroup.minDate());
-        query.setParameter("max",ageGroup.maxDate());
-
-        return new StatisticsAge(ageGroup, (Long) query.getSingleResult());*/
+        return new StatisticsAge(ageGroup,query.uniqueResult(qStatistics.count()));
     }
+
+
+
+    @Override
+    public StatisticsAgeSex nbValidatedGroupByGroupAgeAndSex(Ad ad, AgeGroup ageGroup, Sex sex) {
+        return nbValidatedGroupByGroupAgeAndSex(ad, null, null, ageGroup, sex);
+    }
+
+    @Override
+    public StatisticsAgeSex nbValidatedGroupByGroupAgeAndSex(Ad ad, Date start, Date end, AgeGroup ageGroup, Sex sex) {
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
+
+        query.from(qStatistics).where(predicat.and(qStatistics.ageGroup.eq(ageGroup)).and(qStatistics.sex.eq(sex)));
+
+        return new StatisticsAgeSex(ageGroup,sex,query.uniqueResult(qStatistics.count()));
+    }
+
 
 
     @Override
@@ -488,7 +740,28 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         List<StatisticsAge> res = new ArrayList<StatisticsAge>();
         for (AgeGroup ageGroup : AgeGroup.values()) {
-            res.add(nbValidatedGroupByGroupAge(ad, start, end, ageGroup));
+            res.add(nbGlobalGroupByGroupAge(ad, start, end, ageGroup));
+        }
+
+        return res;
+    }
+
+
+    @Override
+    public List<StatisticsAgeSex> nbValidatedGroupByGroupAgeAndSex(Ad ad) {
+        return nbValidatedGroupByGroupAgeAndSex(ad,(Date)null,(Date)null);
+    }
+
+
+    @Override
+    public List<StatisticsAgeSex> nbValidatedGroupByGroupAgeAndSex(Ad ad, Date start, Date end) {
+
+        List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
+        for (AgeGroup ageGroup : AgeGroup.values()) {
+            Sex[] values = Sex.values();
+            for (Sex sex : values) {
+                res.add(nbValidatedGroupByGroupAgeAndSex(ad, start, end, ageGroup, sex));
+            }
         }
 
         return res;
@@ -503,271 +776,50 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
     @Override
     public List<StatisticsCity> nbValidatedGroupByCity(Ad ad, Date start, Date end) {
-        List<StatisticsCity> res = new ArrayList<StatisticsCity>();
+        QStatisticsValidated qStatistics = QStatisticsValidated.statisticsValidated;
+        JPAQuery query = new JPAQuery(getEntityManager());
 
+        BooleanExpression predicat = validatedDefaultPredicat(ad, start, end, qStatistics);
 
+        query.from(qStatistics).where(predicat);
 
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
+        query.groupBy(qStatistics.city);
 
-        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        PathBuilder<AdResponsePlayer> answer = new PathBuilder<AdResponsePlayer>(AdResponsePlayer.class, "answer");
-
-        jpaQuery.from(game).join(game.choises,choise).join(game.score.answers,answer);
-
-
-        BooleanExpression predicat = choise.get("generatedBy.ad").eq(ad).and(answer.get("response").eq(choise.get("correct")));
-
-        if(start != null && end != null){
-            predicat.and(game.generated.between(start,end));
-        }else if(start != null && end == null){
-            predicat.and(game.generated.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(game.generated.lt(end));
-        }
-
-
-        jpaQuery.where(
-                predicat
-        );
-
-        jpaQuery.groupBy(game.player.address.city).having(game.player.count().gt(0));
-
-        List<Tuple> tuples = jpaQuery.list(game.player.address.city, answer.count());
-        for (Tuple tuple : tuples) {
-            res.add(new StatisticsCity(tuple.get(game.player.address.city),tuple.get(answer.count())));
-        }
-
-        /*Query query = getEntityManager().createQuery("select player.address.city, count(answer) from AbstractAdGame game " +
-                "join game.choises  as choise " +
-                "join game.score.answers as answer " +
-                "join game.player as player " +
-                "where " +
-                "choise.generatedBy.ad=:ad " +
-                "and game.generated between :start and :end " +
-                "and answer.response = choise.correct " +
-                "group by player.address.city " +
-                "having count (player) > 0");
-
-        query.setParameter("ad",ad);
-        query.setParameter("end",end);
-        query.setParameter("start",start);
-
-
-        List resultList = query.getResultList();
-
-        for (Object o : resultList) {
-            Object result[] = (Object[]) o;
-            res.add(new StatisticsCity((City)result[0],(Long)result[1]));
-        }*/
-
-        return res;
-    }
-
-
-
-    /***************************************************************************************************************/
-
-    @Override
-    public long nbNotValidated(Ad ad){
-        return nbNotValidated(ad,null,null);
-    }
-
-
-        @Override
-    public long nbNotValidated(Ad ad, Date start, Date end){
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
-
-        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        PathBuilder<AdResponsePlayer> answer = new PathBuilder<AdResponsePlayer>(AdResponsePlayer.class, "answer");
-
-        jpaQuery.from(game).join(game.choises,choise).join(game.score.answers,answer);
-
-        BooleanExpression predicat = choise.get("generatedBy.ad").eq(ad).and(answer.get("response").ne(choise.get("correct")));
-
-        if(start != null && end != null){
-            predicat.and(game.generated.between(start,end));
-        }else if(start != null && end == null){
-            predicat.and(game.generated.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(game.generated.lt(end));
-        }
-
-
-        jpaQuery.where(
-                predicat
-        );
-
-
-
-        return jpaQuery.uniqueResult(answer.count());
-
-    }
-
-
-    @Override
-    public List<Statistics> nbNotValidatedGroupByService(Ad ad){
-    return nbNotValidatedGroupByService(ad,null,null,null);
-    }
-
-
-    @Override
-    public List<Statistics> nbNotValidatedGroupByService(Ad ad, Class<? extends AdService> service){
-        return nbNotValidatedGroupByService(ad,null,null,service);
-    }
-
-
-    @Override
-    public List<Statistics> nbNotValidatedGroupByService(Ad ad, Date start, Date end, Class<? extends AdService> service){
-
-
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
-
-        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        PathBuilder<AdResponsePlayer> answer = new PathBuilder<AdResponsePlayer>(AdResponsePlayer.class, "answer");
-
-        jpaQuery.from(game).join(game.choises,choise).join(game.score.answers,answer);
-
-        BooleanExpression predicat = choise.get("generatedBy.ad").eq(ad).and(answer.get("response").ne(choise.get("correct"))).and(choise.get("generatedBy").instanceOf(service));
-
-        if(start != null && end != null){
-            predicat.and(game.generated.between(start,end));
-        }else if(start != null && end == null){
-            predicat.and(game.generated.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(game.generated.lt(end));
-        }
-
-
-        jpaQuery.where(
-                predicat
-        );
-
-        jpaQuery.groupBy(choise.get("generatedBy"));
-
-
-        List<Statistics> res =new ArrayList<Statistics>();
-
-        List<Tuple> tuples = jpaQuery.list(answer.count(), choise.get("generatedBy"));
-        for (Tuple tuple : tuples) {
-            res.add(new Statistics((AdService)tuple.get(choise.get("generatedBy")),tuple.get(answer.count())));
-        }
-
-
-        return res;
-    }
-
-
-    @Override
-    public StatisticsAge nbNotValidatedGroupByGroupAge(Ad ad, AgeGroup ageGroup) {
-        return nbNotValidatedGroupByGroupAge(ad,null,null,ageGroup);
-    }
-
-
-    @Override
-    public StatisticsAge nbNotValidatedGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup) {
-
-
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
-
-        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        PathBuilder<AdResponsePlayer> answer = new PathBuilder<AdResponsePlayer>(AdResponsePlayer.class, "answer");
-
-        jpaQuery.from(game).join(game.choises,choise).join(game.score.answers,answer);
-
-
-        BooleanExpression predicat = choise.get("generatedBy.ad").eq(ad).and(answer.get("response").ne(choise.get("correct"))).and(game.player.birthday.between(ageGroup.minDate(),ageGroup.maxDate()));
-
-        if(start != null && end != null){
-            predicat.and(game.generated.between(start,end));
-        }else if(start != null && end == null){
-            predicat.and(game.generated.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(game.generated.lt(end));
-        }
-
-
-        jpaQuery.where(
-                predicat
-        );
-
-
-
-        return new StatisticsAge(ageGroup, jpaQuery.uniqueResult(answer.count()));
-
-
-    }
-
-
-    @Override
-    public List<StatisticsAge> nbNotValidatedGroupByGroupAge(Ad ad) {
-        return nbNotValidatedGroupByGroupAge(ad,null,null);
-    }
-
-    @Override
-    public List<StatisticsAge> nbNotValidatedGroupByGroupAge(Ad ad, Date start, Date end) {
-
-        List<StatisticsAge> res = new ArrayList<StatisticsAge>();
-        for (AgeGroup ageGroup : AgeGroup.values()) {
-            res.add(nbNotValidatedGroupByGroupAge(ad, start, end, ageGroup));
+        List<Tuple> list = query.list(qStatistics.count(),qStatistics.city);
+        List<StatisticsCity> res =new ArrayList<StatisticsCity>();
+        for (Tuple tuple : list) {
+            res.add(new StatisticsCity(tuple.get(qStatistics.city),tuple.get(qStatistics.count())));
         }
 
         return res;
     }
 
+    @Override
+    public List<StatisticsAgeSex> nbGlobalGroupByGroupAgeAndSexForService(Ad ad, AdService service) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
 
     @Override
-    public List<StatisticsCity> nbNotValidatedGroupByCity(Ad ad) {
-        return nbNotValidatedGroupByCity(ad,null,null);
+    public List<StatisticsAgeSex> nbValidatedGroupByGroupAgeAndSexForService(Ad ad, AdService service) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<StatisticsCity> nbNotValidatedGroupByCity(Ad ad, Date start, Date end) {
-        List<StatisticsCity> res = new ArrayList<StatisticsCity>();
-
-
-
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
-
-        JPAQuery jpaQuery = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        PathBuilder<AdResponsePlayer> answer = new PathBuilder<AdResponsePlayer>(AdResponsePlayer.class, "answer");
-
-        jpaQuery.from(game).join(game.choises,choise).join(game.score.answers,answer);
-
-
-        BooleanExpression predicat = choise.get("generatedBy.ad").eq(ad).and(answer.get("response").ne(choise.get("correct")));
-
-        if(start != null && end != null){
-            predicat.and(game.generated.between(start,end));
-        }else if(start != null && end == null){
-            predicat.and(game.generated.gt(start));
-        }else if(start == null && end != null){
-            predicat.and(game.generated.lt(end));
-        }
-
-
-        jpaQuery.where(
-                predicat
-        );
-
-        jpaQuery.groupBy(game.player.address.city).having(game.player.count().gt(0));
-
-        List<Tuple> tuples = jpaQuery.list(game.player.address.city, answer.count());
-        for (Tuple tuple : tuples) {
-            res.add(new StatisticsCity(tuple.get(game.player.address.city),tuple.get(answer.count())));
-        }
-
-        return res;
+    public List<StatisticsAge> nbValidatedGroupByGroupAgeForService(Ad ad, AdService service) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
+    @Override
+    public List<StatisticsAge> nbGlobalGroupByGroupAgeForService(Ad ad, AdService service) {
+        return nbGlobalGroupByGroupAgeForService(ad,null,null,service);
+    }
+*/
+
+
+
 
 
 

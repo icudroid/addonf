@@ -5,7 +5,29 @@
 
 <head>
     <title th:text="${title}">Title</title>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/jquery.flot.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/jquery.flot.resize.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/plugins/jquery.flot.tooltip.min.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/custom/js/flotcharts.common.js}"></script>
+    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/jquery.flot.pie.js}"></script>
 
+
+    <script th:inline="javascript">
+
+        $(function(){
+
+            $.ajax({
+                type: "POST",
+                url: [[@{/stat/}]],
+                data: { name: "John", location: "Boston" }
+            }).done(function( msg ) {
+                        alert( "Data Saved: " + msg );
+            });
+
+
+        });
+
+    </script>
 </head>
 
 
@@ -18,70 +40,10 @@
 <h4 class="innerAll bg-white margin-none" layout:fragment="formTile">Statistique Global</h4>
 
 <div layout:fragment="content">
-<div class="col-unscrollable">
-    <div class="row row-app">
-        <div class="col-md-4">
-            <div class="col-separator">
-                <div class="text-center innerAll inner-2x border-bottom">
-                    <div class="innerTB">
-                        <div data-percent="85" data-size="100" class="easy-pie inline-block easy-pie-gender primary" data-scale-color="false" data-track-color="#efefef" data-line-width="5">
-                            <div class="value text-center">
-                                <span class="strong"><i class="icon-user-2 fa-3x text-primary"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center innerAll inner-2x bg-gray">
-                    <p class="lead margin-none"><span class="text-large text-regular" th:text="${validated}">8,320</span><span class="clearfix"></span> <span class="text-primary">Vue et validée</span></p>
-                </div>
-
-
-            </div>
-
-        </div>
-        <div class="col-md-4">
-            <div class="col-separator">
-                <div class="text-center innerAll inner-2x border-bottom">
-                    <div class="innerTB">
-                        <div data-percent="85" data-size="100" class="easy-pie inline-block easy-pie-gender info" data-scale-color="false" data-track-color="#efefef" data-line-width="5">
-                            <div class="value text-center">
-                                <span class="strong"><i class="icon-user-2 fa-3x text-info"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center innerAll inner-2x bg-gray">
-                    <p class="lead margin-none"><span class="text-large text-regular" th:text="${notValidated}">683</span> <span class="clearfix"></span> <span class="text-info">Vue non validée</span></p>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="col-separator col-separator-last">
-                <div class="text-center innerAll inner-2x border-bottom">
-                    <div class="innerTB">
-                        <div data-percent="85" data-size="100" class="easy-pie inline-block easy-pie-gender inverse" data-scale-color="false" data-track-color="#efefef" data-line-width="5">
-                            <div class="value text-center">
-                                <span class="strong"><i class="icon-user-2 fa-3x text-faded"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center innerAll inner-2x bg-gray">
-                    <p class="lead margin-none"><span class="text-large text-regular" th:text="${global}">1209</span> <span class="clearfix"></span><span>Total Vue</span></p>
-                </div>
-
-            </div>
-        </div>
-
-
-
-
-    </div>
-    <div class="col-separator-h"></div>
+    <div th:text="${global}"></div>
+    <div th:text="${validated}"></div>
 </div>
 
 
-</div>
 </body>
 </html>

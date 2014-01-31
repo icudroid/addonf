@@ -1,5 +1,8 @@
 package fr.k2i.adbeback.dao;
 
+import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.ad.rule.AdService;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;

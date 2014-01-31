@@ -30,7 +30,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         return new ShaPasswordEncoder();
     }
 
-    @Bean
     public UserDetailsService webUserServiceDetail(){
         return (UserDetailsService) context.getBean("webUserDao");
     }
@@ -89,11 +88,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .maximumSessions(1)
                 .expiredUrl("/login?expired");
 
-        http.rememberMe()
+/*        http.rememberMe()
                 .tokenValiditySeconds(60*60*24)
                 .key("__0n3K3y!!")
                 .useSecureCookie(true)
-                .userDetailsService(webUserServiceDetail());
+                .userDetailsService(webUserServiceDetail());*/
     }
 
 

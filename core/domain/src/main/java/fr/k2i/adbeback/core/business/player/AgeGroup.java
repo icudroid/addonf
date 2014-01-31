@@ -13,21 +13,23 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public enum AgeGroup{
-    $0_9(0,9),
-    $10_14(10,14),
-    $15_17(15,17),
-    $18_24(18,24),
-    $25_34(25,34),
-    $35_49(35,49),
-    $50_64(50,64),
-    _65_MORE(65,130);
+    $0_9(0,9,"0-9"),
+    $10_14(10,14,"10-14"),
+    $15_17(15,17,"15-17"),
+    $18_24(18,24,"18-24"),
+    $25_34(25,34,"25-34"),
+    $35_49(35,49,"35-49"),
+    $50_64(50,64,"50-64"),
+    _65_MORE(65,130,"65-+");
 
     private int min;
     private int max;
+    private String label;
 
-    private AgeGroup(int min, int max) {
+    private AgeGroup(int min, int max,String label) {
         this.min = min;
         this.max = max;
+        this.label = label;
     }
 
     public int getMin() {
@@ -57,6 +59,10 @@ public enum AgeGroup{
             }
         }
         return null;
+    }
+
+    public String label() {
+        return label;
     }
 }
 
