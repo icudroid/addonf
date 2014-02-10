@@ -32,6 +32,28 @@
         addonf.token = [[${_csrf.token}]];
     </script>
 
+
+    <!-- Global -->
+    <script data-id="App.Config">
+        var basePath = '',
+                commonPath = '../assets/',
+                rootPath = '../',
+                DEV = false,
+                componentsPath = '../assets/components/',
+                layoutApp = true,
+                module = 'admin';
+
+        var primaryColor = '#eb6a5a',
+                dangerColor = '#b55151',
+                successColor = '#609450',
+                infoColor = '#4a8bc2',
+                warningColor = '#ab7a4b',
+                inverseColor = '#45484d';
+
+        var themerPrimaryColor = primaryColor;
+    </script>
+
+
     <script th:src="@{/coral/assets/components/library/jquery/jquery.min.js}"></script>
     <script th:src="@{/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
     <script th:src="@{/coral/assets/components/library/modernizr/modernizr.js}"></script>

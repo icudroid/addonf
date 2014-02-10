@@ -12,7 +12,7 @@ import java.util.Date;
  * Goal:
  */
 @Data
-public class StatistBeanSearch implements Serializable{
+public class StatisticSearchBean implements Serializable{
     private Date start;
     private Date end;
 

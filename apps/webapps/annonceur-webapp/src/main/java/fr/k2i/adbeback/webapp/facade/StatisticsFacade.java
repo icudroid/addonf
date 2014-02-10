@@ -1,27 +1,21 @@
 package fr.k2i.adbeback.webapp.facade;
 
-import com.google.common.collect.Lists;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
-import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
-import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
 import fr.k2i.adbeback.dao.IAdDao;
 import fr.k2i.adbeback.dao.IAdRuleDao;
 import fr.k2i.adbeback.dao.IBrandDao;
 import fr.k2i.adbeback.dao.IStatisticsDao;
 import fr.k2i.adbeback.dao.jpa.StatisticsDao;
 import fr.k2i.adbeback.webapp.bean.LabelData;
-import fr.k2i.adbeback.webapp.bean.StatistBeanSearch;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+import fr.k2i.adbeback.webapp.bean.StatisticSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +67,7 @@ public class StatisticsFacade {
 
 
 
-    public List<LabelData> doSearch(StatistBeanSearch search) {
+    public List<LabelData> doSearch(StatisticSearchBean search) {
         Ad ad = adDao.get(search.getIdAd());
         AdRule adRule = null;
 
