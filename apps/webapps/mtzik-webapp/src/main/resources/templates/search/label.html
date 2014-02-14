@@ -61,11 +61,11 @@
 
     <div layout:fragment="content" id="content">
         <div class="container innerTB inner-2x">
-            <div th:substituteby="/layout/fragment/bugPush"></div>
+            <div th:substituteby="layout/fragment/bugPush"></div>
         </div>
 
           <div class="container" th:if="${productors.getTotalElements() > 0}">
-              <div th:substituteby="/layout/fragment/productors"></div>
+              <div th:substituteby="layout/fragment/productors"></div>
 
               <div class="row text-center">
                   <div  style="margin-top: 10px;" class="col-md-4 text-center">
