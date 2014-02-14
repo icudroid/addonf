@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>batches</artifactId>
-        <groupId>fr.k2i.adbeback.addonf.webapps</groupId>
+        <groupId>fr.k2i.adbeback.addonf.apps.batches</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.k2i.adbeback.addonf.webapps</groupId>
+    <groupId>fr.k2i.adbeback.addonf.apps.batches</groupId>
     <artifactId>statistics-batch</artifactId>
     <packaging>jar</packaging>
     <name>BATCHES - STATISTCS</name>

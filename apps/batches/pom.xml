@@ -12,6 +12,7 @@
     <groupId>fr.k2i.adbeback.addonf.apps.batches</groupId>
     <artifactId>batches</artifactId>
     <name>BATCHES</name>
+
     <modules>
         <module>statistics-batch</module>
     </modules>
