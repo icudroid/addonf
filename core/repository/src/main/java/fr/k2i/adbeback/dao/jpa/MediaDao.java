@@ -285,10 +285,16 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         QMusic music =QMusic.music;
         JPAQuery query = new JPAQuery(getEntityManager());
 
+        BooleanExpression predicat = music.artists.any().id.eq(artistId);
+
+        if(!StringUtils.isEmpty(req)){
+            predicat = predicat.and(music.title.containsIgnoreCase(req));
+        }
+
         query
                 .from(music)
                 .where(
-                        music.artists.any().id.eq(artistId)
+                        predicat
                 );
 
 

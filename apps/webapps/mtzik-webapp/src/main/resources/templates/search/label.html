@@ -4,14 +4,20 @@
       layout:decorator="layout/home_layout">
 <head>
 
+
     <link rel="stylesheet" th:href="@{/css/chosen-mtzik.css}"/>
+
+
     <script th:src="@{/lib/chosen-1.0/chosen.jquery.js}"></script>
-
     <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
 
 
 
-    <script>
+    <script type="text/javascript">
         $(function(){
 
             $("#previous").click(function(){
@@ -41,6 +47,7 @@
             });
 
         });
+
     </script>
 
 

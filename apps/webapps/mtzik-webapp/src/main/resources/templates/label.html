@@ -3,81 +3,79 @@
        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="layout/home_layout">
 <head>
+    <link rel="stylesheet" th:href="@{/css/chosen-mtzik.css}"/>
 
+
+    <link rel="stylesheet" th:href="@{/lib/jquery-ui-1.10.3/themes/base/jquery.ui.all.css}"/>
+
+
+    <script th:src="@{/lib/chosen-1.0/chosen.jquery.js}"></script>
     <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
     <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
     <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
     <script th:src="@{/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
     <script th:src="@{/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
 
-
-    <link rel="stylesheet" th:href="@{/css/chosen-mtzik.css}"/>
-    <script th:src="@{/lib/chosen-1.0/chosen.jquery.js}"></script>
-
-
-
     <script type="text/javascript">
+            $(function(){
 
 
-        $(function(){
+                $(".genre-select").chosen(
+                        {
+                            allow_single_deselect: true ,
+                            no_results_text: "Oops, nothing found!",
+                            inherit_select_classes: true,
+                            width:"100%"
+                        }
+                );
 
 
-            $(".genre-select").chosen(
-                    {
-                        allow_single_deselect: true ,
-                        no_results_text: "Oops, nothing found!",
-                        inherit_select_classes: true,
-                        width:"100%"
-                    }
-            );
+                $("#owl-catalog").owlCarousel({
+                    autoPlay: 5000,
+                    items: 3,
+                    itemsCustom : [
+                        [0, 1],
+                        [450, 2],
+                        [600, 2],
+                        [700, 3],
+                        [1000, 2],
+                        [1200, 3],
+                        [1400, 3],
+                        [1600, 3]
+                    ]
+                })
+                        .find('a').on('click', function(e){
+                            e.stopPropagation();
+                        });
 
 
-            $("#owl-catalog").owlCarousel({
-                autoPlay: 5000,
-                items: 3,
-                itemsCustom : [
-                    [0, 1],
-                    [450, 2],
-                    [600, 2],
-                    [700, 3],
-                    [1000, 2],
-                    [1200, 3],
-                    [1400, 3],
-                    [1600, 3]
-                ]
-            })
-            .find('a').on('click', function(e){
-                e.stopPropagation();
+                $("#previous").click(function(){
+                    var $page = $("#page");
+                    $page.val($page.val()-1);
+                    $("#searchForm").submit();
+                    return false;
+                });
+                $("#next").click(function(){
+                    var $page = $("#page");
+                    $page.val($page.val()+1);
+                    $("#searchForm").submit();
+                    return false;
+                });
+                $("#goPage").click(function(){
+                    var $page = $("#page");
+                    $page.val($("#pageNumber").val()-1);
+                    $("#searchForm").submit();
+                    return false;
+                });
+
+                $("#bySize").change(function(){
+                    var $size = $("#size");
+                    $size.val($(this).val());
+                    $("#searchForm").submit();
+                    return false;
+                });
+
             });
-
-
-            $("#previous").click(function(){
-                var $page = $("#page");
-                $page.val($page.val()-1);
-                $("#searchForm").submit();
-                return false;
-            });
-            $("#next").click(function(){
-                var $page = $("#page");
-                $page.val($page.val()+1);
-                $("#searchForm").submit();
-                return false;
-            });
-            $("#goPage").click(function(){
-                var $page = $("#page");
-                $page.val($("#pageNumber").val()-1);
-                $("#searchForm").submit();
-                return false;
-            });
-
-            $("#bySize").change(function(){
-                var $size = $("#size");
-                $size.val($(this).val());
-                $("#searchForm").submit();
-                return false;
-            });
-
-        });
     </script>
 
 

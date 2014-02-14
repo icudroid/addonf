@@ -5,13 +5,12 @@
 <head>
 
     <script type="text/javascript" th:inline="javascript">
-        $(function(){
-            var sended = [[${sended}]];
-            if(sended){
-                $('#confirmationModal').modal({show:true});
-            }
-        });
-
+            $(function(){
+                var sended = [[${sended}]];
+                if(sended){
+                    $('#confirmationModal').modal({show:true});
+                }
+            });
     </script>
 </head>
 

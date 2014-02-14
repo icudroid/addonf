@@ -7,5 +7,5 @@ package fr.k2i.adbeback.webapp.bean;
  * Goal:
  */
 public enum TypeStat {
-    AGE_GOUPE,SEX,AGE_GROUP_SEX,CITY;
+    AGE_GROUPE,SEX,AGE_GROUP_SEX,CITY;
 }

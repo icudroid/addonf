@@ -20,7 +20,7 @@
 
     </script>
 
-    <script th:src="@{/js/addonf/dashboard.js}"></script>
+    <script th:src="@{/js/addonf/detail.js}"></script>
 
 
 </head>
@@ -36,14 +36,54 @@
 <h4 class="innerAll bg-white margin-none" layout:fragment="formTile">
     <div class="heading-buttons innerLR">
         <div class="btn-group btn-group-xs pull-right">
-            <a class="btn btn-primary" th:href="@{'/dashboard/detail/'+${idAd}}" th:utext="#{addonf.dashborad.more.news}"><i class="fa fa-fw fa-plus-circle"></i> More details</a>
+            <a class="btn btn-primary" th:href="@{'/dashboard/global/'+${idAd}}" th:utext="#{addonf.dashborad.global}"><i class="fa fa-fw fa-plus-circle"></i> More details</a>
         </div>
-        <h4 class="margin-none innerTB" th:text="#{addonf.dashborad.title}">Statistique Global</h4>
+        <h4 class="margin-none innerTB" th:text="#{addonf.dashborad.detail.title}">Statistiques Détaillées</h4>
         <div class="clearfix"></div>
     </div>
 </h4>
 
 <div layout:fragment="content">
+
+    <div class="widget">
+        <div class="widget-head">
+            <h4 class="heading">Recherche</h4>
+        </div>
+        <div class="widget-body">
+
+            <form role=form>
+                <div class="form-group">
+                    <label for="startDate">Début</label>
+                    <input type="date" class="form-control" id="startDate">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">Fin</label>
+                    <input type="date" class="form-control" id="endDate">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="services">Service</label>
+                    <select class="form-control" id="services">
+
+                    </select>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="" />
+                        Par vue global (validé ou non)
+                    </label>
+                </div>
+
+
+            </form>
+
+        </div>
+    </div>
+
+
+
 
     <div class="widget">
         <div class="widget-head">

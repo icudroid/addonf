@@ -1,16 +1,13 @@
 <script type="text/javascript">
-
-
     $(function(){
         $("#owl-catalog").owlCarousel({
             autoPlay: 5000,
             items: 1
         })
-        .find('a').on('click', function(e){
-            e.stopPropagation();
-        });
+                .find('a').on('click', function(e){
+                    e.stopPropagation();
+                });
     });
-
 </script>
 
 <div id="owl-catalog" class="owl-carousel owl-theme">

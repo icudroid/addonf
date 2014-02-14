@@ -32,6 +32,17 @@ public class StatisticsController {
     }
 
 
+    @RequestMapping("/dashboard/detail/{idAd}")
+    public String detail(@PathVariable Long idAd,Map<String, Object> model) throws Exception {
+
+
+
+        statisticsFacade.detail(idAd,model);
+        model.put("idAd",idAd);
+
+        return "dashboard/detail";
+    }
+
 
     @RequestMapping(value = "/dashboard/search",method = RequestMethod.POST)
     public @ResponseBody List<LabelData> global(@RequestBody StatisticSearchBean search) throws Exception {

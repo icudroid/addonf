@@ -4,50 +4,59 @@
       layout:decorator="layout/home_layout">
 <head>
 
+
     <link rel="stylesheet" th:href="@{/css/chosen-mtzik.css}"/>
+
+
     <script th:src="@{/lib/chosen-1.0/chosen.jquery.js}"></script>
-
     <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
 
-    <script>
-        $(function(){
-            $(".genre-select").chosen(
-                                        {
-                                            allow_single_deselect: true ,
-                                            no_results_text: "Oops, nothing found!",
-                                            inherit_select_classes: true,
-                                            width:"100%"
-                                        }
-                                    );
 
-            $("#previous").click(function(){
-                var $page = $("#page");
-                $page.val($page.val()-1);
-                $("#searchForm").submit();
-                return false;
-            });
-            $("#next").click(function(){
-                var $page = $("#page");
-                $page.val($page.val()+1);
-                $("#searchForm").submit();
-                return false;
-            });
-            $("#goPage").click(function(){
-                var $page = $("#page");
-                $page.val($("#pageNumber").val()-1);
-                $("#searchForm").submit();
-                return false;
+    <script type="text/javascript">
+            $(function(){
+                $(".genre-select").chosen(
+                        {
+                            allow_single_deselect: true ,
+                            no_results_text: "Oops, nothing found!",
+                            inherit_select_classes: true,
+                            width:"100%"
+                        }
+                );
+
+                $("#previous").click(function(){
+                    var $page = $("#page");
+                    $page.val($page.val()-1);
+                    $("#searchForm").submit();
+                    return false;
+                });
+                $("#next").click(function(){
+                    var $page = $("#page");
+                    $page.val($page.val()+1);
+                    $("#searchForm").submit();
+                    return false;
+                });
+                $("#goPage").click(function(){
+                    var $page = $("#page");
+                    $page.val($("#pageNumber").val()-1);
+                    $("#searchForm").submit();
+                    return false;
+                });
+
+                $("#bySize").change(function(){
+                    var $size = $("#size");
+                    $size.val($(this).val());
+                    $("#searchForm").submit();
+                    return false;
+                });
+
             });
 
-            $("#bySize").change(function(){
-                var $size = $("#size");
-                $size.val($(this).val());
-                $("#searchForm").submit();
-                return false;
-            });
-
-        });
     </script>
+
 
 
 </head>

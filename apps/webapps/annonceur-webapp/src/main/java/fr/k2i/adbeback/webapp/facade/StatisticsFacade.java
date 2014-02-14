@@ -4,14 +4,15 @@ import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
-import fr.k2i.adbeback.dao.IAdDao;
-import fr.k2i.adbeback.dao.IAdRuleDao;
-import fr.k2i.adbeback.dao.IBrandDao;
-import fr.k2i.adbeback.dao.IStatisticsDao;
+import fr.k2i.adbeback.dao.*;
+import fr.k2i.adbeback.dao.jpa.AdGameDao;
 import fr.k2i.adbeback.dao.jpa.StatisticsDao;
 import fr.k2i.adbeback.webapp.bean.LabelData;
 import fr.k2i.adbeback.webapp.bean.StatisticSearchBean;
+import fr.k2i.adbeback.webapp.bean.adservice.AdServiceBean;
+import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,13 @@ public class StatisticsFacade {
 
     @Autowired
     private IAdDao adDao;
+
+    @Autowired
+    private IAdGameDao adGameDao;
+
+    @Value("${addonf.logo.location}")
+    private String logoPath;
+
 
     @Transactional
     public void global(Long idAd, Map<String, Object> model) throws Exception {
@@ -76,7 +84,7 @@ public class StatisticsFacade {
         }
 
         switch (search.getType()){
-            case AGE_GOUPE:{
+            case AGE_GROUPE:{
                 List<StatisticsDao.StatisticsAge> statisticsAges = null;
 
                 if(search.isGlobal()){
@@ -140,5 +148,30 @@ public class StatisticsFacade {
             default:
                 return new ArrayList<LabelData>();
         }
+    }
+
+    public void detail(Long idAd, Map<String, Object> model) throws Exception {
+        Brand currentUser = userFacade.getCurrentUser();
+
+        Ad ad = adDao.get(idAd);
+        if(!ad.getBrand().equals(currentUser)){
+            throw new Exception("bad user");
+        }
+
+        List<AdService> rules = ad.getRules(AdService.class);
+
+        fr.k2i.adbeback.webapp.bean.AdService service = new fr.k2i.adbeback.webapp.bean.AdService();
+
+        for (AdService adRule : rules) {
+            boolean used = adGameDao.isGeneratedWithRule(adRule);
+            service.addService(adRule,logoPath,used);
+        }
+
+        model.put("services",service);
+
+        model.put("minDate",ad.getStartDate());
+        model.put("maxDate",ad.getEndDate());
+
+
     }
 }
