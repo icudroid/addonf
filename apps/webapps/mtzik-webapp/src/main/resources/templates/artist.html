@@ -69,7 +69,7 @@
 
 <body>
     <div layout:fragment="searchBar">
-        <div th:replace="layout/fragment/searchBar(activeSearch=${'pageArtist'})"></div>
+        <div th:substituteby="layout/fragment/searchBar(activeSearch=${'pageArtist'})"></div>
     </div>
 
 
@@ -117,7 +117,7 @@
             <div class="separator"></div>
 
             <h3 th:if="${#strings.isEmpty(search.req) == false}" th:utext="#{addonf.search.for(${search.req})}"></h3>
-            <div th:replace="/layout/fragment/musics"></div>
+            <div th:substituteby="layout/fragment/musics"></div>
 
 
             <div th:if="${#strings.isEmpty(search.req) == false}" class="row text-center">

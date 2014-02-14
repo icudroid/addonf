@@ -14,7 +14,7 @@
 <body>
 
 <div layout:fragment="menu">
-    <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'list'})"></div>
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'list'})"></div>
 </div>
 
 <h4 class="innerAll bg-white margin-none" layout:fragment="formTile">

@@ -44,7 +44,7 @@
 <body>
 
 <div layout:fragment="searchBar">
-    <div th:replace="layout/fragment/searchBar(activeSearch=${'home'})"></div>
+    <div th:substituteby="layout/fragment/searchBar(activeSearch=${'home'})"></div>
 </div>
 
     <div layout:fragment="content" id="content">
@@ -98,7 +98,7 @@
               </form>
 
 
-              <div th:replace="/layout/fragment/musics"></div>
+              <div th:substituteby="layout/fragment/musics"></div>
 
               <div class="row text-center">
                   <div  style="margin-top: 10px;" class="col-md-4 text-center">

@@ -38,7 +38,7 @@
 
 <body>
 <div layout:fragment="menu">
-    <div th:replace="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'create'})"></div>
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${'create'})"></div>
 </div>
 
 <h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{addonf.create.ad}">

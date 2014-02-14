@@ -53,7 +53,7 @@
 <body>
 
 <div layout:fragment="searchBar">
-    <div th:replace="layout/fragment/searchBar(activeSearch=${'artist'})"></div>
+    <div th:substituteby="layout/fragment/searchBar(activeSearch=${'artist'})"></div>
 </div>
 
     <div layout:fragment="content" id="content">

@@ -16,11 +16,11 @@
 
         <div th:if="${nosearch ==false}" class="container">
             <h3 th:utext="#{addonf.search.for(${query})}"></h3>
-            <div th:replace="/layout/fragment/artists"></div>
+            <div th:substituteby="layout/fragment/artists"></div>
             <div class="separator"></div>
-            <div th:replace="/layout/fragment/productors"></div>
+            <div th:substituteby="layout/fragment/productors"></div>
             <div class="separator"></div>
-            <div th:replace="/layout/fragment/musics"></div>
+            <div th:substituteby="layout/fragment/musics"></div>
         </div>
 
     </div>
