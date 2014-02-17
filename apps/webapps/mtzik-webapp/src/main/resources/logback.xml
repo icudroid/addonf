@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%t] --- %-40.40logger{39} : %m%n%wex"/>
+    <property name="APP_NAME" value="mtzik" />
+    <property name="LOGS_FOLDER" value="/home/dev/logs" />
+
 
 	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
 
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="log-file" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_FOLDER}/${APP_NAME}.log</file>
 		<encoder>
 			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
 		</encoder>
@@ -13,7 +17,7 @@
     <logger name="org.springframework.security" level="ERROR"/>
 
 	<root level="DEBUG ">
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="log-file" />
 	</root>
 
 	<logger name="org.springframework" level="ERROR"/>
