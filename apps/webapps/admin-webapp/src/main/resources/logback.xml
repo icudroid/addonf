@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%t] --- %-40.40logger{39} : %m%n%wex"/>
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%t] --- %-40.40logger{39} : %m%n%wex"/>
+    <property name="APP_NAME" value="admin" />
+    <property name="LOGS_FOLDER" value="/home/dev/logs" />
 
-	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
 
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
-		</encoder>
-	</appender>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
 
-    <logger name="org.springframework.security" level="DEBUG"/>
+    <appender name="log-file" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_FOLDER}/${APP_NAME}.log</file>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
 
-	<root level="DEBUG ">
-		<appender-ref ref="CONSOLE" />
-	</root>
+    <logger name="org.springframework.security" level="ERROR"/>
 
-	<logger name="org.springframework" level="DEBUG"/>
-    <logger name="org.springframework.security" level="DEBUG"/>
+    <root level="DEBUG ">
+        <appender-ref ref="log-file" />
+    </root>
+
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.springframework.security" level="ERROR"/>
 </configuration>
