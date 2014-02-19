@@ -5,18 +5,14 @@
 <head>
 
 
-    <link rel="stylesheet" th:href="@{/lib/jquery-ui-1.10.3/themes/base/jquery.ui.all.css}"/>
-
-
-    <script th:src="@{/lib/jquery-ui-1.10.3/ui/minified/jquery-ui.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
-    <script th:src="@{/js/addonf/parallax.init.js}"></script>
-    <script th:src="@{/js/addonf/front.shop.owl-carousel.featured.init.js}"></script>
-    <script th:src="@{/js/addonf/search.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/holder/holder.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
+    <script th:src="@{/static/js/addonf/parallax.init.js}"></script>
+    <script th:src="@{/static/js/addonf/front.shop.owl-carousel.featured.init.js}"></script>
+    <script th:src="@{/static/js/addonf/search.js}"></script>
 
 
 </head>
@@ -29,12 +25,13 @@
 
 
     <div layout:fragment="content" id="content">
-    <div class="parallax" id="slide1" data-stellar-background-ratio="0.5" th:substituteby="layout/fragment/push"></div>
+
+    <div th:substituteby="layout/fragment/push"></div>
 
     <div class="container">
         <div class="row innerTB">
             <div class="col-md-9">
-                <h4 class="margin-none" th:text="#{addonf.home.news}">News</h4>
+                <h2 class="margin-none" th:text="#{addonf.home.news}">News</h2>
                 <div class="row">
 
                     <div class="col-sm-4 col-xs-6" th:each="newMusic : ${news}">

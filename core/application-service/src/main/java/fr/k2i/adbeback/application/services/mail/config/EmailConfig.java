@@ -20,7 +20,7 @@ import java.util.Properties;
  * To change this template use File | Settings | File Templates.
  */
 @Configuration
-@PropertySource(value = {"classpath:mail.properties"})
+//@PropertySource(value = {"classpath:mail.properties"})
 public class EmailConfig {
 
     @Value("${mail.host}")

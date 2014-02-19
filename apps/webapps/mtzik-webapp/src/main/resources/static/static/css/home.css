@@ -1,31 +1,31 @@
-@import '../../../coral/assets/components/common/forms/editors/wysihtml5/assets/lib/css/bootstrap-wysihtml5-0.0.2.css';
-@import '../../../coral/assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/css/bootstrap-datepicker.css';
-@import '../../../coral/assets/components/common/forms/elements/bootstrap-select/assets/lib/css/bootstrap-select.css';
-@import '../../../coral/assets/components/common/forms/elements/bootstrap-switch/assets/lib/css/bootstrap-switch.css';
-@import '../../../coral/assets/components/common/forms/elements/bootstrap-timepicker/assets/lib/css/bootstrap-timepicker.css';
-@import '../../../coral/assets/components/common/forms/elements/colorpicker-farbtastic/assets/css/farbtastic.css';
-@import '../../../coral/assets/components/common/forms/elements/jasny-fileupload/assets/css/fileupload.css';
-@import '../../../coral/assets/components/common/forms/elements/multiselect/assets/lib/css/multi-select.css';
-@import '../../../coral/assets/components/common/forms/elements/select2/assets/lib/css/select2.css';
-@import '../../../coral/assets/components/common/forms/file_manager/dropzone/assets/lib/css/dropzone.css';
-@import '../../../coral/assets/components/common/forms/file_manager/plupload/assets/lib/jquery.plupload.queue/css/jquery.plupload.queue.css';
-@import '../../../coral/assets/components/common/gallery/blueimp-gallery/assets/lib/css/blueimp-gallery.min.css';
-@import '../../../coral/assets/components/common/gallery/image-crop/assets/lib/css/jquery.Jcrop.css';
-@import '../../../coral/assets/components/common/gallery/prettyphoto/assets/lib/css/prettyPhoto.css';
-@import '../../../coral/assets/components/common/sliders/range-sliders/assets/lib/jqrangeslider/css/iThing.css';
-@import '../../../coral/assets/components/common/tables/datatables/assets/lib/extras/ColReorder/media/css/ColReorder.css';
-@import '../../../coral/assets/components/common/tables/responsive/assets/lib/css/footable.core.min.css';
-@import '../../../coral/assets/components/library/bootstrap/css/bootstrap.min.css';
-@import '../../../coral/assets/components/library/icons/fontawesome/assets/css/font-awesome.min.css';
-@import '../../../coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_filetypes.css';
-@import '../../../coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_regular.css';
-@import '../../../coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_social.css';
-@import '../../../coral/assets/components/library/icons/pictoicons/css/picto.css';
-@import '../../../coral/assets/components/library/jquery-ui/css/jquery-ui.min.css';
-@import '../../../coral/assets/components/plugins/owl-carousel/owl.carousel.css';
-@import '../../../coral/assets/components/plugins/owl-carousel/owl.theme.css';
-@import '../../../coral/assets/components/plugins/prettyprint/assets/css/prettify.css';
-@import '../../../coral/assets/components/library/animate/animate.min.css';
+@import '../../../static/coral/assets/components/common/forms/editors/wysihtml5/assets/lib/css/bootstrap-wysihtml5-0.0.2.css';
+@import '../../../static/coral/assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/css/bootstrap-datepicker.css';
+@import '../../../static/coral/assets/components/common/forms/elements/bootstrap-select/assets/lib/css/bootstrap-select.css';
+@import '../../../static/coral/assets/components/common/forms/elements/bootstrap-switch/assets/lib/css/bootstrap-switch.css';
+@import '../../../static/coral/assets/components/common/forms/elements/bootstrap-timepicker/assets/lib/css/bootstrap-timepicker.css';
+@import '../../../static/coral/assets/components/common/forms/elements/colorpicker-farbtastic/assets/css/farbtastic.css';
+@import '../../../static/coral/assets/components/common/forms/elements/jasny-fileupload/assets/css/fileupload.css';
+@import '../../../static/coral/assets/components/common/forms/elements/multiselect/assets/lib/css/multi-select.css';
+@import '../../../static/coral/assets/components/common/forms/elements/select2/assets/lib/css/select2.css';
+@import '../../../static/coral/assets/components/common/forms/file_manager/dropzone/assets/lib/css/dropzone.css';
+@import '../../../static/coral/assets/components/common/forms/file_manager/plupload/assets/lib/jquery.plupload.queue/css/jquery.plupload.queue.css';
+@import '../../../static/coral/assets/components/common/gallery/blueimp-gallery/assets/lib/css/blueimp-gallery.min.css';
+@import '../../../static/coral/assets/components/common/gallery/image-crop/assets/lib/css/jquery.Jcrop.css';
+@import '../../../static/coral/assets/components/common/gallery/prettyphoto/assets/lib/css/prettyPhoto.css';
+@import '../../../static/coral/assets/components/common/sliders/range-sliders/assets/lib/jqrangeslider/css/iThing.css';
+@import '../../../static/coral/assets/components/common/tables/datatables/assets/lib/extras/ColReorder/media/css/ColReorder.css';
+@import '../../../static/coral/assets/components/common/tables/responsive/assets/lib/css/footable.core.min.css';
+@import '../../../static/coral/assets/components/library/bootstrap/css/bootstrap.min.css';
+@import '../../../static/coral/assets/components/library/icons/fontawesome/assets/css/font-awesome.min.css';
+@import '../../../static/coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_filetypes.css';
+@import '../../../static/coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_regular.css';
+@import '../../../static/coral/assets/components/library/icons/glyphicons/assets/css/glyphicons_social.css';
+@import '../../../static/coral/assets/components/library/icons/pictoicons/css/picto.css';
+@import '../../../static/coral/assets/components/library/jquery-ui/css/jquery-ui.min.css';
+@import '../../../static/coral/assets/components/plugins/owl-carousel/owl.carousel.css';
+@import '../../../static/coral/assets/components/plugins/owl-carousel/owl.theme.css';
+@import '../../../static/coral/assets/components/plugins/prettyprint/assets/css/prettify.css';
+@import '../../../static/coral/assets/components/library/animate/animate.min.css';
 /* --- LOADING [css.bootstrap-wysihtml5-0.0.2] from assets/components/common/forms/editors/wysihtml5/assets/lib/css/bootstrap-wysihtml5-0.0.2.css */
 /* --- LOADING [css.bootstrap-datepicker] from assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/css/bootstrap-datepicker.css */
 /* --- LOADING [css.bootstrap-select] from assets/components/common/forms/elements/bootstrap-select/assets/lib/css/bootstrap-select.css */
@@ -57,6 +57,7 @@
 /* --- LOADING [less.variables] from assets/components/core/less/variables.less */
 /* --- LOADING [less.mixins] from assets/components/core/less/mixins.less */
 /* --- LOADING [less.helpers] from assets/components/core/less/helpers.less */
+
 .scripts-async .container-fluid {
   visibility: hidden;
 }
@@ -5192,7 +5193,7 @@ div.DTCR_pointer {
 #slide1 {
   padding: 140px 0;
   background-color: #ffffff;
-  background-image: url('../../img/bk.png');
+  background-image: url('../../static/img/bk.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
@@ -5587,10 +5588,11 @@ div.DTCR_pointer {
 /* --- LOADING [less.front.scaffolding] from assets/components/modules/front/core/assets/less/front.scaffolding.less */
 html {
   -webkit-font-smoothing: antialiased !important;
+  background: -moz-linear-gradient(center top , #2F373B 20%, #C3C3C3 100%) no-repeat scroll 0 0 #C3C3C3;
 }
 body {
   font-family: 'Roboto Light', sans-serif;
-  background: #fff;
+  background: none;
   font-size: 13px;
   color: #525252;
   padding-top: 90px;
@@ -5632,6 +5634,7 @@ h3 span {
 .text-muted {
   color: #cacaca;
 }
+
 h1 {
   font-size: 60px;
 }
@@ -5711,9 +5714,15 @@ ul.icons li i:before {
   background: #eaeaea;
   color: #969696;
 }
+
+
+
 #content > .container {
   padding-top: 25px;
   padding-bottom: 25px;
+}
+#content > .container {
+    background: #FFFFFF;
 }
 .border-right {
   border-right: 1px solid #efefef;
@@ -5866,201 +5875,12 @@ ul.icons li i:before {
   border-left: none;
   border-right: none;
 }
-/* --- LOADING [less.front.navbar] from assets/components/modules/front/navbar/front.navbar.less */
-.navbar-coral {
-  background: #2c2c2c;
-  border: none;
-  margin: none;
-  top: 30px;
-}
-.navbar-coral .navbar-brand {
-  padding: 0px 30px 0px 15px;
-  line-height: 60px;
-  color: #5b5b5b;
-  font-size: 32px;
-}
-.navbar-coral .navbar-toggle {
-  margin-top: 13px;
-  border-color: #333;
-}
-.navbar-coral .navbar-toggle .icon-bar {
-  background-color: #fff;
-}
-.navbar-coral .navbar-collapse {
-  float: left;
-}
-.navbar-coral .navbar-nav {
-  padding: 14px 0 0;
-}
-.navbar-coral .navbar-nav.main-menu li {
-  height: 32px;
-  margin-right: 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-}
-.navbar-coral .navbar-nav.main-menu li a {
-  padding: 0 10px;
-  line-height: 32px;
-  font-weight: bold;
-  color: #c3c3c3;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-}
-.navbar-coral .navbar-nav.main-menu li a:hover {
-  background: #242424;
-}
-.navbar-coral .navbar-nav.main-menu li.active {
-  background: #373737;
-}
-.navbar-coral .navbar-nav.main-menu li.active a {
-  color: #fff;
-}
-.navbar-coral .navbar-nav.navbar-right li .open > a,
-.navbar-coral .navbar-nav.navbar-right li .nav .open > a:hover {
-  border-color: #323232;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group {
-  border-bottom: 2px solid #282828;
-  border-radius: 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group .btn {
-  font-size: 13px;
-  background: #373737;
-  font-weight: bold;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group .btn.glyphicons {
-  padding-left: 32px;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group .btn.glyphicons i:before {
-  top: 8px;
-  left: 10px;
-  font-size: 16px;
-  color: #4f4f4f;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group .btn:hover {
-  background: #2d2d2d;
-  border: 1px solid #373737;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group .btn-login {
-  color: #c3c3c3;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group .btn-signup {
-  color: #4193d0;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu {
-  position: absolute;
-  left: -16px;
-  background-color: #2c2c2c;
-  top: 38px;
-  padding: 15px 15px 0;
-  border-top: 4px solid #3a3a3a;
-  border-bottom: 5px solid #282828;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  width: 183px;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu .input-group {
-  padding-bottom: 8px;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu .fa-refresh {
-  color: #4193d0;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu input,
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu .input-group-addon {
-  background: #1f1f1f;
-  border: none;
-  /* Works on both */
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu input .fa-check,
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu .input-group-addon .fa-check {
-  color: #8acd76;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu input .fa-times,
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu .input-group-addon .fa-times {
-  color: #d48a8a;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu input::-webkit-input-placeholder,
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu .input-group-addon::-webkit-input-placeholder {
-  color: #636363;
-  font-style: italic;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu input:-moz-placeholder,
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu .input-group-addon:-moz-placeholder {
-  color: #636363;
-  font-style: italic;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu .btn-login {
-  color: #fff;
-  background: #4193d0;
-  font-weight: bold;
-  margin-left: 5px;
-  padding: 2px 10px;
-  font-size: 13px;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu a.recover-password {
-  color: #6c6c6c;
-  padding: 10px 0;
-  font-size: 12px;
-  font-style: italic;
-  display: inline-block;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu a.recover-password i {
-  font-size: 14px;
-  margin-left: 3px;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu a.recover-password:hover {
-  background: none;
-  color: #fff;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu a.recover-password:hover i {
-  color: #4193d0;
-  font-style: 14px;
-}
-.navbar-coral .navbar-nav.navbar-right li .btn-group #login-menu:after {
-  content: "";
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  top: -10px;
-  border-top-width: 0;
-  border-bottom-color: #3a3a3a;
-  position: absolute;
-  display: block;
-  left: 18px;
-}
-@media (max-width: 768px) {
-  .navbar-coral .navbar-nav.navbar-right {
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    left: 100px;
-    top: 13px;
-  }
-  .navbar-coral .navbar-nav.navbar-right > li {
-    float: left;
-  }
-  .navbar-coral .navbar-nav.navbar-right li.cart {
-    padding: 5px 0 0;
-  }
-  .navbar-coral .navbar-collapse {
-    float: none;
-  }
-  .navbar-coral .navbar-collapse .navbar-nav {
-    margin: 0;
-    padding: 14px 0;
-  }
-}
+
 /* --- LOADING [less.shop.animations] from assets/components/modules/shop/core/less/shop.animations.less */
 /*@import '../../../assets/components/modules/shop/core/less/shop.animations.less';*/
 /* --- LOADING [less.shop.navbar] from assets/components/modules/shop/navbar/shop.navbar.less */
 .navbar-coral {
-  background: #2c2c2c;
+    background: #ECECEC;
   border: none;
   margin: none;
   top: 30px;
@@ -6095,7 +5915,7 @@ ul.icons li i:before {
   padding: 0 10px;
   line-height: 32px;
   font-weight: bold;
-  color: #c3c3c3;
+  color: #aeaeae;
   -webkit-border-radius: 5px 5px 5px 5px;
   -moz-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
@@ -6320,7 +6140,7 @@ ul.icons li i:before {
     position: absolute;
     padding: 0;
     margin: 0;
-    left: 100px;
+    left: 165px;
     top: 13px;
   }
   .navbar-coral .navbar-nav.navbar-right > li {

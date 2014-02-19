@@ -20,6 +20,7 @@ $(function(){
             'data': {_csrf:addonf.token},
             'success': function(data){
                 // refresh cart
+                $("#nb-product-in-cart").html(data.nbProduct);
                 $("#sum").html(data.minScore);
                 $.ajax({
                     'type': 'GET',

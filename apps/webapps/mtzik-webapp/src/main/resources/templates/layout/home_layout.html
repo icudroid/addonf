@@ -13,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
 
-    <link th:href="@{/img/favicon.png}" rel="icon" />
+    <link th:href="@{/static/img/favicon.png}" rel="icon" />
 
     <script th:inline="javascript">
         var addonf = {};
@@ -22,53 +22,41 @@
             addonf.token = [[${_csrf.token}]];
     </script>
 
-    <script th:src="@{/lib/jquery-2.0.3/jquery.min.js}"></script>
-    <script th:src="@{/coral/assets/components/library/jquery/jquery.min.js}"></script>
-    <script th:src="@{/coral/assets/components/library/modernizr/modernizr.js}"></script>
-    <script th:src="@{/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
-    <script th:src="@{/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/ajaxify/davis.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/ajaxify/jquery.lazyjaxdavis.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/preload/pace/pace.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/holder/holder.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/less-js/less.min.js}"></script>
-    <script th:src="@{/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
-    <script th:src="@{/coral/assets/components/plugins/ajaxify/ajaxify.init.js}"></script>
-    <script th:src="@{/coral/assets/components/core/js/preload.pace.init.js}"></script>
-    <script th:src="@{/js/addonf/search.bar.js}"></script>
-    <script th:src="@{/js/addonf/audio.js}"></script>
-    <script th:src="@{/js/addonf/login.js}"></script>
+
+    <script th:src="@{/static/lib/jquery-2.0.3/jquery.min.js}"></script>
+    <script th:src="@{/static/lib/jquery-ui-1.10.3/ui/minified/jquery-ui.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/library/modernizr/modernizr.js}"></script>
+    <script th:src="@{/static/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/ajaxify/davis.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/ajaxify/jquery.lazyjaxdavis.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/preload/pace/pace.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/holder/holder.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/less-js/less.min.js}"></script>
+    <script th:src="@{/static/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
+    <script th:src="@{/static/coral/assets/components/plugins/ajaxify/ajaxify.init.js}"></script>
+    <script th:src="@{/static/coral/assets/components/core/js/preload.pace.init.js}"></script>
+    <script th:src="@{/static/js/addonf/search.bar.js}"></script>
+    <script th:src="@{/static/js/addonf/audio.js}"></script>
+    <script th:src="@{/static/js/addonf/login.js}"></script>
 
 
 <!--
-    <script src="audio.js" th:src="@{/js/addonf/search.js}"></script>
-    <script src="jquery.fullscreen.js" th:src="@{/js/external/jquery.fullscreen.js}"></script>
-    <script src="play.js" th:src="@{/js/addonf/play.js}"></script>
+    <script src="audio.js" th:src="@{/static/js/addonf/search.js}"></script>
+    <script src="jquery.fullscreen.js" th:src="@{/static/js/external/jquery.fullscreen.js}"></script>
+    <script src="play.js" th:src="@{/static/js/addonf/play.js}"></script>
 -->
 
 
 
+    <link rel="stylesheet" th:href="@{/static/lib/jquery-ui-1.10.3/themes/base/jquery.ui.all.css}"/>
 
-    <script>
-        $script(App.Scripts.core, 'core');
-
-        $script.ready(['core'], function(){
-            $script(App.Scripts.plugins_dependency, 'plugins_dependency');
-        });
-        $script.ready(['core', 'plugins_dependency'], function(){
-            $script(App.Scripts.plugins, 'plugins');
-        });
-        $script.ready(['core', 'plugins_dependency', 'plugins'], function(){
-            $script(App.Scripts.bundle, 'bundle');
-        });
-    </script>
-
-    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/home.css}"/>
 
     <style type="text/css">
         .ui-front{
@@ -81,7 +69,7 @@
 <body>
 
 <div id="menu-top">
-    <div class="container text-center" th:text="#{addonf.topmenu.title}">
+    <div class="container text-center" th:text="#{addonf.topmenu.title}" style="padding-top: 5px;">
         Téléchargement gratuit et légal de musiques
     </div>
 </div>
@@ -97,7 +85,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" th:href="@{/}">
-                <img th:src="@{/img/logo.png}"/>
+                <img th:src="@{/static/img/logo.png}"/>
             </a>
         </div>
         <!-- Nav Bar Collapse -->
@@ -157,13 +145,10 @@
                 </div>
             </li>
             <li class="cart hidden-xs">
-                <a href="#" class="glyphicons shopping_bag dropdown-toggle" data-toggle="dropdown"><i></i></a>
-
-
+                <a href="#" class="glyphicons shopping_bag dropdown-toggle" data-toggle="dropdown"><i></i><span class="badge" th:text="${session.cart.nbProduct}" id="nb-product-in-cart">42</span></a>
                 <ul class="dropdown-menu cart-dropdown">
                     <li th:substituteby="layout/fragment/cart"/>
                 </ul>
-
 
             </li>
         </ul>

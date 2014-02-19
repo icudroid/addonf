@@ -81,7 +81,7 @@
                              <div class="col-md-8">
                                  <div style="width: 100%;height:100px;">
                                      <img style="max-width: 100%;height: 100%;margin: 0 auto;display: block" ng-src="{{img[$index]}}"/>
-                                     <a style="display: block; z-index: 0; position: relative; margin-top: -60px;" class="btn btn-link"  pl-upload="upload"  pl-filters-model="formatImage" on-file-uploaded="setNowTmpImageUrl($index)" pl-progress-model="percent[$index]" th:attr="pl-flash-swf-url=@{/lib/plupload/plupload.flash.swf},pl-silverlight-xap-url=@{lib/plupload/plupload.flash.silverlight.xap},pl-url=${'{{getUploadUrl($index)}}'}">Choisir une image</a>
+                                     <a style="display: block; z-index: 0; position: relative; margin-top: -60px;" class="btn btn-link"  pl-upload="upload"  pl-filters-model="formatImage" on-file-uploaded="setNowTmpImageUrl($index)" pl-progress-model="percent[$index]" th:attr="pl-flash-swf-url=@{/static/lib/plupload/plupload.flash.swf},pl-silverlight-xap-url=@{lib/plupload/plupload.flash.silverlight.xap},pl-url=${'{{getUploadUrl($index)}}'}">Choisir une image</a>
                                  </div>
                              </div>
                          </div>

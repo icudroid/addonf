@@ -163,12 +163,13 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/ads").permitAll()
 
 
-                    .antMatchers("/lib/**").permitAll()
-                    .antMatchers("/coral/**").permitAll()
+                    .antMatchers("/static/**").permitAll()
+
+                /*    .antMatchers("/coral/**").permitAll()
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/js/**").permitAll()
                     .antMatchers("/img/**").permitAll()
-                    .antMatchers("/template/**").permitAll()
+                    .antMatchers("/template/**").permitAll()*/
 
                     .antMatchers("/checkout.html").permitAll()
                     .antMatchers("/cart.html").permitAll()
