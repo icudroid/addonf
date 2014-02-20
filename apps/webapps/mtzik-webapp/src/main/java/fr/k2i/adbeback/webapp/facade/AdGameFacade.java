@@ -194,7 +194,7 @@ public class AdGameFacade {
         res.setGame(game);
         //res.setMinScore(generateAdGame.getMinScore());
         //res.setTimeLimite((long) (generateAdGame.getMinScore() * 20));
-        if(gooseLevel.isLimitedTime()){
+        if(gooseLevel.getLimitedTime()){
             res.setTimeLimite(Long.valueOf(30));
         }else{
             res.setTimeLimite(-1L);
@@ -237,7 +237,7 @@ public class AdGameFacade {
         Map<Integer, Long> answers = new HashMap<Integer, Long>();
         HttpSession session = request.getSession();
 
-        session.setAttribute(LIMITED_TIME,gooseLevel.isLimitedTime());
+        session.setAttribute(LIMITED_TIME,gooseLevel.getLimitedTime());
         session.setAttribute(PLAYER_GOOSE_GAME, pgg);
         session.setAttribute(USER_ANSWER, answers);
         session.setAttribute(CORRECT_ANSWER, correctResponse);

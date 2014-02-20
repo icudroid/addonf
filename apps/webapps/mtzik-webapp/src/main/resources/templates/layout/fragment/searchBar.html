@@ -1,3 +1,4 @@
+
     <div th:class="${activeSearch == 'home'} ?'search-navbar':'search-navbar open'">
         <div class="container">
             <h3 class="innerTB margin-none search-closed" th:utext="#{'addonf.search.title.'+${activeSearch}}"><i class="fa fa-fw icon-volume-levels"></i> Recherche de Musiques</h3>
@@ -5,7 +6,7 @@
 
                 <form th:action="@{/search.html}" method="get" th:case="'home'">
                     <div class="input-group">
-                        <input type="text" class="form-control searchInput" th:placeholder="#{addonf.search.placeholder}" name="q"/>
+                        <input type="text" class="form-control searchInput" th:placeholder="#{addonf.search.placeholder}" name="q" data-container="body" data-trigger="manual" data-placement="left" data-content="Commencer votre recherche ici" data-html="true"/>
                         <span class="input-group-btn">
                             <button class="btn btn-default btn-primary searchBtn"><i class="fa fa-fw icon-search"></i></button>
                         </span>
@@ -145,7 +146,7 @@
                 <div th:case="'pageArtist'" class="separator"> </div>
                 <div th:case="'pageLabel'" class="separator"> </div>
 
-                <ul class="list-unstyled" th:case="*">
+                <ul class="list-unstyled text-center" th:case="*">
                     <li><a th:href="@{/search/music}"     th:class="${activeSearch == 'music'} ?'btn btn-primary':'btn btn-default'" th:utext="#{addonf.search.byMusic}"><i class="fa fa-fw  icon-albums"></i> Par Musique</a></li>
                     <li><a th:href="@{/search/artist}"    th:class="${activeSearch == 'artist'}?'btn btn-primary':'btn btn-default'" th:utext="#{addonf.search.byArtist}"><i class="fa fa-fw  icon-user-2"></i> Par Artiste</a></li>
                     <li><a th:href="@{/search/label}"     th:class="${activeSearch == 'label'} ?'btn btn-primary':'btn btn-default'" th:utext="#{addonf.search.byLabel}"><i class="fa fa-fw i icon-vinyl-record"></i> Par Label</a></li>

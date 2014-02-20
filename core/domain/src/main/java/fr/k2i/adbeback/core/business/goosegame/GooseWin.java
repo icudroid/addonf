@@ -46,7 +46,7 @@ public class GooseWin extends BaseObject implements Serializable {
 	}
 
 	@ManyToOne()
-	@JoinColumn(name = "GOOSELEVEL_ID")
+	@JoinColumn(name = "gooselevel_id")
 	public GooseLevel getGooseLevel() {
 		return gooseLevel;
 	}

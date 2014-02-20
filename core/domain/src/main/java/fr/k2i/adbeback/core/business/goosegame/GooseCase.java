@@ -47,7 +47,7 @@ public abstract class GooseCase extends BaseObject implements Serializable {
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "GOOSELEVEL_ID")
+	@JoinColumn(name = "gooselevel_id")
 	public GooseLevel getLevel() {
 		return level;
 	}

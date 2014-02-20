@@ -20,71 +20,33 @@ import lombok.Data;
 public abstract class GooseLevel extends BaseObject implements Serializable {
 
 	protected static final long serialVersionUID = 3339924782068634755L;
-	protected Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
+
+    @Column(name = "level")
 	protected Integer level;
-    protected boolean limitedTime;
+
+    @Column(name = "limited_time")
+    protected Boolean limitedTime;
+
+    @Column(name = "nb_max_ad_by_play")
     protected Integer nbMaxAdByPlay;
-	protected StartLevelGooseCase startCase;
-	protected EndLevelGooseCase endCase;
-	protected List<GooseCase> gooseCases;
-
-
-    public Integer getNbMaxAdByPlay() {
-        return nbMaxAdByPlay;
-    }
-
-    public void setNbMaxAdByPlay(Integer nbMaxAdByPlay) {
-        this.nbMaxAdByPlay = nbMaxAdByPlay;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "GOOSELEVEL_ID")
-    @OrderBy("number")
-	public List<GooseCase> getGooseCases() {
-		return gooseCases;
-	}
-
-	public void setGooseCases(List<GooseCase> gooseCases) {
-		this.gooseCases = gooseCases;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Integer getLevel() {
-		return level;
-	}
-
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
-
-	@OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-	@JoinColumn(name = "START_ID")
-	public StartLevelGooseCase getStartCase() {
-		return startCase;
-	}
-
-	public void setStartCase(StartLevelGooseCase startCase) {
-		this.startCase = startCase;
-	}
 
     @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-	@JoinColumn(name = "END_ID")
-	public EndLevelGooseCase getEndCase() {
-		return endCase;
-	}
+    @JoinColumn(name = "start_id")
+    protected StartLevelGooseCase startCase;
 
-	public void setEndCase(EndLevelGooseCase endCase) {
-		this.endCase = endCase;
-	}
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @JoinColumn(name = "end_id")
+    protected EndLevelGooseCase endCase;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gooselevel_id")
+    @OrderBy("number")
+	protected List<GooseCase> gooseCases;
+
 
 	@Override
 	public String toString() {

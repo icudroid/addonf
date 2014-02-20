@@ -96,10 +96,25 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
     public Page<Artist> findArtistByFullName(String req, Pageable pageable) {
         QArtist artist = QArtist.artist;
         JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(artist)
-                .where(
-                        artist.lastName.containsIgnoreCase(req).or(artist.firstName.containsIgnoreCase(req))
-                );
+        BooleanExpression predicat = null;
+        query.from(artist);
+
+        if(!StringUtils.isEmpty(req)){
+            String[] split = req.split(" ");
+
+            for (String s : split) {
+                BooleanExpression fullNamePredicat = artist.lastName.containsIgnoreCase(s).or(artist.firstName.containsIgnoreCase(s));
+                if(predicat==null){
+                    predicat = fullNamePredicat;
+                }else{
+                    predicat = predicat.or(fullNamePredicat);
+                }
+            }
+            query.where(
+                            predicat
+                    );
+        }
+
 
         query
                 .offset(pageable.getOffset())
@@ -116,10 +131,14 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
     public Page<Productor> findProductorByFullName(String req, Pageable pageable) {
         QProductor productor = QProductor.productor;
         JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(productor)
-                .where(
-                        productor.lastName.containsIgnoreCase(req).or(productor.firstName.containsIgnoreCase(req))
-                );
+
+        query.from(productor);
+
+        if(!StringUtils.isEmpty(req)){
+            query.where(
+                            productor.lastName.containsIgnoreCase(req).or(productor.firstName.containsIgnoreCase(req))
+                    );
+        }
 
         query
                 .offset(pageable.getOffset())
@@ -165,16 +184,30 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
         QMusic music = QMusic.music;
         JPAQuery query = new JPAQuery(getEntityManager());
-        BooleanExpression predicat = music.title.containsIgnoreCase(req);
+
+        BooleanExpression predicat = null;
 
         query.from(music);
 
         if(genre!=null && genre>0){
-            predicat = predicat.and(music.categories.any().id.eq(genre));
+            predicat = music.categories.any().id.eq(genre);
         }
 
 
-        query   .where(predicat)
+        if(!StringUtils.isEmpty(req)){
+            BooleanExpression musicTitlePredicat = music.title.containsIgnoreCase(req);
+            if(predicat!=null){
+                predicat.and(musicTitlePredicat);
+            }else{
+                predicat = musicTitlePredicat;
+            }
+        }
+
+        if(predicat!=null){
+            query.where(predicat);
+        }
+
+        query
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(music.title.asc());
@@ -193,14 +226,17 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
         LocalDate localDate = new LocalDate();
 
-        BooleanExpression predicat = music.title.containsIgnoreCase(req).and(music.releaseDate.gt(localDate.minusMonths(1).toDate()));
+        BooleanExpression predicat = music.releaseDate.gt(localDate.minusMonths(1).toDate());
 
         query.from(music);
 
 
-
         if(genre!=null && genre>0){
             predicat = predicat.and(music.categories.any().id.eq(genre));
+        }
+
+        if(!StringUtils.isEmpty(req)){
+            predicat = predicat.and(music.title.containsIgnoreCase(req));
         }
 
 
@@ -226,8 +262,11 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
         JPAQuery query = new JPAQuery(getEntityManager());
 
+        BooleanExpression predicat = music.id.in(queryTopDl.list(music.id));
 
-        BooleanExpression predicat = music.title.containsIgnoreCase(req).and(music.id.in(queryTopDl.list(music.id)));
+        if(!StringUtils.isEmpty(req)){
+            predicat = predicat.and(music.title.containsIgnoreCase(req));
+        }
 
         query.from(music);
 
@@ -425,10 +464,14 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
     public Page<Music> findMusicByTile(String req, Pageable pageable) {
         QMusic music = QMusic.music;
         JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(music)
-                .where(
-                        music.title.containsIgnoreCase(req)
-                );
+        query.from(music);
+
+        if(!StringUtils.isEmpty(req)){
+            query.where(
+                            music.title.containsIgnoreCase(req)
+                    );
+
+        }
 
         query
                 .offset(pageable.getOffset())

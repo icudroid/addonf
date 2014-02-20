@@ -30,7 +30,6 @@
     <script th:src="@{/static/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
     <script th:src="@{/static/coral/assets/components/plugins/ajaxify/davis.min.js}"></script>
     <script th:src="@{/static/coral/assets/components/plugins/ajaxify/jquery.lazyjaxdavis.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/preload/pace/pace.min.js}"></script>
     <script th:src="@{/static/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
     <script th:src="@{/static/coral/assets/components/plugins/holder/holder.js}"></script>
     <script th:src="@{/static/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
@@ -39,8 +38,7 @@
     <script th:src="@{/static/coral/assets/components/plugins/less-js/less.min.js}"></script>
     <script th:src="@{/static/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
     <script th:src="@{/static/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/ajaxify/ajaxify.init.js}"></script>
-    <script th:src="@{/static/coral/assets/components/core/js/preload.pace.init.js}"></script>
+
     <script th:src="@{/static/js/addonf/search.bar.js}"></script>
     <script th:src="@{/static/js/addonf/audio.js}"></script>
     <script th:src="@{/static/js/addonf/login.js}"></script>
@@ -63,6 +61,12 @@
             z-index: 1500;
         }
     </style>
+
+    <script type="text/javascript">
+        $(function(){
+            $( ".searchInput" ).popover('show');
+        });
+    </script>
 
 
 </head>
@@ -89,15 +93,15 @@
             </a>
         </div>
         <!-- Nav Bar Collapse -->
-        <div class="collapse navbar-collapse">
+<!--        <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav main-menu">
                 <li><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
                 <li><a th:href="@{/search.html}"  th:text="#{addonf.mainmenu.search}">Rechercher</a></li>
                 <li><a th:href="@{/cgu.html}"  th:text="#{addonf.mainmenu.cgu}">CGU</a></li>
-                <!--<li><a th:href="@{/about.html}"  th:text="#{addonf.mainmenu.about}">About</a></li>-->
+                &lt;!&ndash;<li><a th:href="@{/about.html}"  th:text="#{addonf.mainmenu.about}">About</a></li>&ndash;&gt;
                 <li><a th:href="@{/contactForm}"  th:text="#{addonf.mainmenu.contactForm}">Contact us</a></li>
             </ul>
-        </div>
+        </div>-->
         <!-- NavBar Collapse -->
         <!-- Nav Bar Right -->
         <ul class="nav navbar-nav navbar-right right-side">

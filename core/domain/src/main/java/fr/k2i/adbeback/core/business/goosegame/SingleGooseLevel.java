@@ -15,6 +15,7 @@ import java.util.List;
 @DiscriminatorValue(IMetaData.ColumnMetadata.GooseLevel.Discrimator.SINGLE)
 public class SingleGooseLevel extends GooseLevel implements ISingleGooseLevel {
 
+    @Column(name = "min_score")
     protected Integer minScore;
 
 	@Override

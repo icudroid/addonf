@@ -64,23 +64,17 @@ public class SearchController{
     @RequestMapping("/search.html")
     public String search(@RequestParam(value = "q",required = false) String req,Map<String, Object> model,HttpServletRequest request) throws Exception {
 
-        CartBean cart = (CartBean) request.getSession().getAttribute("cart");
-        if(cart==null){
-            cart = new CartBean();
-            request.getSession().setAttribute("cart",cart);
+        if(StringUtils.isEmpty(req)){
+            req="";
         }
-        model.put("cart", cart);
         model.put("staticUrl",staticUrl);
         model.put("categories",categoryDao.getAll());
         model.put("query", req);
         model.put("showmore", true);
 
-        if(!StringUtils.isEmpty(req)){
-            mediaFacade.search(req,model);
-            model.put("nosearch",false);
-        }else{
-            model.put("nosearch",true);
-        }
+
+        mediaFacade.search(req,model);
+        model.put("nosearch",false);
 
         return "search";
     }
@@ -98,39 +92,19 @@ public class SearchController{
 
 
         if("music".equals(what)){
-            if(!StringUtils.isEmpty(searchCommand.getReq())){
-                model.put("musics",mediaFacade.findMusics(searchCommand.getGenreId(),searchCommand.getReq(),pageable));
-            }else{
-                model.put("musics", new PageImpl<MusicBean>(Lists.<MusicBean>newArrayList()));
-            }
+            model.put("musics",mediaFacade.findMusics(searchCommand.getGenreId(),searchCommand.getReq(),pageable));
             return "search/music";
         }else if("label".equals(what)){
-            if(!StringUtils.isEmpty(searchCommand.getReq())){
-                model.put("productors",mediaFacade.findProductors(searchCommand.getReq(),pageable));
-            }else{
-                model.put("productors", new PageImpl<ArtistBean>(Lists.<ArtistBean>newArrayList()));
-            }
+             model.put("productors",mediaFacade.findProductors(searchCommand.getReq(),pageable));
             return "search/label";
         }else if("artist".equals(what)){
-            if(!StringUtils.isEmpty(searchCommand.getReq())){
-                model.put("artists",mediaFacade.findArtists(searchCommand.getReq(),pageable));
-            }else{
-                model.put("artists", new PageImpl<ArtistBean>(Lists.<ArtistBean>newArrayList()));
-            }
+            model.put("artists",mediaFacade.findArtists(searchCommand.getReq(),pageable));
             return "search/artist";
         }else if("news".equals(what)){
-            if(!StringUtils.isEmpty(searchCommand.getReq())){
-                model.put("musics",mediaFacade.findNewMusics(searchCommand.getGenreId(),searchCommand.getReq(),pageable));
-            }else{
-                model.put("musics", new PageImpl<MusicBean>(Lists.<MusicBean>newArrayList()));
-            }
+            model.put("musics",mediaFacade.findNewMusics(searchCommand.getGenreId(),searchCommand.getReq(),pageable));
             return "search/news";
         }else if("top50".equals(what)){
-            if(!StringUtils.isEmpty(searchCommand.getReq())){
-                model.put("musics",mediaFacade.findTopMusics(searchCommand.getGenreId(),searchCommand.getReq(),searchCommand.getTop(),pageable));
-            }else{
-                model.put("musics", new PageImpl<MusicBean>(Lists.<MusicBean>newArrayList()));
-            }
+            model.put("musics",mediaFacade.findTopMusics(searchCommand.getGenreId(),searchCommand.getReq(),searchCommand.getTop(),pageable));
             return "search/top50";
         }else{
             return "search";

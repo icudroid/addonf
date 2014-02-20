@@ -46,7 +46,9 @@ public class GameController{
     @RequestMapping("/downloadMusics.html")
     public String downloadMusics(Map<String, Object> model,HttpServletRequest request) {
         Long idGame = (Long) request.getSession().getAttribute(ID_ADGAME);
-
+        if(idGame==null){
+            return "redirect:/";
+        }
         model.put("filename",adGameFacade.getFilename(idGame));
         return "cartDownload";
     }
