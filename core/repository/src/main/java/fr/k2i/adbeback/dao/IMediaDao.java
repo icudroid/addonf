@@ -1,9 +1,6 @@
 package fr.k2i.adbeback.dao;
 
-import fr.k2i.adbeback.core.business.media.Artist;
-import fr.k2i.adbeback.core.business.media.Media;
-import fr.k2i.adbeback.core.business.media.Music;
-import fr.k2i.adbeback.core.business.media.Productor;
+import fr.k2i.adbeback.core.business.media.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,6 +88,6 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
     List<? extends Media> getNewMusics(Integer max);
 
     @Transactional
-    Page<Music> findMusicsForAlbum(Long albumId, String req, Pageable pageable);
+    Page<TrackNumberMusic> findMusicsForAlbum(Long albumId, String req, Pageable pageable);
 }
 

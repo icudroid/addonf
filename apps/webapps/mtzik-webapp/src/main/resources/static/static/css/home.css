@@ -58,6 +58,9 @@
 /* --- LOADING [less.mixins] from assets/components/core/less/mixins.less */
 /* --- LOADING [less.helpers] from assets/components/core/less/helpers.less */
 
+
+
+
 .scripts-async .container-fluid {
   visibility: hidden;
 }
@@ -6123,6 +6126,16 @@ ul.icons li i:before {
   color: #fff;
   background: none;
 }
+
+.navbar-coral .navbar-nav.navbar-right li.cart .dropdown-menu li.cart-total{
+    border-top: 1px solid #3C3C3C;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 25px;
+    padding: 10px;
+}
+
 .navbar-coral .navbar-nav.navbar-right li.cart .dropdown-menu li.cart-button {
   padding: 10px;
   margin-top: 25px;

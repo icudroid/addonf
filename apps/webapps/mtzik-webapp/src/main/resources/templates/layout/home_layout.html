@@ -137,6 +137,7 @@
                 </div>
             </li>
             <li sec:authorize="hasRole('ROLE_USER')">
+                <span>Bonjour,</span>&nbsp;<span sec:authentication="name">Bob</span>
                 <div class="btn-group">
                     <a href="#login-menu" class="btn btn-login" data-toggle="collapse" th:text="#{addonf.myaccount}"> My account</a>
                     <div class="collapse login" id="login-menu">

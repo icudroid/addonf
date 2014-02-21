@@ -19,8 +19,8 @@
         <div class="col-md-4" th:each="artist : ${artists.getContent()}">
             <div class="row box-generic padding-none">
                 <div class="col-md-4">
-                    <img class="img-thumbnail" style="height: 62px;width:100%;" th:if="${artist.photo !=null}" th:src="@{${session.staticUrl}+'artist/'+${artist.photo}}" />
-                    <img class="img-thumbnail" style="height: 62px;width:100%;" th:if="${artist.photo ==null}" th:src="@{${session.staticUrl}+'artist/default.png'}" />
+                    <img class="img-thumbnail" style="max-height: 64px;max-width:100%" th:if="${artist.photo !=null}" th:src="@{${session.staticUrl}+'artist/'+${artist.photo}}" />
+                    <img class="img-thumbnail" style="max-height: 64px;max-width:100%" th:if="${artist.photo ==null}" th:src="@{${session.staticUrl}+'artist/default.png'}" />
                 </div>
                 <div class="col-md-8">
                     <a th:href="@{/artistPage.html(artistId=${artist.id})}" th:utext="${artist.fullName}">name</a>

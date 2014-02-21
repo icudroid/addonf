@@ -432,30 +432,31 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
     }
 
     @Override
-    public Page<Music> findMusicsForAlbum(Long albumId, String req, Pageable pageable) {
+    public Page<TrackNumberMusic> findMusicsForAlbum(Long albumId, String req, Pageable pageable) {
 
-        QMusic music = QMusic.music;
+        QAlbum qAlbum = QAlbum.album;
+
         JPAQuery query = new JPAQuery(getEntityManager());
 
-        query.from(music);
+        QTrackNumberMusic track = new QTrackNumberMusic("track");
+        query.from(qAlbum).join(qAlbum.tracks,track);
         if(StringUtils.isEmpty(req)){
             query.where(
-                    music.albums.any().id.eq(albumId)
+                    qAlbum.id.eq(albumId)
             );
         }else{
             query.where(
-                    music.albums.any().id.eq(albumId).and(music.title.containsIgnoreCase(req))
+                    qAlbum.id.eq(albumId).and(track.music.title.containsIgnoreCase(req))
             );
         }
 
-
-
         query
+                .distinct()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(music.title.asc());
+                .orderBy(qAlbum.tracks.any().trackNumber.asc());
 
-        return new PageImpl<Music>(query.list(music),pageable,query.count());
+        return new PageImpl<TrackNumberMusic>(query.list(track),pageable,query.count());
     }
 
 

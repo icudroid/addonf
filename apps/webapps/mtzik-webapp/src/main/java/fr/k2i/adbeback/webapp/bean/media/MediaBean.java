@@ -4,12 +4,10 @@ import fr.k2i.adbeback.core.business.media.Album;
 import fr.k2i.adbeback.core.business.media.Category;
 import fr.k2i.adbeback.core.business.media.Category;
 import fr.k2i.adbeback.webapp.bean.PersonBean;
+import fr.k2i.adbeback.webapp.bean.search.ProductorBean;
 import lombok.Data;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 @Data
 public class MediaBean {
@@ -25,6 +23,24 @@ public class MediaBean {
 	private Date releaseDate;
 	private String thumbJacket;
     private Integer nbAdsNeeded;
+
+    public String getTitleAndProductors(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(title);
+        sb.append(" (");
+
+        for (Iterator<PersonBean> iterator = productors.iterator(); iterator.hasNext(); ) {
+            PersonBean next = iterator.next();
+            sb.append(next.getFullName());
+            if(iterator.hasNext()){
+                sb.append(", ");
+            }
+        }
+
+        sb.append(")");
+
+        return sb.toString();
+    }
 
 
       public Calendar getCalReleaseDate(){

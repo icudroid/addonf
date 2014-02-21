@@ -18,10 +18,10 @@ public class Artist extends Person {
 	}
 
 	private static final long serialVersionUID = -8371684556048514484L;
-	private List<Music> musics;
+	//private List<Music> musics;
 
 
-    @ManyToMany(
+/*    @ManyToMany(
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             mappedBy = "artists",
             targetEntity = Music.class
@@ -32,7 +32,7 @@ public class Artist extends Person {
 
 	public void setMusics(List<Music> musics) {
 		this.musics = musics;
-	}
+	}*/
 
 	@Override
 	public String toString() {

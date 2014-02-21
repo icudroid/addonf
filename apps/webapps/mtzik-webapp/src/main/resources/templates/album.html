@@ -62,7 +62,10 @@
 
                 <div class="col-md-8">
                     <h1 class="title text-primary" th:text="${media.title}">UV Color Gel - Red Wine</h1>
-
+                    <p>
+                        <span th:text="#{addonf.product.media.page.artist}">Page artiste : </span><br/>
+                        <a th:each="artist : ${media.artists}" th:href="@{/artistPage.html(artistId=${artist.id})}" th:text="${artist.fullName}">David Guetta</a>
+                    </p>
                     <p>
                         <span th:text="#{addonf.product.media.genres}">Category : </span><br/>
                         <span th:each="genre : ${media.categories}" th:text="#{'addonf.reference.genre.'+${genre.codeGenre}}"></span>

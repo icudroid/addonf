@@ -20,8 +20,6 @@ public class Music extends Media {
 	private List<Artist> artists;
 	private String mp3Sample;
 
-    private Integer trackNumber;
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

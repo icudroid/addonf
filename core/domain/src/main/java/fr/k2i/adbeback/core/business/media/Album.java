@@ -11,9 +11,22 @@ import java.util.Map;
 @Data
 public class Album extends Media {
 	private static final long serialVersionUID = -8195169031786628618L;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "album_id")
+    private List<TrackNumberMusic> tracks;
+
+
+    @ManyToMany(targetEntity = Artist.class, cascade = { CascadeType.PERSIST,
+            CascadeType.MERGE })
+    @JoinTable(name = "music_artist", joinColumns = @JoinColumn(name = "MUSIC_ID"), inverseJoinColumns = @JoinColumn(name = "ARTIST_ID"))
+    private List<Artist> artists;
+
+/*
     @OneToMany(cascade=CascadeType.ALL)
     @MapKey(name = "trackNumber")
     private Map<Integer,Music> musics;
+*/
 
 /*	private List<Music> musics;
 

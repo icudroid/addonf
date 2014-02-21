@@ -91,7 +91,13 @@ public class MediaFacade {
             bean.setAlbums(albumBeans);
         }
 
-
+        if(media instanceof Album){
+            List<PersonBean> artists = new ArrayList<PersonBean>();
+            for (Artist a : ((Album) media).getArtists()) {
+                artists.add(new PersonBean(a.getId(),a.getFirstName(), a.getLastName(),a.getPhoto()));
+            }
+            bean.setArtists(artists);
+        }
 
         List<PersonBean> productors = new ArrayList<PersonBean>();
         for (Productor p : media.getProductors()) {
@@ -255,7 +261,19 @@ public class MediaFacade {
         return construstBeanList(mediaDao.getNewMusics(max));
     }
 
-    public Page<Music> findMusicsForAlbum(Long albumId, String req,Pageable pageable) {
-        return mediaDao.findMusicsForAlbum(albumId,req,pageable);
+    @Transactional
+    public Page<MediaBean> findMusicsForAlbum(Long albumId, String req,Pageable pageable) {
+        Page<MusicBean> res = null;
+
+        Page<TrackNumberMusic> musicsForAlbum = mediaDao.findMusicsForAlbum(albumId, req, pageable);
+        List<MediaBean> content = new ArrayList<MediaBean>();
+
+        for ( TrackNumberMusic track : musicsForAlbum.getContent()) {
+            MediaBean mediaBean = contructMediaBean(track.getMusic());
+            mediaBean.setTitle(track.getTrackNumber()+" - "+mediaBean.getTitle());
+            content.add(mediaBean);
+        }
+
+        return new PageImpl<MediaBean>(content,pageable,musicsForAlbum.getTotalElements());
     }
 }

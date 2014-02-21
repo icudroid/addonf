@@ -21,8 +21,8 @@
         <div class="col-md-4" th:each="productor : ${productors.getContent()}">
             <div class="row box-generic padding-none">
                 <div class="col-md-4">
-                    <img style="height: 62px;width:100%;" th:if="${productor.photo !=null}" th:src="@{${session.staticUrl}+'productor/'+${productor.photo}}" />
-                    <img style="height: 62px;width:100%;" th:if="${productor.photo ==null}" th:src="@{${session.staticUrl}+'productor/default.png'}" />
+                    <img style="max-height: 64px;max-width:100%" th:if="${productor.photo !=null}" th:src="@{${session.staticUrl}+'productor/'+${productor.photo}}" />
+                    <img style="max-height: 64px;max-width:100%" th:if="${productor.photo ==null}" th:src="@{${session.staticUrl}+'productor/default.png'}" />
                 </div>
                 <div class="col-md-8">
                     <a th:href="@{/majorPage.html(majorId=${productor.id})}" th:utext="${productor.fullName}">name</a>

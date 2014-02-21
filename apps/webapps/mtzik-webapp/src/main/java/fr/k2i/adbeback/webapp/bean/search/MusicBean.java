@@ -10,6 +10,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,6 +32,24 @@ public class MusicBean implements Serializable{
     private Date releaseDate;
     private Integer nbAdsNeeded;
 
+
+    public String getTitleAndProductors(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(title);
+        sb.append(" (");
+
+        for (Iterator<ProductorBean> iterator = productors.iterator(); iterator.hasNext(); ) {
+            ProductorBean next = iterator.next();
+            sb.append(next.getFullName());
+            if(iterator.hasNext()){
+                sb.append(", ");
+            }
+        }
+
+        sb.append(")");
+
+        return sb.toString();
+    }
 
     public MusicBean(Music music){
         id =music.getId();
