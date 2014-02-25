@@ -1,11 +1,13 @@
 package fr.k2i.adbeback.core.business.media;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import fr.k2i.adbeback.core.business.IMetaData;
+import lombok.Data;
+
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @DiscriminatorValue("Artist")
 public class Artist extends Person {
@@ -18,6 +20,16 @@ public class Artist extends Person {
 	}
 
 	private static final long serialVersionUID = -8371684556048514484L;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "productor_artist",
+            joinColumns = { @JoinColumn(name = "artist_id") },
+            inverseJoinColumns = @JoinColumn(name = "productor_id")
+    )
+    private List<Productor> productors = new ArrayList<Productor>();
+
 	//private List<Music> musics;
 
 

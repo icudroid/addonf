@@ -37,6 +37,8 @@ public class CatalogController{
     @Autowired
     private ICategoryDao categoryDao;
 
+    @Value("${addonf.facebook.api}")
+    private String fbApiKey;
 
 
     @RequestMapping("/catalog.html")
@@ -53,11 +55,16 @@ public class CatalogController{
 
         model.put("nbMusic", mediaFacade.countMusicForArtist(artistId));
         model.put("last5", mediaFacade.last5MusicForArtist(artistId));
+
+        model.put("top10", mediaFacade.top10MusicForArtist(artistId));
+
         model.put("showmore",false);
 
         model.put("musics",mediaFacade.findMusicsForArtist(artistId, searchCommand.getReq(), pageable));
 
         model.put("artist", artistBean);
+
+        model.put("FBApiKey",fbApiKey);
 
         return "artist";
     }

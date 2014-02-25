@@ -3,6 +3,7 @@ package fr.k2i.adbeback.dao.jpa;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.expr.BooleanExpression;
+import fr.k2i.adbeback.core.business.game.QAdGameMedia;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.media.*;
 import fr.k2i.adbeback.dao.IMediaDao;
@@ -360,7 +361,13 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         QArtist qArtist = QArtist.artist;
 
         JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(qArtist).where(qArtist.musics.any().productors.any().id.eq(majorId));
+        QMusic music = QMusic.music;
+
+        QArtist artist = QArtist.artist;
+        QProductor productor = new QProductor("productor");
+
+        query.from(artist).join(artist.productors,productor).where(productor.id.eq(majorId));
+        query.distinct();
 
         return query.count();
     }
@@ -457,6 +464,31 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
                 .orderBy(qAlbum.tracks.any().trackNumber.asc());
 
         return new PageImpl<TrackNumberMusic>(query.list(track),pageable,query.count());
+    }
+
+    @Transactional
+    @Override
+    public List<Music> top10MusicForArtist(Long artistId) {
+
+        QAdGameMedia gameMedia = QAdGameMedia.adGameMedia;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        QMedia media = new QMedia("music");
+        query.from(gameMedia).join(gameMedia.medias,media)
+                .where(
+                        media.instanceOf(Music.class).and(gameMedia.statusGame.eq(StatusGame.Win))
+                );
+        query.groupBy(media.id).orderBy(media.id.count().desc()).limit(10);
+
+        List<Music> res = new ArrayList<Music>();
+
+        List<Tuple> resultList = query.list(media.id.count(), media);
+
+        for (Tuple tuple : resultList) {
+            res.add((Music) tuple.get(media));
+        }
+
+        return res;
+
     }
 
 

@@ -205,7 +205,9 @@ public class MediaFacade {
     @Transactional
     public ArtistBean getArtistById(Long artistId) {
         Artist a = mediaDao.findArtistById(artistId);
-        return new ArtistBean(a.getId(),a.getFirstName(),a.getLastName(),a.getPhoto(),mediaDao.getLastReleaseForArtist(a));
+        ArtistBean artistBean = new ArtistBean(a);
+        artistBean.setLastRelease(mediaDao.getLastReleaseForArtist(a));
+        return artistBean;
     }
 
     public Long countMusicForArtist(Long artistId) {
@@ -276,4 +278,19 @@ public class MediaFacade {
 
         return new PageImpl<MediaBean>(content,pageable,musicsForAlbum.getTotalElements());
     }
+
+
+    @Transactional
+    public List<MusicBean> top10MusicForArtist(Long artistId) {
+        List<MusicBean> content= new ArrayList<MusicBean>();
+        List<Music> musics  = mediaDao.top10MusicForArtist(artistId);
+
+        for (Music a : musics) {
+            content.add(new MusicBean(a));
+        }
+
+        return content;
+    }
+
+
 }

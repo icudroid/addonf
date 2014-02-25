@@ -89,5 +89,8 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     Page<TrackNumberMusic> findMusicsForAlbum(Long albumId, String req, Pageable pageable);
+
+    @Transactional
+    List<Music> top10MusicForArtist(Long artistId);
 }
 

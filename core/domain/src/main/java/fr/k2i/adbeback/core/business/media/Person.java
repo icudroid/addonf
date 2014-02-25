@@ -1,73 +1,35 @@
 package fr.k2i.adbeback.core.business.media;
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import lombok.Data;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Data
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "person")
 @DiscriminatorColumn(name = "classe", discriminatorType = DiscriminatorType.STRING)
 public abstract class Person extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 4741756135041947874L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
+
 	protected String firstName; // required
 	protected String lastName; // required
 	protected String website;
 	protected Integer version;
     protected String photo;
+    protected String biography;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getWebsite() {
-		return website;
-	}
-
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    //social information
+    protected String twitter;
+    protected String facebook;
+    protected String googlePlus;
 
 	public Person(String firstName, String lastName) {
 		super();
