@@ -30,7 +30,7 @@ public class HomeController{
     private ICategoryDao categoryDao;
 
 
-    @Value(value ="${addonf.bestdl.home.max:9}" )
+    @Value(value ="${addonf.bestdl.home.max:12}" )
     private Integer maxHomeBestDl;
 
 

@@ -7,6 +7,7 @@ import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.webapp.bean.PersonBean;
 import fr.k2i.adbeback.webapp.bean.media.AlbumBean;
 import fr.k2i.adbeback.webapp.bean.media.MediaBean;
+import fr.k2i.adbeback.webapp.bean.media.MininalMusicBean;
 import fr.k2i.adbeback.webapp.bean.search.ArtistBean;
 import fr.k2i.adbeback.webapp.bean.search.MusicBean;
 import fr.k2i.adbeback.webapp.bean.search.ProductorBean;
@@ -291,6 +292,32 @@ public class MediaFacade {
 
         return content;
     }
+
+
+    public List<MininalMusicBean> searchNewMusics(Long genreId, Integer max) throws Exception {
+        return construstMininalMusicBeanList(mediaDao.searchNewMusics(genreId, max));
+    }
+
+    private List<MininalMusicBean> construstMininalMusicBeanList(List<? extends Media> medias) {
+        List<MininalMusicBean> res = new ArrayList<MininalMusicBean>();
+        for (Media media : medias) {
+            MininalMusicBean bean = contructMininalMusicBean(media);
+            res.add(bean);
+        }
+
+        return res;
+    }
+
+    private MininalMusicBean contructMininalMusicBean(Media media) {
+        MininalMusicBean bean = new MininalMusicBean();
+        bean.setId(media.getId());
+        bean.setJacket(media.getJacket());
+        bean.setTitle(media.getTitle());
+        bean.setNbAdsNeeded(media.getNbAdsNeeded());
+        return bean;
+    }
+
+
 
 
 }

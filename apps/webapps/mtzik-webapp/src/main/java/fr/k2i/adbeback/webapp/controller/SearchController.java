@@ -91,21 +91,31 @@ public class SearchController{
         model.put("pushes", mediaFacade.getHomePush());
 
 
+        String req = searchCommand.getReq();
         if("music".equals(what)){
-            model.put("musics",mediaFacade.findMusics(searchCommand.getGenreId(),searchCommand.getReq(),pageable));
+            model.put("musics",mediaFacade.findMusics(searchCommand.getGenreId(), req,pageable));
             return "search/music";
         }else if("label".equals(what)){
-             model.put("productors",mediaFacade.findProductors(searchCommand.getReq(),pageable));
+             model.put("productors",mediaFacade.findProductors(req,pageable));
             return "search/label";
         }else if("artist".equals(what)){
-            model.put("artists",mediaFacade.findArtists(searchCommand.getReq(),pageable));
+            model.put("artists",mediaFacade.findArtists(req,pageable));
             return "search/artist";
         }else if("news".equals(what)){
-            model.put("musics",mediaFacade.findNewMusics(searchCommand.getGenreId(),searchCommand.getReq(),pageable));
+            model.put("musics",mediaFacade.findNewMusics(searchCommand.getGenreId(), req,pageable));
             return "search/news";
         }else if("top50".equals(what)){
-            model.put("musics",mediaFacade.findTopMusics(searchCommand.getGenreId(),searchCommand.getReq(),searchCommand.getTop(),pageable));
+            model.put("musics",mediaFacade.findTopMusics(searchCommand.getGenreId(), req,searchCommand.getTop(),pageable));
             return "search/top50";
+        }else if("all".equals(what)){
+
+            if(StringUtils.isEmpty(req)){
+                req="";
+            }
+            model.put("query", req);
+            mediaFacade.search(req,model);
+
+            return "search";
         }else{
             return "search";
         }

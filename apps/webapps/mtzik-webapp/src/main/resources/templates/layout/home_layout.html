@@ -25,19 +25,9 @@
 
     <script th:src="@{/static/lib/jquery-2.0.3/jquery.min.js}"></script>
     <script th:src="@{/static/lib/jquery-ui-1.10.3/ui/minified/jquery-ui.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/library/modernizr/modernizr.js}"></script>
-    <script th:src="@{/static/coral/assets/components/library/bootstrap/js/bootstrap.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/library/jquery/jquery-migrate.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/ajaxify/davis.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/ajaxify/jquery.lazyjaxdavis.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/owl-carousel/owl.carousel.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/holder/holder.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/parallax/stellar/jquery.stellar.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/parallax/waypoints/waypoints.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/appear/jquery.appear.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/less-js/less.min.js}"></script>
-    <script th:src="@{/static/coral/assets/components/modules/admin/charts/flot/assets/lib/excanvas.js}"></script>
-    <script th:src="@{/static/coral/assets/components/plugins/browser/ie/ie.prototype.polyfill.js}"></script>
+    <script th:src="@{/static/lib/modernizr-2.7.0/modernizr.js}"></script>
+    <script th:src="@{/static/lib/bootstrap-3.0.2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/lib/owl-carousel/owl.carousel.min.js}"></script>
 
     <script th:src="@{/static/js/addonf/search.bar.js}"></script>
     <script th:src="@{/static/js/addonf/audio.js}"></script>
@@ -49,11 +39,9 @@
     <script src="jquery.fullscreen.js" th:src="@{/static/js/external/jquery.fullscreen.js}"></script>
     <script src="play.js" th:src="@{/static/js/addonf/play.js}"></script>
 -->
-
-
-
-    <link rel="stylesheet" th:href="@{/static/lib/jquery-ui-1.10.3/themes/base/jquery.ui.all.css}"/>
-
+    <link rel="stylesheet" th:href="@{/static/lib/jquery-ui-1.10.3/themes/base/minified/jquery-ui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/lib/jquery-ui-1.10.3/themes/base/minified/jquery.ui.theme.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/lib/jquery-ui-1.10.3/themes/base/minified/jquery.ui.autocomplete.min.css}"/>
     <link rel="stylesheet" th:href="@{/static/css/home.css}"/>
 
     <style type="text/css">
@@ -205,7 +193,7 @@
         <div class="copy" th:utext="#{addonf.copyright}">Copyright &copy; 2013 MTZik. All Rights Reserved.</div>
         <ul class="list-unstyled center">
             <li><a th:href="@{/}" th:text="#{addonf.mainmenu.home}">Home</a></li>
-            <li><a th:href="@{/search.html}"  th:text="#{addonf.mainmenu.search}">Rechercher</a></li>
+            <li><a th:href="@{/search/all}"  th:text="#{addonf.mainmenu.search}">Rechercher</a></li>
             <li><a th:href="@{/cgu.html}"  th:text="#{addonf.mainmenu.cgu}">CGU</a></li>
             <li><a th:href="@{/contactForm}"  th:text="#{addonf.mainmenu.contactForm}">Contact us</a></li>
             <li><a th:href="@{/ads}"  th:text="#{addonf.mainmenu.ads}">Annonceurs</a></li>

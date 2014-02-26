@@ -19,7 +19,7 @@ $(function(){
         },
         minLength: 3,
         select: function( event, ui ) {
-            window.location.href = addonf.base+"search.html?q="+ui.item.value;
+            window.location.href = addonf.base+"search/all?req="+ui.item.value;
         }
     });
 });

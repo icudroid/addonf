@@ -8,13 +8,18 @@
 
 
 <body>
+
+    <div layout:fragment="searchBar">
+        <div th:substituteby="layout/fragment/searchBar(activeSearch=${'all'})"></div>
+    </div>
+
     <div layout:fragment="content" id="content">
 
          <div th:if="${nosearch == true}" class="container">
              <h5 class="text-faded"  th:utext="#{addonf.search.no.query}">No query</h5>
          </div>
 
-        <div th:if="${nosearch ==false}" class="container">
+        <div class="container">
             <h3 th:utext="#{addonf.search.for(${query})}"></h3>
             <div th:substituteby="layout/fragment/artists"></div>
             <div class="separator"></div>

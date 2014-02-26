@@ -92,5 +92,8 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     List<Music> top10MusicForArtist(Long artistId);
+
+    @Transactional
+    List<? extends Media> searchNewMusics(Long genreId, Integer max);
 }
 

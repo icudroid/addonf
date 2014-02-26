@@ -491,6 +491,33 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
     }
 
+    @Override
+    public List<? extends Media> searchNewMusics(Long genreId, Integer max) {
+
+        QMusic music = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        LocalDate localDate = new LocalDate();
+
+
+
+        BooleanExpression predicat = music.releaseDate.gt(localDate.minusMonths(1).toDate());
+
+        QCategory category = new QCategory("category");
+
+        if(genreId!=null && genreId>0){
+            predicat = predicat.and(category.id.eq(genreId));
+        }
+
+        query.from(music).join(music.categories,category).where(predicat);
+
+        query.orderBy(music.releaseDate.desc());
+
+        query.limit(max);
+
+        return query.list(music);
+    }
+
 
     @Transactional
     @Override

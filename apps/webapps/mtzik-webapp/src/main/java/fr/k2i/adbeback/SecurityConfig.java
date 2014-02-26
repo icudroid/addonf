@@ -186,7 +186,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/albumPage.html").permitAll()
 
                     .antMatchers("/getTownsByName/**").permitAll()
-
+                    .antMatchers("/rest/musics/news/*").permitAll()
 
 
                     //manage cart
