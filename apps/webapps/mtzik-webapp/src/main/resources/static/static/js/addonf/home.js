@@ -7,6 +7,8 @@ $(function(){
             width:"100%"
         }
     ).change(function(){
+            var $loading = $("#loading-news").show();
+            var $news = $("#news").hide();
             $.ajax({
                 url: addonf.base+"rest/musics/news/"+$(this).val(),
                 dataType: "json",
@@ -26,10 +28,13 @@ $(function(){
 
                     }
 
-                    var $elt = $("#news").html(global);
+                    var $elt = $news.html(global);
+
                     $elt.find(".addToCart").bind('click',addToCartFunction);
                     $elt.find(".playMusic").bind('click',playMusic);
 
+                    $loading.hide();
+                    $news.show();
                 }
             });
         });

@@ -47,8 +47,12 @@
                     <option th:each="category : ${categories}" th:value="${category.id}"><span th:text="#{'addonf.reference.genre.'+${category.codeGenre}}">Catégorie</span></option>
                 </select>
 
-                <div class="row" id="news">
+                <div class="col-md-12" id="loading-news" style="display:none;background-color: #d9d9dd">
+                    <img th:src="@{/static/img/loading.gif}"/>
+                </div>
 
+
+                <div class="row" id="news">
                     <div class="col-sm-3 col-xs-6" th:each="newMusic : ${news}">
                         <div class="widget widget-pinterest" data-animate="bounceIn" data-delay="200">
                             <div class="mark">
