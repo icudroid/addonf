@@ -51,7 +51,6 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "fr.k2i.adbeback")
-@PropertySource(value = {"classpath:application.properties","classpath:mail.properties"})
 public class WebConfig extends AbstractWebConfig {
 
     @Bean
