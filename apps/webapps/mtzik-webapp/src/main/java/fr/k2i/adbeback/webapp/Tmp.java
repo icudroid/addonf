@@ -33,10 +33,10 @@ public class Tmp {
     private ICategoryDao categoryDao;*/
 
 
-    public static void main(String[] args) throws IOException, ParseException {
+/*    public static void main(String[] args) throws IOException, ParseException {
         Tmp tmp = new Tmp();
         tmp.aVoid();
-    }
+    }*/
 
     public void aVoid() throws IOException, ParseException {
 
