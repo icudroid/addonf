@@ -54,4 +54,16 @@ public class Album extends Media {
 	}
 
 
+    public void addMusic(Music music, int trackNumber) {
+        if(!music.getAlbums().contains(this)){
+            music.getAlbums().add(this);
+        }
+        getTracks().add(new TrackNumberMusic(trackNumber,music));
+    }
+
+    public void addArtists(Artist artist) {
+        if(!getArtists().contains(artist)){
+            getArtists().add(artist);
+        }
+    }
 }

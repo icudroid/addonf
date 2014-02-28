@@ -25,4 +25,9 @@ public class Productor extends Person {
 				+ ", version=" + version + "]";
 	}
 
+    public void addArtist(Artist artist) {
+        if(!artist.getProductors().contains(artist)){
+            artist.getProductors().add(this);
+        }
+    }
 }

@@ -24,4 +24,12 @@ public class TrackNumberMusic  extends BaseObject {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "music_id")
     private Music music;
+
+
+    public TrackNumberMusic(){}
+
+    public TrackNumberMusic(Integer trackNumber, Music music) {
+        this.trackNumber = trackNumber;
+        this.music = music;
+    }
 }

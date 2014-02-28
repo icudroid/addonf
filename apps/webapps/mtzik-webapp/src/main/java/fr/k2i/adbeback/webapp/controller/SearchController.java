@@ -114,6 +114,7 @@ public class SearchController{
             }
             model.put("query", req);
             mediaFacade.search(req,model);
+            model.put("showmore", true);
 
             return "search";
         }else{

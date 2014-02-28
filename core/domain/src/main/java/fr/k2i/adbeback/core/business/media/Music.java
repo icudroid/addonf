@@ -60,4 +60,21 @@ public class Music extends Media {
 				+ ", releaseDate=" + releaseDate + "]";
 	}
 
+    public void addArtists(Artist artist) {
+        if(!getArtists().contains(artist)){
+            getArtists().add(artist);
+        }
+    }
+
+    public void addCategory(Category category) {
+        if(!getCategories().contains(category)){
+            getCategories().add(category);
+        }
+    }
+
+    public void addProductor(Productor productor) {
+        if(!getProductors().contains(productor)){
+            getProductors().add(productor);
+        }
+    }
 }
