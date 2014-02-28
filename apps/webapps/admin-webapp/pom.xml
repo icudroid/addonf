@@ -15,7 +15,10 @@
     <packaging>jar</packaging>
     <name>WEBAPPS - ADMIN WEBAPP</name>
 
-
+    <properties>
+        <assembly.descriptor.path>src/main/assembly/webapp-assembly-descriptor.xml</assembly.descriptor.path>
+    </properties>
+    
     <dependencies>
 
         <dependency>
@@ -50,6 +53,25 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-bundle</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${assembly.descriptor.path}</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
