@@ -164,9 +164,9 @@ public class MediaFacade {
 
     @Transactional
     public void search(String query, Map<String, Object> model) {
-        Pageable pageableArtist = new PageRequest(0,9);
+        Pageable pageableArtist = new PageRequest(0,12);
         Pageable pageableLabel = new PageRequest(0,9);
-        Pageable pageableMusic = new PageRequest(0,50);
+        Pageable pageableMusic = new PageRequest(0,25);
 
         Page<Artist> artist = mediaDao.findArtistByFullName(query, pageableArtist);
         Page<Productor> productors = mediaDao.findProductorByFullName(query, pageableLabel);
