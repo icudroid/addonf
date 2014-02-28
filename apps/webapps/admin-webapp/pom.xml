@@ -18,7 +18,7 @@
     <properties>
         <assembly.descriptor.path>src/main/assembly/webapp-assembly-descriptor.xml</assembly.descriptor.path>
     </properties>
-    
+
     <dependencies>
 
         <dependency>
