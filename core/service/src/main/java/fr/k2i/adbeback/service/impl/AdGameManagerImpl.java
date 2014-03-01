@@ -128,42 +128,8 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
                 LocalDate now = new LocalDate();
 
 				for (AdRule adRule : rules) {
-                    if (adRule instanceof BrandRule) {
-                        if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
-                            ViewedAd forToday = viewedAdDao.findForToday(player, (AdService) adRule);
-                            if(((AdService) adRule).getMaxDisplayByUser()==null){
-                                rulesPossible.add((AdService) adRule);
-                            }else{
-                                if(forToday==null || forToday.getNb() < ((AdService) adRule).getMaxDisplayByUser()){
-                                    rulesPossible.add((AdService) adRule);
-                                }
-                            }
-                        }
-                    }
-                    if (adRule instanceof OpenRule) {
-                        if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
-                            ViewedAd forToday = viewedAdDao.findForToday(player, (AdService) adRule);
-                            if(((AdService) adRule).getMaxDisplayByUser()==null){
-                                rulesPossible.add((AdService) adRule);
-                            }else{
-
-                                if(forToday==null || forToday.getNb() < ((AdService) adRule).getMaxDisplayByUser()){
-                                    rulesPossible.add((AdService) adRule);
-                                }
-                            }
-                        }
-                    }
-                    if (adRule instanceof ProductRule) {
-                        if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
-                            ViewedAd forToday = viewedAdDao.findForToday(player, (AdService) adRule);
-                            if(((AdService) adRule).getMaxDisplayByUser()==null){
-                                rulesPossible.add((AdService) adRule);
-                            }else{
-                                if(forToday==null || forToday.getNb() < ((AdService) adRule).getMaxDisplayByUser()){
-                                    rulesPossible.add((AdService) adRule);
-                                }
-                            }
-                        }
+                    if (AdService.class.isAssignableFrom(adRule.getClass())) {
+                        addValidAdService(player, rulesPossible, now, (AdService) adRule);
                     }
 				}
 
@@ -191,7 +157,20 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 		return res;
 	}
 
-	private List<Possibility> generatePossibilies(Ad ad, int correct, AdRule rule) {
+    private void addValidAdService(Player player, List<AdService> rulesPossible, LocalDate now, AdService adRule) {
+        if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
+            ViewedAd forToday = viewedAdDao.findForToday(player, (AdService) adRule);
+            if(((AdService) adRule).getMaxDisplayByUser()==null){
+                rulesPossible.add((AdService) adRule);
+            }else{
+                if(forToday==null || forToday.getNb() < ((AdService) adRule).getMaxDisplayByUser()){
+                    rulesPossible.add((AdService) adRule);
+                }
+            }
+        }
+    }
+
+    private List<Possibility> generatePossibilies(Ad ad, int correct, AdRule rule) {
 		List<Possibility> possibilities = new ArrayList<Possibility>();
 		Random ramRandom = new Random();
 		
