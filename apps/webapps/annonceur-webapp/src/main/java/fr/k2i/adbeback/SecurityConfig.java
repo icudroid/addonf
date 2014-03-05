@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -34,14 +35,13 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         return (UserDetailsService) context.getBean("webUserDao");
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(org.springframework.security.config.annotation.ObjectPostProcessor<Object> objectPostProcessor) throws Exception {
-        DaoAuthenticationConfigurer<AuthenticationManagerBuilder,UserDetailsService> builder = new AuthenticationManagerBuilder(objectPostProcessor).userDetailsService(webUserServiceDetail());
-        builder.passwordEncoder(passwordEncoder());
-
-        return builder.and().build();
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setUserDetailsService(webUserServiceDetail());
+        auth.authenticationProvider(authenticationProvider);
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
