@@ -95,5 +95,8 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     List<? extends Media> searchNewMusics(Long genreId, Integer max);
+
+    @Transactional
+    Page<String> findLabelNameByName(String req, Pageable pageable);
 }
 

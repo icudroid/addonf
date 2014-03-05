@@ -518,6 +518,24 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         return query.list(music);
     }
 
+    @Override
+    public Page<String> findLabelNameByName(String req, Pageable pageable) {
+        QProductor productor = QProductor.productor;
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(productor)
+                .where(
+                        productor.lastName.containsIgnoreCase(req)
+                );
+
+        query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(productor.lastName.asc());
+
+        return new PageImpl<String>(query.list(productor.lastName),pageable,query.count());
+    }
+
 
     @Transactional
     @Override

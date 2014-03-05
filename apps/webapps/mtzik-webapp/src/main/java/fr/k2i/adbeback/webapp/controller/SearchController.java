@@ -52,6 +52,7 @@ public class SearchController{
 
         Page<String> music = mediaDao.findMusicAndAlbumTitleByTitle(req, pageable);
         Page<String> persons = mediaDao.findPersonFullNameByName(req, pageable);
+        Page<String> labels = mediaDao.findLabelNameByName(req,pageable);
 
         List<String> content = new ArrayList<String>();
         content.addAll(music.getContent());
