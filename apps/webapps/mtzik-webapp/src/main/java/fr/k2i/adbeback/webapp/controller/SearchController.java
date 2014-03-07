@@ -1,29 +1,17 @@
 package fr.k2i.adbeback.webapp.controller;
 
-import com.google.common.collect.Lists;
-import fr.k2i.adbeback.core.business.media.Artist;
-import fr.k2i.adbeback.core.business.media.Music;
-import fr.k2i.adbeback.core.business.media.Productor;
 import fr.k2i.adbeback.dao.ICategoryDao;
 import fr.k2i.adbeback.dao.IMediaDao;
-import fr.k2i.adbeback.webapp.bean.CartBean;
-import fr.k2i.adbeback.webapp.bean.search.ArtistBean;
-import fr.k2i.adbeback.webapp.bean.search.MusicBean;
-import fr.k2i.adbeback.webapp.bean.search.ProductorBean;
-import fr.k2i.adbeback.webapp.bean.search.SearchCommand;
+import fr.k2i.adbeback.webapp.bean.search.*;
 import fr.k2i.adbeback.webapp.facade.MediaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,18 +35,13 @@ public class SearchController{
 
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public @ResponseBody Page<String> ajaxSearch(@RequestParam(value = "q") String req) throws Exception {
-        Pageable pageable = new PageRequest(0,10);
+    public @ResponseBody SearchResponseBean ajaxSearch(@RequestParam(value = "q") String req) throws Exception {
+        SearchResponseBean res = new SearchResponseBean();
 
-        Page<String> music = mediaDao.findMusicAndAlbumTitleByTitle(req, pageable);
-        Page<String> persons = mediaDao.findPersonFullNameByName(req, pageable);
-        Page<String> labels = mediaDao.findLabelNameByName(req,pageable);
+        res.setMusics(mediaFacade.findMusicByTitle(req, 5));
+        res.setArtists(mediaFacade.findArtistByName(req, 5));
+        res.setLabels(mediaFacade.findLabelByName(req, 5));
 
-        List<String> content = new ArrayList<String>();
-        content.addAll(music.getContent());
-        content.addAll(persons.getContent());
-
-        Page<String> res = new PageImpl<String>(content,pageable,music.getTotalElements()+persons.getTotalElements());
         return res;
     }
 

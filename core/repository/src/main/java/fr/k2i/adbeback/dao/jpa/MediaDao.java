@@ -62,6 +62,44 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
     @Transactional
     @Override
+    public List<Music> findMusicByTitle(String str,Integer maxResult) throws Exception {
+
+        QMusic media = QMusic.music;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(media)
+                .where(
+                        media.title.containsIgnoreCase(str)
+                );
+
+        query
+                .limit(maxResult)
+                .orderBy(media.title.asc());
+
+        return query.list(media);
+    }
+
+
+    @Transactional
+    @Override
+    public List<Album> findAlbumByTitle(String str,Integer maxResult) throws Exception {
+
+        QAlbum media = QAlbum.album;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(media)
+                .where(
+                        media.title.containsIgnoreCase(str)
+                );
+
+        query
+                .limit(maxResult)
+                .orderBy(media.title.asc());
+
+        return query.list(media);
+    }
+
+
+    @Transactional
+    @Override
     public Page<String> findPersonFullNameByName(String req, Pageable pageable) {
         QPerson person = QPerson.person;
         JPAQuery query = new JPAQuery(getEntityManager());

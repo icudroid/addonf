@@ -98,5 +98,11 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
 
     @Transactional
     Page<String> findLabelNameByName(String req, Pageable pageable);
+
+    @Transactional
+    List<Music> findMusicByTitle(String req, Integer maxResult) throws Exception;
+
+    @Transactional
+    List<Album> findAlbumByTitle(String str, Integer maxResult) throws Exception;
 }
 

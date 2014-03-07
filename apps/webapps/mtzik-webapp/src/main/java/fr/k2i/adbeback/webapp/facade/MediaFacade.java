@@ -8,9 +8,7 @@ import fr.k2i.adbeback.webapp.bean.PersonBean;
 import fr.k2i.adbeback.webapp.bean.media.AlbumBean;
 import fr.k2i.adbeback.webapp.bean.media.MediaBean;
 import fr.k2i.adbeback.webapp.bean.media.MininalMusicBean;
-import fr.k2i.adbeback.webapp.bean.search.ArtistBean;
-import fr.k2i.adbeback.webapp.bean.search.MusicBean;
-import fr.k2i.adbeback.webapp.bean.search.ProductorBean;
+import fr.k2i.adbeback.webapp.bean.search.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -318,6 +316,36 @@ public class MediaFacade {
     }
 
 
+    public List<SmallMediaBean> findMusicByTitle(String req, int max) throws Exception {
+        List<Music> medias = mediaDao.findMusicByTitle(req, max);
+        List<SmallMediaBean> res = new ArrayList<SmallMediaBean>(max);
 
+        for (Music media : medias) {
+            res.add(new SmallMediaBean(media));
+        }
 
+        return res;
+    }
+
+    public List<SmallPersonBean> findArtistByName(String req, int max) {
+        Page<Artist> artists = mediaDao.findArtistByFullName(req, new PageRequest(0, max));
+        List<SmallPersonBean> res = new ArrayList<SmallPersonBean>(max);
+
+        for (Artist artist : artists) {
+            res.add(new SmallPersonBean(artist));
+        }
+
+        return res;
+    }
+
+    public List<SmallPersonBean> findLabelByName(String req, int max) {
+        Page<Productor> productors = mediaDao.findProductorByFullName(req, new PageRequest(0, max));
+        List<SmallPersonBean> res = new ArrayList<SmallPersonBean>(max);
+
+        for (Productor productor : productors) {
+            res.add(new SmallPersonBean(productor));
+        }
+
+        return res;
+    }
 }
