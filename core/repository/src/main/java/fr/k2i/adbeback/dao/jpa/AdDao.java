@@ -6,9 +6,7 @@ import java.util.List;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
-import fr.k2i.adbeback.core.business.ad.Ad_;
-import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.core.business.ad.QAd;
+import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.media.QCategory;
 import fr.k2i.adbeback.core.business.media.QMusic;
@@ -23,7 +21,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import fr.k2i.adbeback.core.business.ad.Ad;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
@@ -75,12 +72,27 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
     private List<Ad> matchRules(List<Ad> ads,Player player) {
         List<Ad> res = new ArrayList<Ad>();
 
-        res = matchAmount(ads);
+
+        res = encoded(ads);
+        res = matchAmount(res);
         res = matchSex(res,player);
         res = matchCity(res,player);
         res = matchAge(res,player);
         res = matchService(res, player);
 
+        return res;
+    }
+
+    private List<Ad> encoded(List<Ad> ads) {
+        List<Ad> res = new ArrayList<Ad>();
+        for (Ad ad : ads) {
+            if (ad instanceof VideoAd) {
+                VideoAd videoAd = (VideoAd) ad;
+                if(videoAd.getAdFileEncoded()){
+                    res.add(ad);
+                }
+            }
+        }
         return res;
     }
 
@@ -250,6 +262,14 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.eq(brand));
         return new PageImpl<Ad>(query.list(qAd),pageable,query.count());
+    }
+
+    @Override
+    public List<VideoAd> findNoEncodedAd() {
+        QVideoAd qAd = QVideoAd.videoAd;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qAd).where(qAd.adFileEncoded.eq(false).or(qAd.adFileEncoded.isNull()));
+        return query.list(qAd);
     }
 
 

@@ -93,6 +93,9 @@ public class BrandServiceFacade {
     @Value("${addonf.ads.location}")
     private String adsPath;
 
+    @Value("${addonf.ads.tmp.location}")
+    private String adsPathTmp;
+
     @Value("${addonf.logo.location}")
     private String logoPath;
 
@@ -213,7 +216,7 @@ public class BrandServiceFacade {
         ad.setDuration(information.getDisplayDuration()*1000);
 
         if(information.getAdFileCommand()!=null){
-            ad.setAdFile(saveFile(information.getAdFileCommand().getContent(),adsPath));
+            ad.setAdFile(FileUtils.saveFile(information.getAdFileCommand().getContent(),adsPathTmp));
         }
         ad.setBrand(brand);
         ad.setEndDate(information.getEndDate());
@@ -337,7 +340,7 @@ public class BrandServiceFacade {
             for (AdResponseBean response : responses) {
                 AdResponse adResponse = new AdResponse();
                 if(response.getImage()!=null){
-                    adResponse.setImage(saveFile(response.getImage().getContent(),logoPath));
+                    adResponse.setImage(FileUtils.saveFile(response.getImage().getContent(),logoPath));
                 }
                 adResponse.setResponse(response.getResponse());
                 o.addResponse(adResponse);
@@ -406,32 +409,6 @@ public class BrandServiceFacade {
         ad.getRules().removeAll(rules);
     }
 
-
-    /**
-     *
-     * @param content
-     * @return
-     * @throws java.io.IOException
-     */
-    private String saveFile(byte[] content,String base) throws IOException {
-        return saveFile(content, UUID.randomUUID().toString(),base);
-    }
-
-
-    /**
-     *
-     * @param content
-     * @param path
-     * @return
-     * @throws IOException
-     */
-    private String saveFile(byte[] content, String path,String base)  throws IOException{
-        String completePath = base + File.separator + path;
-        FileOutputStream fos = new FileOutputStream(completePath);
-        fos.write(content);
-        fos.close();
-        return path;
-    }
 
     @Transactional
     public CampaignCommand loadCampaign(Long idAd) throws Exception {

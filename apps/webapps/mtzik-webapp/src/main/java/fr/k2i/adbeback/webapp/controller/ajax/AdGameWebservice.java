@@ -121,6 +121,23 @@ public class AdGameWebservice {
     }
 
 
+
+    @RequestMapping(value = "/video/{index}/{type}", method = RequestMethod.GET)
+    public void streamVideoAdByType(@PathVariable int index,@PathVariable String type,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<String> videos = (List<String>) request.getSession().getAttribute(ADS_VIDEO);
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        File file = new File(pathAds+videos.get(index)+"."+type);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        int read =0;
+        byte []b = new byte[1024];
+        while((read = fileInputStream.read(b, 0, 1024))>0){
+            outputStream.write(b, 0, read);
+            b = new byte[1024];
+        }
+        fileInputStream.close();
+    }
+
     @RequestMapping(value = "/rest/play/{index}/{responseId}", method = RequestMethod.GET)
     public @ResponseBody
     ResponseAdGameBean play(@PathVariable Integer index, @PathVariable Long responseId,

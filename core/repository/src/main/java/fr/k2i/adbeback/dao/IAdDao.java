@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.core.business.ad.VideoAd;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.player.Player;
 import org.springframework.data.domain.Page;
@@ -35,5 +36,8 @@ public interface IAdDao extends IGenericDao<Ad, Long> {
 
     @Transactional
     Page<Ad> findByBrand(Brand brand,Pageable pageable);
+
+    @Transactional
+    List<VideoAd> findNoEncodedAd();
 }
 

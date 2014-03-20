@@ -95,35 +95,11 @@ public class UserFacade {
     @Transactional
     public void setLogo(MultipartFile logo) throws Exception {
         Brand currentUser = getCurrentUser();
-        currentUser.setLogo(saveFile(logo.getBytes(),logoPath));
+        currentUser.setLogo(FileUtils.saveFile(logo.getBytes(),logoPath));
     }
 
 
-    /**
-     *
-     * @param content
-     * @return
-     * @throws java.io.IOException
-     */
-    private String saveFile(byte[] content,String base) throws IOException {
-        return saveFile(content, UUID.randomUUID().toString(),base);
-    }
 
-
-    /**
-     *
-     * @param content
-     * @param path
-     * @return
-     * @throws IOException
-     */
-    private String saveFile(byte[] content, String path,String base)  throws IOException{
-        String completePath = base + File.separator + path;
-        FileOutputStream fos = new FileOutputStream(completePath);
-        fos.write(content);
-        fos.close();
-        return path;
-    }
 
 
 

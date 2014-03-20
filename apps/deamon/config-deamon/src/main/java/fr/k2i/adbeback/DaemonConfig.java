@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.deamon.config;
+package fr.k2i.adbeback;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +24,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableScheduling
 @EnableAutoConfiguration
+@EnableTransactionManagement
 @ComponentScan(basePackages = "fr.k2i.adbeback")
 @PropertySource(value = {"classpath:application.properties"})
 public class DaemonConfig {

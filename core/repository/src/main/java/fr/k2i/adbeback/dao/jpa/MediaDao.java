@@ -3,6 +3,8 @@ package fr.k2i.adbeback.dao.jpa;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.PathInits;
 import fr.k2i.adbeback.core.business.game.QAdGameMedia;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.media.*;
@@ -508,25 +510,17 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
     @Override
     public List<Music> top10MusicForArtist(Long artistId) {
 
-        QAdGameMedia gameMedia = QAdGameMedia.adGameMedia;
-        JPAQuery query = new JPAQuery(getEntityManager());
-        QMedia media = new QMedia("music");
-        query.from(gameMedia).join(gameMedia.medias,media)
-                .where(
-                        media.instanceOf(Music.class).and(gameMedia.statusGame.eq(StatusGame.Win))
-                );
-        query.groupBy(media.id).orderBy(media.id.count().desc()).limit(10);
+        Query q = getEntityManager().createQuery(
+                "select count(media.id), media from AdGameMedia game inner join game.medias as media with media.class = Music inner join media.artists as artist with artist.id=:artistId where game.statusGame= :status group by media.id order by count(media.id) desc");
+        q.setParameter("artistId",artistId);
+        q.setParameter("status",StatusGame.Win);
+        q.setMaxResults(10);
 
         List<Music> res = new ArrayList<Music>();
-
-        List<Tuple> resultList = query.list(media.id.count(), media);
-
-        for (Tuple tuple : resultList) {
-            res.add((Music) tuple.get(media));
+        for (Object[] objects : (List<Object[]>)q.getResultList()) {
+            res.add((Music) objects[1]);
         }
-
         return res;
-
     }
 
     @Override

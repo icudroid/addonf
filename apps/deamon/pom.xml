@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
     <name>DEAMON</name>
     <modules>
-        <module>deamon-statistics</module>
+        <module>config-deamon</module>
     </modules>
 
 

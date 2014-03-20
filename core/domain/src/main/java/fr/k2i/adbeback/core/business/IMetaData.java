@@ -76,6 +76,7 @@ public interface IMetaData {
             String DURATION =                           "duration";
             String AD_FILE =                            "ad_file";
             String NAME =                               "name";
+            String AD_FILE_ENCODED =                    "encoded";
 
             public interface Discrimator {
                 String DISCRIMINATOR =                  "classe";
