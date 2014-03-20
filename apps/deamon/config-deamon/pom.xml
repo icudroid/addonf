@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>deamon-statistics</artifactId>
+    <artifactId>config-deamon</artifactId>
     <name>DEAMON - STATISTICS</name>
 
 
