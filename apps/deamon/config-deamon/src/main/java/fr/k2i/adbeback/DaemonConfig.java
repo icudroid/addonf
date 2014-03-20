@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "fr.k2i.adbeback")
-@PropertySource(value = {"classpath:application.properties"})
 public class DaemonConfig {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(DaemonConfig.class, args);
