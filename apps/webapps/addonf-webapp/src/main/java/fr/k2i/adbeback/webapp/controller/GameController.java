@@ -1,0 +1,36 @@
+package fr.k2i.adbeback.webapp.controller;
+
+import fr.k2i.adbeback.webapp.facade.AdGameFacade;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: dimitri
+ * Date: 29/10/13
+ * Time: 13:25
+ * To change this template use File | Settings | File Templates.
+ */
+@Controller
+public class GameController{
+
+    @Autowired
+    private AdGameFacade adGameFacade;
+
+    @RequestMapping("/game")
+    public String game(Map<String, Object> model,HttpServletRequest request) {
+        return "game";
+    }
+
+
+    @RequestMapping("/resume")
+    public String resume(Map<String, Object> model,HttpServletRequest request) {
+        return "manage/gooseGame/partials/resume";
+    }
+
+
+}

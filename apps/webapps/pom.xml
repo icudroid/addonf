@@ -16,6 +16,7 @@
 
     <modules>
         <module>mtzik-webapp</module>
+        <module>addonf-webapp</module>
         <module>annonceur-webapp</module>
         <module>admin-webapp</module>
         <module>common-resources</module>

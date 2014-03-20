@@ -9,7 +9,9 @@ import javax.persistence.*;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.player.Player;
+import lombok.Data;
 
+@Data
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "adgame")
@@ -17,91 +19,29 @@ import fr.k2i.adbeback.core.business.player.Player;
 public abstract class AbstractAdGame extends BaseObject implements Serializable {
 
 	protected static final long serialVersionUID = -2713151389131420230L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
-	protected Map<Integer, AdChoise> choises;
+
+    @OneToMany(mappedBy = "adGame",cascade=CascadeType.ALL)
+    @MapKey(name = "number")
+    protected Map<Integer, AdChoise> choises;
+
+    @Temporal(TemporalType.TIMESTAMP)
 	protected Date generated;
-	protected AdScore score;
-	//protected Integer minScore;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "SCORE_ID")
+    protected AdScore score;
+
+    @Enumerated(EnumType.STRING)
 	protected StatusGame statusGame = StatusGame.Playing;
-	protected Player player;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@OneToMany(mappedBy = "adGame",cascade=CascadeType.ALL)
-	@MapKey(name = "number")
-	public Map<Integer, AdChoise> getChoises() {
-		return choises;
-	}
-
-	public void setChoises(Map<Integer, AdChoise> choises) {
-		this.choises = choises;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date getGenerated() {
-		return generated;
-	}
-
-	public void setGenerated(Date generated) {
-		this.generated = generated;
-	}
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "SCORE_ID")
-	public AdScore getScore() {
-		return score;
-	}
-
-	public void setScore(AdScore score) {
-		this.score = score;
-	}
-
-/*	@ManyToMany(targetEntity = Media.class, cascade = { CascadeType.PERSIST,
-			CascadeType.MERGE })
-	@JoinTable(name = "adgame_media", joinColumns = @JoinColumn(name = "ADGAME_ID"), inverseJoinColumns = @JoinColumn(name = "MEDIA_ID"))
-	public List<Media> getMedias() {
-		return medias;
-	}
-
-	public void setMedias(List<Media> medias) {
-		this.medias = medias;
-	}*/
-
-/*	public Integer getMinScore() {
-		return minScore;
-	}
-
-	public void setMinScore(Integer minScore) {
-		this.minScore = minScore;
-	}*/
-	
-	
-	@Enumerated(EnumType.STRING)
-	public StatusGame getStatusGame() {
-		return statusGame;
-	}
-
-	public void setStatusGame(StatusGame statusGame) {
-		this.statusGame = statusGame;
-	}
 
     @ManyToOne
     @JoinColumn(name="PLAYER_ID")
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    protected Player player;
+    protected String successUrlCall;
+    protected String faillureUrlCall;
 
 	@Override
 	public int hashCode() {
