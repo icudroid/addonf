@@ -59,12 +59,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("/logout-success").permitAll()
-                .antMatchers("/lib/**").permitAll()
-                .antMatchers("/coral/**").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/js/**").permitAll()
-                .antMatchers("/img/**").permitAll()
-                .antMatchers("/template/**").permitAll()
+                .antMatchers("/static/**").permitAll()
 
                 .anyRequest().authenticated();
 

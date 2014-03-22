@@ -91,6 +91,8 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
                 if(videoAd.getAdFileEncoded()){
                     res.add(ad);
                 }
+            }else{
+                res.add(ad);
             }
         }
         return res;

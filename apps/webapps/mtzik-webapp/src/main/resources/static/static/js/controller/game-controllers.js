@@ -19,17 +19,43 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         $scope.adVideoOgg = '';
         $scope.adVideoMp4 = '';
         $scope.score = 0;
+        $scope.gameStarted = false;
 
         $scope.timeoutStatic;
 
 
         angular.element(document).bind("fullscreenchange", function(e) {
             if($(document).fullScreen()===false){
-                //console.debug("resume");
                 window.location.href = addonf.base+"resume";
-                //$location.path('/resume');
             }
         });
+
+
+        var startGame = function(){
+            $scope.gameStarted = true;
+            $scope.videoElt[0].pause();
+            switch ($scope.current.type){
+                case 'AUDIO':
+                    $scope.adAudio = $scope.base + "video/"+$scope.index;
+                    break;
+                case 'VIDEO':
+                    $scope.adVideoWebm = $scope.video($scope.index,'webm');
+                    $scope.adVideoOgg = $scope.video($scope.index,'ogg');
+                    $scope.adVideoMp4 = $scope.video($scope.index,'mp4');
+
+                    $scope.videoElt[0].load();
+                    $scope.videoElt[0].play();
+                    $scope.videoElt.unbind("ended",$scope.noResponse).bind("ended",$scope.noResponse);
+                    break;
+                case 'STATIC':
+                    $scope.adImage = $scope.image($scope.index);
+                    $scope.timeoutStatic = $timeout($scope.noResponse,$scope.current.duration);
+                    break;
+            }
+            $timeout(function() {
+                $scope.responded = false;
+            },3000);
+        }
 
 
         Game.createGame({},function(data){
@@ -48,32 +74,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             $scope.token =  $scope.adGame.userToken;
 
             $scope.score = 0;
-            //$scope.ad = $scope.base + "video/"+$scope.index;
 
-            switch ($scope.current.type){
-                case 'AUDIO':
-                    $scope.adAudio = $scope.base + "video/"+$scope.index;
-                    break;
-                case 'VIDEO':
-                    $scope.adVideoWebm = $scope.video($scope.index,'webm');
-                    $scope.adVideoOgg = $scope.video($scope.index,'ogg');
-                    $scope.adVideoMp4 = $scope.video($scope.index,'mp4');
-
-                    $scope.videoElt[0].load();
-                    $scope.videoElt[0].play();
-                    break;
-                case 'STATIC':
-                    $scope.adImage = $scope.image($scope.index);
-                    $scope.timeoutStatic = $timeout($scope.noResponse,$scope.duration);
-                    break;
-            }
-
-            $scope.videoElt.on("ended",$scope.noResponse);
-
-
-            $timeout(function() {
-                $scope.responded = false;
-            },3000);
+            startGame();
         });
 
 
@@ -114,9 +116,11 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             if( $scope.adGame.game.length > $scope.index){
                 $scope.current = $scope.adGame.game[$scope.index];
 
+                $scope.videoElt[0].pause();
                 switch ($scope.current.type){
                     case 'AUDIO':
                         $scope.adAudio = $scope.base + "video/"+$scope.index;
+                        $scope.videoElt.unbind("ended",$scope.noResponse);
                         break;
                     case 'VIDEO':
                         $scope.adVideoWebm = $scope.video($scope.index,'webm');
@@ -125,10 +129,12 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
                         $scope.videoElt[0].load();
                         $scope.videoElt[0].play();
+                        $scope.videoElt.unbind("ended",$scope.noResponse).bind("ended",$scope.noResponse);
                         break;
                     case 'STATIC':
                         $scope.adImage = $scope.image($scope.index);
-                        $scope.timeoutStatic = $timeout($scope.noResponse,$scope.duration);
+                        $scope.timeoutStatic = $timeout($scope.noResponse,$scope.current.duration);
+                        $scope.videoElt.unbind("ended",$scope.noResponse);
                         break;
                 }
 
@@ -162,7 +168,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             return possibility.type==3 && possibility.answerImage!=null;
         }
 
-        $scope.hasType3Hastext = function(possibility){
+        $scope.hasType3HasText = function(possibility){
             return possibility.type==3 && possibility.answerText!=null;
         }
 
@@ -171,7 +177,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             return $scope.base + "video/"+index+"/"+type+"?"+new Date().getTime();
         }
 
-        $scope.image = function(ad){
+        $scope.image = function(index){
             return $scope.base + "video/"+index+"?"+new Date().getTime();
         }
     }]);

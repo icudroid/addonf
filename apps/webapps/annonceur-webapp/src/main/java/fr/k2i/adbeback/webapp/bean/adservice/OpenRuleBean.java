@@ -52,7 +52,9 @@ public class OpenRuleBean extends  AdServiceBean implements Serializable {
         }
         AdResponseBean bean = new AdResponseBean();
 
-        bean.setImage(new FileCommand(new File(base+response.getImage())));
+        if(response.getImage()!=null){
+            bean.setImage(new FileCommand(new File(base+response.getImage())));
+        }
         bean.setCorrect(isCorrect);
         bean.setResponse(response.getResponse());
         bean.setId(response.getId());

@@ -107,9 +107,12 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
         //List<Ad> allAds = AdDao.getAll(new Date());
         List<Ad> allAds =  IAdDao.getAllValideFor(player);
 		Random ramRandom = new Random();
+        if(nbAds>allAds.size()){
+            throw new Exception("No more pub");
+        }
 
 		int i = 0;
-		while (i <= nbAds-1) {
+		while (i < nbAds-1) {
             // Todo : comment mettre en concurence les annonceurs
 			int nextInt = ramRandom.nextInt(allAds.size());
 			Ad ad = mapTest.get(nextInt);
