@@ -1,24 +1,21 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import java.util.List;
-
-import javax.persistence.Table;
-
 import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.goosegame.GooseCase_;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel_;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken_;
-import fr.k2i.adbeback.core.business.media.QMedia;
+import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Player_;
 import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import fr.k2i.adbeback.core.business.player.Player;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.Table;
+import java.util.List;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and

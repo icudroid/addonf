@@ -38,6 +38,4 @@ public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
 	void saveResponses(Long idAdGame, Integer score, Map<Integer, Long> answers,StatusGame statusGame)throws Exception;
 
 
-    @Transactional
-    Boolean musicIsWonByPlayer(Player player, Long musicId);
 }

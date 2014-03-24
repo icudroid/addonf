@@ -5,15 +5,16 @@ import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
-import fr.k2i.adbeback.core.business.media.Media;
-import fr.k2i.adbeback.core.business.media.Music;
 import fr.k2i.adbeback.core.business.partener.Reduction;
+import fr.k2i.adbeback.core.business.player.AgeGroup;
+import fr.k2i.adbeback.core.business.player.AnonymPlayer;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.StatusGame;
+import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
@@ -58,6 +59,8 @@ public class AdGameFacade {
 
     public static final String AD_CHOISES = "adChoises";
 
+    public static final double AVERAGE_AP_PRICE = 0.24;
+
     @Autowired
     private IAdDao adDao;
 
@@ -86,9 +89,6 @@ public class AdGameFacade {
     private IGooseTokenDao gooseTokenDao;
 
 
-    @Autowired
-    private IMediaDao mediaDao;
-
     @Value("${addonf.tmp.location:/tmp/}")
     private String tmpPath;
 
@@ -107,8 +107,11 @@ public class AdGameFacade {
 
 
     @Transactional
-    public AdGameBean createAdGame(HttpServletRequest request) throws Exception {
+    public AdGameBean createAdGame(PaymentConfigure configure, HttpServletRequest request) throws Exception {
 
+        //1 : create Anonym User
+        // Todo : Create anonymous player with request params
+        Player player = new AnonymPlayer();
         /*Player player = playerFacade.getCurrentPlayer();
 
 
@@ -117,11 +120,18 @@ public class AdGameFacade {
             return null;
         }*/
 
+        //moyen 0.20 euro / pub
         //Todo: calculate nim score
-        Integer minScore = 3;
+        Double nb = configure.getAmount() / AVERAGE_AP_PRICE;
+        Double left = configure.getAmount() % AVERAGE_AP_PRICE;
+        Integer minScore =  nb.intValue();
+
+        if(left!=0){
+            minScore++;
+        }
+
         SingleGooseLevel gooseLevel = gooseLevelDao.findForNbAds(minScore);
-        // Todo : Create anonymous player with request params
-        Player player = new Player();
+
 
         AbstractAdGame generateAdGame = adGameManager.generate(player.getId(),gooseLevel);
 
@@ -613,139 +623,9 @@ public class AdGameFacade {
         return res;
     }
 
-    @Transactional
-    public void getMedia(Long musicId, Player player, HttpServletResponse response) throws IOException {
-
-        if (adGameManager.musicIsWonByPlayer(player,musicId)) {
-                Media media = mediaDao.get(musicId);
-
-                File file = null;
-
-                if (media instanceof Music) {
-                    file =  new File(musicPath+media.getFile());
-                }else{
-                    file =  new File(videoPath+media.getFile());
-                }
-
-
-                response.setContentType("audio/mpeg");
-                response.setHeader("Content-Disposition","inline; filename=\""+media.getTitle()+"."+new Filename(media.getFile()).extension()+"\"");
-                response.setContentLength((int) file.length());
-                ServletOutputStream outputStream = response.getOutputStream();
-                FileInputStream fileInputStream = new FileInputStream(file);
-                int read =0;
-                byte []b = new byte[1024];
-                while((read = fileInputStream.read(b, 0, 1024))>0){
-                    outputStream.write(b, 0, read);
-                    b = new byte[1024];
-                }
-                fileInputStream.close();
-        }
-    }
 
 
 
-    public void getMedias(Long idAdGame, HttpServletResponse response) throws IOException {
-        AbstractAdGame abstractAdGame = adGameManager.get(idAdGame);
-        if (abstractAdGame instanceof AdGameMedia  && fr.k2i.adbeback.core.business.game.StatusGame.Win.equals(abstractAdGame.getStatusGame())) {
-            AdGameMedia adGame = (AdGameMedia) abstractAdGame;
-            List<Media> medias = adGame.getMedias();
-
-            if(medias.size()>1){
-                // mettre dans un zip
-                String zipFileName = tmpPath+idAdGame+".zip";
-                ZipFile zipFile;
-                try {
-                    zipFile = new ZipFile(zipFileName);
-                    ArrayList<File> filesToAdd = new ArrayList<File> ();
-
-                    for (Media media : medias) {
-                        if (media instanceof Music) {
-                            filesToAdd.add( new File(musicPath+media.getFile()));
-                        }else{
-                            filesToAdd.add( new File(videoPath+media.getFile()));
-                        }
-                    }
-
-                    ZipParameters parameters = new ZipParameters();
-/*
-                    parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE); // set compression method to store compression
-                    parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
-                    parameters.setEncryptFiles(true);
-                    parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_AES);
-                    parameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256);
-                    parameters.setPassword(password);
-*/
-                    zipFile.createZipFile(filesToAdd, parameters);
-                } catch (ZipException e) {
-                    e.printStackTrace();
-                }
-
-                File file = new File(zipFileName);
-
-                response.setContentType("application/zip");
-                response.setContentLength((int) file.length());
-                ServletOutputStream outputStream = response.getOutputStream();
-                FileInputStream fileInputStream = new FileInputStream(file);
-                int read =0;
-                byte []b = new byte[1024];
-                while((read = fileInputStream.read(b, 0, 1024))>0){
-                    outputStream.write(b, 0, read);
-                    b = new byte[1024];
-                }
-                fileInputStream.close();
-
-                file.delete();
-
-            }else if(medias.size()==1){
-
-                Media media = medias.get(0);
-
-                File file = null;
-
-                if (media instanceof Music) {
-                    file =  new File(musicPath+media.getFile());
-                }else{
-                    file =  new File(videoPath+media.getFile());
-                }
-
-
-                response.setContentType("audio/mpeg");
-                response.setHeader("Content-Disposition","inline; filename=\""+media.getTitle()+"."+new Filename(media.getFile()).extension()+"\"");
-                response.setContentLength((int) file.length());
-                ServletOutputStream outputStream = response.getOutputStream();
-                FileInputStream fileInputStream = new FileInputStream(file);
-                int read =0;
-                byte []b = new byte[1024];
-                while((read = fileInputStream.read(b, 0, 1024))>0){
-                    outputStream.write(b, 0, read);
-                    b = new byte[1024];
-                }
-                fileInputStream.close();
-
-            }
-
-        }
-    }
-
-    public String getFilename(Long idGame) {
-        AbstractAdGame abstractAdGame = adGameManager.get(idGame);
-        if (abstractAdGame instanceof AdGameMedia  && fr.k2i.adbeback.core.business.game.StatusGame.Win.equals(abstractAdGame.getStatusGame())) {
-            AdGameMedia adGame = (AdGameMedia) abstractAdGame;
-            List<Media> medias = adGame.getMedias();
-            if(medias.size()>1){
-                return "musics.zip";
-            }else if(medias.size()==1){
-                Media media = medias.get(0);
-                return media.getTitle()+"."+new Filename(media.getFile()).extension();
-            }else{
-                return "";
-            }
-
-        }else{
-            return "";
-        }
-    }
 }
 
 

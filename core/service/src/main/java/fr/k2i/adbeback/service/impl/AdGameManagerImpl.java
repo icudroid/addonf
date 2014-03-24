@@ -77,7 +77,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
         if(level instanceof IMultiGooseLevel){
             game = new AdGame();
         }else{
-            game = new AdGameMedia();
+            //game = new AdGameMedia();
         }
 
 
@@ -282,10 +282,6 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 		IAdGameDao.save(adGame);
 	}
 
-    @Override
-    public Boolean musicIsWonByPlayer(Player player, Long musicId) {
-        return IAdGameDao.musicIsWonByPlayer(player,musicId);
-    }
 
 
 }

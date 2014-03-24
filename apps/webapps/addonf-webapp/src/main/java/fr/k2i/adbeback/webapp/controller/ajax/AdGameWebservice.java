@@ -1,26 +1,26 @@
 package fr.k2i.adbeback.webapp.controller.ajax;
 
+import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.webapp.bean.AdGameBean;
 import fr.k2i.adbeback.webapp.bean.LimiteTimeAdGameBean;
 import fr.k2i.adbeback.webapp.bean.ResponseAdGameBean;
+import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import static fr.k2i.adbeback.webapp.facade.AdGameFacade.ADS_VIDEO;
-import static fr.k2i.adbeback.webapp.facade.AdGameFacade.ID_ADGAME;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,20 +51,10 @@ public class AdGameWebservice {
 
 
 
-    @RequestMapping(value = "/dln/{file}.{ext}", method = RequestMethod.GET)
-    public @ResponseBody
-    void dnl(@PathVariable String file,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Long idGame = (Long) request.getSession().getAttribute(ID_ADGAME);
-
-        adGameFacade.emptyGameSession(request);
-
-        adGameFacade.getMedias(idGame, response);
-    }
-
     @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
     public @ResponseBody
-    AdGameBean createGame(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return adGameFacade.createAdGame(request);
+    AdGameBean createGame(@RequestBody PaymentConfigure configure, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return adGameFacade.createAdGame(configure,request);
     }
 
 
@@ -74,32 +64,15 @@ public class AdGameWebservice {
 
         File file = new File(pathLogo+filename);
 
-        FileInputStream fileInputStream = new FileInputStream(file);
-        int read =0;
-        byte []b = new byte[1024];
-        while((read = fileInputStream.read(b, 0, 1024))>0){
-            outputStream.write(b, 0, read);
-            b = new byte[1024];
-        }
-        fileInputStream.close();
+        streamingFile(outputStream, file);
 
     }
 
     @RequestMapping(value = "/logo/{filename}.{ext}", method = RequestMethod.GET)
     public void streamLogoAd(@PathVariable String filename,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {
         ServletOutputStream outputStream = response.getOutputStream();
-
         File file = new File(pathLogo+filename+"."+ext);
-
-        FileInputStream fileInputStream = new FileInputStream(file);
-        int read =0;
-        byte []b = new byte[1024];
-        while((read = fileInputStream.read(b, 0, 1024))>0){
-            outputStream.write(b, 0, read);
-            b = new byte[1024];
-        }
-        fileInputStream.close();
-
+        streamingFile(outputStream, file);
     }
 
 
@@ -108,17 +81,8 @@ public class AdGameWebservice {
     public void streamVideoAd(@PathVariable int index,HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<String> videos = (List<String>) request.getSession().getAttribute(ADS_VIDEO);
         ServletOutputStream outputStream = response.getOutputStream();
-
         File file = new File(pathAds+videos.get(index));
-        FileInputStream fileInputStream = new FileInputStream(file);
-        int read =0;
-        byte []b = new byte[1024];
-        while((read = fileInputStream.read(b, 0, 1024))>0){
-            outputStream.write(b, 0, read);
-            b = new byte[1024];
-        }
-        fileInputStream.close();
-
+        streamingFile(outputStream, file);
     }
 
 
@@ -127,8 +91,17 @@ public class AdGameWebservice {
     public void streamVideoAdByType(@PathVariable int index,@PathVariable String type,HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<String> videos = (List<String>) request.getSession().getAttribute(ADS_VIDEO);
         ServletOutputStream outputStream = response.getOutputStream();
-
         File file = new File(pathAds+videos.get(index)+"."+type);
+        streamingFile(outputStream, file);
+    }
+
+    /**
+     *
+     * @param outputStream
+     * @param file
+     * @throws IOException
+     */
+    private void streamingFile(ServletOutputStream outputStream, File file) throws IOException {
         FileInputStream fileInputStream = new FileInputStream(file);
         int read =0;
         byte []b = new byte[1024];

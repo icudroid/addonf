@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.player;
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.LabelValue;
 import fr.k2i.adbeback.core.business.ad.ViewedAd;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
@@ -20,40 +21,44 @@ import java.util.*;
  *         Extended to implement Acegi UserDetails interface
  *         by David Carter david@carter.net
  */
+
+@Data
 @Entity
 @Table(name = "player")
-@Data
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "classe", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "player")
 public class Player extends BaseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    protected Long id;
 
     @Column(nullable = false, length = 50, unique = true)
-    private String username;                    // required
+    protected String username;                    // required
     @Column(nullable = false)
-    private String password;                    // required
+    protected String password;                    // required
     @Transient
-    private String confirmPassword;
+    protected String confirmPassword;
 
     @Column(name = "first_name", nullable = true, length = 50)
-    private String firstName;                   // required
+    protected String firstName;                   // required
 
     @Column(name = "last_name", nullable = true, length = 50)
-    private String lastName;                    // required
+    protected String lastName;                    // required
 
     @Column(nullable = false, unique = true)
-    private String email;                       // required; unique
+    protected String email;                       // required; unique
 
     @Column(name = "phone_number")
-    private String phoneNumber;
+    protected String phoneNumber;
 
-    private String website;
+    protected String website;
 
     @Embedded
-    private Address address = new Address();
+    protected Address address = new Address();
 
     @Version
-    private Integer version;
+    protected Integer version;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -61,45 +66,45 @@ public class Player extends BaseObject {
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<Role>();
+    protected Set<Role> roles = new HashSet<Role>();
 
     @Column(name = "account_enabled")
-    private boolean enabled;
+    protected boolean enabled;
 
     @Column(name = "account_expired", nullable = false)
-    private boolean accountExpired;
+    protected boolean accountExpired;
 
     @Column(name = "account_locked", nullable = false)
-    private boolean accountLocked;
+    protected boolean accountLocked;
 
     @Column(name = "credentials_expired", nullable = false)
-    private boolean credentialsExpired;
+    protected boolean credentialsExpired;
 
     @Enumerated(EnumType.STRING)
-    private Sex sex;
+    protected Sex sex;
 
     @Temporal(TemporalType.DATE)
-    private Date birthday;
-    private Boolean newsletter;
+    protected Date birthday;
+    protected Boolean newsletter;
 
     @OneToMany(mappedBy="player",cascade=CascadeType.ALL)
-    private List<AbstractAdGame> games = new ArrayList<AbstractAdGame>();
+    protected List<AbstractAdGame> games = new ArrayList<AbstractAdGame>();
 
     @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
     @OrderBy("windate DESC")
-    private List<GooseWin> wins = new ArrayList<GooseWin>();
+    protected List<GooseWin> wins = new ArrayList<GooseWin>();
 
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="PLAYER_ID")
-    private List<GooseToken> gooseTokens;
+    protected List<GooseToken> gooseTokens;
 
-    private Integer validatedLevel;
+    protected Integer validatedLevel;
 
     @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
-    private List<ViewedAd> viewedAds = new ArrayList<ViewedAd>();
+    protected List<ViewedAd> viewedAds = new ArrayList<ViewedAd>();
 
     @Enumerated(EnumType.STRING)
-    private AgeGroup ageGroup;
+    protected AgeGroup ageGroup;
 
 	/**
      * Default constructor - creates a new instance with no values set.
