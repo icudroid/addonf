@@ -33,11 +33,11 @@ public class Address extends BaseObject implements Serializable {
     @Column(length = 150)
     private String compAddress;
 
-    @ManyToOne
+    @ManyToOne(cascade ={ CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = IMetaData.ColumnMetadata.Address.CITY_JOIN)
     private City city = new City();
 
-    @ManyToOne
+    @ManyToOne(cascade ={ CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = IMetaData.ColumnMetadata.Address.COUNTRY_JOIN)
     private Country country = new Country();
 

@@ -9,6 +9,10 @@ import lombok.Data;
  * Goal:
  */
 @Data
-public abstract class Information {
+public class Information {
+    private AgeInformation age;
+    private CityInformation city;
+    private SexInformation sex;
+    private  CountryInformation country;
 }
 

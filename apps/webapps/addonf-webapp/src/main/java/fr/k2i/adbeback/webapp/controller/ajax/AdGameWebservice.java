@@ -30,7 +30,7 @@ import static fr.k2i.adbeback.webapp.facade.AdGameFacade.ADS_VIDEO;
  * To change this template use File | Settings | File Templates.
  */
 
-@Controller
+@RestController
 public class AdGameWebservice {
 
     @Autowired
@@ -51,9 +51,9 @@ public class AdGameWebservice {
 
 
 
-    @RequestMapping(value = "/rest/createGame", method = RequestMethod.POST)
+    @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
     public @ResponseBody
-    AdGameBean createGame(@RequestBody PaymentConfigure configure, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    AdGameBean createGame(@ModelAttribute PaymentConfigure configure, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return adGameFacade.createAdGame(configure,request);
     }
 

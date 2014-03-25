@@ -62,8 +62,8 @@ public abstract  class Ad extends BaseObject implements Serializable {
     @Column(name = IMetaData.ColumnMetadata.Ad.NAME)
     protected String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.PARTNER_JOIN)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.PARTNER)
     protected Partner providedBy;
 
     @Override

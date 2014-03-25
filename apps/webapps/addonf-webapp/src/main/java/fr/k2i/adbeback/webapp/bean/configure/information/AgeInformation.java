@@ -9,6 +9,6 @@ import lombok.Data;
  * Goal:
  */
 @Data
-public class AgeInformation extends Information {
+public class AgeInformation{
     private Integer old;
 }

@@ -8,6 +8,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.*;
+import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Sex;
@@ -59,8 +60,17 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
         LocalDate date = new LocalDate();
 
+        City city = player.getAddress().getCity();
+        Long countryId = null;
+        if(city==null){
+            countryId = player.getAddress().getCountry().getId();
+        }else{
+            countryId = city.getCountry().getId();
+        }
+
+
         Query query = getEntityManager().createQuery("select ad from Ad ad inner join ad.rules as adRule with adRule.class = CountryRule where ad.startDate <= :date and ad.endDate >= :date and adRule.country.id = :countryId")
-                .setParameter("countryId",player.getAddress().getCity().getCountry().getId())
+                .setParameter("countryId", countryId)
                 .setParameter("date", date.toDate());
 
 
@@ -180,6 +190,9 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
      */
     private List<Ad> matchCity(List<Ad> ads,Player player) {
         List<Ad> res = new ArrayList<Ad>();
+
+        if(player.getAddress().getCity()==null)return ads;
+
         Double latPlayer = player.getAddress().getCity().getLat();
         Double lonPlayer = player.getAddress().getCity().getLon();
 

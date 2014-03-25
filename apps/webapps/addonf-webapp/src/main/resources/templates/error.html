@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html
         xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/home_layout">
+        >
 <head>
 <title>Error</title>
 </head>
 
 <body>
-<div layout:fragment="searchBar">
-    <div th:substituteby="layout/fragment/searchBar(activeSearch=${'home'})"></div>
-</div>
-
 
 <div layout:fragment="content" id="content">
 

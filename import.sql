@@ -29,7 +29,7 @@ create table media_productor (media_id bigint not null, productor_id bigint not 
 create table music_artist (music_id bigint not null, artist_id bigint not null) ENGINE=InnoDB;
 create table one_time_pwd (classe varchar(31) not null, id bigint not null auto_increment, creation_date datetime, expiration_date datetime, otp_key varchar(8), brand_id bigint, primary key (id)) ENGINE=InnoDB;
 create table one_time_pwd_action (id bigint not null auto_increment, opt_action varchar(255), opt_key varchar(255), user_id bigint not null, primary key (id)) ENGINE=InnoDB;
-create table partner (id bigint not null auto_increment, name varchar(255), web_site varchar(255), primary key (id)) ENGINE=InnoDB;
+create table merchant (id bigint not null auto_increment, name varchar(255), web_site varchar(255), primary key (id)) ENGINE=InnoDB;
 create table person (classe varchar(31) not null, id bigint not null auto_increment, first_name varchar(255), last_name varchar(255), photo varchar(255), version integer, website varchar(255), primary key (id)) ENGINE=InnoDB;
 create table player (id bigint not null auto_increment, account_expired boolean not null, account_locked boolean not null, address varchar(255), comp_address varchar(255), age_group varchar(255), birthday date, credentials_expired boolean not null, email varchar(255) not null, account_enabled boolean, first_name varchar(50), last_name varchar(50), newsletter boolean, password varchar(255) not null, phone_number varchar(255), sex varchar(255), username varchar(50) not null, validated_level integer, version integer, website varchar(255), city_id bigint, primary key (id)) ENGINE=InnoDB;
 create table possibility (classe varchar(31) not null, id bigint not null auto_increment, answer varchar(255), price double precision, ad_id bigint, brand_id bigint, product_id bigint, possibility_id bigint, primary key (id)) ENGINE=InnoDB;
@@ -101,7 +101,7 @@ alter table possibility add index FK_jt0grjm68t39n6d89ynmc0mqo (brand_id), add c
 alter table possibility add index FK_efyd84gcwsiewnuiof4882vsp (product_id), add constraint FK_efyd84gcwsiewnuiof4882vsp foreign key (product_id) references product (id);
 alter table possibility add index FK_8kouf5xfet4rb0i8xeyhhfbw (possibility_id), add constraint FK_8kouf5xfet4rb0i8xeyhhfbw foreign key (possibility_id) references adchoise (id);
 alter table product add index FK_1td6gorl25rsvufiiive2svlx (brand_id), add constraint FK_1td6gorl25rsvufiiive2svlx foreign key (brand_id) references brand (id);
-alter table reduction add index FK_20mqgs6t2s5cp1tkrt9xkir3v (partener_id), add constraint FK_20mqgs6t2s5cp1tkrt9xkir3v foreign key (partener_id) references partner (id);
+alter table reduction add index FK_20mqgs6t2s5cp1tkrt9xkir3v (partener_id), add constraint FK_20mqgs6t2s5cp1tkrt9xkir3v foreign key (partener_id) references merchant (id);
 alter table statitics add index FK_6l4vqhp2xv5s95vbeh0t724e2 (city_id), add constraint FK_6l4vqhp2xv5s95vbeh0t724e2 foreign key (city_id) references city (id);
 alter table statitics add index FK_admbqhnj3w54unyyd749mmbg1 (service_id), add constraint FK_admbqhnj3w54unyyd749mmbg1 foreign key (service_id) references ad_rule (id);
 alter table user_role add index FK_it77eq964jhfqtu54081ebtio (role_id), add constraint FK_it77eq964jhfqtu54081ebtio foreign key (role_id) references role (id);

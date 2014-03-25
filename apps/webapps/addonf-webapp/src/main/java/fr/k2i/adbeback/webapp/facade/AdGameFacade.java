@@ -19,7 +19,6 @@ import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import fr.k2i.adbeback.webapp.bean.configure.information.*;
 import fr.k2i.adbeback.webapp.bean.configure.url.Url;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -293,36 +292,35 @@ public class AdGameFacade {
      */
     private Player getAnonymousPlayer(PaymentConfigure configure) {
         Player player = new AnonymPlayer();
-        player.setLastName(UUID.randomUUID().toString());
+        player.setEmail(UUID.randomUUID().toString());
+        player.setPassword(UUID.randomUUID().toString());
+        player.setUsername(UUID.randomUUID().toString());
 
-        List<Information> informations = configure.getInformations();
-        for (Information information : informations) {
-            if (information instanceof AgeInformation) {
-                AgeInformation ageInf = (AgeInformation) information;
-                player.setAgeGroup(AgeGroup.fromAge(ageInf.getOld()));
-            }
+        Information informations = configure.getInformations();
+        AgeInformation ageInf = informations.getAge();
+        if(ageInf!=null)player.setAgeGroup(AgeGroup.fromAge(ageInf.getOld()));
 
+        CityInformation cityInf = informations.getCity();
+        if(cityInf!=null){
+            Address address = new Address();
+            address.setCity(cityDao.findByZipcodeAndCityAndCountry_Code(cityInf.getZipCode(),cityInf.getCityName(),cityInf.getCountryCode()));
+            address.setCountry(null);
+            player.setAddress(address);
+        }
 
-            if (information instanceof CityInformation) {
-                CityInformation cityInf = (CityInformation) information;
-                Address address = new Address();
-                address.setCity(cityDao.findByZipcodeAndCityAndCountry_Code(cityInf.getZipCode(),cityInf.getCityName(),cityInf.getCountryCode()));
-                player.setAddress(address);
-            }
-
-            if (information instanceof CountryInformation) {
-                CountryInformation countryInf = (CountryInformation) information;
-                Address address = new Address();
-                address.setCountry(countryDao.findByCode(countryInf.getCountryCode()));
-                player.setAddress(address);
-            }
-
-
-            if (information instanceof SexInformation) {
-                SexInformation sexInf = (SexInformation) information;
-                player.setSex(sexInf.getSex());
+        if(cityInf==null){
+            CountryInformation countryInf = informations.getCountry();
+            if(countryInf!=null){
+                Address addressCountry = new Address();
+                addressCountry.setCountry(countryDao.findByCode(countryInf.getCountryCode()));
+                addressCountry.setCity(null);
+                player.setAddress(addressCountry);
             }
         }
+
+        SexInformation sexInf = informations.getSex();
+        if(sexInf!=null)player.setSex(sexInf.getSex());
+
         return playerDao.save(player);
     }
 
@@ -489,11 +487,11 @@ public class AdGameFacade {
             if(reduction.getPercentageValue()!=null){
                 sb.append(reduction.getPercentageValue());
                 sb.append(" %, chez ");
-                sb.append(reduction.getPartner().getName());
+                sb.append(reduction.getMerchant().getName());
             }else{
                 sb.append(reduction.getPercentageValue());
                 sb.append(" euros, chez ");
-                sb.append(reduction.getPartner().getName());
+                sb.append(reduction.getMerchant().getName());
             }
             gameResult.setMessage(sb.toString());
         }else if (gooseCase instanceof JailGooseCase) {

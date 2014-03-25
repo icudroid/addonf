@@ -1,85 +1,31 @@
 package fr.k2i.adbeback.core.business.partener;
 
+import fr.k2i.adbeback.core.business.BaseObject;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-
-
-import fr.k2i.adbeback.core.business.BaseObject;
-
+@Data
 @Entity
 @Table(name = "reduction")
 public class Reduction extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 6039138990472415617L;
+
+//	@SequenceGenerator(name = "Reduction_Gen", sequenceName = "Reduction_Sequence")
+    @Id
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Reduction_Gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
 	private Double value;
 	private Double percentageValue;
 	private String reductionCode;
 	private String description;
-	private Partner partner;
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "MERCHANT_ID")
+	private Merchant merchant;
 
-//	@SequenceGenerator(name = "Reduction_Gen", sequenceName = "Reduction_Sequence")
-	@Id
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Reduction_Gen")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Double getValue() {
-		return value;
-	}
-
-	public void setValue(Double value) {
-		this.value = value;
-	}
-
-	public Double getPercentageValue() {
-		return percentageValue;
-	}
-
-	public void setPercentageValue(Double percentageValue) {
-		this.percentageValue = percentageValue;
-	}
-
-	public String getReductionCode() {
-		return reductionCode;
-	}
-
-	public void setReductionCode(String reductionCode) {
-		this.reductionCode = reductionCode;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "PARTENER_ID")
-	public Partner getPartner() {
-		return partner;
-	}
-
-	public void setPartner(Partner partner) {
-		this.partner = partner;
-	}
 
 	@Override
 	public int hashCode() {
@@ -88,7 +34,7 @@ public class Reduction extends BaseObject implements Serializable {
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result
-				+ ((partner == null) ? 0 : partner.hashCode());
+				+ ((merchant == null) ? 0 : merchant.hashCode());
 		result = prime * result
 				+ ((percentageValue == null) ? 0 : percentageValue.hashCode());
 		result = prime * result
@@ -111,10 +57,10 @@ public class Reduction extends BaseObject implements Serializable {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (partner == null) {
-			if (other.partner != null)
+		if (merchant == null) {
+			if (other.merchant != null)
 				return false;
-		} else if (!partner.equals(other.partner))
+		} else if (!merchant.equals(other.merchant))
 			return false;
 		if (percentageValue == null) {
 			if (other.percentageValue != null)
@@ -139,7 +85,7 @@ public class Reduction extends BaseObject implements Serializable {
 		return "Reduction [id=" + id + ", value=" + value
 				+ ", percentageValue=" + percentageValue + ", reductionCode="
 				+ reductionCode + ", description=" + description
-				+ ", partner=" + partner + "]";
+				+ ", merchant=" + merchant + "]";
 	}
 
 }

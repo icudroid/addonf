@@ -1,54 +1,25 @@
 package fr.k2i.adbeback.core.business.partener;
 
+import fr.k2i.adbeback.core.business.BaseObject;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-
-
-import fr.k2i.adbeback.core.business.BaseObject;
-
+@Data
 @Entity
-@Table(name = "partener")
-public class Partner extends BaseObject implements Serializable {
+@Table(name = "merchant")
+public class Merchant extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = -8741225076812664415L;
+    //	@SequenceGenerator(name = "Partener_Gen", sequenceName = "Partener_Sequence")
+    @Id
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Partener_Gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private String webSite;
 
-//	@SequenceGenerator(name = "Partener_Gen", sequenceName = "Partener_Sequence")
-	@Id
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Partener_Gen")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getWebSite() {
-		return webSite;
-	}
-
-	public void setWebSite(String webSite) {
-		this.webSite = webSite;
-	}
 
 	@Override
 	public int hashCode() {
@@ -67,7 +38,7 @@ public class Partner extends BaseObject implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Partner other = (Partner) obj;
+        Merchant other = (Merchant) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -83,7 +54,7 @@ public class Partner extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Partner [id=" + id + ", name=" + name + ", webSite=" + webSite
+		return "Merchant [id=" + id + ", name=" + name + ", webSite=" + webSite
 				+ "]";
 	}
 
