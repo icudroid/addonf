@@ -40,8 +40,6 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
     @ManyToOne
     @JoinColumn(name="PLAYER_ID")
     protected Player player;
-    protected String successUrlCall;
-    protected String faillureUrlCall;
 
 	@Override
 	public int hashCode() {

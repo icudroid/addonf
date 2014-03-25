@@ -14,7 +14,7 @@ import fr.k2i.adbeback.core.business.BaseObject;
 
 @Entity
 @Table(name = "partener")
-public class Partener extends BaseObject implements Serializable {
+public class Partner extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = -8741225076812664415L;
 	private Long id;
@@ -67,7 +67,7 @@ public class Partener extends BaseObject implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Partener other = (Partener) obj;
+		Partner other = (Partner) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -83,7 +83,7 @@ public class Partener extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Partener [id=" + id + ", name=" + name + ", webSite=" + webSite
+		return "Partner [id=" + id + ", name=" + name + ", webSite=" + webSite
 				+ "]";
 	}
 

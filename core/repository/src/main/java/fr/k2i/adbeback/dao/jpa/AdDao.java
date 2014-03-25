@@ -11,6 +11,7 @@ import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Sex;
+import fr.k2i.adbeback.core.business.user.Partner;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
@@ -46,7 +47,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
     @Transactional
     @Override
-    public List<Ad> getAllValideFor(Player player) {
+    public List<Ad> getAllValidFor(Player player) {
 
         /*
             Les règles sont les suivantes :
@@ -65,6 +66,30 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
         return matchRules(query.getResultList(),player);
     }
+
+
+
+    @Override
+    public List<Ad> getAllValidForAndProvidedBy(Player player, Partner partner) {
+
+        /*
+            Les règles sont les suivantes :
+                - Si l'annonceur a mit des critères par publicités (Age, Sex, Ville , Pays)
+                - Une publicité ne doit pas être vu plus de X fois configurable par l'annonceur
+
+
+         */
+
+        LocalDate date = new LocalDate();
+
+        Query query = getEntityManager().createQuery("select ad from Ad ad inner join ad.rules as adRule with adRule.class = CountryRule where ad.startDate <= :date and ad.endDate >= :date and adRule.country.id = :countryId and ad.providedBy.id= :idPartner")
+                .setParameter("countryId",player.getAddress().getCity().getCountry().getId())
+                .setParameter("date", date.toDate())
+                .setParameter("idPartner",partner.getId());
+
+        return matchRules(query.getResultList(),player);
+    }
+
 
     @Transactional
     private List<Ad> matchRules(List<Ad> ads,Player player) {
@@ -271,6 +296,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         query.from(qAd).where(qAd.adFileEncoded.eq(false).or(qAd.adFileEncoded.isNull()));
         return query.list(qAd);
     }
+
 
 
 }

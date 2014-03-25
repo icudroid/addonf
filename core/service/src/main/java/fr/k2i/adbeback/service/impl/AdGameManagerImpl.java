@@ -16,8 +16,6 @@ import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.IMultiGooseLevel;
-import fr.k2i.adbeback.core.business.goosegame.ISingleGooseLevel;
-import fr.k2i.adbeback.core.business.goosegame.SingleGooseLevel;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.dao.*;
 import org.joda.time.LocalDate;
@@ -42,12 +40,12 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
     @Autowired
-	private fr.k2i.adbeback.dao.IAdDao IAdDao;
+	private fr.k2i.adbeback.dao.IAdDao adDao;
 
     @Autowired
-	private fr.k2i.adbeback.dao.IBrandDao IBrandDao;
+	private fr.k2i.adbeback.dao.IBrandDao brandDao;
 	
-	private fr.k2i.adbeback.dao.IAdGameDao IAdGameDao;
+	private fr.k2i.adbeback.dao.IAdGameDao adGameDao;
 
     @Autowired
 	private IPossibilityDao possibilityDao;
@@ -62,22 +60,26 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
     @Autowired
     private IViewedAdDao viewedAdDao;
 
+    @Autowired IPartnerDao partnerDao;
+
 	@Autowired
-	public void setIAdGameDao(fr.k2i.adbeback.dao.IAdGameDao IAdGameDao) {
-		this.dao = IAdGameDao;
-		this.IAdGameDao = IAdGameDao;
+	public void setAdGameDao(fr.k2i.adbeback.dao.IAdGameDao adGameDao) {
+		this.dao = adGameDao;
+		this.adGameDao = adGameDao;
 	}
 
 
     @Transactional
-	public AbstractAdGame generate(Long idPlayer, GooseLevel level) throws Exception {
+	public AbstractAdGame generate(Boolean selfAd, String idPartner, String idTransaction, Long idPlayer, GooseLevel level) throws Exception {
 
         AbstractAdGame game = null;
 
         if(level instanceof IMultiGooseLevel){
             game = new AdGame();
         }else{
-            //game = new AdGameMedia();
+            game = new AdGameTransaction();
+            ((AdGameTransaction)game).setIdTransaction(idTransaction);
+            ((AdGameTransaction)game).setPartner(partnerDao.findbyExtId(idPartner));
         }
 
 
@@ -90,13 +92,13 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 		game.setScore(score);
 
         Player player = playerDao.get(idPlayer);
-        game.setChoises(generateChoises(level.getNbMaxAdByPlay(), game,player));
+        game.setChoises(generateChoises(selfAd,level.getNbMaxAdByPlay(), game,player));
 
 		game.setPlayer(player);
-		return IAdGameDao.save(game);
+		return adGameDao.save(game);
 	}
 
-	private Map<Integer, AdChoise> generateChoises(Integer nbAds, AbstractAdGame game,Player player) throws Exception {
+	private Map<Integer, AdChoise> generateChoises(Boolean selfAd, Integer nbAds, AbstractAdGame game, Player player) throws Exception {
 		Map<Integer, AdChoise> res = new HashMap<Integer, AdChoise>();
 
         Address address = player.getAddress();
@@ -104,8 +106,13 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
         Map<Integer, Ad> mapTest = new HashMap<Integer, Ad>();
 
-        //List<Ad> allAds = AdDao.getAll(new Date());
-        List<Ad> allAds =  IAdDao.getAllValideFor(player);
+        List<Ad> allAds = null;
+        if(selfAd){
+            allAds = adDao.getAllValidForAndProvidedBy(player,((AdGameTransaction)game).getPartner());
+        }else{
+            allAds = adDao.getAllValidFor(player);
+        }
+
 		Random ramRandom = new Random();
         if(nbAds>allAds.size()){
             throw new Exception("No more pub");
@@ -178,7 +185,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 		Random ramRandom = new Random();
 		
 		if (rule instanceof BrandRule) {
-			List<Brand> brands = IBrandDao.getAllPossible((BrandRule) rule);
+			List<Brand> brands = brandDao.getAllPossible((BrandRule) rule);
 			int b = brands.indexOf(ad.getBrand());
 
 			Set<Integer> answers = new HashSet<Integer>();
@@ -256,7 +263,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 	public void saveResponses(Long idAdGame, Integer score,
 			Map<Integer, Long> answers,StatusGame statusGame) throws Exception {
-		AbstractAdGame adGame = IAdGameDao.get(idAdGame);
+		AbstractAdGame adGame = adGameDao.get(idAdGame);
 		AdScore adScore = new AdScore();
 		adScore.setScore(score);
 		Map<Integer, AdResponsePlayer> answersPlayer = new HashMap<Integer, AdResponsePlayer>();
@@ -279,7 +286,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 			adGame.setStatusGame(fr.k2i.adbeback.core.business.game.StatusGame.Lost);
 		}*/
 		
-		IAdGameDao.save(adGame);
+		adGameDao.save(adGame);
 	}
 
 

@@ -64,5 +64,14 @@ public enum AgeGroup{
     public String label() {
         return label;
     }
+
+    public static AgeGroup fromAge(Integer age) {
+        for (AgeGroup ageGroup : values()) {
+            if(age >=ageGroup.getMin() && age <=ageGroup.getMax()){
+                return ageGroup;
+            }
+        }
+        return null;
+    }
 }
 

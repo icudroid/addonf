@@ -21,4 +21,5 @@ public class PaymentConfigure{
     private List<Information> informations;
     private Url callSysUrl;
     private Url callBackUrl;
+    private Boolean selfAd;//utilise ses propre pub
 }

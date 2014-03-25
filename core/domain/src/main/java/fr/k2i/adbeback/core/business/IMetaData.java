@@ -77,6 +77,7 @@ public interface IMetaData {
             String AD_FILE =                            "ad_file";
             String NAME =                               "name";
             String AD_FILE_ENCODED =                    "encoded";
+            String PARTNER_JOIN =                       "ad_id";
 
             public interface Discrimator {
                 String DISCRIMINATOR =                  "classe";

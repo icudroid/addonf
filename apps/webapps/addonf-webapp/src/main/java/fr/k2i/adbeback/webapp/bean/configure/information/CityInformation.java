@@ -9,7 +9,7 @@ import lombok.Data;
  * Goal:
  */
 @Data
-class CityInformation extends Information {
+public class CityInformation extends Information {
     private String countryCode;
     private String zipCode;
     private String cityName;

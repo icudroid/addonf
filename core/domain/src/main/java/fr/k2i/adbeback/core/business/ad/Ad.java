@@ -3,6 +3,7 @@ package fr.k2i.adbeback.core.business.ad;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
+import fr.k2i.adbeback.core.business.user.Partner;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -60,6 +61,10 @@ public abstract  class Ad extends BaseObject implements Serializable {
 
     @Column(name = IMetaData.ColumnMetadata.Ad.NAME)
     protected String name;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.PARTNER_JOIN)
+    protected Partner providedBy;
 
     @Override
 	public int hashCode() {

@@ -24,7 +24,7 @@ public class Reduction extends BaseObject implements Serializable {
 	private Double percentageValue;
 	private String reductionCode;
 	private String description;
-	private Partener partener;
+	private Partner partner;
 
 //	@SequenceGenerator(name = "Reduction_Gen", sequenceName = "Reduction_Sequence")
 	@Id
@@ -73,12 +73,12 @@ public class Reduction extends BaseObject implements Serializable {
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "PARTENER_ID")
-	public Partener getPartener() {
-		return partener;
+	public Partner getPartner() {
+		return partner;
 	}
 
-	public void setPartener(Partener partener) {
-		this.partener = partener;
+	public void setPartner(Partner partner) {
+		this.partner = partner;
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Reduction extends BaseObject implements Serializable {
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result
-				+ ((partener == null) ? 0 : partener.hashCode());
+				+ ((partner == null) ? 0 : partner.hashCode());
 		result = prime * result
 				+ ((percentageValue == null) ? 0 : percentageValue.hashCode());
 		result = prime * result
@@ -111,10 +111,10 @@ public class Reduction extends BaseObject implements Serializable {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (partener == null) {
-			if (other.partener != null)
+		if (partner == null) {
+			if (other.partner != null)
 				return false;
-		} else if (!partener.equals(other.partener))
+		} else if (!partner.equals(other.partner))
 			return false;
 		if (percentageValue == null) {
 			if (other.percentageValue != null)
@@ -139,7 +139,7 @@ public class Reduction extends BaseObject implements Serializable {
 		return "Reduction [id=" + id + ", value=" + value
 				+ ", percentageValue=" + percentageValue + ", reductionCode="
 				+ reductionCode + ", description=" + description
-				+ ", partener=" + partener + "]";
+				+ ", partner=" + partner + "]";
 	}
 
 }

@@ -10,6 +10,6 @@ import lombok.Data;
  * Goal:
  */
 @Data
-class SexInformation extends Information {
+public class SexInformation extends Information {
     private Sex sex;
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.country.City;
+import lombok.Data;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -20,45 +21,25 @@ import fr.k2i.adbeback.core.business.country.Country;
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
+@Data
 @Embeddable
 public class Address extends BaseObject implements Serializable {
+
     private static final long serialVersionUID = 3617859655330969141L;
+
+    @Column(length = 150)
     private String address;
+
+    @Column(length = 150)
     private String compAddress;
 
     @ManyToOne
     @JoinColumn(name = IMetaData.ColumnMetadata.Address.CITY_JOIN)
     private City city = new City();
 
-    @Column(length = 150)
-    public String getAddress() {
-        return address;
-    }
-
-
-    @Column(length = 150)
-
-    public String getCompAddress() {
-    	return compAddress;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-	public void setCompAddress(String compAddress) {
-		this.compAddress = compAddress;
-	}
-
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
+    @ManyToOne
+    @JoinColumn(name = IMetaData.ColumnMetadata.Address.COUNTRY_JOIN)
+    private Country country = new Country();
 
     @Override
     public String toString() {

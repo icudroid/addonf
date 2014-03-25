@@ -1,16 +1,16 @@
 package fr.k2i.adbeback.dao;
 
-import java.util.Date;
-import java.util.List;
-
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.VideoAd;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.user.Partner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * User Data Access Object (IGenericDao) interface.
@@ -26,7 +26,7 @@ public interface IAdDao extends IGenericDao<Ad, Long> {
 	 * @throws Exception
 	 */
     @Transactional
-    List<Ad> getAllValideFor(Player player);
+    List<Ad> getAllValidFor(Player player);
 
     @Transactional
     void updateAmountForAd(AdService adRule);
@@ -39,5 +39,8 @@ public interface IAdDao extends IGenericDao<Ad, Long> {
 
     @Transactional
     List<VideoAd> findNoEncodedAd();
+
+    @Transactional
+    List<Ad> getAllValidForAndProvidedBy(Player player, Partner partner);
 }
 

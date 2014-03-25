@@ -51,7 +51,7 @@ public class AdGameWebservice {
 
 
 
-    @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/createGame", method = RequestMethod.POST)
     public @ResponseBody
     AdGameBean createGame(@RequestBody PaymentConfigure configure, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return adGameFacade.createAdGame(configure,request);

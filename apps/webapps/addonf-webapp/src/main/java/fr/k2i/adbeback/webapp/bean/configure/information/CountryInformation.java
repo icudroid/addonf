@@ -9,6 +9,6 @@ import lombok.Data;
  * Goal:
  */
 @Data
-class CountryInformation extends Information {
+public class CountryInformation extends Information {
     private String countryCode;
 }

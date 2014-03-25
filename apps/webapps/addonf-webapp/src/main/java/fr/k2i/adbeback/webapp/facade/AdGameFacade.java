@@ -6,6 +6,7 @@ import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
+import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
 import fr.k2i.adbeback.core.business.player.AnonymPlayer;
 import fr.k2i.adbeback.core.business.player.Player;
@@ -15,20 +16,19 @@ import fr.k2i.adbeback.service.GooseGameManager;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.StatusGame;
 import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.ZipParameters;
+import fr.k2i.adbeback.webapp.bean.configure.information.*;
+import fr.k2i.adbeback.webapp.bean.configure.url.Url;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -51,6 +51,7 @@ public class AdGameFacade {
     public static final String NB_ERRORS = "errors";
     public static final String ADS_VIDEO = "adsVideo";
     public static final String GOOSE_LEVEL = "gooseLevel";
+    public static final String MAX_ERRORS = "max_err";
 
     public static final String GAME_END_TIME = "endTime";
     public static final String GAME_RESULT = "result";
@@ -59,7 +60,11 @@ public class AdGameFacade {
 
     public static final String AD_CHOISES = "adChoises";
 
+    public static final String CALL_BACK_URL = "callBack";
+    public static final String CALL_SYS_URL = "callSys";
+
     public static final double AVERAGE_AP_PRICE = 0.24;
+
 
     @Autowired
     private IAdDao adDao;
@@ -103,47 +108,122 @@ public class AdGameFacade {
     @Autowired
     private IViewedAdDao viewedAdDao;
 
+    @Autowired
+    private ICityDao cityDao;
+
+    @Autowired
+    private ICountryDao countryDao;
 
 
 
     @Transactional
     public AdGameBean createAdGame(PaymentConfigure configure, HttpServletRequest request) throws Exception {
 
+        HttpSession session = request.getSession();
+
         //1 : create Anonym User
-        // Todo : Create anonymous player with request params
-        Player player = new AnonymPlayer();
-        /*Player player = playerFacade.getCurrentPlayer();
-
-
-        CartBean cart = (CartBean) request.getSession().getAttribute(CART);
-        if(cart.getNbProduct() == 0){
-            return null;
-        }*/
+        Player player = getAnonymousPlayer(configure);
 
         //moyen 0.20 euro / pub
-        //Todo: calculate nim score
+        //2 : estimate min score
         Double nb = configure.getAmount() / AVERAGE_AP_PRICE;
         Double left = configure.getAmount() % AVERAGE_AP_PRICE;
         Integer minScore =  nb.intValue();
 
+        //one more if exemple 3.75 => 4
         if(left!=0){
             minScore++;
         }
 
+        //3 : find level for NB ads
         SingleGooseLevel gooseLevel = gooseLevelDao.findForNbAds(minScore);
 
+        int maxErr = gooseLevel.getNbMaxAdByPlay() - gooseLevel.getMinScore();
 
-        AbstractAdGame generateAdGame = adGameManager.generate(player.getId(),gooseLevel);
 
-        //Todo : set urlCall
-        generateAdGame.setSuccessUrlCall("");
-        generateAdGame.setFaillureUrlCall("");
+        //4 : generate game
+        AbstractAdGame generateAdGame = adGameManager.generate(configure.getSelfAd(),configure.getIdPartner(),configure.getIdTransaction(),player.getId(),gooseLevel);
+
+        //5 : set urlCall in session
+        session.setAttribute(CALL_BACK_URL,configure.getCallBackUrl());
+        session.setAttribute(CALL_SYS_URL,configure.getCallBackUrl());
 
         List<String> adsVideo = new ArrayList<String>();
-
         Map<Integer, Long> correctResponse = new HashMap<Integer, Long>();
-        AdGameBean res = new AdGameBean();
         Map<Integer, AdChoise> choises = generateAdGame.getChoises();
+
+        AdGameBean res = createAdBeans(adsVideo, correctResponse, choises);
+
+        //6 : time limit
+        if(gooseLevel.getLimitedTime()){
+            res.setTimeLimite((long) (minScore * 30));//30 seconds by ad
+        }else{
+            res.setTimeLimite(-1L);
+        }
+
+        res.setTotalAds(choises.size());
+
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(player.getId(), gooseLevel.getId());
+
+        boolean multiple = (gooseLevel instanceof IMultiGooseLevel);
+
+        if(gooseToken==null){
+            gooseToken = new GooseToken();
+            gooseToken.setGooseCase(gooseLevel.getStartCase());
+            player.addGooseToken(gooseToken);
+        }else if(!multiple){
+            gooseToken.setGooseCase(gooseLevel.getStartCase());
+        }
+
+        res.setMultiple(multiple);
+
+        GooseCase gooseCase = gooseToken.getGooseCase();
+        Integer number = gooseCase.getNumber();
+
+        List<PlayerGooseGame> pgg = new ArrayList<PlayerGooseGame>();
+        List<GooseCase> cases = gooseGameManager.getCases(gooseLevel, number,  7);
+        for (GooseCase c : cases) {
+            Integer type = c.ihmValue();
+            pgg.add(new PlayerGooseGame(c.getNumber().equals(number), c.getNumber(), type));
+        }
+
+        res.setGooseGames(pgg);
+        res.setUserToken(gooseCase.getNumber());
+
+        if(gooseLevel instanceof ISingleGooseLevel){
+            res.setMinScore(((SingleGooseLevel)gooseLevel).getMinScore());
+        }
+
+        Map<Integer, Long> answers = new HashMap<Integer, Long>();
+
+        session.setAttribute(LIMITED_TIME,gooseLevel.getLimitedTime());
+        session.setAttribute(PLAYER_GOOSE_GAME, pgg);
+        session.setAttribute(USER_ANSWER, answers);
+        session.setAttribute(CORRECT_ANSWER, correctResponse);
+        session.setAttribute(USER_SCORE, 0);
+        session.setAttribute(MAX_ERRORS, maxErr);
+        session.setAttribute(NB_ERRORS, 0);
+        session.setAttribute(ID_ADGAME, generateAdGame.getId());
+        session.setAttribute(ADS_VIDEO, adsVideo);
+        session.setAttribute(GAME_RESULT, null);
+        session.setAttribute(PLAYER_TOKEN, gooseCase);
+        session.setAttribute(GOOSE_LEVEL, gooseLevel.getId());
+        session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
+        session.setAttribute(AD_CHOISES,choises);
+
+        return res;
+    }
+
+    /**
+     *
+     * @param adsVideo
+     * @param correctResponse
+     * @param choises
+     * @return
+     */
+    private AdGameBean createAdBeans(List<String> adsVideo, Map<Integer, Long> correctResponse, Map<Integer, AdChoise> choises) {
+
+        AdGameBean res = new AdGameBean();
         List<AdBean> game = new ArrayList<AdBean>();
 
         for (Map.Entry<Integer, AdChoise> entry : choises.entrySet()) {
@@ -198,94 +278,75 @@ public class AdGameFacade {
             adsVideo.add(ad.getAdFile());
             //adBean.setUrl(adChoise.getCorrect().getAd().getVideo());
 
-
             correctResponse.put(num, adChoise.getCorrect().getId());
             game.add(adBean);
         }
+
         res.setGame(game);
-        //res.setMinScore(generateAdGame.getMinScore());
-        //res.setTimeLimite((long) (generateAdGame.getMinScore() * 20));
-        if(gooseLevel.getLimitedTime()){
-            res.setTimeLimite(Long.valueOf(30));
-        }else{
-            res.setTimeLimite(-1L);
-        }
-
-        res.setTotalAds(choises.size());
-
-        GooseToken gooseToken =  playerDao.getPlayerGooseToken(player.getId(), gooseLevel.getId());
-        //GooseLevel level = gooseLevelDao.get(gooseLevel);
-        boolean multiple = (gooseLevel instanceof IMultiGooseLevel);
-
-        if(gooseToken==null){
-
-            gooseToken = new GooseToken();
-            gooseToken.setGooseCase(gooseLevel.getStartCase());
-            player.addGooseToken(gooseToken);
-        }else if(!multiple){
-            gooseToken.setGooseCase(gooseLevel.getStartCase());
-        }
-
-        res.setMultiple(multiple);
-
-        GooseCase gooseCase = gooseToken.getGooseCase();
-        Integer number = gooseCase.getNumber();
-
-        List<PlayerGooseGame> pgg = new ArrayList<PlayerGooseGame>();
-        List<GooseCase> cases = gooseGameManager.getCases(gooseLevel, number,  7);
-        for (GooseCase c : cases) {
-            Integer type = c.ihmValue();
-            pgg.add(new PlayerGooseGame(c.getNumber().equals(number), c.getNumber(), type));
-        }
-
-        res.setGooseGames(pgg);
-        res.setUserToken(gooseCase.getNumber());
-
-        if(gooseLevel instanceof ISingleGooseLevel){
-            res.setMinScore(((SingleGooseLevel)gooseLevel).getMinScore());
-        }
-
-        Map<Integer, Long> answers = new HashMap<Integer, Long>();
-        HttpSession session = request.getSession();
-
-        session.setAttribute(LIMITED_TIME,gooseLevel.getLimitedTime());
-        session.setAttribute(PLAYER_GOOSE_GAME, pgg);
-        session.setAttribute(USER_ANSWER, answers);
-        session.setAttribute(CORRECT_ANSWER, correctResponse);
-        session.setAttribute(USER_SCORE, 0);
-        session.setAttribute(NB_ERRORS, 0);
-        session.setAttribute(ID_ADGAME, generateAdGame.getId());
-        session.setAttribute(ADS_VIDEO, adsVideo);
-        session.setAttribute(GAME_RESULT, null);
-        session.setAttribute(PLAYER_TOKEN, gooseCase);
-        session.setAttribute(GOOSE_LEVEL, gooseLevel.getId());
-        session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
-        session.setAttribute(AD_CHOISES,choises);
-
         return res;
+    }
+
+    /**
+     *
+     * @param configure
+     * @return
+     */
+    private Player getAnonymousPlayer(PaymentConfigure configure) {
+        Player player = new AnonymPlayer();
+        player.setLastName(UUID.randomUUID().toString());
+
+        List<Information> informations = configure.getInformations();
+        for (Information information : informations) {
+            if (information instanceof AgeInformation) {
+                AgeInformation ageInf = (AgeInformation) information;
+                player.setAgeGroup(AgeGroup.fromAge(ageInf.getOld()));
+            }
+
+
+            if (information instanceof CityInformation) {
+                CityInformation cityInf = (CityInformation) information;
+                Address address = new Address();
+                address.setCity(cityDao.findByZipcodeAndCityAndCountry_Code(cityInf.getZipCode(),cityInf.getCityName(),cityInf.getCountryCode()));
+                player.setAddress(address);
+            }
+
+            if (information instanceof CountryInformation) {
+                CountryInformation countryInf = (CountryInformation) information;
+                Address address = new Address();
+                address.setCountry(countryDao.findByCode(countryInf.getCountryCode()));
+                player.setAddress(address);
+            }
+
+
+            if (information instanceof SexInformation) {
+                SexInformation sexInf = (SexInformation) information;
+                player.setSex(sexInf.getSex());
+            }
+        }
+        return playerDao.save(player);
     }
 
     @Transactional
     public ResponseAdGameBean userResponse(HttpServletRequest request, Integer index, Long responseId) throws Exception {
         ResponseAdGameBean res = new ResponseAdGameBean();
-        Long end = (Long) request.getSession().getAttribute(GAME_END_TIME);
-        Boolean limited = (Boolean) request.getSession().getAttribute(LIMITED_TIME);
+        HttpSession session = request.getSession();
+        Long end = (Long) session.getAttribute(GAME_END_TIME);
+        Boolean limited = (Boolean) session.getAttribute(LIMITED_TIME);
 
         Player currentPlayer = playerFacade.getCurrentPlayer();
         if(limited && end < new Date().getTime()){
             res.setStatus(StatusGame.WinLimitTime);
             LimiteTimeAdGameBean gameResult = computeResultGame(request);
-            request.getSession().setAttribute(GAME_RESULT,gameResult);
+            session.setAttribute(GAME_RESULT, gameResult);
         }else{
 
-            Map<Integer, Long> correctResponse = (Map<Integer, Long>) request
-                    .getSession().getAttribute(CORRECT_ANSWER);
-            Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
-            Map<Integer, Long> answers = (Map<Integer, Long>) request.getSession()
+            Map<Integer, Long> correctResponse = (Map<Integer, Long>) session.getAttribute(CORRECT_ANSWER);
+            Integer score = (Integer) session.getAttribute(USER_SCORE);
+            Map<Integer, Long> answers = (Map<Integer, Long>) session
                     .getAttribute(USER_ANSWER);
             Long correctId = correctResponse.get(index);
 
-            Integer nbErrs = (Integer) request.getSession().getAttribute(NB_ERRORS);
+            Integer nbErrs = (Integer) session.getAttribute(NB_ERRORS);
 
             GooseCase gooseCase = null;
 
@@ -295,7 +356,7 @@ public class AdGameFacade {
                 res.setCorrect(true);
                 score++;
                 res.setScore(score);
-                request.getSession().setAttribute(USER_SCORE, score);
+                session.setAttribute(USER_SCORE, score);
                 answers.put(index, responseId);
 
                 gooseCase = goHeadToken(request);
@@ -309,7 +370,7 @@ public class AdGameFacade {
                 res.setScore(score);
                 answers.put(index, -1L);
                 nbErrs++;
-                request.getSession().setAttribute(NB_ERRORS, nbErrs);
+                session.setAttribute(NB_ERRORS, nbErrs);
 /*            if (nbErrs > 6) {
                 res.setStatus(StatusGame.Lost);
                 emptyGameSession(request);
@@ -318,32 +379,43 @@ public class AdGameFacade {
             }*/
             }
 
-            if (index < correctResponse.size()-1  && !(gooseCase instanceof EndLevelGooseCase)) {
+            Integer maxErr = (Integer) session.getAttribute(MAX_ERRORS);
+
+            if (nbErrs < maxErr  && index < correctResponse.size()-1  && !(gooseCase instanceof EndLevelGooseCase)) {
                 res.setStatus(StatusGame.Playing);
             } else {
                 fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;
                 if(gooseCase instanceof EndLevelGooseCase){
                     res.setStatus(StatusGame.WinLimitTime);
                     statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
+                    Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
+                    sendCallBack(callSys.getKo());
                 }else{
                     res.setStatus(StatusGame.Lost);
                     statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
+                    Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
+                    sendCallBack(callSys.getOk());
                 }
                 LimiteTimeAdGameBean gameResult = computeResultGame(request);
-                request.getSession().setAttribute(GAME_RESULT,gameResult);
+                session.setAttribute(GAME_RESULT, gameResult);
 
-                adGameManager.saveResponses((Long) request.getSession().getAttribute(ID_ADGAME), score, answers, statusGame);
+                adGameManager.saveResponses((Long) session.getAttribute(ID_ADGAME), score, answers, statusGame);
                 //emptyGameSession(request);
             }
         }
 
 
-        GooseToken gooseToken =  playerDao.getPlayerGooseToken(currentPlayer.getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(currentPlayer.getId(), (Long) session.getAttribute(GOOSE_LEVEL));
         Integer number = gooseToken.getGooseCase().getNumber();
         res.setUserToken(number);
 
         return res;
 
+    }
+
+    private void sendCallBack(String url) throws IOException {
+        HttpGet httpget = new HttpGet(url);
+        HttpClients.createDefault().execute(httpget);
     }
 
     @Transactional
@@ -417,11 +489,11 @@ public class AdGameFacade {
             if(reduction.getPercentageValue()!=null){
                 sb.append(reduction.getPercentageValue());
                 sb.append(" %, chez ");
-                sb.append(reduction.getPartener().getName());
+                sb.append(reduction.getPartner().getName());
             }else{
                 sb.append(reduction.getPercentageValue());
                 sb.append(" euros, chez ");
-                sb.append(reduction.getPartener().getName());
+                sb.append(reduction.getPartner().getName());
             }
             gameResult.setMessage(sb.toString());
         }else if (gooseCase instanceof JailGooseCase) {
@@ -516,8 +588,9 @@ public class AdGameFacade {
     @Transactional
     public ResponseAdGameBean noUserResponse(HttpServletRequest request, Integer index) throws Exception {
         ResponseAdGameBean res = new ResponseAdGameBean();
-        Long end = (Long) request.getSession().getAttribute(GAME_END_TIME);
-        Boolean limited = (Boolean) request.getSession().getAttribute(LIMITED_TIME);
+        HttpSession session = request.getSession();
+        Long end = (Long) session.getAttribute(GAME_END_TIME);
+        Boolean limited = (Boolean) session.getAttribute(LIMITED_TIME);
 
         Player currentPlayer = playerFacade.getCurrentPlayer();
         AdRule adRule = doStat(request, index, currentPlayer);
@@ -525,43 +598,54 @@ public class AdGameFacade {
         if(limited && end < new Date().getTime()){
             res.setStatus(StatusGame.WinLimitTime);
             LimiteTimeAdGameBean gameResult = computeResultGame(request);
-            request.getSession().setAttribute(GAME_RESULT,gameResult);
+            session.setAttribute(GAME_RESULT, gameResult);
         }else{
-            Integer score = (Integer) request.getSession().getAttribute(USER_SCORE);
-            Map<Integer, Long> answers = (Map<Integer, Long>) request.getSession()
+            Integer score = (Integer) session.getAttribute(USER_SCORE);
+            Map<Integer, Long> answers = (Map<Integer, Long>) session
                     .getAttribute(USER_ANSWER);
-            Map<Integer, Long> correctResponse = (Map<Integer, Long>) request
-                    .getSession().getAttribute(CORRECT_ANSWER);
-            Integer nbErrs = (Integer) request.getSession().getAttribute(NB_ERRORS);
+            Map<Integer, Long> correctResponse = (Map<Integer, Long>) session.getAttribute(CORRECT_ANSWER);
+            Integer nbErrs = (Integer) session.getAttribute(NB_ERRORS);
 
             answers.put(index, null);
             res.setCorrect(false);
             res.setScore(score);
             nbErrs++;
-            request.getSession().setAttribute(USER_SCORE, score);
-            request.getSession().setAttribute(NB_ERRORS, nbErrs);
+            session.setAttribute(USER_SCORE, score);
+            session.setAttribute(NB_ERRORS, nbErrs);
 
-            if (nbErrs > 6) {
+            Integer maxErr = (Integer) session.getAttribute(MAX_ERRORS);
+
+            if (nbErrs > maxErr) {
                 res.setStatus(StatusGame.Lost);
-                //emptyGameSession(request);
-                adGameManager.saveResponses((Long) request.getSession()
+                Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
+                res.setWhereToGo(callBack.getKo());
+                Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
+                sendCallBack(callSys.getKo());
+                adGameManager.saveResponses((Long) session
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
             } else if (index +1 < correctResponse.size()) {
                 res.setStatus(StatusGame.Playing);
             } else if(score >0){
+                Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
+                res.setWhereToGo(callBack.getOk());
+                Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
+                sendCallBack(callSys.getOk());
                 res.setStatus(StatusGame.WinLimitTime);
-                adGameManager.saveResponses((Long) request.getSession()
+                adGameManager.saveResponses((Long) session
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Win);
             }else{
+                Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
+                res.setWhereToGo(callBack.getKo());
+                Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
+                sendCallBack(callSys.getKo());
                 res.setStatus(StatusGame.Lost);
-                //emptyGameSession(request);
-                adGameManager.saveResponses((Long) request.getSession()
+                adGameManager.saveResponses((Long) session
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
             }
 
         }
 
-        GooseToken gooseToken =  playerDao.getPlayerGooseToken(currentPlayer.getId(), (Long) request.getSession().getAttribute(GOOSE_LEVEL));
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(currentPlayer.getId(), (Long) session.getAttribute(GOOSE_LEVEL));
         Integer number = gooseToken.getGooseCase().getNumber();
         res.setUserToken(number);
 

@@ -19,12 +19,15 @@ public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
 	/**
 	 * Generation du jeu$
      *
+     *
+     * @param selfAd
+     * @param idPartner
+     * @param idTransaction
      * @param idPlayer
-	 * @param gooseLevel
-     * @return
-	 * @throws Exception
+     * @param gooseLevel   @return
+     * @throws Exception
 	 */
-	AbstractAdGame generate(Long idPlayer, GooseLevel gooseLevel)throws Exception;
+	AbstractAdGame generate(Boolean selfAd, String idPartner, String idTransaction, Long idPlayer, GooseLevel gooseLevel)throws Exception;
 	
 
 	/**
