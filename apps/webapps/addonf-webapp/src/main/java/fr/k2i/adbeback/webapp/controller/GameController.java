@@ -1,8 +1,10 @@
 package fr.k2i.adbeback.webapp.controller;
 
+import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +24,10 @@ public class GameController{
     private AdGameFacade adGameFacade;
 
     @RequestMapping("/game")
-    public String game(Map<String, Object> model,HttpServletRequest request) {
+    public String startGame(@ModelAttribute PaymentConfigure configure,Map<String, Object> model,HttpServletRequest request) throws Exception {
+        model.put("game",adGameFacade.createAdGame(configure,request));
         return "game";
     }
-
 
     @RequestMapping("/resume")
     public String resume(Map<String, Object> model,HttpServletRequest request) {

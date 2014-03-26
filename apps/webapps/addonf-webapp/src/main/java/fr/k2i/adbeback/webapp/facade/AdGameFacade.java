@@ -6,10 +6,7 @@ import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
-import fr.k2i.adbeback.core.business.player.Address;
-import fr.k2i.adbeback.core.business.player.AgeGroup;
-import fr.k2i.adbeback.core.business.player.AnonymPlayer;
-import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.player.*;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
@@ -22,6 +19,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,14 +113,30 @@ public class AdGameFacade {
     private ICountryDao countryDao;
 
 
+    @Autowired IPartnerDao partnerDao;
+
 
     @Transactional
     public AdGameBean createAdGame(PaymentConfigure configure, HttpServletRequest request) throws Exception {
 
         HttpSession session = request.getSession();
 
+        //0 : verifier
+        if(partnerDao.findbyExtId(configure.getIdPartner())==null){
+            return null;
+        }else{
+            if(partnerDao.existTransaction(configure.getIdPartner(),configure.getIdTransaction())){
+                return null;
+            }
+        }
+
+
         //1 : create Anonym User
         Player player = getAnonymousPlayer(configure);
+        //log user
+        WebPlayer webPlayer = new WebPlayer(player);
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(webPlayer, webPlayer.getPassword(), webPlayer.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
         //moyen 0.20 euro / pub
         //2 : estimate min score
@@ -145,7 +160,7 @@ public class AdGameFacade {
 
         //5 : set urlCall in session
         session.setAttribute(CALL_BACK_URL,configure.getCallBackUrl());
-        session.setAttribute(CALL_SYS_URL,configure.getCallBackUrl());
+        session.setAttribute(CALL_SYS_URL,configure.getCallSysUrl());
 
         List<String> adsVideo = new ArrayList<String>();
         Map<Integer, Long> correctResponse = new HashMap<Integer, Long>();
@@ -385,12 +400,16 @@ public class AdGameFacade {
                 fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;
                 if(gooseCase instanceof EndLevelGooseCase){
                     res.setStatus(StatusGame.WinLimitTime);
+                    Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
+                    res.setWhereToGo(callBack.getOk());
                     statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
                     Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
-                    sendCallBack(callSys.getKo());
+                    sendCallBack(callSys.getOk());
                 }else{
                     res.setStatus(StatusGame.Lost);
                     statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
+                    Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
+                    res.setWhereToGo(callBack.getKo());
                     Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
                     sendCallBack(callSys.getOk());
                 }

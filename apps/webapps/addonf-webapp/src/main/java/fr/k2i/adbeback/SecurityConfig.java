@@ -143,23 +143,19 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/").permitAll()
+                    .antMatchers("/**").permitAll()
+                    .antMatchers("/static/**").permitAll();
 
-                    .antMatchers("/home.html").permitAll()
+                    /*.antMatchers("/home.html").permitAll()
                     .antMatchers("/signup").permitAll()
                     .antMatchers("/login").permitAll()
                     .antMatchers("/logout-success").permitAll()
                     .antMatchers("/back").permitAll()
                     .antMatchers("/ads").permitAll()
 
+                    .antMatchers("/logo/**").permitAll()
 
                     .antMatchers("/static/**").permitAll()
-
-                /*    .antMatchers("/coral/**").permitAll()
-                    .antMatchers("/css/**").permitAll()
-                    .antMatchers("/js/**").permitAll()
-                    .antMatchers("/img/**").permitAll()
-                    .antMatchers("/template/**").permitAll()*/
 
                     .antMatchers("/checkout.html").permitAll()
                     .antMatchers("/cart.html").permitAll()
@@ -177,7 +173,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
                     .antMatchers("/getTownsByName/**").permitAll()
                     .antMatchers("/rest/musics/news/*").permitAll()
-                    .antMatchers("/rest/createGame").permitAll()
+                    .antMatchers("/game").permitAll()
 
 
                     //manage cart
@@ -185,9 +181,14 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/rest/removeFromCart/*").permitAll()
                     .antMatchers("/rest/cart").permitAll()
                     .antMatchers("/rest/cart/empty").permitAll()
-                    .antMatchers("/partial/*.html").permitAll()
+                    .antMatchers("/partials/*.html").permitAll()
 
-                    .antMatchers("/**").hasRole("USER");
+
+                    .antMatchers("/rest/noreponse/**").permitAll()
+                    .antMatchers("/rest/play/**").permitAll()
+                    .antMatchers("/video/**").permitAll()
+
+                    .antMatchers("/**").hasRole("USER");*/
 
         http.formLogin()
                     .loginPage("/login")

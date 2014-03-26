@@ -15,4 +15,6 @@ import java.util.List;
 public interface IPartnerDao extends IGenericDao<Partner, Long> {
     @Transactional
     Partner findbyExtId(String idPartnerExt);
+
+     boolean existTransaction(String idPartnerExt, String idTransactionExt);
 }

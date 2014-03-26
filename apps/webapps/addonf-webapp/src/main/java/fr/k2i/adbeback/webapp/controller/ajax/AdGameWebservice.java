@@ -30,7 +30,7 @@ import static fr.k2i.adbeback.webapp.facade.AdGameFacade.ADS_VIDEO;
  * To change this template use File | Settings | File Templates.
  */
 
-@RestController
+@Controller
 public class AdGameWebservice {
 
     @Autowired
