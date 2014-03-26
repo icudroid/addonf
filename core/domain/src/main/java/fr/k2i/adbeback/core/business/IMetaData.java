@@ -38,6 +38,7 @@ public interface IMetaData {
             String BRAND_JOIN =                         "brand_id";
             String INITIAL_AMOUNT =                     "initial_amount";
             String INSERTED =                           "inserted";
+            String RESPONSE_CORRECT_JOIN =              "correct_for_rule_id";
 
             public interface Discrimator{
                 String DISCRIMINATOR =                  "classe";
@@ -51,6 +52,7 @@ public interface IMetaData {
                 String OPEN_RULE =                      "Open";
                 String PRODUCT_RULE =                   "Product";
                 String SEX_RULE =                       "Sex";
+                String MULTI_RESPONSE_RULE =            "MultiResponses";
             }
             String QUESTION =                           "question";
             String AGE_MIN =                            "age_min";

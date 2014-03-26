@@ -12,6 +12,7 @@ import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.dao.jpa.*;
 import fr.k2i.adbeback.logger.LogHelper;
+import fr.k2i.adbeback.webapp.bean.adservice.OpenMultiRuleBean;
 import fr.k2i.adbeback.webapp.util.PhoneNumberUtils;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.AdService;
@@ -30,8 +31,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -352,6 +351,67 @@ public class BrandServiceFacade {
             ad.addRule(o);
         }
 
+
+
+        List<OpenMultiRuleBean> openMultiRules = adServices.getOpenMultiRules();
+        //ad.getRules().removeAll(ad.getRules(OpenRule.class));
+        deleteNotNeededOpenMultiRule(ad, openMultiRules);
+
+        for (OpenMultiRuleBean openRule : openMultiRules) {
+            MultiResponseRule o = new MultiResponseRule();
+
+            if(openRule.getId() != null){
+                List<MultiResponseRule> rules = ad.getRules(MultiResponseRule.class);
+                for (MultiResponseRule rule : rules) {
+                    if(rule.getId().equals(openRule.getId())){
+                        o = rule;
+                        break;
+                    }
+                }
+            }else{
+                o = new MultiResponseRule();
+            }
+
+
+            o.setAd(ad);
+            o.setStartDate(openRule.getStartDate());
+            o.setEndDate(openRule.getEndDate());
+            o.setQuestion(openRule.getQuestion());
+            o.setPrice(showOpenPrice);
+            o.setMaxDisplayByUser(openRule.getMaxDisplayByUser());
+            o.setAddonText(openRule.getAddonText());
+            o.setBtnValidText(openRule.getBtnValidText());
+
+            if(o.getResponses()!=null)o.getResponses().clear();
+
+            List<AdResponse> corrects = o.getCorrects();
+            if(corrects==null){
+                corrects = new ArrayList<AdResponse>();
+                o.setCorrects(corrects);
+            }else{
+                o.getCorrects().clear();
+            }
+
+
+            List<AdResponseBean> responses = openRule.getResponses();
+            for (AdResponseBean response : responses) {
+                AdResponse adResponse = new AdResponse();
+                if(response.getImage()!=null){
+                    adResponse.setImage(FileUtils.saveFile(response.getImage().getContent(),logoPath));
+                }
+                adResponse.setResponse(response.getResponse());
+                o.addResponse(adResponse);
+
+
+                if(response.isCorrect()){
+                    corrects.add(adResponse);
+                }
+            }
+
+            ad.addRule(o);
+        }
+
+
         adDao.save(ad);
 
     }
@@ -375,6 +435,7 @@ public class BrandServiceFacade {
 
     private void deleteNotNeededOpenRule(Ad ad, List<OpenRuleBean> openRuleBeans) {
         List<OpenRule> rules = ad.getRules(OpenRule.class);
+        List<OpenRule> toRemove = new ArrayList<OpenRule>();
         for (OpenRule rule : rules) {
             boolean found = false;
             for (OpenRuleBean openRuleBean : openRuleBeans) {
@@ -384,10 +445,31 @@ public class BrandServiceFacade {
                 }
             }
             if(!found){
-                rules.remove(rule);
+                toRemove.add(rule);
             }
         }
+        ad.getRules().removeAll(toRemove);
     }
+
+    private void deleteNotNeededOpenMultiRule(Ad ad, List<OpenMultiRuleBean> openRuleBeans) {
+        List<MultiResponseRule> rules = ad.getRules(MultiResponseRule.class);
+        List<MultiResponseRule> toRemove = new ArrayList<MultiResponseRule>();
+        for (MultiResponseRule rule : rules) {
+            boolean found = false;
+            for (OpenMultiRuleBean openRuleBean : openRuleBeans) {
+                if(rule.getId().equals(openRuleBean.getId())){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                toRemove.add(rule);
+            }
+        }
+        ad.getRules().removeAll(toRemove);
+    }
+
+
 
     private void deleteNotNeededSexyRule(Ad ad, SexRuleBean sexRule) {
         List<SexRule> rules = ad.getRules(SexRule.class);
@@ -449,7 +531,7 @@ public class BrandServiceFacade {
         for (AdRule adRule : ad.getRules()) {
             rules.addRule(adRule);
             if(adRule instanceof fr.k2i.adbeback.core.business.ad.rule.AdService){
-                boolean used = adGameDao.isGeneratedWithRule((fr.k2i.adbeback.core.business.ad.rule.AdService) adRule);
+                boolean used = adGameDao.RuleIsUsed((fr.k2i.adbeback.core.business.ad.rule.AdService) adRule);
                 service.addService(adRule,logoPath,used);
             }
         }

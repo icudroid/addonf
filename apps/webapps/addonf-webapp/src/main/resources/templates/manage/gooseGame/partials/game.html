@@ -52,7 +52,8 @@
             <img ng-show="current.type.$name=='STATIC'" class="col-xs-12 col-md-12" style="max-width: 100%;max-height: 100%;margin: 0 auto;" src="{{adImage}}" />
         </div>
         <div class="col-xs-3 col-md-3 btn-result" style="height: 100%;margin: 0 auto;">
-            <button ng-repeat="possibility in current.possibilities" ng-click="userResponse(possibility)" class="col-xs-12 col-md-12 btn btn-default" style="height: 32%;{{doMargin($index )}}">
+
+            <button ng-if="!current.multiResponse" ng-repeat="possibility in current.possibilities" ng-click="userResponse(possibility)" class="col-xs-12 col-md-12 btn btn-default" style="height: 32%;{{doMargin($index )}}">
                 <img ng-if="possibility.type==0" ng-src="{{base}}logo/{{possibility.answerImage}}" style="max-height: 90%;max-width: 90%;"/>
                 <img ng-if="possibility.type==1" ng-src="{{base}}logo/{{possibility.answerImage}}" style="max-height: 90%;max-widht: 90%;"/>
                 <span ng-if="possibility.type==2">{{possibility.answerText}}</span>
@@ -60,6 +61,19 @@
                 <img ng-if="hasType3HasImage(possibility)" ng-src="{{base}}logo/{{possibility.answerImage}}" style="max-height: 90%;max-widht: 90%;"/>
                 <span ng-if="hasType3HasText(possibility)"><br />{{possibility.answerText}}</span>
             </button>
+
+            <div class="checkbox" ng-if="current.multiResponse" ng-repeat="possibility in current.possibilities">
+                <label>
+                    <input type="checkbox" ng-model="multiResponse[$index]" ng-true-value="{{possibility.id}}"/>{{possibility.answerText}}
+                </label>
+                <br />
+            </div>
+
+
+            <div ng-if="current.multiResponse">{{current.addonText}}</div>
+            <br /><br /><br />
+
+            <button ng-if="current.multiResponse" ng-click="userResponseMulti()" class="btn btn-default">{{current.btnValidText}}</button>
         </div>
     </div>
 </div>

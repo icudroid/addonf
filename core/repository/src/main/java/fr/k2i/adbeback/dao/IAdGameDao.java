@@ -12,6 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface IAdGameDao extends IGenericDao<AbstractAdGame, Long> {
 
     @Transactional
-    boolean isGeneratedWithRule(AdService adRule);
+    boolean RuleIsUsed(AdService adRule);
 }
 

@@ -153,9 +153,27 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
                 AdService rule = (AdService) rulesPossible.get(ramRandom.nextInt(rulesPossible.size()));
 
 				choises.setQuestion(rule.getQuestion());
-				choises.setPossiblities(generatePossibilies(ad, correct,rule));
-				choises.setCorrect(choises.getPossiblities().get(correct));
-				choises.setNumber(i);
+
+
+
+                List<Possibility> corrects = choises.getCorrects();
+                if (corrects ==null){
+                    corrects = new ArrayList<Possibility>();
+                    choises.setCorrects(corrects);
+                }
+
+
+                if (rule instanceof MultiResponseRule) {
+                    MultiResponseRule multiResponseRule = (MultiResponseRule) rule;
+                    generatePossibiliesAndCorrects(ad,multiResponseRule,choises);
+                }else{
+                    choises.setPossiblities(generatePossibilies(ad, correct,rule));
+                    corrects.add(choises.getPossiblities().get(correct));
+                }
+
+
+
+                choises.setNumber(i);
                 choises.setAdGame(game);
                 choises.setGeneratedBy((AdService) rule);
 				res.put(i, choises);
@@ -166,6 +184,8 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 		return res;
 	}
+
+
 
     private void addValidAdService(Player player, List<AdService> rulesPossible, LocalDate now, AdService adRule) {
         if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
@@ -179,6 +199,41 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
             }
         }
     }
+
+
+    private void generatePossibiliesAndCorrects(Ad ad, MultiResponseRule or, AdChoise choises) {
+
+        List<Possibility> possibilities = new ArrayList<Possibility>();
+        List<Possibility> corrects = new ArrayList<Possibility>();
+        Random ramRandom = new Random();
+
+        List<AdResponse> responses = or.getResponses();
+
+        Set<Integer> answers = new HashSet<Integer>();
+
+        for (int i = 0; i < 3; i++) {
+            OpenPossibility pp = new OpenPossibility();
+            pp.setAd(ad);
+
+            int ramdom;
+            do {
+                ramdom = ramRandom.nextInt(responses.size());
+            } while (answers.contains(ramdom));
+            answers.add(ramdom);
+            AdResponse adResponse = responses.get(ramdom);
+            pp.setAnswerText(adResponse.getResponse());
+            pp.setAnswerImage(adResponse.getImage());
+
+            possibilities.add(pp);
+            if(or.getCorrects().contains(adResponse)){
+                corrects.add(pp);
+            }
+        }
+
+        choises.setPossiblities(possibilities);
+        choises.setCorrects(corrects);
+    }
+
 
     private List<Possibility> generatePossibilies(Ad ad, int correct, AdRule rule) {
 		List<Possibility> possibilities = new ArrayList<Possibility>();
@@ -254,7 +309,27 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 				}
 				possibilities.add(pp);
 			}
-		}
+		}else if (rule instanceof MultiResponseRule) {
+            MultiResponseRule or = (MultiResponseRule) rule;
+            List<AdResponse> responses = or.getResponses();
+
+            Set<Integer> answers = new HashSet<Integer>();
+
+            for (int i = 0; i < 3; i++) {
+                OpenPossibility pp = new OpenPossibility();
+                pp.setAd(ad);
+
+                int ramdom;
+                do {
+                    ramdom = ramRandom.nextInt(responses.size());
+                } while (answers.contains(ramdom));
+                answers.add(ramdom);
+                pp.setAnswerText(responses.get(ramdom).getResponse());
+                pp.setAnswerImage(responses.get(ramdom).getImage());
+
+                possibilities.add(pp);
+            }
+        }
 
 		return possibilities;
 	}
@@ -262,17 +337,24 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
 	public void saveResponses(Long idAdGame, Integer score,
-			Map<Integer, Long> answers,StatusGame statusGame) throws Exception {
+			Map<Integer, List<Long>> answers,StatusGame statusGame) throws Exception {
 		AbstractAdGame adGame = adGameDao.get(idAdGame);
 		AdScore adScore = new AdScore();
 		adScore.setScore(score);
 		Map<Integer, AdResponsePlayer> answersPlayer = new HashMap<Integer, AdResponsePlayer>();
-		for (Entry<Integer, Long> answer : answers.entrySet()) {
+		for (Entry<Integer,  List<Long>> answer : answers.entrySet()) {
 			AdResponsePlayer r = new AdResponsePlayer();
 			r.setAdScore(adScore);
 			r.setNumber(answer.getKey());
-			if(answer.getValue()!=null && answer.getValue()!=-1){
-				r.setResponse(possibilityDao.get(answer.getValue()));
+            List<Long> value = answer.getValue();
+            if(value !=null && !value.isEmpty()){
+
+                List<Possibility> possibilities = new ArrayList<Possibility>();
+                for (Long idPossibily : value) {
+                    possibilities.add(possibilityDao.get(idPossibily));
+                }
+
+				r.setResponses(possibilities);
 			}
 			answersPlayer.put(answer.getKey(), r);
 		}

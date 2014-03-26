@@ -2,10 +2,7 @@ package fr.k2i.adbeback.webapp.bean;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.*;
-import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
-import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
-import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
-import fr.k2i.adbeback.webapp.bean.adservice.ProductRuleBean;
+import fr.k2i.adbeback.webapp.bean.adservice.*;
 import lombok.Data;
 
 import java.io.IOException;
@@ -24,6 +21,7 @@ import java.util.List;
 public class AdService implements Serializable{
     private List<BrandRuleBean> brandRules = new ArrayList<BrandRuleBean>();
     private List<OpenRuleBean> openRules = new ArrayList<OpenRuleBean>();
+    private List<OpenMultiRuleBean> openMultiRules = new ArrayList<OpenMultiRuleBean>();
     private List<ProductRuleBean> productRules = new ArrayList<ProductRuleBean>();
 
 
@@ -48,6 +46,34 @@ public class AdService implements Serializable{
 
 
         openRules.add(add);
+    }
+
+
+
+    public void addService(MultiResponseRule adRule,String base,boolean used) throws IOException {
+        if(openMultiRules == null){
+            openMultiRules = new ArrayList<OpenMultiRuleBean>();
+        }
+
+        OpenMultiRuleBean add = new OpenMultiRuleBean(false);
+        add.setStartDate(adRule.getStartDate());
+        add.setQuestion(adRule.getQuestion());
+        add.setEndDate(adRule.getEndDate());
+        add.setMaxDisplayByUser(adRule.getMaxDisplayByUser());
+        add.setId(adRule.getId());
+        add.setCanBeDelete(!used);
+        add.setBtnValidText(adRule.getBtnValidText());
+        add.setAddonText(adRule.getAddonText());
+
+        List<AdResponse> responses = adRule.getResponses();
+
+
+        for (AdResponse response : responses) {
+            add.addResponse(response, adRule.getCorrects().contains(response), base);
+        }
+
+
+        openMultiRules.add(add);
     }
 
 
@@ -77,8 +103,8 @@ public class AdService implements Serializable{
             addService((BrandRule) adRule,used);
         }else if(adRule instanceof OpenRule){
             addService((OpenRule) adRule, base, used);
+        }else if(adRule instanceof MultiResponseRule){
+           addService((MultiResponseRule) adRule, base, used);
         }
-
-
     }
 }

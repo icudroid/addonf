@@ -15,7 +15,6 @@
     <packaging>pom</packaging>
     <name>CORE</name>
 
-
     <modules>
         <module>domain</module>
         <module>repository</module>

@@ -13,6 +13,9 @@ public class AdBean implements Serializable{
 	private List<PossibilityBean> possibilities;
     private Long duration;
     private TypeAd type;
+    private boolean multiResponse;
+    private String addonText;
+    private String btnValidText;
 
     public enum TypeAd{
         VIDEO,STATIC,AUDIO;

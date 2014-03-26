@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.controller.ajax;
 
+import com.google.common.collect.Lists;
 import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.webapp.bean.AdGameBean;
 import fr.k2i.adbeback.webapp.bean.LimiteTimeAdGameBean;
@@ -118,8 +119,17 @@ public class AdGameWebservice {
                             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        return adGameFacade.userResponse(request,index,responseId);
+        return adGameFacade.userResponse(request,index, Lists.newArrayList(responseId));
 
+    }
+
+    @RequestMapping(value = "/rest/play/{index}", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseAdGameBean playMultiReponse(@PathVariable Integer index, @RequestParam List<Long> responseId,
+                            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        return adGameFacade.userResponse(request,index,responseId);
     }
 
     @RequestMapping(value = "/rest/noresponse/{index}", method = RequestMethod.GET)

@@ -69,7 +69,8 @@
                             <div class="heading-buttons border-bottom innerLR">
                                 <div class="btn-group pull-right">
                                     <a class="btn btn-primary" href="#" ng-click="addBrandRule()" th:utext="#{addonf.campaign.step3.brandRule}"><i class="fa fa-fw fa-plus-circle"></i> Affichage par Logo</a>
-                                    <a class="btn btn-primary" href="#" ng-click="addOpenRule()" th:utext="#{addonf.campaign.step3.openRule}"><i class="fa fa-fw fa-plus-circle"></i> Affichage Personnalisé</a>
+                                    <a class="btn btn-primary" href="#" ng-click="addOpenRule()" th:utext="#{addonf.campaign.step3.openRule}"><i class="fa fa-fw fa-plus-circle"></i> Affichage Personnalisé réponse unique</a>
+                                    <a class="btn btn-primary" href="#" ng-click="addOpenMultiRule()" th:utext="#{addonf.campaign.step3.openRuleMulti}"><i class="fa fa-fw fa-plus-circle"></i> Affichage Personnalisé multi-réponses</a>
                                 </div>
                                 <h4 class="margin-none innerTB" th:text="#{addonf.campaign.step3.choice}">Choix d'affichages :</h4>
                                 <div class="clearfix"></div>
@@ -95,12 +96,22 @@
                                     </tr>
 
                                     <tr ng-repeat="openRule in model.adServices.openRules">
-                                        <td th:text="#{addonf.campaign.step3.table.body.openRule}">Personnalisé</td>
+                                        <td th:text="#{addonf.campaign.step3.table.body.openRule}">Personnalisé (1 Réponse)</td>
                                         <td th:inline="text">[[#{addonf.campaign.step3.between}]]&nbsp;{{openRule.startDate | date:format}}&nbsp;[[#{addonf.campaign.step3.and}]]&nbsp;{{openRule.endDate | date:format}}</td>
                                         <td>{{displayMaxDisplayByUser(openRule)}}</td>
                                         <td>
                                             <a class="btn  btn-success" href="#" ng-click="modifyOpenRule(openRule)"><i class="fa fa fa-pencil"></i></a>
                                             <a ng-if="openRule.canBeDelete" class="btn  btn-danger" href="#" ng-click="removeOpenRule(openRule)"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+
+                                    <tr ng-repeat="openMultiRule in model.adServices.openMultiRules">
+                                        <td th:text="#{addonf.campaign.step3.table.body.openMultiRule}">Personnalisé Multi-réponses</td>
+                                        <td th:inline="text">[[#{addonf.campaign.step3.between}]]&nbsp;{{openMultiRule.startDate | date:format}}&nbsp;[[#{addonf.campaign.step3.and}]]&nbsp;{{openMultiRule.endDate | date:format}}</td>
+                                        <td>{{displayMaxDisplayByUser(openMultiRule)}}</td>
+                                        <td>
+                                            <a class="btn  btn-success" href="#" ng-click="modifyOpenMultiRule(openMultiRule)"><i class="fa fa fa-pencil"></i></a>
+                                            <a ng-if="openMultiRule.canBeDelete" class="btn  btn-danger" href="#" ng-click="removeOpenMultiRule(openMultiRule)"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
 

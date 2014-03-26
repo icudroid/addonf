@@ -1,111 +1,60 @@
 package fr.k2i.adbeback.core.business.game;
 
 import java.io.Serializable;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "ad_response_player")
 public class AdResponsePlayer extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = -9114916487551116090L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Possibility response;
-	private AdScore adScore;
-	private Integer number; 
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 
-	public Long getId() {
-		return id;
-	}
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "RESPONSE_ID")
+    private List<Possibility> responses;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "AD_SCORE_ID")
+    private AdScore adScore;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "POSSIBILITY_ID")
-	public Possibility getResponse() {
-		return response;
-	}
-	
-	public void setResponse(Possibility response) {
-		this.response = response;
-	}
+	private Integer number;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "AD_SCORE_ID")
-	public AdScore getAdScore() {
-		return adScore;
-	}
 
-	public void setAdScore(AdScore adScore) {
-		this.adScore = adScore;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AdResponsePlayer)) return false;
 
-	public Integer getNumber() {
-		return number;
-	}
+        AdResponsePlayer that = (AdResponsePlayer) o;
 
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (number != null ? !number.equals(that.number) : that.number != null) return false;
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((adScore == null) ? 0 : adScore.hashCode());
-		result = prime * result + ((number == null) ? 0 : number.hashCode());
-		result = prime * result
-				+ ((response == null) ? 0 : response.hashCode());
-		return result;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AdResponsePlayer other = (AdResponsePlayer) obj;
-		if (adScore == null) {
-			if (other.adScore != null)
-				return false;
-		} else if (!adScore.equals(other.adScore))
-			return false;
-		if (number == null) {
-			if (other.number != null)
-				return false;
-		} else if (!number.equals(other.number))
-			return false;
-		if (response == null) {
-			if (other.response != null)
-				return false;
-		} else if (!response.equals(other.response))
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (number != null ? number.hashCode() : 0);
+        return result;
+    }
 
-	@Override
-	public String toString() {
-		return "AdResponsePlayer [id=" + id + ", response=" + response
-				+ ", adScore=" + adScore + ", number=" + number + "]";
-	}
-
+    @Override
+    public String toString() {
+        return "AdResponsePlayer{" +
+                "number=" + number +
+                '}';
+    }
 }

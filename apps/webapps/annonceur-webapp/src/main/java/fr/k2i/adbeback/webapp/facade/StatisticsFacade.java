@@ -5,12 +5,9 @@ import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.dao.*;
-import fr.k2i.adbeback.dao.jpa.AdGameDao;
 import fr.k2i.adbeback.dao.jpa.StatisticsDao;
 import fr.k2i.adbeback.webapp.bean.LabelData;
 import fr.k2i.adbeback.webapp.bean.StatisticSearchBean;
-import fr.k2i.adbeback.webapp.bean.adservice.AdServiceBean;
-import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -163,7 +160,7 @@ public class StatisticsFacade {
         fr.k2i.adbeback.webapp.bean.AdService service = new fr.k2i.adbeback.webapp.bean.AdService();
 
         for (AdService adRule : rules) {
-            boolean used = adGameDao.isGeneratedWithRule(adRule);
+            boolean used = adGameDao.RuleIsUsed(adRule);
             service.addService(adRule,logoPath,used);
         }
 

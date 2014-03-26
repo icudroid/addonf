@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -38,7 +39,7 @@ public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
      * @param statusGame
 	 * @throws Exception
 	 */
-	void saveResponses(Long idAdGame, Integer score, Map<Integer, Long> answers,StatusGame statusGame)throws Exception;
+	void saveResponses(Long idAdGame, Integer score, Map<Integer, List<Long>> answers,StatusGame statusGame)throws Exception;
 
 
 }

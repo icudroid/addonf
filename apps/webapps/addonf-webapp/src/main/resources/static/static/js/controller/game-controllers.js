@@ -20,6 +20,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
 
 
+        $scope.multiResponse = [];
         $scope.base = addonf.base;
         $scope.videoElt = angular.element("video");
         $scope.left = 0;
@@ -162,6 +163,15 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         $scope.userResponse = function(userResponse){
             $timeout.cancel($scope.timeoutStatic);
             Game.doResponse({index:$scope.index,responseId:userResponse.id},function(data){
+                doResponse(data)
+            });
+            doNext();
+        };
+
+
+        $scope.userResponseMulti = function(){
+            $timeout.cancel($scope.timeoutStatic);
+            Game.doResponseMulti({index:$scope.index,responseId:$scope.multiResponse},function(data){
                 doResponse(data)
             });
             doNext();

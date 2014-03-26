@@ -3,6 +3,7 @@ package fr.k2i.adbeback.webapp.facade;
 import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
+import fr.k2i.adbeback.core.business.ad.rule.MultiResponseRule;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
@@ -61,7 +62,7 @@ public class AdGameFacade {
     public static final String CALL_BACK_URL = "callBack";
     public static final String CALL_SYS_URL = "callSys";
 
-    public static final double AVERAGE_AP_PRICE = 0.24;
+    public static final double AVERAGE_AP_PRICE = 0.25;
 
 
     @Autowired
@@ -163,7 +164,7 @@ public class AdGameFacade {
         session.setAttribute(CALL_SYS_URL,configure.getCallSysUrl());
 
         List<String> adsVideo = new ArrayList<String>();
-        Map<Integer, Long> correctResponse = new HashMap<Integer, Long>();
+        Map<Integer, List<Long>> correctResponse = new HashMap<Integer,  List<Long>>();
         Map<Integer, AdChoise> choises = generateAdGame.getChoises();
 
         AdGameBean res = createAdBeans(adsVideo, correctResponse, choises);
@@ -208,7 +209,7 @@ public class AdGameFacade {
             res.setMinScore(((SingleGooseLevel)gooseLevel).getMinScore());
         }
 
-        Map<Integer, Long> answers = new HashMap<Integer, Long>();
+        Map<Integer, List<Long>> answers = new HashMap<Integer, List<Long>>();
 
         session.setAttribute(LIMITED_TIME,gooseLevel.getLimitedTime());
         session.setAttribute(PLAYER_GOOSE_GAME, pgg);
@@ -235,7 +236,7 @@ public class AdGameFacade {
      * @param choises
      * @return
      */
-    private AdGameBean createAdBeans(List<String> adsVideo, Map<Integer, Long> correctResponse, Map<Integer, AdChoise> choises) {
+    private AdGameBean createAdBeans(List<String> adsVideo, Map<Integer, List<Long>> correctResponse, Map<Integer, AdChoise> choises) {
 
         AdGameBean res = new AdGameBean();
         List<AdBean> game = new ArrayList<AdBean>();
@@ -245,6 +246,19 @@ public class AdGameFacade {
             AdChoise adChoise = entry.getValue();
             AdBean adBean = new AdBean();
             List<PossibilityBean> possibilities = new ArrayList<PossibilityBean>();
+
+
+            AdService generatedBy = adChoise.getGeneratedBy();
+
+            if (generatedBy instanceof MultiResponseRule) {
+                MultiResponseRule rule = (MultiResponseRule) generatedBy;
+                adBean.setAddonText(rule.getAddonText());
+                adBean.setBtnValidText(rule.getBtnValidText());
+                adBean.setMultiResponse(true);
+            }else{
+                adBean.setMultiResponse(false);
+            }
+
 
             for (Possibility possibility : adChoise.getPossiblities()) {
                 PossibilityBean pb = new PossibilityBean();
@@ -279,7 +293,8 @@ public class AdGameFacade {
             adBean.setQuestion(adChoise.getQuestion());
 
 
-            Ad ad = adChoise.getCorrect().getAd();
+            List<Possibility> corrects = adChoise.getCorrects();
+            Ad ad = corrects.get(0).getAd();
             if(ad instanceof VideoAd){
                 adBean.setType(AdBean.TypeAd.VIDEO);
             }else if(ad instanceof StaticAd){
@@ -292,7 +307,12 @@ public class AdGameFacade {
             adsVideo.add(ad.getAdFile());
             //adBean.setUrl(adChoise.getCorrect().getAd().getVideo());
 
-            correctResponse.put(num, adChoise.getCorrect().getId());
+            List<Long> idCorrects = new ArrayList<Long>();
+
+            for (Possibility correct : corrects) {
+                idCorrects.add(correct.getId());
+            }
+            correctResponse.put(num, idCorrects);
             game.add(adBean);
         }
 
@@ -340,7 +360,7 @@ public class AdGameFacade {
     }
 
     @Transactional
-    public ResponseAdGameBean userResponse(HttpServletRequest request, Integer index, Long responseId) throws Exception {
+    public ResponseAdGameBean userResponse(HttpServletRequest request, Integer index, List<Long> responseId) throws Exception {
         ResponseAdGameBean res = new ResponseAdGameBean();
         HttpSession session = request.getSession();
         Long end = (Long) session.getAttribute(GAME_END_TIME);
@@ -353,11 +373,11 @@ public class AdGameFacade {
             session.setAttribute(GAME_RESULT, gameResult);
         }else{
 
-            Map<Integer, Long> correctResponse = (Map<Integer, Long>) session.getAttribute(CORRECT_ANSWER);
+            Map<Integer, List<Long>> correctResponse = (Map<Integer, List<Long>>) session.getAttribute(CORRECT_ANSWER);
             Integer score = (Integer) session.getAttribute(USER_SCORE);
-            Map<Integer, Long> answers = (Map<Integer, Long>) session
-                    .getAttribute(USER_ANSWER);
-            Long correctId = correctResponse.get(index);
+            Map<Integer, List<Long>> answers = (Map<Integer, List<Long>>) session.getAttribute(USER_ANSWER);
+            List<Long> correctIds = correctResponse.get(index);
+            //Long correctId = correctResponse.get(index);
 
             Integer nbErrs = (Integer) session.getAttribute(NB_ERRORS);
 
@@ -365,7 +385,15 @@ public class AdGameFacade {
 
             AdRule adRule = doStat(request, index, currentPlayer);
 
-            if (answers.get(index) == null && correctId!=null && correctId.equals(responseId)) {
+            //all corrects responses
+            boolean isCorrect = true;
+            for (Long resp : responseId) {
+                if(!correctIds.contains(resp)){
+                    isCorrect = false;
+                }
+            }
+
+            if (answers.get(index) == null && isCorrect) {
                 res.setCorrect(true);
                 score++;
                 res.setScore(score);
@@ -381,7 +409,7 @@ public class AdGameFacade {
             } else {
                 res.setCorrect(false);
                 res.setScore(score);
-                answers.put(index, -1L);
+                answers.put(index, new ArrayList<Long>());
                 nbErrs++;
                 session.setAttribute(NB_ERRORS, nbErrs);
 /*            if (nbErrs > 6) {
@@ -618,7 +646,7 @@ public class AdGameFacade {
             session.setAttribute(GAME_RESULT, gameResult);
         }else{
             Integer score = (Integer) session.getAttribute(USER_SCORE);
-            Map<Integer, Long> answers = (Map<Integer, Long>) session
+            Map<Integer, List<Long>> answers = (Map<Integer, List<Long>>) session
                     .getAttribute(USER_ANSWER);
             Map<Integer, Long> correctResponse = (Map<Integer, Long>) session.getAttribute(CORRECT_ANSWER);
             Integer nbErrs = (Integer) session.getAttribute(NB_ERRORS);

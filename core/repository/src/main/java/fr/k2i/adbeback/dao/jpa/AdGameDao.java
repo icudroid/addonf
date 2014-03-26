@@ -6,6 +6,7 @@ import com.mysema.query.types.path.PathBuilder;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.AdChoise;
+import fr.k2i.adbeback.core.business.game.QAdChoise;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Player_;
@@ -42,18 +43,11 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
 
     @Override
-    public boolean isGeneratedWithRule(AdService adRule) {
-        //Todo :
-
-/*        QAdGame qAdGame = QAdGame.adGame;
+    public boolean RuleIsUsed(AdService adRule) {
+        QAdChoise qAdChoise = QAdChoise.adChoise;
         JPAQuery query = new JPAQuery(getEntityManager());
-
-        PathBuilder<AdChoise> choise = new PathBuilder<AdChoise>(AdChoise.class, "choise");
-        query.from(qAdGame).join(qAdGame.choises, choise)
-                .where(choise.get("generatedBy").eq(adRule));
-
-        return query.exists();*/
-        return false;
+        query.from(qAdChoise).where(qAdChoise.generatedBy.eq(adRule));
+          return query.exists();
     }
 
 

@@ -11,8 +11,12 @@ controllers.controller('Step3Ctrl', ['$scope', 'Services', 'Campaign', '$modal',
 
                 addOpenRule: {method:'POST', params:{addOpenRule:true}, isArray:false},
                 removeOpenRule: {method:'POST', params:{removeOpenRule:true}, isArray:false},
-                modifyOpenRule: {method:'POST', params:{modifyOpenRule:true}, isArray:false}
+                modifyOpenRule: {method:'POST', params:{modifyOpenRule:true}, isArray:false},
 
+
+                addOpenMultiRule: {method:'POST', params:{addOpenMultiRule:true}, isArray:false},
+                removeOpenMultiRule: {method:'POST', params:{removeOpenMultiRule:true}, isArray:false},
+                modifyOpenMultiRule: {method:'POST', params:{modifyOpenMultiRule:true}, isArray:false}
 
             });
 
@@ -184,6 +188,9 @@ controllers.controller('Step3Ctrl', ['$scope', 'Services', 'Campaign', '$modal',
         };
 
 
+
+
+
         $scope.removeOpenRule = function(rule){
 
             var index = $scope.model.adServices.openRules.indexOf(rule);
@@ -203,6 +210,98 @@ controllers.controller('Step3Ctrl', ['$scope', 'Services', 'Campaign', '$modal',
 
 
 
+
+
+        $scope.addOpenMultiRule= function(){
+
+            var openMultiRuleModal = $modal.open({
+                templateUrl: addonf.base+'manageAds/partials/common/modalOpenMulti.html',
+                windowClass:"modal-more-larger",
+                controller: "AddOpenMultiRuleCtrl",
+                resolve: {
+                    options: function () {
+                        return {
+                            rule : {
+                                startDate : $scope.model.information.startDate,
+                                endDate : $scope.model.information.endDate
+                            },
+                            isNew :true,
+                            minDate : $scope.model.information.startDate,
+                            maxDate : $scope.model.information.endDate
+                        };
+                    }
+                }
+            });
+
+            openMultiRuleModal.result.then(function (openRule) {
+                CreateCampaign.addOpenMultiRule({},openRule,function(data){
+                    if(data.errors){
+                        alert(data.errors);
+                    }else{
+                        $scope.model.adServices.openMultiRules.push(data.rule);
+                    }
+
+                });
+            }, function () {});
+
+        };
+
+
+
+        $scope.modifyOpenMultiRule = function(rule){
+            var index = $scope.model.adServices.openMultiRules.indexOf(rule);
+            //Services.reloadDlImg({numOpenRule:index});
+
+            var openRuleModal = $modal.open({
+                templateUrl: addonf.base+'manageAds/partials/common/modalOpenMulti.html',
+                windowClass:"modal-more-larger",
+                controller: "AddOpenMultiRuleCtrl",
+                resolve: {
+                    options: function () {
+                        return {
+                            rule : rule,
+                            isNew :false,
+                            minDate : $scope.model.information.startDate,
+                            maxDate : $scope.model.information.endDate
+                        };
+                    }
+                }
+            });
+
+            openRuleModal.result.then(function (openRule) {
+                CreateCampaign.modifyOpenMultiRule({},openRule,function(data){
+                    if(data.errors){
+                        alert(data.errors);
+                    }else{
+                        //$scope.model.adServices.openRules.push(data.rule);
+                        Services.emptyDlImg();
+                    }
+
+                });
+
+            }, function () {});
+        };
+
+
+
+
+
+        $scope.removeOpenMultiRule = function(rule){
+
+            var index = $scope.model.adServices.openMultiRules.indexOf(rule);
+            if (index > -1) {
+
+                CreateCampaign.removeOpenMultiRule({},$scope.model.adServices.openMultiRules[index], function(data) {
+                    if(data.errors){
+                        alert(data.errors);
+                    }else{
+                        $scope.model.adServices.openMultiRules.splice(index,1);
+                    }
+                });
+
+
+            }
+        };
 
     }
 ]);
@@ -289,6 +388,89 @@ controllers.controller('AddBrandRuleCtrl', ['$scope', 'Services', '$modalInstanc
 
 
 controllers.controller('AddOpenRuleCtrl', ['$scope', 'Services', '$modalInstance','$timeout', 'options',
+    function($scope, Services, $modalInstance, $timeout, options) {
+        $scope.base=addonf.base;
+        $scope.img = [];
+        $scope.percent = [];
+
+        $scope.getUploadUrl = function (index){
+            return addonf.base+"createCampaign/upload/"+"0"+"/"+index+"?_csrf="+addonf.token;
+        }
+
+        $scope.getDownloadTmpImageUrl = function (index){
+            return addonf.base+"createCampaign/tmpImage/"+index+"?"+new Date().getTime();
+        }
+
+        $scope.setNowTmpImageUrl = function (index){
+            $scope.img[index] = $scope.getDownloadTmpImageUrl(index);
+        }
+
+
+        $scope.setNowTmpImageUrl(0);
+        $scope.setNowTmpImageUrl(1);
+        $scope.setNowTmpImageUrl(2);
+
+        $scope.percent[0] = 0;
+        $scope.percent[1] = 0;
+        $scope.percent[2] = 0;
+
+        $scope.minDate = options.minDate;
+        $scope.maxDate = options.maxDate;
+
+        if(options.isNew){
+            $scope.openRule = {
+                responses : [
+                    {
+                        correct:false
+                    },
+                    {
+                        correct:false
+                    },
+                    {
+                        correct:false
+                    }
+                ],
+                startDate : options.rule.startDate,
+                endDate : options.rule.endDate
+            };
+            $scope.btnValidate = "valider"
+        }else{
+            $scope.openRule = options.rule;
+            $scope.btnValidate = "Modifier";
+        }
+
+        $scope.format = "dd/MM/yyyy";
+        $scope.nbDisplay = [1,2,3,4,5,6,7,8,9,10];
+
+        $scope.startDatepicker = {
+            opened : false
+        };
+
+        $scope.endDatepicker = {
+            opened : false
+        };
+
+        $scope.openDate = function(which){
+            $timeout(function() {
+                which.opened = true;
+            });
+        };
+
+        $scope.ok = function () {
+            $modalInstance.close($scope.openRule);
+        };
+
+        $scope.cancel = function () {
+            //empty image on session
+            Services.emptyDlImg();
+            $modalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+
+
+controllers.controller('AddOpenMultiRuleCtrl', ['$scope', 'Services', '$modalInstance','$timeout', 'options',
     function($scope, Services, $modalInstance, $timeout, options) {
         $scope.base=addonf.base;
         $scope.img = [];

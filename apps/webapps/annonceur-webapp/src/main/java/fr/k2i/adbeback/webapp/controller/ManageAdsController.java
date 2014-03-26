@@ -9,6 +9,7 @@ import fr.k2i.adbeback.core.business.ad.rule.SexRule;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
+import fr.k2i.adbeback.webapp.bean.adservice.OpenMultiRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
 import fr.k2i.adbeback.webapp.facade.BrandServiceFacade;
 import fr.k2i.adbeback.webapp.validator.CampaignCommandValidator;
@@ -584,6 +585,136 @@ public class ManageAdsController {
     }
 
 
+/**********************************************************************************************************************/
+
+
+@RequestMapping(value=IMetaDataController.Path.RULE, params={"addOpenMultiRule"})
+public ModelAndView addOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean, final BindingResult bindingResult, HttpServletRequest request) {
+    ModelAndView view = new ModelAndView();
+    view.setView(new MappingJackson2JsonView());
+    CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+    openRuleBean.setUid(UUID.randomUUID().toString());
+    FileCommand uploadedImg[] = (FileCommand[]) request.getSession().getAttribute(UPLOADED_IMG);
+    List<AdResponseBean> responses = openRuleBean.getResponses();
+    int i =0;
+    if(uploadedImg!=null){
+        for (AdResponseBean response : responses) {
+            response.setImage(uploadedImg[i]);
+            i++;
+        }
+    }
+
+    if(campaignCommand.getAdServices().getOpenRules().contains(openRuleBean)){
+        bindingResult.reject("Exists");
+    }
+
+    if(bindingResult.hasErrors()){
+        Map<String,String> errors = new HashMap<String, String>();
+        for (ObjectError objectError : bindingResult.getAllErrors()) {
+            errors.put(objectError.getObjectName(),objectError.getCode());
+        }
+        view.addObject("errors",errors);
+    }else{
+
+        campaignCommand.getAdServices().getOpenMultiRules().add(openRuleBean);
+        view.addObject("rule",openRuleBean);
+    }
+
+    return view;
+}
+
+
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"modifyOpenMultiRule"})
+    public ModelAndView modifyOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean, final BindingResult bindingResult, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        FileCommand uploadedImg[] = (FileCommand[]) request.getSession().getAttribute(UPLOADED_IMG);
+        List<AdResponseBean> responses = openRuleBean.getResponses();
+        int i =0;
+        if(uploadedImg!=null){
+            for (AdResponseBean response : responses) {
+                response.setImage(uploadedImg[i]);
+                i++;
+            }
+        }
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+
+        //int index = campaignCommand.getAdServices().getOpenRules().indexOf(openRuleBean);
+
+        int index = 0;
+        List<OpenMultiRuleBean> openRules = campaignCommand.getAdServices().getOpenMultiRules();
+        if(openRuleBean.getId() != null){
+            for (OpenMultiRuleBean rule : openRules) {
+                if(rule.getId().equals(openRuleBean.getId())){
+                    break;
+                }
+                index++;
+            }
+        }else{
+            for (OpenMultiRuleBean rule : openRules) {
+                if(rule.getUid().equals(openRuleBean.getUid())){
+                    break;
+                }
+                index++;
+            }
+
+        }
+
+
+        campaignCommand.getAdServices().getOpenMultiRules().set(index,openRuleBean);
+
+        view.addObject("rule",openRuleBean);
+        return view;
+    }
+
+
+    @RequestMapping(value=IMetaDataController.Path.RULE, params={"removeOpenMultiRule"})
+    public ModelAndView removeOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        view.setView(new MappingJackson2JsonView());
+
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+
+
+        List<OpenMultiRuleBean> openRules = campaignCommand.getAdServices().getOpenMultiRules();
+        if(openRuleBean.getId() != null){
+            for (OpenMultiRuleBean rule : openRules) {
+                if(rule.getId().equals(openRuleBean.getId())){
+                    openRules.remove(rule);
+                    break;
+                }
+            }
+        }else{
+            for (OpenMultiRuleBean rule : openRules) {
+                if(rule.getUid().equals(openRuleBean.getUid())){
+                    openRules.remove(rule);
+                    break;
+                }
+            }
+
+        }
+
+
+        openRules.remove(openRuleBean);
+
+        return view;
+    }
+
+
+
+
+
+    /**********************************************************************************************************************/
+
+
+
+
+
+
+
+
 
 
     @RequestMapping(value=IMetaDataController.Path.SAVE)
@@ -593,6 +724,7 @@ public class ManageAdsController {
 
         this.brandServiceFacade.save(campaignCommand);
         request.getSession().removeAttribute("campaignCommand");
+        request.getSession().removeAttribute(UPLOADED_IMG);
         return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.LIST_CAMPAIGNS;
     }
 

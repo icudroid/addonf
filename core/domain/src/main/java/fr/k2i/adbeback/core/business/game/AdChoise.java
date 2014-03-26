@@ -10,123 +10,69 @@ import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "adchoise")
 public class AdChoise extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -7659738703107950065L;
-	private Long id;
-	private List<Possibility> possiblities;
-	private AbstractAdGame adGame;
-	private Possibility correct;
-	private String question;
-	private Integer number;
-    private AdService generatedBy;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "POSSIBILITY_ID")
+    private List<Possibility> possiblities;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "AD_GAME_ID")
+	private AbstractAdGame adGame;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "CORRECT_POSSIBILITY_ID")
+	private List<Possibility> corrects;
+
+	private String question;
+
+	private Integer number;
 
     @ManyToOne
     @JoinColumn(name = "adrule_id")
-    public AdService getGeneratedBy() {
-        return generatedBy;
+    private AdService generatedBy;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AdChoise)) return false;
+
+        AdChoise adChoise = (AdChoise) o;
+
+        if (generatedBy != null ? !generatedBy.equals(adChoise.generatedBy) : adChoise.generatedBy != null)
+            return false;
+        if (id != null ? !id.equals(adChoise.id) : adChoise.id != null) return false;
+        if (number != null ? !number.equals(adChoise.number) : adChoise.number != null) return false;
+        if (question != null ? !question.equals(adChoise.question) : adChoise.question != null) return false;
+
+        return true;
     }
 
-    public void setGeneratedBy(AdService generatedBy) {
-        this.generatedBy = generatedBy;
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (question != null ? question.hashCode() : 0);
+        result = 31 * result + (number != null ? number.hashCode() : 0);
+        result = 31 * result + (generatedBy != null ? generatedBy.hashCode() : 0);
+        return result;
     }
 
-    public Integer getNumber() {
-		return number;
-	}
-
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "POSSIBILITY_ID")
-	public List<Possibility> getPossiblities() {
-		return possiblities;
-	}
-
-	public void setPossiblities(List<Possibility> possiblities) {
-		this.possiblities = possiblities;
-	}
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "AD_GAME_ID")
-	public AbstractAdGame getAdGame() {
-		return adGame;
-	}
-
-	public void setAdGame(AbstractAdGame adGame) {
-		this.adGame = adGame;
-	}
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "CORRECT_ID")
-	public Possibility getCorrect() {
-		return correct;
-	}
-
-	public void setCorrect(Possibility correct) {
-		this.correct = correct;
-	}
-	
-	
-	public String getQuestion() {
-		return question;
-	}
-
-	public void setQuestion(String question) {
-		this.question = question;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((correct == null) ? 0 : correct.hashCode());
-		result = prime * result
-				+ ((possiblities == null) ? 0 : possiblities.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AdChoise other = (AdChoise) obj;
-		if (correct == null) {
-			if (other.correct != null)
-				return false;
-		} else if (!correct.equals(other.correct))
-			return false;
-		if (possiblities == null) {
-			if (other.possiblities != null)
-				return false;
-		} else if (!possiblities.equals(other.possiblities))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "AdChoise [id=" + id + ", possiblities=" + possiblities
-				+ ", correct=" + correct + "]";
-	}
-
+    @Override
+    public String toString() {
+        return "AdChoise{" +
+                "question='" + question + '\'' +
+                ", number=" + number +
+                '}';
+    }
 }
