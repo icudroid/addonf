@@ -3,8 +3,11 @@
 
 <div ng-show="!gameStarted" style="z-index:100;height: 100%;left: 0;overflow: hidden;position: absolute;top: 0;width: 100%;background-color:#373737;color: #ffffff; padding: 15px;" class="text-center">
     <h1>Bienvenue sur addonf, un moyen de micro-paiement subventionné par la publicité.</h1>
-    <br/><br/><br/><br/><br/>
-    Le but est de deviner un nombre de publicités déterminer et ce le plus rapidement possible.<br/><br/>
+    <br/><br/>
+    <h3>Le but est de deviner un nombre de publicités déterminer et ce le plus rapidement possible.</h3>
+    <br/><br/>
+    <h3>Pour gagner vous devez deviner {{adGame.minScore}} publicité(s). Vous avez le droit à {{adGame.totalAds-adGame.minScore}} erreur(s)</h3>
+    <br/><br/>
     <button ng-click="startGame()" class="btn btn-default">Démarrer</button>
 </div>
 <div  style="height: 100%;left: 0;overflow: hidden;position: absolute;top: 0;width: 100%;background-color:#373737;color: #ffffff; padding: 15px;">
@@ -29,9 +32,13 @@
             <progressbar value="left"><i>{{score}} / {{max}}</i></progressbar>
         </div>
         <div class="col-xs-1 col-md-1"></div>
-        <div class="col-xs-3 col-md-3">
+        <div class="col-xs-3 col-md-3" ng-if="!current.multiResponse">
             <h3 class="hidden-xs text-center" th:text="#{addonf.game.responses}"></h3>
             <h6 class="visible-xs text-center" th:text="#{addonf.game.responses}"></h6>
+        </div>
+        <div class="col-xs-3 col-md-3" ng-if="current.multiResponse">
+            <h3 class="hidden-xs text-center">{{current.addonText}}</h3>
+            <h6 class="visible-xs text-center">{{current.addonText}}</h6>
         </div>
     </div>
 
@@ -69,8 +76,6 @@
                 <br />
             </div>
 
-
-            <div ng-if="current.multiResponse">{{current.addonText}}</div>
             <br /><br /><br />
 
             <button ng-if="current.multiResponse" ng-click="userResponseMulti()" class="btn btn-default">{{current.btnValidText}}</button>

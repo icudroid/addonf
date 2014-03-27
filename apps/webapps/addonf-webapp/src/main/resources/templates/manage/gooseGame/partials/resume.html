@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html
-        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        ng-app="adgameApp">
-<head>
-    <script src="jquery.fullscreen.js" th:src="@{/static/js/external/jquery.fullscreen.js}"></script>
-    <script src="play.js" th:src="@{/static/js/addonf/play.js}"></script>
-</head>
-
-
-<body>
-
-<div layout:fragment="content" id="content">
+<div>
 
     <div class="page-title">
         <div class="container">
@@ -21,12 +9,8 @@
     </div>
 
     <div class="container text-center">
-        <button id="play" class="btn btn-primary strong" style="font-size: 26px;" th:inline="text">[[#{addonf.resume}]]</button>
+        <button id="play" ng-click="resume()" class="btn btn-primary strong" style="font-size: 26px;" th:inline="text">[[#{addonf.resume}]]</button>
     </div>
 
 
 </div>
-
-
-</body>
-</html>

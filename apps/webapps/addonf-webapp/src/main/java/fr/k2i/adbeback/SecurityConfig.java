@@ -190,6 +190,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
                     .antMatchers("/**").hasRole("USER");*/
 
+        http.csrf().disable();
+
         http.formLogin()
                     .loginPage("/login")
                     .successHandler(ajaxLoginSuccessHandler())
