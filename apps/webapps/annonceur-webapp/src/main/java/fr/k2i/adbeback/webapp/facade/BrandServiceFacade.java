@@ -507,8 +507,18 @@ public class BrandServiceFacade {
 
         information.setInitialAmonut(0.0);
 
+        if (ad instanceof VideoAd) {
+            VideoAd videoAd = (VideoAd) ad;
+            if(videoAd.getAdFileEncoded()){
+                information.setAdFileCommand(new FileCommand(new File(adsPath+ad.getAdFile())));
+            }else{
+                information.setAdFileCommand(new FileCommand(new File(adsPathTmp+ad.getAdFile())));
+            }
+        }else{
+            information.setAdFileCommand(new FileCommand(new File(adsPath+ad.getAdFile())));
+        }
 
-        information.setAdFileCommand(new FileCommand(new File(adsPath+ad.getAdFile())));
+
 
         if(ad instanceof VideoAd){
             information.setDisplayAd(AdDisplay.VIDEO);

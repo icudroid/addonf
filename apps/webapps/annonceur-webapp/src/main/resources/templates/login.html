@@ -34,12 +34,6 @@
                             </div>
 
 
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="SPRING_SECURITY_REMEMBER_ME_COOKIE" /> Remember me
-                                </label>
-                            </div>
-
                             <input type="hidden"
                                    th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             <button type="submit" class="btn btn-primary btn-block" th:text="#{addonf.login.btn}">Login</button>

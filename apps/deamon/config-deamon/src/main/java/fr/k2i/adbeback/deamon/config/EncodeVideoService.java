@@ -76,7 +76,8 @@ public class EncodeVideoService {
                 logger.debug("exit command status : "+exec.exitValue());
             }
             logger.debug("delete tmp ad file : "+adFile);
-            new File(adsPathTmp+adFile).delete();
+
+            new File(adsPathTmp+adFile).renameTo(new File(adsPath + adFile));
             ad.setAdFileEncoded(true);
         }
     }
