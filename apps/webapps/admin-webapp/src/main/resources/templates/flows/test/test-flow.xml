@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+
+    
+    
+    <view-state id="detail" view="test">
+        <on-render>
+            <set name="viewScope.i" value="1"/>
+        </on-render>
+        <transition on="updateData" to="detail1"/>
+<!--
+        <transition on="updateData">
+            <set name="flashScope.i" value="2"/>
+            <render fragments="hoteldata"/>
+        </transition>
+-->
+
+    </view-state>
+
+    <view-state id="detail1" view="dialog" popup="true">
+
+    </view-state>
+
+
+
+
+</flow>

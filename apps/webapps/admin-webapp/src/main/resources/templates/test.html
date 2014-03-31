@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/unlogged">
+<head>
+    <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+</head>
+<body>
+
+
+<div layout:fragment="content">
+
+<form id="triggerform" method="post" action="">
+    <input type="hidden"
+           th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="submit" id="doUpdate" name="_eventId_updateData" value="Update now!" />
+</form>
+
+<script type="text/javascript">
+    Spring.addDecoration(
+            new Spring.AjaxEventDecoration({formId:'triggerform',elementId:'doUpdate',event:'onclick'}));
+</script>
+
+
+    <div id="data" th:fragment="hoteldata" th:text="${i}">
+        This is a content to be changed
+    </div>
+</div>
+
+</body>
+</html>
+
+
