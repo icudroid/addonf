@@ -61,6 +61,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/logout-success").permitAll()
                 .antMatchers("/static/**").permitAll()
 
+                .antMatchers("/agencyEnroll.html").permitAll()
+
                 .anyRequest().authenticated();
 
 /*                .antMatchers("/custom-logout").hasRole("ANNONCEUR")

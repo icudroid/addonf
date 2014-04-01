@@ -18,6 +18,7 @@ package fr.k2i.adbeback;
 
 
 import fr.k2i.adbeback.webapp.config.AbstractWebConfig;
+import fr.k2i.adbeback.webapp.config.MvcConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +31,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "fr.k2i.adbeback")
-@ImportResource("classpath*:spring-webflow.xml")
 public class WebConfig extends AbstractWebConfig {
 
     @Bean

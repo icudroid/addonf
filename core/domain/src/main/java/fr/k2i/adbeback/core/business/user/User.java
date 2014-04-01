@@ -30,6 +30,8 @@ public abstract class User extends BaseObject implements Serializable {
     @Column(nullable = false)
     protected String password;                    // required
 
+    protected String phone;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "admin_role",

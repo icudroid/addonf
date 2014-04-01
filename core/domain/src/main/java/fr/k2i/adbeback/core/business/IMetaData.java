@@ -20,6 +20,7 @@ public interface IMetaData {
         String CITY =                                   "city";
         String OTP =                                    "one_time_pwd";
         String GOOSE_LEVEL =                            "goose_level";
+        String ATTACHEMENT_AGENCY =                     "attachements";
     }
 
     interface ColumnMetadata {
@@ -163,6 +164,31 @@ public interface IMetaData {
                 String SINGLE =                         "single";
                 String MULTI =                          "multi";
             }
+        }
+
+        public interface User {
+            String AGENCY_JOIN =                         "agency_id";
+            String IN_CHARGE_OF_TABLE_JOIN =             "in_charge_of";
+            String AGENCY_RULE_JOIN =                    "agency_id";
+            String BRAND_JOIN =                          "brand_id";
+        }
+
+
+        public interface Agency {
+            String CREATED_DATE =                        "creation_date";
+            String SIRET_NUMBER =                        "siret";
+            String SIREN_NUMBER =                        "siren";
+            String ATTACHEMENTS =                        "attachement_id";
+            String CONFIG =                              "config_id" ;
+            String LEGAL_STATUS =                        "legal_status";
+        }
+
+        public interface Attachement {
+            String ORIGINAL_NAME                        = "origin_name";
+            String SIZE                                 = "size";
+            String FULL_PATH                            = "full_path";
+            String STATUS                               = "status";
+            String EXTENTION                            = "extention";
         }
     }
 }

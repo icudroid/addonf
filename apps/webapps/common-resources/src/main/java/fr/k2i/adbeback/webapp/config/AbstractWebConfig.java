@@ -5,6 +5,7 @@ import org.hibernate.validator.internal.engine.ValidatorImpl;
 import org.springframework.boot.autoconfigure.jdbc.TomcatDataSourceConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -17,6 +18,7 @@ import javax.validation.Validator;
  * Time: 11:14
  * To change this template use File | Settings | File Templates.
  */
+@ImportResource("classpath*:spring-webflow.xml")
 public abstract class AbstractWebConfig {
 
     @Bean
