@@ -4,17 +4,11 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/unlogged">
+        layout:decorator="layout/corporate/unlogged">
 <head>
     <title>Inscription Agence</title>
 
     <script th:src="@{/static/js/addonf/townPostalCodeCheck.js}" type="text/javascript"/>
-
-    <script th:inline="javascript">
-        var addonf = {};
-        addonf.base = [[@{/}]];
-        addonf.token = [[${_csrf.token}]];
-    </script>
 
     <script type="text/javascript">
         $(function(){
@@ -26,94 +20,99 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h4 class="innerAll margin-none border-bottom text-center bg-primary" th:utext="#{enroll.agency.create.admin}"><i class="fa fa-pencil"></i> Création du compte administrateur</h4>
 
-    <!-- col-table-row -->
-    <div class="col-table-row">
-
-        <!-- col-app -->
-        <div class="col-app col-unscrollable">
-
-            <!-- col-app -->
-            <div class="col-app">
-
-                <div class="login">
-
-                    <div class="placeholder text-center"><i class="fa fa-pencil"></i></div>
-
-                    <div class="panel panel-default col-sm-6 col-sm-offset-3">
-
-                        <div class="panel-body">
-                            <form id="formAdminInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" th:object="${agencyEnrollCommand}" autocomplete="off">
-
-                                <!-- Création de l'administrateur -->
-
-                                <div th:class="${#fields.hasErrors('users.current.sex')}? 'form-group has-error':'form-group'">
-                                    <label for="sex" class=" control-label" th:text="#{enroll.company.mainContact.sex}">Civilité</label>
-                                    <select id="sex" class="form-control" th:field="*{users.current.sex}">
-                                        <option th:each="sex : ${values['sexes']}"
-                                                th:value="${sex}"
-                                                th:text="#{${'sex.'+sex}}">Mr</option>
-                                    </select>
-                                    <span class="help-block" th:if="${#fields.hasErrors('users.current.sex')}" th:errors="*{users.current.sex}">Error</span>
-                                </div>
-
-                                <div th:class="${#fields.hasErrors('users.current.lastname')}? 'form-group has-error':'form-group'">
-                                    <label for="mainContact-lastname" class=" control-label" th:text="#{enroll.company.mainContact.lastname}">Nom</label>
-                                    <input type="text" class="form-control" id="mainContact-lastname" th:field="*{users.current.lastname}" />
-                                    <span class="help-block" th:if="${#fields.hasErrors('users.current.lastname')}" th:errors="*{users.current.lastname}">Error</span>
-                                </div>
-                                <div th:class="${#fields.hasErrors('users.current.firstname')}? 'form-group has-error':'form-group'">
-                                    <label for="mainContact-firstname" class=" control-label" th:text="#{enroll.company.mainContact.firstname}">Prénom</label>
-                                    <input type="text" class="form-control" id="mainContact-firstname" th:field="*{users.current.firstname}" />
-                                    <span class="help-block" th:if="${#fields.hasErrors('users.current.firstname')}" th:errors="*{users.current.firstname}">Error</span>
-                                </div>
-                                <div th:class="${#fields.hasErrors('users.current.phone')}? 'form-group has-error':'form-group'">
-                                    <label for="phone" class=" control-label" th:text="#{enroll.company.contact.phone}">Téléphone</label>
-                                    <input type="tel" class="form-control" id="phone" placeholder="Ex : +33181445544" th:placeholder="#{enroll.company.contact.phone.placeholder}" th:field="*{users.current.phone}" />
-                                    <span class="help-block" th:if="${#fields.hasErrors('users.current.phone')}" th:errors="*{users.current.phone}">Error</span>
-                                </div>
-
-
-                                <div th:class="${#fields.hasErrors('users.current.email')}? 'form-group has-error':'form-group'">
-                                    <label for="email" class=" control-label" th:text="#{enroll.company.contact.email}">Email</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Email" th:placeholder="#{enroll.company.contact.email.placeholder}" th:field="*{users.current.email}" />
-                                    <span class="help-block" th:if="${#fields.hasErrors('users.current.email')}" th:errors="*{users.current.email}">Error</span>
-                                </div>
-                                <div th:class="${#fields.hasErrors('users.current.emailConfirm')}? 'form-group has-error':'form-group'">
-                                    <label for="emailConfirm" class=" control-label" th:text="#{enroll.company.contact.emailConfirm}">Confirmez l’adresse e-mail</label>
-                                    <input type="email" class="form-control" id="emailConfirm" placeholder="Email" th:placeholder="#{enroll.company.contact.email.placeholder}" th:field="*{users.current.emailConfirm}" />
-                                    <span class="help-block" th:if="${#fields.hasErrors('users.current.emailConfirm')}" th:errors="*{users.current.emailConfirm}">Error</span>
-                                </div>
-
-
-                                <div th:class="${#fields.hasErrors('users.current.password')}? 'form-group has-error':'form-group'">
-                                    <label for="password" class=" control-label" th:text="#{enroll.company.password}">Mot de passe</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Password" th:placeholder="#{enroll.company.password.placeholder}" th:field="*{users.current.password}" />
-                                    <span class="help-block" th:if="${#fields.hasErrors('users.current.password')}" th:errors="*{users.current.password}">Error</span>
-                                </div>
-                                <div th:class="${#fields.hasErrors('users.current.passwordConfirm')}? 'form-group has-error':'form-group'">
-                                    <label for="passwordConfirm" class=" control-label" th:text="#{enroll.company.passwordConfirm}">Confirmer le mot de passe</label>
-                                    <input type="password" class="form-control" id="passwordConfirm" placeholder="Password" th:placeholder="#{enroll.company.password.placeholder}" th:field="*{users.current.passwordConfirm}" />
-                                    <span class="help-block" th:if="${#fields.hasErrors('users.current.passwordConfirm')}" th:errors="*{users.current.passwordConfirm}">Error</span>
-                                </div>
-
-
-
-                                <input type="hidden"
-                                       th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
-                                <div class="form-group has-warning">
-                                    <span class="help-block" th:text="#{all.required}">Toutes les informations sont obligatoires</span>
-                                    <button class="btn btn-primary btn-block" type="submit" id="submit" name="_eventId_submit" th:text="#{enroll.agency.next.button}">Create Account</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>Inscription d'une agence</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li>Informations</li>
+                    <li>Société</li>
+                    <li class="active">Compte administrateurs</li>
+                    <li>Comptes utilisateurs</li>
+                    <li>Pièces</li>
+                    <li>Récapitulatf</li>
+                </ul>
             </div>
         </div>
     </div>
+
+
+    <div class="container margin-bottom-40">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
+                <form id="formAdminInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" th:object="${agencyEnrollCommand}" autocomplete="off">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                    <h2>Text explicatif : A rédiger</h2>
+
+                    <!-- Création de l'administrateur -->
+
+                    <div th:class="${#fields.hasErrors('users.current.sex')}? 'form-group has-error':'form-group'">
+                        <label for="sex" class=" control-label" th:text="#{enroll.company.mainContact.sex}">Civilité</label>
+                        <select id="sex" class="form-control" th:field="*{users.current.sex}">
+                            <option th:each="sex : ${values['sexes']}"
+                                    th:value="${sex}"
+                                    th:text="#{${'sex.'+sex}}">Mr</option>
+                        </select>
+                        <span class="help-block" th:if="${#fields.hasErrors('users.current.sex')}" th:errors="*{users.current.sex}">Error</span>
+                    </div>
+
+                    <div th:class="${#fields.hasErrors('users.current.lastname')}? 'form-group has-error':'form-group'">
+                        <label for="mainContact-lastname" class=" control-label" th:text="#{enroll.company.mainContact.lastname}">Nom</label>
+                        <input type="text" class="form-control" id="mainContact-lastname" th:field="*{users.current.lastname}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('users.current.lastname')}" th:errors="*{users.current.lastname}">Error</span>
+                    </div>
+                    <div th:class="${#fields.hasErrors('users.current.firstname')}? 'form-group has-error':'form-group'">
+                        <label for="mainContact-firstname" class=" control-label" th:text="#{enroll.company.mainContact.firstname}">Prénom</label>
+                        <input type="text" class="form-control" id="mainContact-firstname" th:field="*{users.current.firstname}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('users.current.firstname')}" th:errors="*{users.current.firstname}">Error</span>
+                    </div>
+                    <div th:class="${#fields.hasErrors('users.current.phone')}? 'form-group has-error':'form-group'">
+                        <label for="phone" class=" control-label" th:text="#{enroll.company.contact.phone}">Téléphone</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Ex : +33181445544" th:placeholder="#{enroll.company.contact.phone.placeholder}" th:field="*{users.current.phone}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('users.current.phone')}" th:errors="*{users.current.phone}">Error</span>
+                    </div>
+
+
+                    <div th:class="${#fields.hasErrors('users.current.email')}? 'form-group has-error':'form-group'">
+                        <label for="email" class=" control-label" th:text="#{enroll.company.contact.email}">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email" th:placeholder="#{enroll.company.contact.email.placeholder}" th:field="*{users.current.email}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('users.current.email')}" th:errors="*{users.current.email}">Error</span>
+                    </div>
+                    <div th:class="${#fields.hasErrors('users.current.emailConfirm')}? 'form-group has-error':'form-group'">
+                        <label for="emailConfirm" class=" control-label" th:text="#{enroll.company.contact.emailConfirm}">Confirmez l’adresse e-mail</label>
+                        <input type="email" class="form-control" id="emailConfirm" placeholder="Email" th:placeholder="#{enroll.company.contact.email.placeholder}" th:field="*{users.current.emailConfirm}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('users.current.emailConfirm')}" th:errors="*{users.current.emailConfirm}">Error</span>
+                    </div>
+
+
+                    <div th:class="${#fields.hasErrors('users.current.password')}? 'form-group has-error':'form-group'">
+                        <label for="password" class=" control-label" th:text="#{enroll.company.password}">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" th:placeholder="#{enroll.company.password.placeholder}" th:field="*{users.current.password}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('users.current.password')}" th:errors="*{users.current.password}">Error</span>
+                    </div>
+                    <div th:class="${#fields.hasErrors('users.current.passwordConfirm')}? 'form-group has-error':'form-group'">
+                        <label for="passwordConfirm" class=" control-label" th:text="#{enroll.company.passwordConfirm}">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control" id="passwordConfirm" placeholder="Password" th:placeholder="#{enroll.company.password.placeholder}" th:field="*{users.current.passwordConfirm}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('users.current.passwordConfirm')}" th:errors="*{users.current.passwordConfirm}">Error</span>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12 form-actions right">
+                            <input type="submit" id="submit" name="_eventId_submit" value="Continuer" class="btn theme-btn"/>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 
 </div>

@@ -1,116 +1,594 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<!-- BEGIN HEAD -->
 <head>
 
-    <meta charset="utf-8" />
+
+    <meta charset="utf-8"/>
     <title>AdBeBack | Homepage</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="Regis publicitaire" name="description" />
-    <meta content="adbeback" name="author" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="Regis publicitaire" name="description"/>
+    <meta content="adbeback" name="author"/>
+
+
+    <script th:inline="javascript">
+        var addonf = {};
+        addonf.base = [[@{/}]];
+        addonf.token = [[${_csrf.token}]];
+    </script>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link th:href="@{/static/metronic_v2.0.2/corporate/assets/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/static/metronic_v2.0.2/corporate/assets/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/font-awesome/css/font-awesome.min.css}"
+          rel="stylesheet" type="text/css"/>
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
-    <link th:href="@{/static/metronic_v2.0.2/corporate/assets/plugins/fancybox/source/jquery.fancybox.css}" rel="stylesheet" />
-    <link rel="stylesheet" th:href="@{/static/metronic_v2.0.2/corporate/assets/plugins/revolution_slider/css/rs-style.css}" media="screen">
-    <link rel="stylesheet" th:href="@{/static/metronic_v2.0.2/corporate/assets/plugins/revolution_slider/rs-plugin/css/settings.css}" media="screen">
-    <link th:href="@{/static/metronic_v2.0.2/corporate/assets/plugins/bxslider/jquery.bxslider.css}" rel="stylesheet" />
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/fancybox/source/jquery.fancybox.css}"
+          rel="stylesheet"/>
+    <link rel="stylesheet"
+          th:href="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/revolution_slider/css/rs-style.css}"
+          media="screen"/>
+    <link rel="stylesheet"
+          th:href="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/revolution_slider/rs-plugin/css/settings.css}"
+          media="screen"/>
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/bxslider/jquery.bxslider.css}"
+          rel="stylesheet"/>
     <!-- END PAGE LEVEL PLUGIN STYLES -->
 
     <!-- BEGIN THEME STYLES -->
-    <link th:href="@{/static/metronic_v2.0.2/corporate/assets/css/style-metronic.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/static/metronic_v2.0.2/corporate/assets/css/style.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/static/metronic_v2.0.2/corporate/assets/css/style-responsive.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/static/metronic_v2.0.2/corporate/assets/css/themes/blue.css}" rel="stylesheet" type="text/css" id="style_color"/>
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/css/style-metronic.css}" rel="stylesheet"
+          type="text/css"/>
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/css/style.css}" rel="stylesheet"
+          type="text/css"/>
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/css/style-responsive.css}" rel="stylesheet"
+          type="text/css"/>
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/css/themes/blue.css}" rel="stylesheet"
+          type="text/css" id="style_color"/>
+    <link th:href="@{/static/css/custom.css}" rel="stylesheet" type="text/css"/>
     <!-- END THEME STYLES -->
 
-    <link rel="shortcut icon" th:href="@{/static/img/favicon.ico}" />
-
-
-</head>
-<body>
-    <div class="header navbar navbar-default navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
-            </div>
-            <!-- BEGIN TOP NAVIGATION MENU -->
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
-            </div>
-            <!-- BEGIN TOP NAVIGATION MENU -->
-        </div>
-    </div>
-
-    <!-- BEGIN REVOLUTION SLIDER -->
-    <div class="fullwidthbanner-container slider-main margin-bottom-10" layout:fragment="slider">
-        <div class="fullwidthabnner">
-            <div class="tp-bannertimer tp-bottom"></div>
-        </div>
-    </div>
-    <!-- END REVOLUTION SLIDER -->
+    <link rel="shortcut icon" th:href="@{/static/img/favicon.ico}"/>
 
 
 
-    <!-- BEGIN CONTAINER -->
-    <div class="container" layout:fragment="content">
-    </div>
-    <!-- END CONTAINER -->
+    <script th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/jquery-1.10.2.min.js}"
+            type="text/javascript"></script>
+    <script th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/jquery-migrate-1.2.1.min.js}"
+            type="text/javascript"></script>
+    <script th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/bootstrap/js/bootstrap.min.js}"
+            type="text/javascript"></script>
+    <script type="text/javascript"
+            th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/back-to-top.js}"></script>
 
-
-    <!-- BEGIN FOOTER -->
-    <div class="footer">
-        <div class="container">
-        </div>
-    </div>
-    <!-- END FOOTER -->
-
-    <!-- BEGIN COPYRIGHT -->
-    <div class="copyright">
-        <div class="container">
-        </div>
-    </div>
-    <!-- END COPYRIGHT -->
-
-
-
-    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-    <!-- BEGIN CORE PLUGINS -->
-
-    <script th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/jquery-migrate-1.2.1.min.js}" type="text/javascript"></script>
-    <script th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
-    <script type="text/javascript" th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/back-to-top.js}"></script>
-
-    <script type="text/javascript" th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/fancybox/source/jquery.fancybox.pack.js}"></script>
-    <script type="text/javascript" th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/hover-dropdown.js}"></script>
-    <script type="text/javascript" th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.plugins.min.js}"></script>
-    <script type="text/javascript" th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.revolution.min.js}"></script>
-    <!--[if lt IE 9]>
-    <script th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/respond.min.js}"></script>
-    <![endif]-->
+    <script type="text/javascript"
+            th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/fancybox/source/jquery.fancybox.pack.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/hover-dropdown.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.plugins.min.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.revolution.min.js}"></script>
     <!-- END CORE PLUGINS -->
 
-    <script th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/jquery-1.10.1.min.js}" type="text/javascript"></script>
-    <script type="text/javascript" th:src="@{/static/metronic_v2.0.2/corporate/assets/plugins/bxslider/jquery.bxslider.js}"></script>
-    <script th:src="@{/static/metronic_v2.0.2/corporate/assets/scripts/app.js}"></script>
-    <script th:src="@{/static/metronic_v2.0.2/corporate/assets/scripts/index.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/bxslider/jquery.bxslider.js}"></script>
+    <script th:src="@{/static/metronic_v2.0.2/corporate/template/assets/scripts/app.js}"></script>
+    <script th:src="@{/static/metronic_v2.0.2/corporate/template/assets/scripts/index.js}"></script>
+
+    <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+
 
 
     <script type="text/javascript">
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
             App.init();
             App.initBxSlider();
             Index.initRevolutionSlider();
         });
     </script>
-    <!-- END JAVASCRIPTS -->
+
+
+</head>
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+<body>
+
+<!-- BEGIN HEADER -->
+<div class="header navbar navbar-default navbar-static-top">
+    <!-- BEGIN TOP BAR -->
+    <div class="front-topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-sm-9">
+                    <ul class="list-unstyled inline">
+                        <li><i class="fa fa-phone topbar-info-icon top-2"></i>Téléphone: <span>+336.79.27.04.41</span></li>
+                        <li class="sep"><span>|</span></li>
+                        <li><i class="fa fa-envelope-o topbar-info-icon top-2"></i>Email:
+                            <span>contact@adbeback.com</span></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-3 login-reg-links">
+                    <ul class="list-unstyled inline">
+                        <li><a href="page_login.html">Se connecter</a></li>
+                        <li class="sep"><span>|</span></li>
+                        <li><a href="page_signup.html">S'enregistrer</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END TOP BAR -->
+    <div class="container">
+        <div class="navbar-header">
+            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+            <button class="navbar-toggle btn navbar-btn" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- END RESPONSIVE MENU TOGGLER -->
+            <!-- BEGIN LOGO (you can use logo image instead of text)-->
+            <a class="navbar-brand logo-v1" href="index.html">
+                <img th:src="@{/static/img/logo.png}" id="logoimg" alt="" style="max-height:45px;"/>
+            </a>
+            <!-- END LOGO -->
+        </div>
+
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#">
+                        Acceuil
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- BEGIN TOP NAVIGATION MENU -->
+    </div>
+</div>
+<!-- END HEADER -->
+
+<!-- BEGIN PAGE CONTAINER -->
+<div class="page-container">
+
+<!-- BEGIN CONTAINER -->
+<div class="container" layout:fragment="content">
+<!-- BEGIN SERVICE BOX -->
+<div class="row service-box">
+    <div class="col-md-4 col-sm-4">
+        <div class="service-box-heading">
+            <em><i class="fa fa-location-arrow blue"></i></em>
+            <span>Multipurpose Template</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris.
+            Sed unde omnis iste natus error sit voluptatem.</p>
+    </div>
+    <div class="col-md-4 col-sm-4">
+        <div class="service-box-heading">
+            <em><i class="fa fa-check red"></i></em>
+            <span>Well Documented</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris.
+            Sed unde omnis iste natus error sit voluptatem.</p>
+    </div>
+    <div class="col-md-4 col-sm-4">
+        <div class="service-box-heading">
+            <em><i class="fa fa-compress green"></i></em>
+            <span>Responsive Design</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris.
+            Sed unde omnis iste natus error sit voluptatem.</p>
+    </div>
+</div>
+<!-- END SERVICE BOX -->
+
+<!-- BEGIN BLOCKQUOTE BLOCK -->
+<div class="row quote-v1">
+    <div class="col-md-9 quote-v1-inner">
+        <span>Metronic - The Most Complete &and; Popular Admin &and; Frontend Theme</span>
+    </div>
+    <div class="col-md-3 quote-v1-inner text-right">
+        <a class="btn-transparent" href="http://www.keenthemes.com/preview/index.php?theme=metronic_admin"
+           target="_blank"><i class="fa fa-rocket margin-right-10"></i>Preview Admin</a>
+        <!--<a class="btn-transparent" href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469"><i class="icon-gift margin-right-10"></i>Purchase 2 in 1</a>-->
+    </div>
+</div>
+<!-- END BLOCKQUOTE BLOCK -->
+
+<div class="clearfix"></div>
+
+<!-- BEGIN RECENT WORKS -->
+<div class="row recent-work margin-bottom-40">
+    <div class="col-md-3">
+        <h2><a href="portfolio.html">Recent Works</a></h2>
+
+        <p>Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde voluptatem. Sed
+            unde omnis iste natus error sit voluptatem.</p>
+    </div>
+    <div class="col-md-9">
+        <ul class="bxslider">
+            <li>
+                <em>
+                    <img src="assets/img/works/img1.jpg" alt=""/>
+                    <a href="portfolio_item.html"><i class="fa fa-link icon-hover icon-hover-1"></i></a>
+                    <a href="assets/img/works/img1.jpg" class="fancybox-button" title="Project Name #1"
+                       data-rel="fancybox-button"><i class="fa fa-search icon-hover icon-hover-2"></i></a>
+                </em>
+                <a class="bxslider-block" href="#">
+                    <strong>Amazing Project</strong>
+                    <b>Agenda corp.</b>
+                </a>
+            </li>
+            <li>
+                <em>
+                    <img src="assets/img/works/img2.jpg" alt=""/>
+                    <a href="portfolio_item.html"><i class="fa fa-link icon-hover icon-hover-1"></i></a>
+                    <a href="assets/img/works/img2.jpg" class="fancybox-button" title="Project Name #2"
+                       data-rel="fancybox-button"><i class="fa fa-search icon-hover icon-hover-2"></i></a>
+                </em>
+                <a class="bxslider-block" href="#">
+                    <strong>Amazing Project</strong>
+                    <b>Agenda corp.</b>
+                </a>
+            </li>
+            <li>
+                <em>
+                    <img src="assets/img/works/img3.jpg" alt=""/>
+                    <a href="portfolio_item.html"><i class="fa fa-link icon-hover icon-hover-1"></i></a>
+                    <a href="assets/img/works/img3.jpg" class="fancybox-button" title="Project Name #3"
+                       data-rel="fancybox-button"><i class="fa fa-search icon-hover icon-hover-2"></i></a>
+                </em>
+                <a class="bxslider-block" href="#">
+                    <strong>Amazing Project</strong>
+                    <b>Agenda corp.</b>
+                </a>
+            </li>
+            <li>
+                <em>
+                    <img src="assets/img/works/img4.jpg" alt=""/>
+                    <a href="portfolio_item.html"><i class="fa fa-link icon-hover icon-hover-1"></i></a>
+                    <a href="assets/img/works/img4.jpg" class="fancybox-button" title="Project Name #4"
+                       data-rel="fancybox-button"><i class="fa fa-search icon-hover icon-hover-2"></i></a>
+                </em>
+                <a class="bxslider-block" href="#">
+                    <strong>Amazing Project</strong>
+                    <b>Agenda corp.</b>
+                </a>
+            </li>
+            <li>
+                <em>
+                    <img src="assets/img/works/img5.jpg" alt=""/>
+                    <a href="portfolio_item.html"><i class="fa fa-link icon-hover icon-hover-1"></i></a>
+                    <a href="assets/img/works/img5.jpg" class="fancybox-button" title="Project Name #5"
+                       data-rel="fancybox-button"><i class="fa fa-search icon-hover icon-hover-2"></i></a>
+                </em>
+                <a class="bxslider-block" href="#">
+                    <strong>Amazing Project</strong>
+                    <b>Agenda corp.</b>
+                </a>
+            </li>
+            <li>
+                <em>
+                    <img src="assets/img/works/img6.jpg" alt=""/>
+                    <a href="portfolio_item.html"><i class="fa fa-link icon-hover icon-hover-1"></i></a>
+                    <a href="assets/img/works/img6.jpg" class="fancybox-button" title="Project Name #6"
+                       data-rel="fancybox-button"><i class="fa fa-search icon-hover icon-hover-2"></i></a>
+                </em>
+                <a class="bxslider-block" href="#">
+                    <strong>Amazing Project</strong>
+                    <b>Agenda corp.</b>
+                </a>
+            </li>
+            <li>
+                <em>
+                    <img src="assets/img/works/img3.jpg" alt=""/>
+                    <a href="portfolio_item.html"><i class="fa fa-link icon-hover icon-hover-1"></i></a>
+                    <a href="assets/img/works/img3.jpg" class="fancybox-button" title="Project Name #3"
+                       data-rel="fancybox-button"><i class="fa fa-search icon-hover icon-hover-2"></i></a>
+                </em>
+                <a class="bxslider-block" href="#">
+                    <strong>Amazing Project</strong>
+                    <b>Agenda corp.</b>
+                </a>
+            </li>
+            <li>
+                <em>
+                    <img src="assets/img/works/img4.jpg" alt=""/>
+                    <a href="portfolio_item.html"><i class="fa fa-link icon-hover icon-hover-1"></i></a>
+                    <a href="assets/img/works/img4.jpg" class="fancybox-button" title="Project Name #4"
+                       data-rel="fancybox-button"><i class="fa fa-search icon-hover icon-hover-2"></i></a>
+                </em>
+                <a class="bxslider-block" href="#">
+                    <strong>Amazing Project</strong>
+                    <b>Agenda corp.</b>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- END RECENT WORKS -->
+
+<div class="clearfix"></div>
+
+<!-- BEGIN TABS AND TESTIMONIALS -->
+<div class="row mix-block">
+    <!-- TABS -->
+    <div class="col-md-7 tab-style-1 margin-bottom-20">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-1" data-toggle="tab">Multipurpose</a></li>
+            <li><a href="#tab-2" data-toggle="tab">Documented</a></li>
+            <li><a href="#tab-3" data-toggle="tab">Responsive</a></li>
+            <li><a href="#tab-4" data-toggle="tab">Clean &and; Fresh</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane row fade in active" id="tab-1">
+                <div class="col-md-3">
+                    <a href="assets/img/photos/img7.jpg" class="fancybox-button" title="Image Title"
+                       data-rel="fancybox-button">
+                        <img class="img-responsive" src="assets/img/photos/img7.jpg" alt=""/>
+                    </a>
+                </div>
+                <div class="col-md-9">
+                    <p class="margin-bottom-10">Raw denim you probably haven't heard of them jean shorts Austin.
+                        Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg
+                        carles vegan helvetica. Cosby sweater eu banh mi, qui irure terry richardson ex squid Aliquip
+                        placeat salvia cillum iphone.</p>
+
+                    <p><a class="more" href="#">Read more <i class="icon-angle-right"></i></a></p>
+                </div>
+            </div>
+            <div class="tab-pane row fade" id="tab-2">
+                <div class="col-md-9">
+                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
+                        Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four
+                        loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk
+                        aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore
+                        aesthetic magna delectus mollit. Keytar helvetica VHS salvia..</p>
+                </div>
+                <div class="col-md-3">
+                    <a href="assets/img/photos/img10.jpg" class="fancybox-button" title="Image Title"
+                       data-rel="fancybox-button">
+                        <img class="img-responsive" src="assets/img/photos/img10.jpg" alt=""/>
+                    </a>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-3">
+                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro
+                    fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer,
+                    iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
+                    Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles
+                    pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of
+                    them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+            </div>
+            <div class="tab-pane fade" id="tab-4">
+                <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master
+                    cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party
+                    locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before
+                    they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade
+                    thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park
+                    vegan.</p>
+            </div>
+        </div>
+    </div>
+    <!-- END TABS -->
+
+    <!-- TESTIMONIALS -->
+    <div class="col-md-5 testimonials-v1">
+        <div id="myCarousel" class="carousel slide">
+            <!-- Carousel items -->
+            <div class="carousel-inner">
+                <div class="active item">
+                    <span class="testimonials-slide">Denim you probably haven't heard of. Lorem ipsum dolor met consectetur adipisicing sit amet, consectetur adipisicing elit, of them jean shorts sed magna aliqua. Lorem ipsum dolor met consectetur adipisicing sit amet do eiusmod dolore.</span>
+
+                    <div class="carousel-info">
+                        <img class="pull-left" src="assets/img/people/img1-small.jpg" alt=""/>
+
+                        <div class="pull-left">
+                            <span class="testimonials-name">Lina Mars</span>
+                            <span class="testimonials-post">Commercial Director</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="testimonials-slide">Raw denim you Mustache cliche tempor, williamsburg carles vegan helvetica probably haven't heard of them jean shorts austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica.</span>
+
+                    <div class="carousel-info">
+                        <img class="pull-left" src="assets/img/people/img5-small.jpg" alt=""/>
+
+                        <div class="pull-left">
+                            <span class="testimonials-name">Kate Ford</span>
+                            <span class="testimonials-post">Commercial Director</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="testimonials-slide">Reprehenderit butcher stache cliche tempor, williamsburg carles vegan helvetica.retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid Aliquip placeat salvia cillum iphone.</span>
+
+                    <div class="carousel-info">
+                        <img class="pull-left" src="assets/img/people/img2-small.jpg" alt=""/>
+
+                        <div class="pull-left">
+                            <span class="testimonials-name">Jake Witson</span>
+                            <span class="testimonials-post">Commercial Director</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel nav -->
+            <a class="left-btn" href="#myCarousel" data-slide="prev"></a>
+            <a class="right-btn" href="#myCarousel" data-slide="next"></a>
+        </div>
+    </div>
+    <!-- END TESTIMONIALS -->
+</div>
+<!-- END TABS AND TESTIMONIALS -->
+
+<!-- BEGIN STEPS -->
+<div class="row no-space-steps margin-bottom-40">
+    <div class="col-md-4 col-sm-4">
+        <div class="front-steps front-step-one">
+            <h2>Goal definition</h2>
+
+            <p>Lorem ipsum dolor sit amet sit consectetur adipisicing eiusmod tempor.</p>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-4">
+        <div class="front-steps front-step-two">
+            <h2>Analyse</h2>
+
+            <p>Lorem ipsum dolor sit amet sit consectetur adipisicing eiusmod tempor.</p>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-4">
+        <div class="front-steps front-step-three">
+            <h2>Implementation</h2>
+
+            <p>Lorem ipsum dolor sit amet sit consectetur adipisicing eiusmod tempor.</p>
+        </div>
+    </div>
+</div>
+<!-- END STEPS -->
+
+<!-- BEGIN CLIENTS -->
+<div class="row margin-bottom-40">
+    <div class="col-md-3">
+        <h2><a href="#">Our Clients</a></h2>
+
+        <p>Lorem dipsum folor margade sitede lametep eiusmod psumquis dolore.</p>
+    </div>
+    <div class="col-md-9">
+        <ul class="bxslider1 clients-list">
+            <li>
+                <a href="#">
+                    <img src="assets/img/clients/client_1_gray.png" alt=""/>
+                    <img src="assets/img/clients/client_1.png" class="color-img" alt=""/>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/clients/client_2_gray.png" alt=""/>
+                    <img src="assets/img/clients/client_2.png" class="color-img" alt=""/>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/clients/client_3_gray.png" alt=""/>
+                    <img src="assets/img/clients/client_3.png" class="color-img" alt=""/>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/clients/client_4_gray.png" alt=""/>
+                    <img src="assets/img/clients/client_4.png" class="color-img" alt=""/>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/clients/client_5_gray.png" alt=""/>
+                    <img src="assets/img/clients/client_5.png" class="color-img" alt=""/>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/clients/client_6_gray.png" alt=""/>
+                    <img src="assets/img/clients/client_6.png" class="color-img" alt=""/>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/clients/client_7_gray.png" alt=""/>
+                    <img src="assets/img/clients/client_7.png" class="color-img" alt=""/>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/clients/client_8_gray.png" alt=""/>
+                    <img src="assets/img/clients/client_8.png" class="color-img" alt=""/>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- END CLIENTS -->
+</div>
+<!-- END CONTAINER -->
+</div>
+<!-- END PAGE CONTAINER -->
+
+<!-- BEGIN FOOTER -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 space-mobile">
+                <!-- BEGIN ABOUT -->
+                <h2>A propos</h2>
+
+                <p class="margin-bottom-30">
+                    Nous sommes une régis publicitaire sous la forme de blindtest.<br/>
+                    En utilisant notre technologie, vos utilisteurs pourrons voir la publicité d'une autre façon sans être géné par la publicité.<br/>
+                </p>
+
+                <div class="clearfix"></div>
+               <!-- END ABOUT -->
+
+            </div>
+            <div class="col-md-4 col-sm-4 space-mobile">
+                <!-- BEGIN CONTACTS -->
+                <h2>Nous contacter</h2>
+                <address class="margin-bottom-40">
+                    AdBeBack <br/>
+                    ... <br/>
+                    ... <br/>
+                    ... <br/>
+                    Email: <a href="mailto:contact@adbeback.com">contact@adbeback.com</a>
+                </address>
+                <!-- END CONTACTS -->
+
+                <!-- BEGIN SUBSCRIBE -->
+                <h2>Newsletter</h2>
+
+                <p>Souscrire à la newsletter !!!</p>
+
+                <form action="#" class="form-subscribe">
+                    <div class="input-group input-large">
+                        <input class="form-control" type="text"/>
+                            <span class="input-group-btn">
+                                <button class="btn theme-btn" type="button">Souscrire</button>
+                            </span>
+                    </div>
+                </form>
+
+                <!-- END SUBSCRIBE -->
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- END FOOTER -->
+
+<!-- BEGIN COPYRIGHT -->
+<div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8">
+                <p>
+                    <span class="margin-right-10">2014 © AdBeBack. ALL Rights Reserved.</span>
+                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END COPYRIGHT -->
+
 
 </body>
+<!-- END BODY -->
 </html>
