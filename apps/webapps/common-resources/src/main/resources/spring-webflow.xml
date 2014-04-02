@@ -11,7 +11,6 @@
                                    view-factory-creator="mvcViewFactoryCreator"
                                    development="true" />
 
-
     <bean id="thymeleafViewResolver" class="org.thymeleaf.spring4.view.AjaxThymeleafViewResolver">
         <property name="viewClass" value="org.thymeleaf.spring4.view.FlowAjaxThymeleafView" />
         <property name="templateEngine" ref="templateEngine" />
@@ -19,6 +18,7 @@
 
 
     <bean id="mvcViewFactoryCreator" class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
+        <property name="useSpringBeanBinding" value="true" />
         <property name="viewResolvers" ref="thymeleafViewResolver"/>
     </bean>
 

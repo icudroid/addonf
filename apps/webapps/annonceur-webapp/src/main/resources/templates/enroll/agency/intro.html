@@ -7,10 +7,30 @@
         layout:decorator="layout/unlogged">
 <head>
     <title>Inscription Agence</title>
+
+    <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+
+    <script th:inline="javascript">
+        $(function(){
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'triggerform',elementId:'continue',event:'onclick'}));
+        });
+    </script>
+
+
 </head>
 <body>
     <div layout:fragment="content">
+
         Text intro : A rédiger
+
+        <form id="triggerform" method="post" th:action="${flowExecutionUrl}">
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="submit" id="continue" name="_eventId_continue" value="Continuer" class="btn btn-default"/>
+        </form>
     </div>
 </body>
 </html>

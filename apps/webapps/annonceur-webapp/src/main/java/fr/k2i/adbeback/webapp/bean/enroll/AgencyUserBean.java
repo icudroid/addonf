@@ -6,4 +6,6 @@ import lombok.Data;
 @Data
 public class AgencyUserBean extends ContactBean {
     private AgencyRole role;
+    private String password;
+    private String passwordConfirm;
 }

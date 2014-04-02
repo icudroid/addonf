@@ -4,6 +4,7 @@ import fr.k2i.adbeback.webapp.bean.ContactBean;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,5 +15,6 @@ import java.util.List;
  */
 @Data
 public class AgencyUsersCommand implements Serializable{
-    private List<AgencyUsersCommand> users;
+    private List<AgencyUserBean> users = new ArrayList<AgencyUserBean>();
+    private AgencyUserBean current = new AgencyUserBean();
 }
