@@ -18,51 +18,25 @@
 <body>
 
     <div layout:fragment="content">
-
-        <div class="row breadcrumbs margin-bottom-40">
-            <div class="container">
-                <div class="col-md-4 col-sm-4">
-                    <h1>Inscription d'une agence</h1>
-                </div>
-                <div class="col-md-8 col-sm-8">
-                    <ul class="pull-right breadcrumb">
-                        <li class="active">Informations</li>
-                        <li>Société</li>
-                        <li>Compte administrateurs</li>
-                        <li>Comptes utilisateurs</li>
-                        <li>Pièces</li>
-                        <li>Récapitulatf</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
+        <div th:substituteby="enroll/agency/fragment/breadcrumb(active=1)"></div>
         <div class="container margin-bottom-40">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
                     <form id="triggerform" method="post" th:action="${flowExecutionUrl}">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                        <h2>Text explicatif : A rédiger</h2>
-
+                        <h2 th:utext="#{enroll.agency.explain}">Text explicatif : A rédiger</h2>
 
                         <div class="row">
                             <div class="col-md-12 form-actions right">
-                                <input type="submit" id="continue" name="_eventId_continue" value="Continuer" class="btn theme-btn"/>
+                                <input type="submit" id="continue" name="_eventId_continue" th:value="#{btn.next}" class="btn blue"/>
                             </div>
                         </div>
-
 
                     </form>
                 </div>
             </div>
         </div>
-
-
-
-
     </div>
-
-
 </body>
 </html>

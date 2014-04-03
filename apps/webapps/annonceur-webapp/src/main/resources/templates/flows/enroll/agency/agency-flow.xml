@@ -8,7 +8,7 @@
 
 
     <on-start>
-        <evaluate expression="agencyEnrollHelper.defaultModelNeeded()" result="conversationScope.values"/>
+        <evaluate expression="enrollHelper.defaultModelNeeded()" result="conversationScope.values"/>
     </on-start>
 
 
@@ -19,6 +19,7 @@
 
     <view-state id="agency" view="enroll/agency/info" model="agencyEnrollCommand">
         <transition on="submit" to="adminUser" />
+        <transition on="back" to="intro"/>
     </view-state>
 
     <view-state id="adminUser" view="enroll/agency/admin" model="agencyEnrollCommand">
@@ -31,6 +32,9 @@
 
 
     <view-state id="users" view="enroll/agency/users" model="agencyEnrollCommand">
+
+        <transition on="submit" to="attachments" />
+
         <transition on="addUser" to="addNew">
             <evaluate expression="agencyEnrollHelper.addUser(agencyEnrollCommand)" />
             <evaluate expression="agencyEnrollHelper.emptyCurrent(agencyEnrollCommand)" />
@@ -40,7 +44,7 @@
             <set name="flashScope.index" value="requestParameters.id"/>
         </transition>
 
-        <transition on="back" to="agency" validate="false" />
+        <transition on="back" to="adminUser" validate="false" />
     </view-state>
 
 
@@ -95,5 +99,14 @@
 
 
 
+
+    <global-transitions>
+        <transition on="step1" to="intro" validate="false"></transition>
+        <transition on="step2" to="agency" validate="false"></transition>
+        <transition on="step3" to="adminUser" validate="false"></transition>
+        <transition on="step4" to="users" validate="false"></transition>
+        <transition on="step5" to="adminUser" validate="false"></transition>
+        <transition on="step6" to="adminUser" validate="false"></transition>
+    </global-transitions>
 
 </flow>

@@ -15,6 +15,9 @@
         Spring.addDecoration(
                 new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'submit',event:'onclick'}));
 
+        Spring.addDecoration(
+                new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'back',event:'onclick'}));
+
         $(function(){
             $('#zipcode').postalCodeConsistency({
                 baseUrl   : addonf.base,
@@ -28,23 +31,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="row breadcrumbs margin-bottom-40">
-        <div class="container">
-            <div class="col-md-4 col-sm-4">
-                <h1>Inscription d'une agence</h1>
-            </div>
-            <div class="col-md-8 col-sm-8">
-                <ul class="pull-right breadcrumb">
-                    <li>Informations</li>
-                    <li class="active">Société</li>
-                    <li>Compte administrateurs</li>
-                    <li>Comptes utilisateurs</li>
-                    <li>Pièces</li>
-                    <li>Récapitulatf</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <div th:substituteby="enroll/agency/fragment/breadcrumb(active=2)"></div>
 
     <div class="container margin-bottom-40">
         <div class="row">
@@ -52,7 +39,7 @@
                 <form id="formDataInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" th:object="${agencyEnrollCommand}" autocomplete="off">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                    <h2>Text explicatif : A rédiger</h2>
+                    <h2 th:utext="#{enroll.agency.info.explain}">Text explicatif : A rédiger</h2>
 
 
                     <div th:class="${#fields.hasErrors('info.name')}? 'form-group has-error':'form-group'">
@@ -115,7 +102,8 @@
 
                     <div class="row">
                         <div class="col-md-12 form-actions right">
-                            <input type="submit" id="submit" name="_eventId_submit" value="Continuer" class="btn theme-btn"/>
+                            <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default"/>
+                            <input type="submit" id="submit" name="_eventId_submit" th:value="#{btn.next}" class="btn blue"/>
                         </div>
                     </div>
 

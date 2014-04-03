@@ -14,6 +14,8 @@
         $(function(){
             Spring.addDecoration(
                     new Spring.AjaxEventDecoration({formId:'formUsersInfo',elementId:'submit',event:'onclick'}));
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'back',event:'onclick'}));
         });
     </script>
 
@@ -21,42 +23,26 @@
 <body>
 <div layout:fragment="content">
 
+    <div th:substituteby="enroll/agency/fragment/breadcrumb(active=4)"></div>
 
-    <div class="row breadcrumbs margin-bottom-40">
-        <div class="container">
-            <div class="col-md-4 col-sm-4">
-                <h1>Inscription d'une agence</h1>
-            </div>
-            <div class="col-md-8 col-sm-8">
-                <ul class="pull-right breadcrumb">
-                    <li>Informations</li>
-                    <li>Société</li>
-                    <li>Compte administrateurs</li>
-                    <li  class="active">Comptes utilisateurs</li>
-                    <li>Pièces</li>
-                    <li>Récapitulatf</li>
-                </ul>
-            </div>
-        </div>
-    </div>
     <div class="container margin-bottom-40">
         <div class="row">
             <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
                 <form id="formUsersInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" th:object="${agencyEnrollCommand}" autocomplete="off">
 
-                    <h2>Text explicatif : A rédiger</h2>
+                    <h2 th:utext="#{enroll.agency.users.explain}">Text explicatif : A rédiger</h2>
                     <!-- Liste des utilisateurs déjà créer avec la possibilité de la supprimer -->
 
 
-                    <h4 th:utext="enroll.agency.list.users">Liste des utilisateurs</h4>
+                    <h4 th:utext="#{enroll.agency.list.users}">Liste des utilisateurs</h4>
                     <fieldset>
                         <table class="table">
                             <tr>
-                                <th th:text="enroll.agency.table.users.lastname">Nom</th>
-                                <th th:text="enroll.agency.table.users.firstname">Prénom</th>
-                                <th th:text="enroll.agency.table.users.email">email</th>
-                                <th th:text="enroll.agency.table.users.role">role</th>
-                                <th th:text="enroll.agency.table.users.actions">Action</th>
+                                <th th:text="#{enroll.agency.table.users.lastname}">Nom</th>
+                                <th th:text="#{enroll.agency.table.users.firstname}">Prénom</th>
+                                <th th:text="#{enroll.agency.table.users.email}">email</th>
+                                <th th:text="#{enroll.agency.table.users.role}">role</th>
+                                <th th:text="#{enroll.agency.table.users.actions}">Action</th>
                             </tr>
                             <tr th:each="u : ${agencyEnrollCommand.users.users}">
                                 <td th:text="${u.lastname}">KAHN</td>
@@ -64,7 +50,7 @@
                                 <td th:text="${u.email}">dimitri@d-kahn.net</td>
                                 <td th:text="#{${'role.' + u.role}}">Admin</td>
                                 <td>
-                                    <button th:if="u.role != 'ADMIN'" class="btn btn-default">Supprimer</button>
+                                    <button th:if="u.role != 'ADMIN'" class="btn btn-default" th:text="#{btn.delete}">Supprimer</button>
                                 </td>
                             </tr>
                         </table>
@@ -142,8 +128,9 @@
 
                     <div class="row">
                         <div class="col-md-12 form-actions right">
-                            <button class="btn theme-btn" type="submit" id="submit" name="_eventId_submit" th:text="#{enroll.agency.add.user.button}">Ajouter un utilisateur</button>
-                            <button class="btn theme-btn" type="submit" id="next" name="_eventId_next" th:text="#{enroll.agency.next.button}">Create Account</button>
+                            <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default"/>
+                            <input type="submit" id="continue" name="_eventId_submit" th:value="#{btn.next}" class="btn blue"/>
+                            <input type="submit" id="addUser" name="_eventId_addUser" th:value="#{enroll.agency.add.user.button}" class="btn blue"/>
                         </div>
                     </div>
 

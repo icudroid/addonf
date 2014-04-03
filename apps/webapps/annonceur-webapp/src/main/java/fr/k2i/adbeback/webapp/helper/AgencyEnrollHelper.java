@@ -23,44 +23,6 @@ import java.util.*;
 @Service
 public class AgencyEnrollHelper {
 
-    @Autowired
-    private ICountryDao countryDao;
-
-    public Map<String,Object> defaultModelNeeded(){
-        Map<String,Object> model = new HashMap<String, Object>();
-        Iterable<Country> all = countryDao.getAll();
-        List<String> countries = new ArrayList<String>();
-        Iterator<Country> iterator = all.iterator();
-        while (iterator.hasNext()) {
-            Country next = iterator.next();
-            countries.add(next.getCode());
-        }
-        model.put("countries",countries);
-
-
-        List<String>sexes = new ArrayList<String>();
-        for (Sex sex : Sex.values()) {
-            sexes.add(sex.name());
-        }
-        model.put("sexes",sexes);
-
-        List<String>legalStatus = new ArrayList<String>();
-        for (LegalStatus status : LegalStatus.values()) {
-            legalStatus.add(status.name());
-        }
-        model.put("legalStatus",legalStatus);
-
-
-        List<String>roles = new ArrayList<String>();
-        for (AgencyRole role : AgencyRole.values()) {
-            roles.add(role.name());
-        }
-        model.put("roles",roles);
-
-
-        return model;
-    }
-
 
     public void createAdmin(AgencyEnrollCommand agencyEnrollCommand){
         AgencyUsersCommand users = agencyEnrollCommand.getUsers();

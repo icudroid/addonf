@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <var name="which" class="fr.k2i.adbeback.webapp.bean.enroll.EnrollFlowState"/>
+
+    <view-state id="intro" view="enroll/common/which" model="which">
+        <transition to="chooseEnroll"/>
+    </view-state>
+
+    <action-state id="chooseEnroll">
+        <evaluate expression="enrollHelper.whichEnroll(which)"></evaluate>
+        <transition on="MEDIA" to="media" />
+        <transition on="AGENCY" to="agency" />
+        <transition on="ADV" to="adv" />
+    </action-state>
+
+
+    <subflow-state id="media" subflow="enroll/media">
+    </subflow-state>
+
+    <subflow-state id="agency" subflow="enroll/agency">
+    </subflow-state>
+
+    <subflow-state id="adv" subflow="enroll/adv">
+    </subflow-state>
+
+</flow>

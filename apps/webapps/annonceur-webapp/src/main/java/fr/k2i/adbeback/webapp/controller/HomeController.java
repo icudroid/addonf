@@ -33,8 +33,14 @@ public class HomeController {
         try{
             return "home";
         }catch (Exception e){
-            return "redirect:/login";
+            return "redirect:/index";
         }
+    }
+
+
+    @RequestMapping("/index.html")
+    public String index(Map<String, Object> model) {
+        return "index";
     }
 
     @RequestMapping("/logout-success")

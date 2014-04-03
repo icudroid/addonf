@@ -45,7 +45,80 @@ public enum EnrollFlow {
             );
             return res;
         }
-    };
+    },
+
+
+    ADV {
+
+        @Override
+        public List<String> getRequiredFilesId(int nbSecondaryContact) {
+            ArrayList<String> res = Lists.newArrayList(
+                    AttachementFileId.CID.name(),
+                    AttachementFileId.KBIS.name(),
+                    AttachementFileId.RIB.name(),
+                    AttachementFileId.STATUS.name(),
+                    AttachementFileId.SIGN.name(),
+                    AttachementFileId.LOGO.name()
+            );
+            return res;
+        }
+
+        @Override
+        public String getType() {
+            return "ADV";
+        }
+
+        @Override
+        public List<String> getFilesId(int nbSecondaryContact) {
+            ArrayList<String> res = Lists.newArrayList(
+                    AttachementFileId.CID.name(),
+                    AttachementFileId.KBIS.name(),
+                    AttachementFileId.RIB.name(),
+                    AttachementFileId.STATUS.name(),
+                    AttachementFileId.SIGN.name(),
+                    AttachementFileId.LOGO.name()
+            );
+            return res;
+        }
+    },
+
+
+
+    MEDIA {
+
+        @Override
+        public List<String> getRequiredFilesId(int nbSecondaryContact) {
+            ArrayList<String> res = Lists.newArrayList(
+                    AttachementFileId.CID.name(),
+                    AttachementFileId.KBIS.name(),
+                    AttachementFileId.RIB.name(),
+                    AttachementFileId.STATUS.name(),
+                    AttachementFileId.SIGN.name(),
+                    AttachementFileId.LOGO.name()
+            );
+            return res;
+        }
+
+        @Override
+        public String getType() {
+            return "MEDIA";
+        }
+
+        @Override
+        public List<String> getFilesId(int nbSecondaryContact) {
+            ArrayList<String> res = Lists.newArrayList(
+                    AttachementFileId.CID.name(),
+                    AttachementFileId.KBIS.name(),
+                    AttachementFileId.RIB.name(),
+                    AttachementFileId.STATUS.name(),
+                    AttachementFileId.SIGN.name(),
+                    AttachementFileId.LOGO.name()
+            );
+            return res;
+        }
+    }
+
+        ;
 
     public abstract List<String> getFilesId(int nbSecondaryContact);
     public abstract String getType();

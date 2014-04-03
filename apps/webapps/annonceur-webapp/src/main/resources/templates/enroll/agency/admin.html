@@ -14,30 +14,15 @@
         $(function(){
             Spring.addDecoration(
                     new Spring.AjaxEventDecoration({formId:'formAdminInfo',elementId:'submit',event:'onclick'}));
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'back',event:'onclick'}));
         });
     </script>
 
 </head>
 <body>
 <div layout:fragment="content">
-
-    <div class="row breadcrumbs margin-bottom-40">
-        <div class="container">
-            <div class="col-md-4 col-sm-4">
-                <h1>Inscription d'une agence</h1>
-            </div>
-            <div class="col-md-8 col-sm-8">
-                <ul class="pull-right breadcrumb">
-                    <li>Informations</li>
-                    <li>Société</li>
-                    <li class="active">Compte administrateurs</li>
-                    <li>Comptes utilisateurs</li>
-                    <li>Pièces</li>
-                    <li>Récapitulatf</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <div th:substituteby="enroll/agency/fragment/breadcrumb(active=3)"></div>
 
 
     <div class="container margin-bottom-40">
@@ -103,7 +88,8 @@
 
                     <div class="row">
                         <div class="col-md-12 form-actions right">
-                            <input type="submit" id="submit" name="_eventId_submit" value="Continuer" class="btn theme-btn"/>
+                            <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default"/>
+                            <input type="submit" id="submit" name="_eventId_submit" value="Continuer" class="btn blue"/>
                         </div>
                     </div>
 
