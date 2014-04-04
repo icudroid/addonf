@@ -18,8 +18,8 @@ public class Brand extends BaseObject implements Serializable{
 	private static final long serialVersionUID = -2695302801414355764L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = IMetaData.ColumnMetadata.Brand.ID)
+    @SequenceGenerator(name = "Brand_Gen", sequenceName = "Brand_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Brand_Gen")
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL)

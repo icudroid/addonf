@@ -60,7 +60,8 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
     @Autowired
     private IViewedAdDao viewedAdDao;
 
-    @Autowired IPartnerDao partnerDao;
+    @Autowired
+    IMediaDao mediaDao;
 
 	@Autowired
 	public void setAdGameDao(fr.k2i.adbeback.dao.IAdGameDao adGameDao) {
@@ -79,7 +80,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
         }else{
             game = new AdGameTransaction();
             ((AdGameTransaction)game).setIdTransaction(idTransaction);
-            ((AdGameTransaction)game).setPartner(partnerDao.findbyExtId(idPartner));
+            ((AdGameTransaction)game).setMedia(mediaDao.findbyExtId(idPartner));
         }
 
 
@@ -108,7 +109,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
         List<Ad> allAds = null;
         if(selfAd){
-            allAds = adDao.getAllValidForAndProvidedBy(player,((AdGameTransaction)game).getPartner());
+            allAds = adDao.getAllValidForAndProvidedBy(player,((AdGameTransaction)game).getMedia());
         }else{
             allAds = adDao.getAllValidFor(player);
         }

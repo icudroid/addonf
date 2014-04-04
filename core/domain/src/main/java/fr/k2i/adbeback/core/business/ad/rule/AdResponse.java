@@ -13,8 +13,8 @@ import java.io.Serializable;
 @Table(name = IMetaData.TableMetadata.AD_RESPONSE)
 public class AdResponse extends BaseObject implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = IMetaData.ColumnMetadata.AdResponse.ID)
+    @SequenceGenerator(name = "AdResponse_Gen", sequenceName = "AdResponse_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AdResponse_Gen")
 	private Long id;
 
     @Column(name = IMetaData.ColumnMetadata.AdResponse.RESPONSE)

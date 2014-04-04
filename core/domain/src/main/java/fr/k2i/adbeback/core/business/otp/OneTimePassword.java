@@ -22,7 +22,8 @@ import javax.persistence.*;
 public class OneTimePassword extends BaseObject {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "OneTimePassword_Gen", sequenceName = "OneTimePassword_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OneTimePassword_Gen")
     protected Long id;
 
     @Column(name = "opt_key")

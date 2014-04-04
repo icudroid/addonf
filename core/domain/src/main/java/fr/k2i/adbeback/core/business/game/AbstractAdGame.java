@@ -20,7 +20,8 @@ public abstract class AbstractAdGame extends BaseObject implements Serializable 
 
 	protected static final long serialVersionUID = -2713151389131420230L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "AbstractAdGame_Gen", sequenceName = "AbstractAdGame_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AbstractAdGame_Gen")
 	protected Long id;
 
     @OneToMany(mappedBy = "adGame",cascade=CascadeType.ALL)

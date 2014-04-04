@@ -27,7 +27,8 @@ import java.util.Date;
 @DiscriminatorColumn(name = "classe", discriminatorType = DiscriminatorType.STRING)
 public abstract class Statistics extends BaseObject {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "Statistics_Gen", sequenceName = "Statistics_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Statistics_Gen")
     protected Long id;
 
     @Temporal(TemporalType.DATE)

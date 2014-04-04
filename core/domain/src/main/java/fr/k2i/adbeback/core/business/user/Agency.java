@@ -23,7 +23,8 @@ import java.util.Map;
 public class Agency extends BaseObject {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "Agency_Gen", sequenceName = "Agency_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Agency_Gen")
     private Long id;
 
     private String name;

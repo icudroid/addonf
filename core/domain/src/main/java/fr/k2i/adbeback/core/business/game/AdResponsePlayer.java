@@ -17,7 +17,8 @@ public class AdResponsePlayer extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -9114916487551116090L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "AdResponsePlayer_Gen", sequenceName = "AdResponsePlayer_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AdResponsePlayer_Gen")
 	private Long id;
 
     @OneToMany(cascade = CascadeType.ALL)

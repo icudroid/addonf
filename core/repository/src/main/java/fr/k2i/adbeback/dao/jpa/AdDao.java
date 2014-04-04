@@ -12,7 +12,8 @@ import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Sex;
-import fr.k2i.adbeback.core.business.user.Partner;
+import fr.k2i.adbeback.core.business.user.Media;
+import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
@@ -80,7 +81,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
 
     @Override
-    public List<Ad> getAllValidForAndProvidedBy(Player player, Partner partner) {
+    public List<Ad> getAllValidForAndProvidedBy(Player player, Media media) {
 
         /*
             Les règles sont les suivantes :
@@ -95,7 +96,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         Query query = getEntityManager().createQuery("select ad from Ad ad inner join ad.rules as adRule with adRule.class = CountryRule where ad.startDate <= :date and ad.endDate >= :date and adRule.country.id = :countryId and ad.providedBy.id= :idPartner")
                 .setParameter("countryId",player.getAddress().getCity().getCountry().getId())
                 .setParameter("date", date.toDate())
-                .setParameter("idPartner",partner.getId());
+                .setParameter("idPartner", media.getId());
 
         return matchRules(query.getResultList(),player);
     }

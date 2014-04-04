@@ -12,10 +12,9 @@ import java.io.Serializable;
 public class Merchant extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = -8741225076812664415L;
-    //	@SequenceGenerator(name = "Partener_Gen", sequenceName = "Partener_Sequence")
     @Id
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Partener_Gen")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "Merchant_Gen", sequenceName = "Merchant_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Merchant_Gen")
 	private Long id;
 	private String name;
 	private String webSite;

@@ -16,7 +16,8 @@ public abstract class  AdRule extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 8629354590055381187L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "AdRule_Gen", sequenceName = "AdRule_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AdRule_Gen")
 	protected Long id;
 
 }

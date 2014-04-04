@@ -14,11 +14,12 @@ import javax.persistence.Entity;
  */
 @Data
 @Entity
-@DiscriminatorValue("Partner")
-public class Partner extends User{
+@DiscriminatorValue("Media")
+public class Media extends User{
 
     private String passPhrase;
 
     @Column(name = "ext_id",unique = true)
     private String extId;
+
 }

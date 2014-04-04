@@ -3,93 +3,41 @@ package fr.k2i.adbeback.core.business.goosegame;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.player.Player;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "goose_win")
 public class GooseWin extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -4925568112544086765L;
-	private Long id;
+
+
+    @Id
+    @SequenceGenerator(name = "GooseWin_Gen", sequenceName = "GooseWin_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GooseWin_Gen")
+    private Long id;
+
+    @ManyToOne()
+    @JoinColumn(name = "gooselevel_id")
 	private GooseLevel gooseLevel;
 	private Integer value;
+
+    @Enumerated(EnumType.STRING)
 	private WinStatus status = WinStatus.NotTranfered;
+
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date windate = new Date();
+
+
+    @ManyToOne
+    @JoinColumn(name="PLAYER_ID")
 	private Player player;
 	
-	//	@SequenceGenerator(name = "GooseWin_Gen", sequenceName = "GooseWin_Sequence")
-	@Id
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GooseWin_Gen")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@ManyToOne()
-	@JoinColumn(name = "gooselevel_id")
-	public GooseLevel getGooseLevel() {
-		return gooseLevel;
-	}
-
-	public void setGooseLevel(GooseLevel gooseLevel) {
-		this.gooseLevel = gooseLevel;
-	}
-
-	public Integer getValue() {
-		return value;
-	}
-
-	public void setValue(Integer value) {
-		this.value = value;
-	}
-
-	@Enumerated(EnumType.STRING)
-	public WinStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(WinStatus status) {
-		this.status = status;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date getWindate() {
-		return windate;
-	}
-
-	public void setWindate(Date windate) {
-		this.windate = windate;
-	}
-
-	@ManyToOne
-    @JoinColumn(name="PLAYER_ID")
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
 
 	@Override
 	public int hashCode() {

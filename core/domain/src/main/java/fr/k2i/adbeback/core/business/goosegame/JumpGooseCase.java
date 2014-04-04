@@ -1,31 +1,30 @@
 package fr.k2i.adbeback.core.business.goosegame;
 
+import lombok.Data;
+
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Data
 @Entity
 @DiscriminatorValue("Jump")
 public class JumpGooseCase extends GooseCase {
 	private static final long serialVersionUID = 7152651220130031461L;
-	private GooseCase jumpTo;
+
+
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "GOOSEJUMP_ID")
+    private GooseCase jumpTo;
 
     @Override
     public int ihmValue() {
         return 1;
     }
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "GOOSEJUMP_ID")
-	public GooseCase getJumpTo() {
-		return jumpTo;
-	}
 
-	public void setJumpTo(GooseCase jumpTo) {
-		this.jumpTo = jumpTo;
-	}
 
 	@Override
 	public int hashCode() {

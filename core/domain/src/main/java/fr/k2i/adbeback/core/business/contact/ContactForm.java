@@ -18,7 +18,8 @@ import javax.persistence.*;
 @Table(name = "contact_form")
 public class ContactForm extends BaseObject {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "ContactForm_Gen", sequenceName = "ContactForm_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ContactForm_Gen")
     protected Long id;
 
     @NotEmpty

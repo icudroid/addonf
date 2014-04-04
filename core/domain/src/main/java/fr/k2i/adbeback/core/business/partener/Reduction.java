@@ -12,10 +12,9 @@ import java.io.Serializable;
 public class Reduction extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 6039138990472415617L;
 
-//	@SequenceGenerator(name = "Reduction_Gen", sequenceName = "Reduction_Sequence")
     @Id
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Reduction_Gen")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "Reduction_Gen", sequenceName = "Reduction_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Reduction_Gen")
 	private Long id;
 
 	private Double value;

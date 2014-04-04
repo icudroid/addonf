@@ -14,7 +14,7 @@ public class MultiResponseRule extends AdService {
 	private static final long serialVersionUID = 2723929702129656644L;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.RESPONSE_JOIN)
+    @JoinColumn(name = IMetaData.ColumnMetadata.AdRule.MULTI_RESPONSE_JOIN)
 	private List<AdResponse>responses;
 
     private String addonText;

@@ -2,6 +2,7 @@ package fr.k2i.adbeback.core.business.player;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import lombok.Data;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -16,12 +17,19 @@ import java.io.Serializable;
  *         Extended to implement Acegi GrantedAuthority interface
  *         by David Carter david@carter.net
  */
+@Data
 @Entity
 @Table(name = "role")
 public class Role extends BaseObject implements Serializable {
     private static final long serialVersionUID = 3690197650654049848L;
+
+    @Id
+    @SequenceGenerator(name = "Role_Gen", sequenceName = "Role_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Role_Gen")
     private Long id;
+    @Column(length = 20)
     private String name;
+    @Column(length = 64)
     private String description;
 
     /**
@@ -39,11 +47,6 @@ public class Role extends BaseObject implements Serializable {
         this.name = name;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return id;
-    }
 
     /**
      * @return the name property (getAuthority required by Acegi's GrantedAuthority interface)
@@ -52,28 +55,6 @@ public class Role extends BaseObject implements Serializable {
     @Transient
     public String getAuthority() {
         return getName();
-    }
-
-    @Column(length = 20)
-    public String getName() {
-        return this.name;
-    }
-
-    @Column(length = 64)
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**

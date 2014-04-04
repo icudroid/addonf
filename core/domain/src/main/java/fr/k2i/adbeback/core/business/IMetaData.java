@@ -40,6 +40,7 @@ public interface IMetaData {
             String INITIAL_AMOUNT =                     "initial_amount";
             String INSERTED =                           "inserted";
             String RESPONSE_CORRECT_JOIN =              "correct_for_rule_id";
+            String MULTI_RESPONSE_JOIN =                "multi_rule_id";
 
             public interface Discrimator{
                 String DISCRIMINATOR =                  "classe";

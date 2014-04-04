@@ -3,18 +3,20 @@ package fr.k2i.adbeback.core.business.ad;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.player.Sex;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Data
 @Entity
 @Table(name= IMetaData.TableMetadata.CONTACT)
 public class Contact extends BaseObject implements Serializable{
 	private static final long serialVersionUID = 8778110793577776954L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = IMetaData.ColumnMetadata.Contact.ID)
+    @SequenceGenerator(name = "Contact_Gen", sequenceName = "Contact_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Contact_Gen")
     private Long id;
 
 	@Column(name=IMetaData.ColumnMetadata.Contact.LASTNAME,length = 60)
@@ -49,78 +51,6 @@ public class Contact extends BaseObject implements Serializable{
     }
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public Sex getSalutation() {
-        return salutation;
-    }
-
-    public void setSalutation(Sex salutation) {
-        this.salutation = salutation;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getMobilePhone() {
-        return mobilePhone;
-    }
-
-    public void setMobilePhone(String mobilePhone) {
-        this.mobilePhone = mobilePhone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    public String getFunction() {
-        return function;
-    }
-
-    public void setFunction(String function) {
-        this.function = function;
-    }
 
     @Override
     public String toString() {

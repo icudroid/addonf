@@ -19,31 +19,6 @@ public class MultiGooseLevel extends GooseLevel implements IMultiGooseLevel{
     protected Integer strong;
     protected Integer minValue;
 
-    public Integer getMinValue() {
-        return minValue;
-    }
-
-    public void setMinValue(Integer minValue) {
-        this.minValue = minValue;
-    }
-
-    public Integer getStrong() {
-        return strong;
-    }
-
-    public void setStrong(Integer strong) {
-        this.strong = strong;
-    }
-
-	public Integer getValue() {
-		return value;
-	}
-
-	public void setValue(Integer value) {
-		this.value = value;
-	}
-
-
 	@Override
 	public String toString() {
 		return "GooseLevel [id=" + id + ", level=" + level + ", value=" + value

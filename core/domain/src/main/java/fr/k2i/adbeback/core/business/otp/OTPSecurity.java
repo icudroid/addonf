@@ -21,7 +21,8 @@ import java.util.Date;
 @DiscriminatorColumn(name = IMetaData.ColumnMetadata.OTPSecurity.Discrimator.DISCRIMINATOR, discriminatorType = DiscriminatorType.STRING)
 public abstract class OTPSecurity extends BaseObject implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "OTPSecurity_Gen", sequenceName = "OTPSecurity_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OTPSecurity_Gen")
     protected Long id;
 
     @Column(name=IMetaData.ColumnMetadata.OTPSecurity.KEY,length = 8)

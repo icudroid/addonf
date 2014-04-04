@@ -3,56 +3,30 @@ package fr.k2i.adbeback.core.business.game;
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MapKey;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "ad_score")
 public class AdScore extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 1613488681898448793L;
+
+    @Id
+    @SequenceGenerator(name = "AdScore_Gen", sequenceName = "AdScore_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AdScore_Gen")
 	private Long id;
+
 	private Integer score;
+
+    @OneToMany(mappedBy = "adScore",cascade=CascadeType.ALL)
+    @MapKey(name = "number")
 	private Map<Integer,AdResponsePlayer> answers;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Integer getScore() {
-		return score;
-	}
-
-	public void setScore(Integer score) {
-		this.score = score;
-	}
-	
-	@OneToMany(mappedBy = "adScore",cascade=CascadeType.ALL)
-	@MapKey(name = "number")
-	public Map<Integer, AdResponsePlayer> getAnswers() {
-		return answers;
-	}
-	
-	public void setAnswers(Map<Integer, AdResponsePlayer> answers) {
-		this.answers = answers;
-	}
 
 	@Override
 	public int hashCode() {

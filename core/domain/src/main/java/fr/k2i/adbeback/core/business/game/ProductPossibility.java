@@ -7,23 +7,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import fr.k2i.adbeback.core.business.ad.Product;
+import lombok.Data;
 
+@Data
 @Entity
 @DiscriminatorValue("Product")
 public class ProductPossibility extends Possibility {
 	private static final long serialVersionUID = 3702474422072945741L;
+
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "PRODUCT_ID")
 	private Product product;
 
-
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "PRODUCT_ID")
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
 
 	@Override
 	public int hashCode() {

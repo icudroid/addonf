@@ -7,22 +7,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
+import lombok.Data;
 
+@Data
 @Entity
 @DiscriminatorValue("Brand")
 public class BrandPossibility extends Possibility {
 	private static final long serialVersionUID = 1785460358105543429L;
+
+    @ManyToOne
+    @JoinColumn(name = "BRAND_ID")
 	private Brand brand;
 
-	@ManyToOne
-	@JoinColumn(name = "BRAND_ID")
-	public Brand getBrand() {
-		return brand;
-	}
-
-	public void setBrand(Brand brand) {
-		this.brand = brand;
-	}
 
 	@Override
 	public int hashCode() {

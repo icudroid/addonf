@@ -19,7 +19,8 @@ public class AdChoise extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -7659738703107950065L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "AdChoise_Gen", sequenceName = "AdChoise_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AdChoise_Gen")
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL)

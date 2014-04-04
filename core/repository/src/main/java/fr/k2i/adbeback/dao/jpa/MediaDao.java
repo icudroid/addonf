@@ -1,32 +1,27 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
-import fr.k2i.adbeback.core.business.country.City;
-import fr.k2i.adbeback.core.business.country.QCity;
 import fr.k2i.adbeback.core.business.game.QAdGameTransaction;
-import fr.k2i.adbeback.core.business.user.Partner;
-import fr.k2i.adbeback.core.business.user.QPartner;
-import fr.k2i.adbeback.dao.ICityDao;
-import fr.k2i.adbeback.dao.IPartnerDao;
+import fr.k2i.adbeback.core.business.user.Media;
+import fr.k2i.adbeback.core.business.user.QMedia;
+import fr.k2i.adbeback.dao.IMediaDao;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 
 @Repository
-public class PartnerDao extends GenericDaoJpa<Partner, Long> implements IPartnerDao {
+public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
     /**
      * Constructor that sets the entity to User.class.
      */
-    public PartnerDao() {
-        super(Partner.class);
+    public MediaDao() {
+        super(Media.class);
     }
 
 
     @Override
-    public Partner findbyExtId(String idPartnerExt) {
-        QPartner qPartner = QPartner.partner;
+    public Media findbyExtId(String idPartnerExt) {
+        QMedia qPartner = QMedia.media;
 
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qPartner).where(qPartner.extId.eq(idPartnerExt));
@@ -38,7 +33,7 @@ public class PartnerDao extends GenericDaoJpa<Partner, Long> implements IPartner
     public boolean existTransaction(String idPartnerExt, String idTransactionExt) {
         QAdGameTransaction adGameTransaction = QAdGameTransaction.adGameTransaction;
         JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(adGameTransaction).where(adGameTransaction.partner.extId.eq(idPartnerExt).and(adGameTransaction.idTransaction.eq(idTransactionExt)));
+        query.from(adGameTransaction).where(adGameTransaction.media.extId.eq(idPartnerExt).and(adGameTransaction.idTransaction.eq(idTransactionExt)));
         return query.exists();
     }
 }

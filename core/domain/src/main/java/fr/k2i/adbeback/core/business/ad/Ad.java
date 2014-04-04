@@ -3,7 +3,7 @@ package fr.k2i.adbeback.core.business.ad;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
-import fr.k2i.adbeback.core.business.user.Partner;
+import fr.k2i.adbeback.core.business.user.Media;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,8 +21,8 @@ public abstract  class Ad extends BaseObject implements Serializable {
 	protected static final long serialVersionUID = -8627592656680311906L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = IMetaData.ColumnMetadata.Ad.ID)
+    @SequenceGenerator(name = "Ad_Gen", sequenceName = "Ad_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Ad_Gen")
     protected Long id;
 
     @ManyToOne
@@ -64,7 +64,7 @@ public abstract  class Ad extends BaseObject implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.PARTNER)
-    protected Partner providedBy;
+    protected Media providedBy;
 
     @Override
 	public int hashCode() {

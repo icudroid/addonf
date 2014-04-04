@@ -5,7 +5,8 @@ import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.VideoAd;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.core.business.user.Partner;
+import fr.k2i.adbeback.core.business.user.Media;
+import fr.k2i.adbeback.core.business.user.Media;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,6 @@ public interface IAdDao extends IGenericDao<Ad, Long> {
     List<VideoAd> findNoEncodedAd();
 
     @Transactional
-    List<Ad> getAllValidForAndProvidedBy(Player player, Partner partner);
+    List<Ad> getAllValidForAndProvidedBy(Player player, Media media);
 }
 

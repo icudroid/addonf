@@ -17,8 +17,8 @@ public class ViewedAd extends BaseObject implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = IMetaData.ColumnMetadata.ViewedMedia.ID)
+    @SequenceGenerator(name = "ViewedAd_Gen", sequenceName = "ViewedAd_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ViewedAd_Gen")
     private Long id;
 
     @ManyToOne

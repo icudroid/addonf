@@ -2,44 +2,25 @@ package fr.k2i.adbeback.core.business.country;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import lombok.Data;
 
-
+@Data
 @Entity
 @Table(name = "country")
 public class Country extends BaseObject implements Serializable{
 	
 	private static final long serialVersionUID = 2428113425860286720L;
+    @Id
+    @SequenceGenerator(name = "Country_Gen", sequenceName = "Country_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Country_Gen")
 	private Long id;
-	private String code;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-	@Column(nullable=false,unique=true)
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
+    @Column(nullable=false,unique=true)
+    private String code;
 
 	@Override
 	public int hashCode() {

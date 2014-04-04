@@ -13,7 +13,8 @@ import java.io.Serializable;
 public class Attachement extends BaseObject implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "Attachement_Gen", sequenceName = "Attachement_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Attachement_Gen")
     private String id;
 
     @Column(name=IMetaData.ColumnMetadata.Attachement.ORIGINAL_NAME,length = 255)

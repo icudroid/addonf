@@ -2,6 +2,7 @@ package fr.k2i.adbeback.core.business.country;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
+import lombok.Data;
 
 import javax.persistence.*;
 
@@ -13,11 +14,13 @@ import javax.persistence.*;
 
  * To change this template use File | Settings | File Templates.
  */
+@Data
 @Entity
 @Table(name = IMetaData.TableMetadata.CITY)
 public class City extends BaseObject{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "City_Gen", sequenceName = "City_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "City_Gen")
     private Long id;
 
     @Column(name = IMetaData.ColumnMetadata.City.ZIPCODE)
@@ -36,39 +39,6 @@ public class City extends BaseObject{
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = IMetaData.ColumnMetadata.City.COUNTRY)
     private Country country;
-
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
 
     @Override
     public boolean equals(Object o) {

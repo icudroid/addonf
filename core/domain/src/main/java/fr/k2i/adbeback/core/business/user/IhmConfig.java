@@ -16,7 +16,8 @@ import javax.persistence.*;
 @Table(name="ihm_config")
 public class IhmConfig extends BaseObject {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "IhmConfig_Gen", sequenceName = "IhmConfig_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "IhmConfig_Gen")
     protected Long id;
 
     private String logo;

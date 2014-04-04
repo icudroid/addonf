@@ -1,22 +1,17 @@
 package fr.k2i.adbeback.core.business.game;
 
+import lombok.Data;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+@Data
 @Entity
 @DiscriminatorValue("Price")
 public class PricePossibility extends Possibility {
 	private static final long serialVersionUID = -5422694885484003177L;
 	private Double price;
 
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
 
 	@Override
 	public int hashCode() {

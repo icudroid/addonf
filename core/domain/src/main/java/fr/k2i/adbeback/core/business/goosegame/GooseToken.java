@@ -2,61 +2,32 @@ package fr.k2i.adbeback.core.business.goosegame;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.player.Player;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "goose_token")
 public class GooseToken extends BaseObject implements Serializable {
 	private static final long serialVersionUID = -8708579369170723785L;
-	private Long id;
+
+    @Id
+    @SequenceGenerator(name = "GooseToken_Gen", sequenceName = "GooseToken_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GooseToken_Gen")
+    private Long id;
+
+    @ManyToOne()
+    @JoinColumn(name = "GOOSECASE_ID")
 	private GooseCase gooseCase;
+
+    @ManyToOne()
+    @JoinColumn(name = "PLAYER_ID")
 	private Player player;
 
-//	@SequenceGenerator(name = "GooseToken_Gen", sequenceName = "GooseToken_Sequence")
-	@Id
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GooseToken_Gen")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@ManyToOne()
-	@JoinColumn(name = "GOOSECASE_ID")
-	public GooseCase getGooseCase() {
-		return gooseCase;
-	}
-
-	public void setGooseCase(GooseCase gooseCase) {
-		this.gooseCase = gooseCase;
-	}
-
-	@ManyToOne()
-    @JoinColumn(name = "PLAYER_ID")
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
 
 	@Override
 	public int hashCode() {

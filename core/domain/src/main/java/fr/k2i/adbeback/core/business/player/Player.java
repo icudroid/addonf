@@ -30,7 +30,8 @@ import java.util.*;
 @DiscriminatorValue(value = "player")
 public class Player extends BaseObject {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "Player_Gen", sequenceName = "Player_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Player_Gen")
     protected Long id;
 
     @Column(nullable = false, length = 50, unique = true)

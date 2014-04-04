@@ -114,7 +114,8 @@ public class AdGameFacade {
     private ICountryDao countryDao;
 
 
-    @Autowired IPartnerDao partnerDao;
+    @Autowired
+    IMediaDao partnerDao;
 
 
     @Transactional

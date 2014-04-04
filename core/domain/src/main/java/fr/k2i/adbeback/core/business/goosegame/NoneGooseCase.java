@@ -1,8 +1,11 @@
 package fr.k2i.adbeback.core.business.goosegame;
 
+import lombok.Data;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+@Data
 @Entity
 @DiscriminatorValue("None")
 public class NoneGooseCase extends GooseCase {

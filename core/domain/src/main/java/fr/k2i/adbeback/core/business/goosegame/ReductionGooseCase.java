@@ -7,11 +7,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import fr.k2i.adbeback.core.business.partener.Reduction;
+import lombok.Data;
 
+@Data
 @Entity
 @DiscriminatorValue("Reduction")
 public class ReductionGooseCase extends GooseCase {
 	private static final long serialVersionUID = -6050652995509263007L;
+
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "REDUCTION_ID")
 	private Reduction reduction;
 
     @Override
@@ -19,15 +24,6 @@ public class ReductionGooseCase extends GooseCase {
         return 2;
     }
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "REDUCTION_ID")
-	public Reduction getReduction() {
-		return reduction;
-	}
-
-	public void setReduction(Reduction reduction) {
-		this.reduction = reduction;
-	}
 
 	@Override
 	public int hashCode() {

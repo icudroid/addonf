@@ -1,7 +1,7 @@
 package fr.k2i.adbeback.dao;
 
 import fr.k2i.adbeback.core.business.country.City;
-import fr.k2i.adbeback.core.business.user.Partner;
+import fr.k2i.adbeback.core.business.user.Media;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.List;
  * Time: 13:55
  * Goal:
  */
-public interface IPartnerDao extends IGenericDao<Partner, Long> {
+public interface IMediaDao extends IGenericDao<Media, Long> {
     @Transactional
-    Partner findbyExtId(String idPartnerExt);
+    Media findbyExtId(String idPartnerExt);
 
      boolean existTransaction(String idPartnerExt, String idTransactionExt);
 }

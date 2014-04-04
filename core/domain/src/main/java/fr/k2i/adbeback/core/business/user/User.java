@@ -23,7 +23,8 @@ import java.util.Set;
 public abstract class User extends BaseObject implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "User_Gen", sequenceName = "User_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "User_Gen")
     protected Long id;
     @Column(nullable = false, length = 50, unique = true)
     protected String username;                    // required
