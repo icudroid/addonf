@@ -1,6 +1,9 @@
 package fr.k2i.adbeback.core.business.player;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.core.business.user.AgencyUser;
+import fr.k2i.adbeback.core.business.user.BrandUser;
+import fr.k2i.adbeback.core.business.user.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +21,7 @@ import java.util.Set;
  */
 @Data
 public class WebUser implements UserDetails {
-    private Brand user;
+    private User user;
 
     /**
      * @return GrantedAuthority[] an array of roles.
@@ -83,7 +86,7 @@ public class WebUser implements UserDetails {
     public WebUser(){}
 
 
-    public WebUser(Brand user){
+    public WebUser(User user){
         this.user = user;
     }
 

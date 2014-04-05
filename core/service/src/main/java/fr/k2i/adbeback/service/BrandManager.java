@@ -2,6 +2,7 @@ package fr.k2i.adbeback.service;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.IPlayerDao;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,5 +22,5 @@ public interface BrandManager extends GenericManager<Brand, Long> {
     void changePasswd(String username, String password);
 
     @Transactional
-    void changePasswd(Brand user, String newPwd);
+    void changePasswd(User user, String newPwd);
 }

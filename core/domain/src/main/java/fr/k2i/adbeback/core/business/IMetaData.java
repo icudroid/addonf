@@ -151,11 +151,11 @@ public interface IMetaData {
             String KEY =                                "otp_key";
             String CREATION_DATE =                      "creation_date";
             String EXPIRATION_DATE =                    "expiration_date";
-            String BRAND_JOIN =                         "brand_id";
+            String USER_JOIN =                          "user_id";
 
             public interface Discrimator {
                 String DISCRIMINATOR =                  "classe";
-                String BRAND =                          "brand";
+                String USER =                          "user";
             }
         }
 
@@ -172,6 +172,7 @@ public interface IMetaData {
             String IN_CHARGE_OF_TABLE_JOIN =             "in_charge_of";
             String AGENCY_RULE_JOIN =                    "agency_id";
             String BRAND_JOIN =                          "brand_id";
+            String AD_JOIN =                             "user_id";
         }
 
 

@@ -4,6 +4,7 @@ import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Role;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = IMetaData.TableMetadata.BRAND)
 public class Brand extends BaseObject implements Serializable{
@@ -45,170 +47,9 @@ public class Brand extends BaseObject implements Serializable{
     @Embedded
     private Address address;
 
-    @Column(name = IMetaData.ColumnMetadata.Brand.PWD)
-    private String password;
-
     @Column(name = IMetaData.ColumnMetadata.Brand.LOGIN, nullable = false, unique = true)
     private String email;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = IMetaData.ColumnMetadata.Brand.ROLE_TABLE_JOIN,
-            joinColumns = { @JoinColumn(name = IMetaData.ColumnMetadata.Brand.BRAND_JOIN) },
-            inverseJoinColumns = @JoinColumn(name = IMetaData.ColumnMetadata.Brand.ROLE_JOIN)
-    )
-    private  Set<Role> roles = new HashSet<Role>();
-    private  boolean enabled;
-    private  boolean accountExpired;
-    private  boolean accountLocked;
-    private  boolean credentialsExpired;
-    private  Integer version;
-
-
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-
-    /**
-     * Adds a role for the user
-     *
-     * @param role the fully instantiated role
-     */
-    public void addRole(Role role) {
-        getRoles().add(role);
-    }
-
-
-    @Version
-    public Integer getVersion() {
-        return version;
-    }
-
-    @Column(name = "account_enabled")
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Column(name = "account_expired", nullable = false)
-    public boolean isAccountExpired() {
-        return accountExpired;
-    }
-
-    /**
-     * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonExpired()
-     * @return true if account is still active
-     */
-    @Transient
-    public boolean isAccountNonExpired() {
-        return !isAccountExpired();
-    }
-
-    @Column(name = "account_locked", nullable = false)
-    public boolean isAccountLocked() {
-        return accountLocked;
-    }
-
-    /**
-     * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonLocked()
-     * @return false if account is locked
-     */
-    @Transient
-    public boolean isAccountNonLocked() {
-        return !isAccountLocked();
-    }
-
-    @Column(name = "credentials_expired", nullable = false)
-    public boolean isCredentialsExpired() {
-        return credentialsExpired;
-    }
-
-    /**
-     * @see org.springframework.security.core.userdetails.UserDetails#isCredentialsNonExpired()
-     * @return true if credentials haven't expired
-     */
-    @Transient
-    public boolean isCredentialsNonExpired() {
-        return !credentialsExpired;
-    }
-
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setAccountExpired(boolean accountExpired) {
-        this.accountExpired = accountExpired;
-    }
-
-    public void setAccountLocked(boolean accountLocked) {
-        this.accountLocked = accountLocked;
-    }
-
-    public void setCredentialsExpired(boolean credentialsExpired) {
-        this.credentialsExpired = credentialsExpired;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-	
-	public String getLogo() {
-		return logo;
-	}
-
-	public void setLogo(String logo) {
-		this.logo = logo;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-    public List<Contact> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
-    }
-
-    public Contact getMain() {
-        return main;
-    }
 
     public void setMain(Contact main) {
         if(!contacts.contains(main)){
@@ -218,34 +59,6 @@ public class Brand extends BaseObject implements Serializable{
         this.main = main;
     }
 
-    public String getSiret() {
-        return siret;
-    }
-
-    public void setSiret(String siret) {
-        this.siret = siret;
-    }
-
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return getEmail();
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public boolean equals(Object o) {

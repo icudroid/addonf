@@ -6,7 +6,7 @@ import fr.k2i.adbeback.application.services.mail.exception.SendException;
 import fr.k2i.adbeback.core.business.Constants;
 import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.*;
-import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
+import fr.k2i.adbeback.core.business.otp.OTPUserSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.*;
@@ -104,7 +104,7 @@ public class BrandServiceFacade {
 
     @Transactional
     public void enrollBrand(EnrollBrandCommand command,Locale locale){
-        Brand brand = new Brand();
+        /*Brand brand = new Brand();
         brand.setPassword(passwordEncoder.encodePassword(command.getPassword(), null));
         brand.setName(command.getName());
         brand.setSiret(command.getSiret());
@@ -158,7 +158,7 @@ public class BrandServiceFacade {
             mailEngine.sendMessage(email,locale);
         } catch (SendException e) {
             logger.error("error sending email", e);
-        }
+        }*/
 
     }
 
@@ -561,8 +561,9 @@ public class BrandServiceFacade {
 
     @Transactional
     public ConfirmationRegistration confirmRegistration(String email, String name, String code) {
-        Brand brand = brandDao.findByEmail(email);
-        OTPBrandSecurityConfirm otp = securityDao.findByBrand(brand);
+        return null;
+/*        Brand brand = brandDao.findByEmail(email);
+        OTPUserSecurityConfirm otp = securityDao.findByBrand(brand);
         if(otp == null){
             return ConfirmationRegistration.KO;
         }else if(otp.getKey().equals(code)){
@@ -575,6 +576,6 @@ public class BrandServiceFacade {
             }
         }else{
             return ConfirmationRegistration.KO;
-        }
+        }*/
     }
 }

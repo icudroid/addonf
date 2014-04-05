@@ -1,11 +1,11 @@
 package fr.k2i.adbeback.crypto;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
-import fr.k2i.adbeback.core.business.otp.OTPSecurity;
+import fr.k2i.adbeback.core.business.otp.OTPUserSecurityConfirm;
 import fr.k2i.adbeback.core.business.otp.OneTimePassword;
 import fr.k2i.adbeback.core.business.otp.OtpAction;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.IOTPSecurityDao;
 import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import fr.k2i.adbeback.logger.LogHelper;
@@ -111,16 +111,16 @@ public class DESCryptoService {
 
 
     @Transactional
-    public String generateOtpConfirm(String toEncodeStr, Brand brand, int expirationHours){
-        OTPBrandSecurityConfirm optSecurity =  otpSecurityDao.findByBrand(brand);
+    public String generateOtpConfirm(String toEncodeStr, User user, int expirationHours){
+        OTPUserSecurityConfirm optSecurity =  otpSecurityDao.findByUser(user);
 
 
         if(optSecurity==null){
             NumberFormat numberFormat = new DecimalFormat("0000000");
             String key = numberFormat.format(RandomUtils.nextInt(100000000));
-            optSecurity = new OTPBrandSecurityConfirm();
+            optSecurity = new OTPUserSecurityConfirm();
             optSecurity.setKey(key);
-            optSecurity.setBrand(brand);
+            optSecurity.setUser(user);
             optSecurity.expirationInHours(expirationHours);
             otpSecurityDao.save(optSecurity);
         }if(optSecurity.getExpirationDate().before(new Date())){//si le token est expiré

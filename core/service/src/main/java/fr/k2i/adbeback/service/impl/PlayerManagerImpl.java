@@ -5,15 +5,13 @@ import java.util.List;
 import fr.k2i.adbeback.core.business.otp.OneTimePassword;
 import fr.k2i.adbeback.core.business.otp.OtpAction;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
-import fr.k2i.adbeback.core.business.player.WebPlayer;
+import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.dao.ICountryDao;
 import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import fr.k2i.adbeback.dao.IPlayerDao;
-import fr.k2i.adbeback.dao.jpa.CountryDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import fr.k2i.adbeback.core.business.player.Player;
@@ -104,7 +102,7 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
                     log.warn("SaltSource not set, encrypting password w/o salt");
                 } else {
                     player.setPassword(passwordEncoder.encodePassword(player.getPassword(),
-                            saltSource.getSalt(new WebPlayer(player))));
+                            saltSource.getSalt(new WebUser(player))));
                 }
             }
         } else {
@@ -205,7 +203,7 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
             user.setPassword(passwordEncoder.encodePassword(newPwd, null));
             log.warn("SaltSource not set, encrypting password w/o salt");
         } else {
-            user.setPassword(passwordEncoder.encodePassword(newPwd, saltSource.getSalt(new WebPlayer(user))));
+            user.setPassword(passwordEncoder.encodePassword(newPwd, saltSource.getSalt(new WebUser(user))));
         }
     }
 
@@ -222,7 +220,7 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
             user.setPassword(passwordEncoder.encodePassword(newPwd, null));
             log.warn("SaltSource not set, encrypting password w/o salt");
         } else {
-            user.setPassword(passwordEncoder.encodePassword(newPwd, saltSource.getSalt(new WebPlayer(user))));
+            user.setPassword(passwordEncoder.encodePassword(newPwd, saltSource.getSalt(new WebUser(user))));
         }
     }
 

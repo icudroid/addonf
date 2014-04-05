@@ -3,9 +3,8 @@ package fr.k2i.adbeback.dao.jpa;
 import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.otp.*;
-import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.IOTPSecurityDao;
-import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -22,10 +21,10 @@ public class OTPSecurityDao extends GenericDaoJpa<OTPSecurity, Long> implements 
     }
 
     @Override
-    public OTPBrandSecurityConfirm findByBrand(Brand brand) {
-        QOTPBrandSecurityConfirm securityConfirm = QOTPBrandSecurityConfirm.oTPBrandSecurityConfirm;
+    public OTPUserSecurityConfirm findByUser(User user) {
+        QOTPUserSecurityConfirm securityConfirm = QOTPUserSecurityConfirm.oTPUserSecurityConfirm;
         JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(securityConfirm).where(securityConfirm.brand.eq(brand));
+        query.from(securityConfirm).where(securityConfirm.user.eq(user));
 
         return query.uniqueResult(securityConfirm);
     }

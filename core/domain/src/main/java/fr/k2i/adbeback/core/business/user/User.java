@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.user;
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Role;
 import lombok.Data;
 
@@ -31,7 +32,14 @@ public abstract class User extends BaseObject implements Serializable {
     @Column(nullable = false)
     protected String password;                    // required
 
+    @Column(nullable = false, length = 50, unique = true)
+    private String email;
+
     protected String phone;
+
+    @Embedded
+    protected Address address = new Address();
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

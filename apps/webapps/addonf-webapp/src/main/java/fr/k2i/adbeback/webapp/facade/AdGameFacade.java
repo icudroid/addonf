@@ -136,7 +136,7 @@ public class AdGameFacade {
         //1 : create Anonym User
         Player player = getAnonymousPlayer(configure);
         //log user
-        WebPlayer webPlayer = new WebPlayer(player);
+        WebUser webPlayer = new WebUser(player);
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(webPlayer, webPlayer.getPassword(), webPlayer.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 

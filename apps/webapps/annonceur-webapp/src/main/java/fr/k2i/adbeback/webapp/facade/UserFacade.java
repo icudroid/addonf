@@ -4,16 +4,11 @@ import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
 import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.core.business.otp.OTPBrandSecurityConfirm;
-import fr.k2i.adbeback.core.business.otp.OneTimePassword;
-import fr.k2i.adbeback.core.business.otp.OtpAction;
-import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.otp.OTPUserSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.IBrandDao;
 import fr.k2i.adbeback.dao.IOTPSecurityDao;
-import fr.k2i.adbeback.dao.IOneTimePasswordDao;
-import fr.k2i.adbeback.dao.IPlayerDao;
 import fr.k2i.adbeback.service.BrandManager;
 import fr.k2i.adbeback.webapp.bean.ChangePwdBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +23,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created with IntelliJ IDEA.
@@ -105,6 +96,7 @@ public class UserFacade {
 
     @Transactional
     public void sendForgottenPasswd(String username,HttpServletRequest request) throws SendException {
+/*
         Brand user = brandDao.findByEmail(username);
 
         if(user != null){
@@ -127,6 +119,7 @@ public class UserFacade {
 
             }
         }
+*/
 
     }
 
@@ -134,17 +127,17 @@ public class UserFacade {
 
     @Transactional
     public boolean isValidateOtp(String username, String key){
-        Brand user = brandDao.findByEmail(username);
+/*        Brand user = brandDao.findByEmail(username);
         if(user ==null){
             return false;
         }
-        OTPBrandSecurityConfirm otp = securityDao.findByBrand(user);
+        OTPUserSecurityConfirm otp = securityDao.findByBrand(user);
         if(otp == null){
             return false;
         }
         if(!otp.getKey().equals(key)){
             return false;
-        }
+        }*/
 
         return true;
     }
@@ -157,12 +150,12 @@ public class UserFacade {
 
     @Transactional
     public void changePasswd(String password) throws Exception {
-        brandManager.changePasswd(getCurrentUser(), password);
+        //brandManager.changePasswd(getCurrentUser(), password);
     }
 
     public void validateChangePwdBean(ChangePwdBean changePwdBean, Errors errors,Locale locale) throws Exception {
 
-        if(!errors.hasErrors()){
+/*        if(!errors.hasErrors()){
             String password = getCurrentUser().getPassword();
             String old = passwordEncoder.encodePassword(changePwdBean.getOldPassword(), null);
             if(!password.equals(old)){
@@ -172,7 +165,7 @@ public class UserFacade {
             if(!changePwdBean.getNewConfirmPassword().equals(changePwdBean.getNewPassword())){
                 errors.rejectValue("newConfirmPassword","notMatch",messageSource.getMessage("addonf.notMatch",null,locale));
             }
-        }
+        }*/
 
     }
 

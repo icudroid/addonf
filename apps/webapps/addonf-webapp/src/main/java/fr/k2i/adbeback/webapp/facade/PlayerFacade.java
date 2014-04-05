@@ -1,7 +1,7 @@
 package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.core.business.player.WebPlayer;
+import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.dao.IPlayerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,11 +25,11 @@ public class PlayerFacade {
     @Transactional
     public Player getCurrentPlayer() {
         Object principal = getAuthenticationPlayer().getPrincipal();
-        if (!(principal instanceof WebPlayer)) {
+        if (!(principal instanceof WebUser)) {
             throw new AssertionError("Please check configuration. Should be Player in the principal.");
         }
 
-        return playerDao.get(((WebPlayer) principal).getUser().getId());
+        return playerDao.get(((WebUser) principal).getUser().getId());
     }
 
     protected Authentication getAuthenticationPlayer() {
