@@ -43,6 +43,9 @@ public class AdChoise extends BaseObject implements Serializable {
     @JoinColumn(name = "adrule_id")
     private AdService generatedBy;
 
+    //prix de l'enchère gagnante
+    private Double winBidPrice;
+
 
     @Override
     public boolean equals(Object o) {
