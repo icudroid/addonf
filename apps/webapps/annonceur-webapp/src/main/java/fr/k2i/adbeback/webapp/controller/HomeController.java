@@ -1,6 +1,9 @@
 package fr.k2i.adbeback.webapp.controller;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.core.business.user.BrandUser;
+import fr.k2i.adbeback.core.business.user.User;
+import fr.k2i.adbeback.webapp.facade.FileUtils;
 import fr.k2i.adbeback.webapp.facade.StatisticsFacade;
 import fr.k2i.adbeback.webapp.facade.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +34,14 @@ public class HomeController {
     @RequestMapping("/")
     public String home(Map<String, Object> model) {
         try{
-            return "home";
+            if(userFacade.getCurrentUser()!=null){
+                return "home";
+            }else{
+                return "index";
+            }
+
         }catch (Exception e){
-            return "redirect:/index";
+            return "redirect:/index.html";
         }
     }
 
@@ -51,8 +59,12 @@ public class HomeController {
 
     @RequestMapping(value="/setLogo",method = RequestMethod.GET)
     public String setLogo(Map<String, Object> model) throws Exception {
-        Brand currentUser = userFacade.getCurrentUser();
-        model.put("logo", currentUser.getLogo());
+
+        User user = userFacade.getCurrentUser();
+        if (user instanceof BrandUser) {
+            BrandUser brandUser = (BrandUser) user;
+            model.put("logo", brandUser.getBrand().getLogo());
+        }
         return "logo";
     }
 

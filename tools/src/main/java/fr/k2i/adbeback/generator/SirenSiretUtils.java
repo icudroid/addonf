@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
  * Time: 14:19
  * Goal:
  */
+@Component
 public class SirenSiretUtils {
 
     public String getSirenFromSiret(String siret) {

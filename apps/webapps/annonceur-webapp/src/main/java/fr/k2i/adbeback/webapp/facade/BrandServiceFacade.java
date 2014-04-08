@@ -8,6 +8,8 @@ import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.otp.OTPUserSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.Address;
+import fr.k2i.adbeback.core.business.user.BrandUser;
+import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.dao.jpa.*;
@@ -164,7 +166,7 @@ public class BrandServiceFacade {
 
     @Transactional
     public List<AdBean> getAdsForConnectedUser() throws Exception {
-        Brand brand = userFacade.getCurrentUser();
+        Brand brand = getBrandForConnectedUser();
 
         List<AdBean> res = new ArrayList<AdBean>();
         List<Ad> ads = adDao.findByBrand(brand);
@@ -175,9 +177,20 @@ public class BrandServiceFacade {
         return res;
     }
 
+    private Brand getBrandForConnectedUser() throws Exception {
+        Brand brand = null;
+
+        User user = userFacade.getCurrentUser();
+        if (user instanceof BrandUser) {
+            BrandUser brandUser = (BrandUser) user;
+            brand = brandUser.getBrand();
+        }
+        return brand;
+    }
+
     @Transactional
     public Page<AdBean> getAllForConnectedUser(Pageable pageable) throws Exception {
-        Brand brand = userFacade.getCurrentUser();
+        Brand brand = getBrandForConnectedUser();
 
         List<AdBean> res = new ArrayList<AdBean>();
         Page<Ad> ads = adDao.findByBrand(brand,pageable);
@@ -194,7 +207,7 @@ public class BrandServiceFacade {
 
     @Transactional
     public void save(CampaignCommand campaignCommand) throws Exception {
-        Brand brand = userFacade.getCurrentUser();
+        Brand brand = getBrandForConnectedUser();
         Ad ad = null;
 
 
@@ -496,7 +509,7 @@ public class BrandServiceFacade {
     public CampaignCommand loadCampaign(Long idAd) throws Exception {
         CampaignCommand campaignCommand = new CampaignCommand();
 
-        Brand brand = userFacade.getCurrentUser();
+        Brand brand = getBrandForConnectedUser();
         Ad ad = adDao.get(idAd);
 
         if(!ad.getBrand().equals(brand)){

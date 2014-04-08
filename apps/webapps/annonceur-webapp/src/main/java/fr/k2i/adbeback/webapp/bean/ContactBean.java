@@ -14,12 +14,12 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class ContactBean implements Serializable {
-    @NotNull(message = "required")
+    @NotNull
     private Sex sex;
     private String lastname;
     private String firstname;
     private String phone;
-    @Email(message = "wrong")
+    @Email
     private String email;
     private String emailConfirm;
 

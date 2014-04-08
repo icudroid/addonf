@@ -6,6 +6,7 @@ import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.IBrandDao;
 import fr.k2i.adbeback.dao.IOTPSecurityDao;
+import fr.k2i.adbeback.dao.IWebUserDao;
 import fr.k2i.adbeback.dao.jpa.WebUserDao;
 import fr.k2i.adbeback.service.BrandManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class BrandManagerImpl extends GenericManagerImpl<Brand, Long> implements
     private IOTPSecurityDao securityDao;
 
     @Autowired
-    private WebUserDao webUserDao;
+    private IWebUserDao webUserDao;
 
     @Autowired
     public void setPlayerDao(IBrandDao brandDao) {
@@ -60,7 +61,7 @@ public class BrandManagerImpl extends GenericManagerImpl<Brand, Long> implements
     @Transactional
     @Override
     public void changePasswd(String username, String newPwd) {
-        User user = (User) webUserDao.loadUserByUsername(username);
+        User user = (User) webUserDao.findByUsername(username);
         OTPUserSecurityConfirm otp = securityDao.findByUser(user);
         securityDao.remove(otp);
         if (saltSource == null) {

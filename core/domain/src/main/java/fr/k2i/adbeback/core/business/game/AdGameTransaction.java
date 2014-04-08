@@ -1,7 +1,6 @@
 package fr.k2i.adbeback.core.business.game;
 
-import fr.k2i.adbeback.core.business.IMetaData;
-import fr.k2i.adbeback.core.business.user.Media;
+import fr.k2i.adbeback.core.business.user.MediaUser;
 import lombok.Data;
 
 import javax.persistence.DiscriminatorValue;
@@ -21,7 +20,7 @@ public class AdGameTransaction extends AbstractAdGame {
 
     @ManyToOne
     @JoinColumn(name = "partner_id")
-    private Media media;
+    private MediaUser media;
 
     @Override
     public String toString() {

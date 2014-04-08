@@ -48,4 +48,16 @@ public class AgencyEnrollHelper {
     public void emptyCurrent(AgencyEnrollCommand agencyEnrollCommand){
         agencyEnrollCommand.getUsers().setCurrent(new AgencyUserBean());
     }
+
+
+    public void fillAdmin(AgencyEnrollCommand agencyEnrollCommand){
+        AgencyUsersCommand users = agencyEnrollCommand.getUsers();
+        AgencyUserBean currentAdmin = null;
+        for (AgencyUserBean agencyUserBean : users.getUsers()) {
+            if(AgencyRole.ADMIN.equals(agencyUserBean.getRole())){
+                currentAdmin = agencyUserBean;
+            }
+        }
+        users.setCurrent(currentAdmin);
+    }
 }

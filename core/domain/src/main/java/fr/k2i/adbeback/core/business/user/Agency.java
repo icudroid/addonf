@@ -42,10 +42,10 @@ public class Agency extends BaseObject {
 
 
     @Column(name = IMetaData.ColumnMetadata.Agency.SIRET_NUMBER)
-    private String siretNumber;
+    private String siret;
 
     @Column(name = IMetaData.ColumnMetadata.Agency.SIREN_NUMBER)
-    private String sirenNumber;
+    private String siren;
 
 
     @Enumerated(EnumType.STRING)

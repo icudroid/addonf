@@ -4,7 +4,6 @@ import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.user.Agency;
-import fr.k2i.adbeback.core.business.user.Media;
 import lombok.Data;
 
 import javax.persistence.*;

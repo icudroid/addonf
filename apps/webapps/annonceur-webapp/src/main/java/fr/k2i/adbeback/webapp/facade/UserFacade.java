@@ -6,9 +6,11 @@ import fr.k2i.adbeback.application.services.mail.exception.SendException;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.otp.OTPUserSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.WebUser;
+import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.IBrandDao;
 import fr.k2i.adbeback.dao.IOTPSecurityDao;
+import fr.k2i.adbeback.dao.IWebUserDao;
 import fr.k2i.adbeback.service.BrandManager;
 import fr.k2i.adbeback.webapp.bean.ChangePwdBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,7 @@ public class UserFacade {
     private BrandManager brandManager;
 
     @Autowired
-    private IBrandDao brandDao;
+    private IWebUserDao webUserDao;
 
     @Autowired
     private MessageSource messageSource;
@@ -70,13 +72,25 @@ public class UserFacade {
     private IOTPSecurityDao securityDao;
 
     @Transactional
-    public Brand getCurrentUser() throws Exception{
+    public User getCurrentUser() throws Exception{
         Object principal = getAuthenticationPlayer().getPrincipal();
         if (!(principal instanceof WebUser)) {
             throw new Exception("Please check configuration. Should be Brand in the principal.");
+        }else{
+            WebUser webUser = (WebUser) principal;
+
+            User user = webUser.getUser();
+            if (user instanceof AgencyUser || user instanceof Admin || user instanceof BrandUser || user instanceof MediaUser) {
+                return webUserDao.get(((WebUser) principal).getUser().getId());
+            }else{
+                throw new Exception("Please check configuration. Should be valid user in the principal.");
+            }
+
         }
 
-        return brandDao.get(((WebUser) principal).getUser().getId());
+
+
+
     }
 
     protected Authentication getAuthenticationPlayer() {
@@ -85,8 +99,12 @@ public class UserFacade {
 
     @Transactional
     public void setLogo(MultipartFile logo) throws Exception {
-        Brand currentUser = getCurrentUser();
-        currentUser.setLogo(FileUtils.saveFile(logo.getBytes(),logoPath));
+        //set logo of brand
+        User user = getCurrentUser();
+        if (user instanceof BrandUser) {
+            BrandUser brandUser = (BrandUser) user;
+            brandUser.getBrand().setLogo(FileUtils.saveFile(logo.getBytes(),logoPath));
+        }
     }
 
 

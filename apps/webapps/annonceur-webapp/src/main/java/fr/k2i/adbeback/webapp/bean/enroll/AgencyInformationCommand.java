@@ -24,13 +24,10 @@ public class AgencyInformationCommand implements Serializable{
     @NotNull(message = "error.agency.legalStatus.empty")
     private LegalStatus legalStatus;
 
-    private Date creationDate = new Date();
+    private String creationDate;
 
     private AddressBean address = new AddressBean();
 
-    @NotEmpty(message = "error.agency.email.empty")
-    @Size(max = 60, message = "error.size.60")
-    private String email;
 
     private String phone;
 

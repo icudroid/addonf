@@ -23,6 +23,9 @@
     </view-state>
 
     <view-state id="adminUser" view="enroll/agency/admin" model="agencyEnrollCommand">
+        <on-render>
+            <evaluate expression="agencyEnrollHelper.fillAdmin(agencyEnrollCommand)"/>
+        </on-render>
         <transition on="submit" to="users">
             <evaluate expression="agencyEnrollHelper.createAdmin(agencyEnrollCommand)" />
             <evaluate expression="agencyEnrollHelper.emptyCurrent(agencyEnrollCommand)" />

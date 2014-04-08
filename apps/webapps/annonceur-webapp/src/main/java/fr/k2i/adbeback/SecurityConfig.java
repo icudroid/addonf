@@ -32,7 +32,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     }
 
     public UserDetailsService webUserServiceDetail(){
-        return (UserDetailsService) context.getBean("webUserDao");
+        return (UserDetailsService) context.getBean("annonceurUserDao");
     }
 
     @Override
@@ -47,6 +47,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/index.html").permitAll()
                 .antMatchers("/home.html").permitAll()
                 .antMatchers("/resources/**").permitAll()

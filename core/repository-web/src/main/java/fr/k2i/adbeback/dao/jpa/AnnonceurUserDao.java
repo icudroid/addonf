@@ -1,11 +1,8 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
-import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.core.business.ad.QBrand;
 import fr.k2i.adbeback.core.business.player.WebUser;
-import fr.k2i.adbeback.core.business.user.QUser;
-import fr.k2i.adbeback.core.business.user.User;
+import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.dao.IWebUserDao;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,12 +23,12 @@ import java.util.List;
  *   the new BaseDaoHibernate implementation that uses generics.
 */
 @Repository
-public class WebUserDao extends GenericDaoJpa<User, Long> implements UserDetailsService,IWebUserDao {
+public class AnnonceurUserDao extends GenericDaoJpa<User, Long> implements UserDetailsService,IWebUserDao {
 
     /**
      * Constructor that sets the entity to User.class.
      */
-    public WebUserDao() {
+    public AnnonceurUserDao() {
         super(User.class);
     }
 
@@ -40,13 +37,24 @@ public class WebUserDao extends GenericDaoJpa<User, Long> implements UserDetails
      * {@inheritDoc}
      */
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 
         QUser user = QUser.user;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(user)
                 .where(
                         user.email.eq(username).or(user.username.eq(username))
+                        .and(
+                                user.instanceOf(MediaUser.class)
+                                       .or(
+                                                user.instanceOf(AgencyUser.class)
+                                       .or(
+                                                user.instanceOf(BrandUser.class)
+                                       .or(
+                                               user.instanceOf(Admin.class)))
+                                       )
+                        )
                 );
 
         List<User> users = query.list(user);
@@ -58,9 +66,15 @@ public class WebUserDao extends GenericDaoJpa<User, Long> implements UserDetails
         }
     }
 
+
     @Override
     public UserDetails findByUsername(String username) {
-        return loadUserByUsername(username);
+        try{
+            return loadUserByUsername(username);
+        }catch (UsernameNotFoundException e){
+            return null;
+        }
     }
+
 }
 

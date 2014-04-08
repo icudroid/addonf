@@ -4,6 +4,8 @@ import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
+import fr.k2i.adbeback.core.business.user.BrandUser;
+import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.dao.jpa.StatisticsDao;
 import fr.k2i.adbeback.webapp.bean.LabelData;
@@ -49,14 +51,25 @@ public class StatisticsFacade {
     private String logoPath;
 
 
+    private Brand getBrandForConnectedUser() throws Exception {
+        Brand brand = null;
+
+        User user = userFacade.getCurrentUser();
+        if (user instanceof BrandUser) {
+            BrandUser brandUser = (BrandUser) user;
+            brand = brandUser.getBrand();
+        }
+        return brand;
+    }
+
     @Transactional
     public void global(Long idAd, Map<String, Object> model) throws Exception {
 
 
-        Brand currentUser = userFacade.getCurrentUser();
+        Brand brand = getBrandForConnectedUser();
 
         Ad ad = adDao.get(idAd);
-        if(!ad.getBrand().equals(currentUser)){
+        if(!ad.getBrand().equals(brand)){
             throw new Exception("bad user");
         }
 
@@ -148,10 +161,10 @@ public class StatisticsFacade {
     }
 
     public void detail(Long idAd, Map<String, Object> model) throws Exception {
-        Brand currentUser = userFacade.getCurrentUser();
+        Brand brand = getBrandForConnectedUser();
 
         Ad ad = adDao.get(idAd);
-        if(!ad.getBrand().equals(currentUser)){
+        if(!ad.getBrand().equals(brand)){
             throw new Exception("bad user");
         }
 

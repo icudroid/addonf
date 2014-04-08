@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 @Data
 @Entity
 @DiscriminatorValue("Media")
-public class Media extends User{
+public class MediaUser extends User{
 
     private String passPhrase;
 
