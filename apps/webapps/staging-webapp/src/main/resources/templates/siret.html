@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/corporate/unlogged">
+<head>
+
+</head>
+
+<body>
+
+
+<div layout:fragment="content">
+
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>Numéro de siret</h1>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container margin-bottom-40">
+        <p>Le numéro suivant a été généré &nbsp;:</p>
+        <p class="superfocus">
+            <strong th:text="${siret}">546545646546</strong>
+        </p>
+        <input type="button" value="Generer un autre code" onclick="document.location.reload()" />
+    </div>
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/corporate/unlogged">
+<head>
+    <title>Inscription</title>
+
+    <link th:href="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/uniform/css/uniform.default.css}"
+          rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript" th:src="@{/static/metronic_v2.0.2/corporate/template/assets/plugins/uniform/jquery.uniform.min.js}"></script>
+
+    <script th:inline="javascript">
+        $(function(){
+
+            Spring.addDecoration(new Spring.AjaxEventDecoration({
+                elementId: "continue",
+                formId:"triggerform",
+                event: "onclick"
+            }))
+
+            App.initUniform();
+        });
+    </script>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1 th:text="#{enroll.main.title}">Staging</h1>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container margin-bottom-40">
+
+    </div>
+
+
+</div>
+
+
+</body>
+</html>
