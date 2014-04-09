@@ -6,6 +6,10 @@
     <var name="state" class="fr.k2i.adbeback.webapp.state.enroll.AgencyEnrollFlowState"/>
     <var name="agencyEnrollCommand" class="fr.k2i.adbeback.webapp.bean.enroll.AgencyEnrollCommand"/>
 
+    <on-start>
+        <set name="flowScope.activeId" value="5"/>
+    </on-start>
+
     <view-state id="attachments" view="enroll/common/attachement">
         <on-entry>
             <evaluate expression="agencyEnrollHelper.availableFiles(state)" result="viewScope.files"/>
@@ -14,7 +18,18 @@
         </on-entry>
         <transition on="submit" to="isAllFilePresent" />
         <transition on="back" to="back" />
+        <transition to="step">
+            <set value="currentEvent.id" name="flashScope.whereToGo"/>
+        </transition>
     </view-state>
+
+
+
+    <action-state id="whereToGo">
+        <evaluate expression="flowScope.toGo"/>
+        <transition on="${flowScope.toGo}" to="${flowScope.toGo}">
+        </transition>
+    </action-state>
 
     <action-state id="isAllFilePresent">
         <evaluate expression="agencyEnrollHelper.saveFiles(agencyEnrollCommand, externalContext)"/>
@@ -33,4 +48,11 @@
     <end-state id="back">
 
     </end-state>
+
+
+
+    <end-state id="step">
+        <output name="whereToGo" value="flashScope.whereToGo"/>
+    </end-state>
+
 </flow>

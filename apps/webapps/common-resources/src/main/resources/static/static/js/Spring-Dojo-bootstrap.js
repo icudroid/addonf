@@ -413,7 +413,7 @@ dojo.declare("Spring.RemotingHandler", Spring.AbstractRemotingHandler, {
             '</div>'+
         '</div>'
 
-        $(template).modal({backdrop:'static'})
+        springModal = $(template).modal({backdrop:'static'})
 
     }
 });

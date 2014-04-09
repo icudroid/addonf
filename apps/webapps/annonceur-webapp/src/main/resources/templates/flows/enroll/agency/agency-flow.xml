@@ -77,14 +77,19 @@
             <set name="flowScope.toGo" value="currentEvent.attributes.whereToGo"/>
         </transition>
         <transition on="back" to="users" />
+
+        <transition on="step" to="whereToGo">
+            <set name="flowScope.toGo" value="currentEvent.attributes.whereToGo"/>
+        </transition>
+
     </subflow-state>
 
 
-            <action-state id="whereToGo">
-                <evaluate expression="flowScope.toGo"/>
-                <transition on="${flowScope.toGo}" to="${flowScope.toGo}">
-                </transition>
-            </action-state>
+    <action-state id="whereToGo">
+        <evaluate expression="flowScope.toGo"/>
+        <transition on="${flowScope.toGo}" to="${flowScope.toGo}">
+        </transition>
+    </action-state>
 
             <view-state id="needMoreFile" view="enroll/popup/needMoreFile" popup="true">
                 <transition  on="back"  to="attachements" >

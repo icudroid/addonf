@@ -21,8 +21,6 @@ public enum EnrollFlow {
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
                     AttachementFileId.RIB.name(),
-                    AttachementFileId.STATUS.name(),
-                    AttachementFileId.SIGN.name(),
                     AttachementFileId.LOGO.name()
             );
             return res;
@@ -39,8 +37,6 @@ public enum EnrollFlow {
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
                     AttachementFileId.RIB.name(),
-                    AttachementFileId.STATUS.name(),
-                    AttachementFileId.SIGN.name(),
                     AttachementFileId.LOGO.name()
             );
             return res;
@@ -56,8 +52,6 @@ public enum EnrollFlow {
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
                     AttachementFileId.RIB.name(),
-                    AttachementFileId.STATUS.name(),
-                    AttachementFileId.SIGN.name(),
                     AttachementFileId.LOGO.name()
             );
             return res;
@@ -74,8 +68,6 @@ public enum EnrollFlow {
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
                     AttachementFileId.RIB.name(),
-                    AttachementFileId.STATUS.name(),
-                    AttachementFileId.SIGN.name(),
                     AttachementFileId.LOGO.name()
             );
             return res;
