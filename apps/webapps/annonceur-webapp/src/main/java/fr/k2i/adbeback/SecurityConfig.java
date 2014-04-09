@@ -67,6 +67,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/enroll.html").permitAll()
                 .antMatchers("/agencyEnroll.html").permitAll()
 
+                .antMatchers("/uploadAttachement/*").permitAll()
+
                 .anyRequest().authenticated();
 
 /*                .antMatchers("/custom-logout").hasRole("ANNONCEUR")

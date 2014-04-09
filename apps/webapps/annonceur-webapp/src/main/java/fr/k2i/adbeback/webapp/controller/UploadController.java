@@ -1,18 +1,17 @@
 package fr.k2i.adbeback.webapp.controller;
 
 import fr.k2i.adbeback.webapp.bean.FileCommand;
+import lombok.Data;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 import javax.servlet.ServletOutputStream;
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,11 +45,7 @@ public class UploadController implements HandlerExceptionResolver, Ordered {
     private Double maxBytesUpload;
 
     @RequestMapping(value= IMetaDataController.Path.UPLOAD,method = RequestMethod.POST)
-    public ModelAndView doUpload(@RequestParam String file,@RequestBody MultipartFile multipartFile,HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ModelAndView modelAndView = new ModelAndView(new MappingJacksonJsonView());
-
-        response.setContentType(TEXT_PLAIN);
-        response.setCharacterEncoding("UTF-8");
+    public @ResponseBody JsonResultError doUpload(@PathVariable String fileId,@RequestParam("file") MultipartFile file,HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Map<String,FileCommand>  uploaded = (Map)request.getSession().getAttribute(UPLOADED_PARAM);
         if(uploaded==null){
@@ -58,20 +54,19 @@ public class UploadController implements HandlerExceptionResolver, Ordered {
         }
 
 
-        if(!isFileSizeOk(multipartFile)){
-            modelAndView.addObject(JsonResultError.errorSize());
-        }else if(!isFileFormatOk(multipartFile)){
-            modelAndView.addObject(JsonResultError.errorFormat());
+        if(!isFileSizeOk(file)){
+            return JsonResultError.errorSize();
+        }else if(!isFileFormatOk(file)){
+            return  JsonResultError.errorFormat();
         }else{
             try {
-                uploaded.put(file,new FileCommand(multipartFile));
+                uploaded.put(fileId,new FileCommand(file));
             } catch (IOException e) {
                 logger.error("doUpload",e);
             }
-            modelAndView.addObject(JsonResultError.noError());
+            return  JsonResultError.noError();
         }
 
-        return modelAndView;
     }
 
     private boolean isFileSizeOk(MultipartFile file) {
@@ -89,7 +84,7 @@ public class UploadController implements HandlerExceptionResolver, Ordered {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        ModelAndView modelAndView = new ModelAndView(new MappingJacksonJsonView());
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         modelAndView.addObject(JsonResultError.errorSize());
         return modelAndView;
     }
@@ -101,18 +96,11 @@ public class UploadController implements HandlerExceptionResolver, Ordered {
 }
 
 
-class JsonResultError{
-    Object error;
+@Data
+class JsonResultError implements Serializable{
+    String error;
 
-    Object getError() {
-        return error;
-    }
-
-    void setError(Object error) {
-        this.error = error;
-    }
-
-    public JsonResultError(Object e){
+    public JsonResultError(String e){
         error = e;
     }
 

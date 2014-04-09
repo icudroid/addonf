@@ -3,12 +3,14 @@ package fr.k2i.adbeback.webapp.config;
 import fr.k2i.adbeback.application.services.mail.config.EmailConfig;
 import org.hibernate.validator.internal.engine.ValidatorImpl;
 import org.springframework.boot.autoconfigure.jdbc.TomcatDataSourceConfiguration;
+import org.springframework.boot.context.embedded.MultiPartConfigFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.servlet.MultipartConfigElement;
 import javax.validation.Validator;
 
 /**
@@ -43,6 +45,15 @@ public abstract class AbstractWebConfig {
     @Bean
     public Validator validator(){
         return new LocalValidatorFactoryBean();
+    }
+
+
+    @Bean
+    MultipartConfigElement multipartConfigElement() {
+        MultiPartConfigFactory factory = new MultiPartConfigFactory();
+        factory.setMaxFileSize("5MB");
+        factory.setMaxRequestSize("5MB");
+        return factory.createMultipartConfig();
     }
 
 }

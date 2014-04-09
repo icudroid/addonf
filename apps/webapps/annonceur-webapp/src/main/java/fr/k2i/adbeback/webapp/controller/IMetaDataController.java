@@ -37,7 +37,7 @@ public interface IMetaDataController {
         String MODIFY_CAMPAIGN_STEP_3 =                 "/modifyCampaign/step3";
 
         String MODIFY =                                 "/modifyCampaign/save";
-        String UPLOAD =                                 "/uploadAttachement/{file}";
+        String UPLOAD =                                 "/uploadAttachement/{fileId}";
     }
 
     interface View{

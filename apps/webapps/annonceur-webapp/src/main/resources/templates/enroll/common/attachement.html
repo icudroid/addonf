@@ -97,12 +97,12 @@
                     <div class="form-group" th:each="file,fileStat : ${files}" th:id="#{'container_'+${file}}">
                         <label th:for="${file}" th:text="#{'file.'+${file}}">File input</label>
                         <div class="input-group">
+                            <span class="input-group-addon" th:utext="#{'status.file.'+${filesStatus[__${file}__]}}">OK</span>
                             <span class="form-control" th:id="#{'indicate_'+${file}}"></span>
                             <span class="input-group-btn">
                                 <bouton class="btn btn-default" th:id="#{'pickup_'+${file}}">Selectionner un fichier</bouton>
                             </span>
                         </div>
-                        <p class="help-block" th:text="#{'status.file.'+${filesStatus[__${file}__]}}">Help.</p>
                         <div class="progress" style="display: none;" th:id="#{'progress_'+${file}}">
                             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                 <span>0%</span>
