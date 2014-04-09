@@ -65,8 +65,21 @@ public final class Constants {
     public static final String USER_ROLE = "ROLE_USER";
 
 
-
+    /**
+     * role annonceur
+     */
     public static final String ANNONCEUR_ROLE = "ROLE_ANNONCEUR";
+    /**
+     * Role media
+     */
+    public static final String MEDIA_ROLE = "ROLE_MEDIA";
+
+    /**
+     * role pour les agences
+     */
+    public static final String AGENCY_ADMIN_ROLE = "ROLE_AGENCY_ADMIN";
+    public static final String AGENCY_USER_READ_ROLE = "ROLE_AGENCY_USER_READ";
+    public static final String AGENCY_USER_WRITE_ROLE = "ROLE_AGENCY_USER_WRITE";
 
     /**
      * The name of the user's role list, a request-scoped attribute

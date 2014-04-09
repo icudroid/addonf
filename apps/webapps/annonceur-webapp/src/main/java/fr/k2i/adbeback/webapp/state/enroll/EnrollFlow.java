@@ -16,7 +16,7 @@ public enum EnrollFlow {
     AGENCY {
 
         @Override
-        public List<String> getRequiredFilesId(int nbSecondaryContact) {
+        public List<String> requiredFiles() {
             ArrayList<String> res = Lists.newArrayList(
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
@@ -34,7 +34,7 @@ public enum EnrollFlow {
         }
 
         @Override
-        public List<String> getFilesId(int nbSecondaryContact) {
+        public List<String> availableFiles() {
             ArrayList<String> res = Lists.newArrayList(
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
@@ -51,7 +51,7 @@ public enum EnrollFlow {
     ADV {
 
         @Override
-        public List<String> getRequiredFilesId(int nbSecondaryContact) {
+        public List<String> requiredFiles() {
             ArrayList<String> res = Lists.newArrayList(
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
@@ -69,7 +69,7 @@ public enum EnrollFlow {
         }
 
         @Override
-        public List<String> getFilesId(int nbSecondaryContact) {
+        public List<String> availableFiles() {
             ArrayList<String> res = Lists.newArrayList(
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
@@ -87,7 +87,7 @@ public enum EnrollFlow {
     MEDIA {
 
         @Override
-        public List<String> getRequiredFilesId(int nbSecondaryContact) {
+        public List<String> requiredFiles() {
             ArrayList<String> res = Lists.newArrayList(
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
@@ -105,7 +105,7 @@ public enum EnrollFlow {
         }
 
         @Override
-        public List<String> getFilesId(int nbSecondaryContact) {
+        public List<String> availableFiles() {
             ArrayList<String> res = Lists.newArrayList(
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
@@ -120,8 +120,8 @@ public enum EnrollFlow {
 
         ;
 
-    public abstract List<String> getFilesId(int nbSecondaryContact);
+    public abstract List<String> availableFiles();
     public abstract String getType();
-    public abstract List<String> getRequiredFilesId(int nbSecondaryContact);
+    public abstract List<String> requiredFiles();
 
 }

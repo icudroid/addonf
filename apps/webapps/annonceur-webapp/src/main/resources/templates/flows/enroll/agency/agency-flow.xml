@@ -36,7 +36,7 @@
 
     <view-state id="users" view="enroll/agency/users" model="agencyEnrollCommand">
 
-        <transition on="submit" to="attachments" />
+        <transition on="continue" to="attachements" validate="false" />
 
         <transition on="addUser" to="addNew">
             <evaluate expression="agencyEnrollHelper.addUser(agencyEnrollCommand)" />
@@ -44,7 +44,7 @@
         </transition>
 
         <transition on="deleteUser" validate="false" to="deleteUserConfirm">
-            <set name="flashScope.index" value="requestParameters.id"/>
+            <set name="flashScope.email" value="requestParameters.email"/>
         </transition>
 
         <transition on="back" to="adminUser" validate="false" />
@@ -57,30 +57,27 @@
     </view-state>
 
 
-            <view-state id="deleteUserConfirm" view="enroll/agency/popup/deleteUserPopup" popup="true" model="agencyEnrollCommand">
-                <on-render>
-                    <evaluate expression="agencyEnrollHelper.getUserName(agencyEnrollCommand,flashScope.index)"  result="viewScope.username"/>
-                    <set name="viewScope.index" value="flashScope.index"/>
-                </on-render>
-                <transition on="yes" to="users">
-                    <evaluate expression="agencyEnrollHelper.deleteUser(agencyEnrollCommand,viewScope.index)" />
-                </transition>
-                <transition on="no" to="users"/>
-            </view-state>
+    <view-state id="deleteUserConfirm" view="enroll/agency/popup/deleteUserPopup" popup="true">
+        <on-render>
+            <set name="viewScope.emailToDelete" value="flashScope.email"/>
+        </on-render>
+        <transition on="yes" to="users">
+            <evaluate expression="agencyEnrollHelper.deleteUser(agencyEnrollCommand,viewScope.emailToDelete)" />
+        </transition>
+        <transition on="no" to="users"/>
+    </view-state>
 
 
-            <subflow-state id="attachments" subflow="enroll/common/attachement">
-                <on-entry>
-                    <evaluate expression="agencyEnrollHelper.reloadMapFile(flowRequestContext,state)"/>
-                </on-entry>
-                <input name="state" value="state"></input>
+    <subflow-state id="attachements" subflow="enroll/agency/attachement">
+        <input name="state" value="state"></input>
+        <input name="agencyEnrollCommand" value="agencyEnrollCommand"></input>
 
-                <transition on="needMoreFile" to="needMoreFile" />
-                <transition on="end" to="whereToGo">
-                    <set name="flowScope.toGo" value="currentEvent.attributes.whereToGo"/>
-                </transition>
-                <transition on="back" to="users" />
-            </subflow-state>
+        <transition on="needMoreFile" to="needMoreFile" />
+        <transition on="end-attachement" to="whereToGo">
+            <set name="flowScope.toGo" value="currentEvent.attributes.whereToGo"/>
+        </transition>
+        <transition on="back" to="users" />
+    </subflow-state>
 
 
             <action-state id="whereToGo">
@@ -90,7 +87,7 @@
             </action-state>
 
             <view-state id="needMoreFile" view="enroll/popup/needMoreFile" popup="true">
-                <transition  on="back"  to="attachments" >
+                <transition  on="back"  to="attachements" >
                     <evaluate expression="registrationHelper.reloadMapFile(flowRequestContext,state)"/>
                 </transition>
             </view-state>

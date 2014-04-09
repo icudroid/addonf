@@ -7,10 +7,8 @@ package fr.k2i.adbeback.core.business.user;
  * Goal:
  */
 public enum AttachementStatus {
-    NOPRESENT,
-    TOVALIDATE,
+    NO_PRESENT,
+    PRESENT,
     VALIDATED,
-    NON_COMPLIANT,
-    UNREADABLE,
-    EXPIRED;
+    ERROR;
 }

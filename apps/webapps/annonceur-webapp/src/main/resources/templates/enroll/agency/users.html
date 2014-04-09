@@ -13,9 +13,11 @@
     <script type="text/javascript">
         $(function(){
             Spring.addDecoration(
-                    new Spring.AjaxEventDecoration({formId:'formUsersInfo',elementId:'submit',event:'onclick'}));
+                    new Spring.AjaxEventDecoration({formId:'formUsersInfo',elementId:'continue',event:'onclick'}));
             Spring.addDecoration(
-                    new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'back',event:'onclick'}));
+                    new Spring.AjaxEventDecoration({formId:'formUsersInfo',elementId:'back',event:'onclick'}));
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'formUsersInfo',elementId:'addUser',event:'onclick'}));
         });
     </script>
 
@@ -44,13 +46,17 @@
                                 <th th:text="#{enroll.agency.table.users.role}">role</th>
                                 <th th:text="#{enroll.agency.table.users.actions}">Action</th>
                             </tr>
-                            <tr th:each="u : ${agencyEnrollCommand.users.users}">
+                            <tr th:each="u,uStat : ${agencyEnrollCommand.users.users}">
                                 <td th:text="${u.lastname}">KAHN</td>
                                 <td th:text="${u.firstname}">Dimitri</td>
                                 <td th:text="${u.email}">dimitri@d-kahn.net</td>
                                 <td th:text="#{${'role.' + u.role}}">Admin</td>
                                 <td>
-                                    <button th:if="u.role != 'ADMIN'" class="btn btn-default" th:text="#{btn.delete}">Supprimer</button>
+                                    <a th:if="${u.role.toString() != 'ADMIN'}" th:id="${'deleteBtn_'+uStat.index}" class="btn btn-default" th:text="#{btn.delete}" th:href="@{${flowExecutionUrl}(_eventId='deleteUser',email=${u.email})}">Supprimer</a>
+                                    <script th:inline="javascript">
+                                        Spring.addDecoration(
+                                                new Spring.AjaxEventDecoration({elementId:[[${'deleteBtn_'+uStat.index}]],event:'onclick'}));
+                                    </script>
                                 </td>
                             </tr>
                         </table>
@@ -90,11 +96,11 @@
                         <input type="text" class="form-control" id="mainContact-firstname" th:field="*{users.current.firstname}" />
                         <span class="help-block" th:if="${#fields.hasErrors('users.current.firstname')}" th:errors="*{users.current.firstname}">Error</span>
                     </div>
-                    <div th:class="${#fields.hasErrors('users.current.phone')}? 'form-group has-error':'form-group'">
+<!--                    <div th:class="${#fields.hasErrors('users.current.phone')}? 'form-group has-error':'form-group'">
                         <label for="phone" class=" control-label" th:text="#{enroll.company.contact.phone}">Téléphone</label>
                         <input type="tel" class="form-control" id="phone" placeholder="Ex : +33181445544" th:placeholder="#{enroll.company.contact.phone.placeholder}" th:field="*{users.current.phone}" />
                         <span class="help-block" th:if="${#fields.hasErrors('users.current.phone')}" th:errors="*{users.current.phone}">Error</span>
-                    </div>
+                    </div>-->
 
 
                     <div th:class="${#fields.hasErrors('users.current.email')}? 'form-group has-error':'form-group'">
@@ -109,7 +115,7 @@
                     </div>
 
 
-                    <div th:class="${#fields.hasErrors('users.current.password')}? 'form-group has-error':'form-group'">
+<!--                    <div th:class="${#fields.hasErrors('users.current.password')}? 'form-group has-error':'form-group'">
                         <label for="password" class=" control-label" th:text="#{enroll.company.password}">Mot de passe</label>
                         <input type="password" class="form-control" id="password" placeholder="Password" th:placeholder="#{enroll.company.password.placeholder}" th:field="*{users.current.password}" />
                         <span class="help-block" th:if="${#fields.hasErrors('users.current.password')}" th:errors="*{users.current.password}">Error</span>
@@ -118,7 +124,7 @@
                         <label for="passwordConfirm" class=" control-label" th:text="#{enroll.company.passwordConfirm}">Confirmer le mot de passe</label>
                         <input type="password" class="form-control" id="passwordConfirm" placeholder="Password" th:placeholder="#{enroll.company.password.placeholder}" th:field="*{users.current.passwordConfirm}" />
                         <span class="help-block" th:if="${#fields.hasErrors('users.current.passwordConfirm')}" th:errors="*{users.current.passwordConfirm}">Error</span>
-                    </div>
+                    </div>-->
 
 
 
@@ -129,7 +135,7 @@
                     <div class="row">
                         <div class="col-md-12 form-actions right">
                             <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default"/>
-                            <input type="submit" id="continue" name="_eventId_submit" th:value="#{btn.next}" class="btn blue"/>
+                            <input type="submit" id="continue" name="_eventId_continue" th:value="#{btn.next}" class="btn blue"/>
                             <input type="submit" id="addUser" name="_eventId_addUser" th:value="#{enroll.agency.add.user.button}" class="btn blue"/>
                         </div>
                     </div>

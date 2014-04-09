@@ -37,7 +37,7 @@ public class Attachement extends BaseObject implements Serializable {
     private Agency agency;
 
     public Attachement(){
-        status = AttachementStatus.NOPRESENT;
+        status = AttachementStatus.NO_PRESENT;
         size=0L;
         originalName="";
         extention="";

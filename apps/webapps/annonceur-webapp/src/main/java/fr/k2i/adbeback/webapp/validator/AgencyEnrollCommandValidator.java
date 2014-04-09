@@ -11,6 +11,7 @@ import fr.k2i.adbeback.webapp.bean.ContactBean;
 import fr.k2i.adbeback.webapp.bean.EnrollBrandCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.AgencyEnrollCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.AgencyInformationCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.AgencyRole;
 import fr.k2i.adbeback.webapp.bean.enroll.AgencyUserBean;
 import fr.k2i.adbeback.webapp.util.PhoneNumberUtils;
 import fr.k2i.adbeback.webapp.util.SirenSiretValidator;
@@ -251,9 +252,49 @@ public class AgencyEnrollCommandValidator{
 
 
 
-    public void validateToto(Object o, Errors errors) {
+    public void validateUsers(Object o, Errors errors) {
         AgencyEnrollCommand command = (AgencyEnrollCommand) o;
-        Set<ConstraintViolation<AgencyEnrollCommand>> validateEnrollBrandCommand = beanValidator.validate(command, Default.class);
+        AgencyUserBean user = command.getUsers().getCurrent();
+
+        Set<ConstraintViolation<AgencyUserBean>> validate = beanValidator.validate(user, Default.class);
+        validatorHelper.importBeanValidationErrors(validate,errors,"users.current.");
+
+        if(AgencyRole.ADMIN.equals(user.getRole())){
+            errors.rejectValue("users.current.role","not.admin");
+        }
+
+        if(StringUtils.isEmpty(user.getEmail())){
+            errors.rejectValue("users.current.email","required");
+        }else{
+            UserDetails u = webUserDao.findByUsername(user.getEmail());
+            if(u!=null){
+                errors.rejectValue("users.current.email","exist");
+            }
+            List<AgencyUserBean> users = command.getUsers().getUsers();
+            for (AgencyUserBean agencyUserBean : users) {
+                if(agencyUserBean.getEmail().equals(user.getEmail())){
+                    errors.rejectValue("users.current.email","exist");
+                }
+            }
+
+        }
+
+        if(StringUtils.isEmpty(user.getEmailConfirm())){
+            errors.rejectValue("users.current.emailConfirm","required");
+        }
+
+        if(!StringUtils.isEmpty(user.getEmail()) && !StringUtils.isEmpty(user.getEmailConfirm()) &&
+                !user.getEmail().equals(user.getEmailConfirm())){
+            errors.rejectValue("users.current.emailConfirm","different");
+        }
+
+        if(StringUtils.isEmpty(user.getFirstname())){
+            errors.rejectValue("users.current.firstname","required");
+        }
+
+        if(StringUtils.isEmpty(user.getLastname())){
+            errors.rejectValue("users.current.lastname","required");
+        }
 
 
 /*
