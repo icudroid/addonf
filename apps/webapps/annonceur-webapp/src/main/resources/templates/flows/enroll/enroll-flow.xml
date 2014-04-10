@@ -18,6 +18,10 @@
 
 
     <subflow-state id="media" subflow="enroll/media">
+        <transition on="recap-validation" to="enrollAgency"/>
+        <on-exit>
+            <evaluate expression="agencyEnrollHelper.createAccount(agencyEnrollCommand,state)"/>
+        </on-exit>
     </subflow-state>
 
     <subflow-state id="agency" subflow="enroll/agency">
@@ -26,4 +30,7 @@
     <subflow-state id="adv" subflow="enroll/adv">
     </subflow-state>
 
+
+    <end-state id="enrollAgency" view="enroll/agency/recap">
+    </end-state>
 </flow>

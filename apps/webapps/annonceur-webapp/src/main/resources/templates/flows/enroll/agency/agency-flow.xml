@@ -73,9 +73,7 @@
         <input name="agencyEnrollCommand" value="agencyEnrollCommand"></input>
 
         <transition on="needMoreFile" to="needMoreFile" />
-        <transition on="end-attachement" to="whereToGo">
-            <set name="flowScope.toGo" value="currentEvent.attributes.whereToGo"/>
-        </transition>
+        <transition on="end-attachement" to="recap-validation" />
         <transition on="back" to="users" />
 
         <transition on="step" to="whereToGo">
@@ -91,18 +89,14 @@
         </transition>
     </action-state>
 
-            <view-state id="needMoreFile" view="enroll/popup/needMoreFile" popup="true">
-                <transition  on="back"  to="attachements" >
-                    <evaluate expression="registrationHelper.reloadMapFile(flowRequestContext,state)"/>
-                </transition>
-            </view-state>
+    <view-state id="needMoreFile" view="enroll/popup/needMoreFile" popup="true">
+        <transition  on="back"  to="attachements"  />
+    </view-state>
 
-
-            <end-state id="recap-validation">
-                <output name="state" value="state"/>
-            </end-state>
-
-
+    <end-state id="recap-validation">
+        <output name="state" value="state"/>
+        <output name="agencyEnrollCommand" value="agencyEnrollCommand"/>
+    </end-state>
 
 
     <global-transitions>
@@ -110,8 +104,7 @@
         <transition on="step2" to="agency" validate="false"></transition>
         <transition on="step3" to="adminUser" validate="false"></transition>
         <transition on="step4" to="users" validate="false"></transition>
-        <transition on="step5" to="adminUser" validate="false"></transition>
-        <transition on="step6" to="adminUser" validate="false"></transition>
+        <transition on="step5" to="attachements" validate="false"></transition>
     </global-transitions>
 
 </flow>

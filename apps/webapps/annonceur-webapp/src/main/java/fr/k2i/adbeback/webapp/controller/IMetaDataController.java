@@ -38,6 +38,8 @@ public interface IMetaDataController {
 
         String MODIFY =                                 "/modifyCampaign/save";
         String UPLOAD =                                 "/uploadAttachement/{fileId}";
+        String REGISTRATION_AGENCY_ADMIN_CONFIRM =      "/confirmAgencyAdmin/{crypt}/{code}";
+        String REGISTRATION_AGENCY_USER_CONFIRM =      "/confirmAgencyUser/{crypt}/{code}";
     }
 
     interface View{
@@ -48,6 +50,8 @@ public interface IMetaDataController {
         String ENROLL_FORM =                            "enroll";
         String ENROLLED_FORM =                          "enrolled";
         String REGISTRATION_BRAND_CONFIRM =             "enrollConfirmed";
+        String REGISTRATION_AGENCY_ADMIN_CONFIRM =      "enroll/agency/adminConfirmed";
+        String REGISTRATION_AGENCY_USER_CONFIRM =       "enroll/agency/userConfirmed";
         String DASHBOARD_ADS =                          "manage/ads/show";
         String LIST_CAMPAIGNS =                         "campaigns";
 

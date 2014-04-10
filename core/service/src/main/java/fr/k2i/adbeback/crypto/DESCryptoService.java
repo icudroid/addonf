@@ -114,7 +114,6 @@ public class DESCryptoService {
     public String generateOtpConfirm(String toEncodeStr, User user, int expirationHours){
         OTPUserSecurityConfirm optSecurity =  otpSecurityDao.findByUser(user);
 
-
         if(optSecurity==null){
             NumberFormat numberFormat = new DecimalFormat("0000000");
             String key = numberFormat.format(RandomUtils.nextInt(100000000));

@@ -16,4 +16,5 @@ public interface IWebUserDao extends IGenericDao<User, Long> {
 
     UserDetails findByUsername(String username);
 
+    User getUserByEmail(String email);
 }

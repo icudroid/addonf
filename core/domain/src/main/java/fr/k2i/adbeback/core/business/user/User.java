@@ -3,6 +3,7 @@ package fr.k2i.adbeback.core.business.user;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Role;
+import fr.k2i.adbeback.core.business.player.Sex;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,6 +23,16 @@ import java.util.Set;
 @Table(name = "ad_user")
 @DiscriminatorColumn(name = "classe", discriminatorType = DiscriminatorType.STRING)
 public abstract class User extends BaseObject implements Serializable {
+
+    @Enumerated(EnumType.STRING)
+    protected Sex sex;
+
+    @Column(nullable = true, length = 50)
+    protected String firstname;
+
+    @Column(nullable = true, length = 50)
+    protected String lastname;
+
 
     @Id
     @SequenceGenerator(name = "User_Gen", sequenceName = "User_Sequence")

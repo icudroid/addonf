@@ -62,5 +62,23 @@ public class WebUserDao extends GenericDaoJpa<User, Long> implements UserDetails
     public UserDetails findByUsername(String username) {
         return loadUserByUsername(username);
     }
+
+    @Override
+    public User getUserByEmail(String username) {
+        QUser user = QUser.user;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(user)
+                .where(
+                        user.email.eq(username).or(user.username.eq(username))
+                );
+
+        List<User> users = query.list(user);
+
+        if (users == null || users.isEmpty()) {
+            throw new UsernameNotFoundException("user '" + username + "' not found...");
+        } else {
+            return users.get(0);
+        }
+    }
 }
 

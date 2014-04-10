@@ -24,62 +24,90 @@
     <script th:inline="javascript">
         $(function(){
             var files = [[${files}]];
+            var strStatusPresent = [[#{'status.file.PRESENT'}]];
+            var strStatusNoPresent = [[#{'status.file.NO_PRESENT'}]];
 
-            var uploader = new plupload.Uploader({
-                runtimes : 'html5,flash,silverlight,html4',
-
-                browse_button : 'pickup_CID', // you can pass in id...
-                container: document.getElementById('container_CID'), // ... or DOM Element itself
-
-                url : [[@{/uploadAttachement/CID(_csrf=${_csrf.token})}]],
-
-                filters : {
-                    max_file_size : '1.5mb',
-                    mime_types: [
-                        {title : "Fichier Image", extensions : "jpg,gif,png"},
-                        {title : "Document", extensions : "pdf,doc,docx"}
-                    ]
-                },
-
-                // Flash settings
-                flash_swf_url : [[@{/static/lib/plupload-2.1.1/js/Moxie.swf}]],
-
-                // Silverlight settings
-                silverlight_xap_url : [[@{/static/lib/plupload-2.1.1/js/Moxie.xap}]],
+            var errors = {
+                "format":[[#{'error.file.format'}]],
+                "size":[[#{'error.file.size'}]]
+            };
 
 
-                init: {
-                    PostInit: function() {
+            for (var i = 0; i < files.length; i++) {
 
+                var who = files[i];
+                var url = [[@{/uploadAttachement/_fileId(_csrf=${_csrf.token})}]];
+
+                new plupload.Uploader({
+                    runtimes : 'html5,flash,silverlight,html4',
+
+                    browse_button : 'pickup_'+who,
+                    container: document.getElementById('container_'+who),
+
+                    url : url.replace('_fileId',who),
+
+                    filters : {
+                        max_file_size : '1.5mb',
+                                mime_types: [
+                            {title : "Fichier Image", extensions : "jpg,gif,png"},
+                            {title : "Document", extensions : "pdf,doc,docx"}
+                        ]
                     },
 
-                    FilesAdded: function(up, files) {
-                        plupload.each(files, function(file) {
-                            document.getElementById('indicate_CID').innerHTML = file.name;
-                            uploader.start();
-                            $("#progress_CID").show();
-                        });
-                    },
+                    // Flash settings
+                    flash_swf_url : [[@{/static/lib/plupload-2.1.1/js/Moxie.swf}]],
 
-                    UploadProgress: function(up, file) {
-                        var progress = $("#progress_CID");
-                        progress.find(".progress-bar").attr("aria-valuenow",file.percent);
-                        progress.find("span").html(file.percent + "%");
-                        //document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
-                    },
+                    // Silverlight settings
+                    silverlight_xap_url : [[@{/static/lib/plupload-2.1.1/js/Moxie.xap}]],
 
-                    FileUploaded : function(up, file) {
-                        $("#progress_CID").hide();
-                    },
 
-                    Error: function(up, err) {
-                        //document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
+                    init: {
+                        PostInit: function() {
+
+                        },
+
+                        FilesAdded: function(up, files) {
+                            plupload.each(files, function(file) {
+                                $("#indicate_"+who).html(file.name);
+                                $("#error_"+who).hide();
+                                uploader.start();
+                                $("#progress_"+who).show();
+                                $("#continue").hide();
+                                $("#back").hide();
+                            });
+                        },
+
+                        UploadProgress: function(up, file) {
+                            var progress = $("#progress_"+who);
+                            progress.find(".progress-bar").attr("aria-valuenow",file.percent);
+                            progress.find("span").html(file.percent + "%");
+                            //document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                        },
+
+                        FileUploaded : function(up, file,response) {
+                            var resJson = $.parseJSON(response.response);
+                            $("#progress_"+who).hide();
+
+                            $("#continue").show();
+                            $("#back").show();
+
+                            if(json.error == 'no'){
+                                $("#status_"+who).html(strStatusPresent);
+                            }else{
+                                $("#error_"+who).html(errors[resJson.error]).show();
+                            }
+
+                        },
+
+                        Error: function(up, err) {
+                            $("#error_"+who).html(err.code + ": " + err.message).show();
+                            $("#continue").show();
+                            $("#back").show();
+                        }
                     }
-                }
-            });
+                }).init();
 
-            uploader.init();
-
+            }
         });
     </script>
 </head>
@@ -90,26 +118,26 @@
     <div class="container margin-bottom-40">
         <div class="row">
             <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
-                <form id="formAttachmentInfo" th:action="@{${flowExecutionUrl}(_csrf=${_csrf.token})}" enctype="multipart/form-data" method="post" class="form-horizontal" role="form" autocomplete="off">
+                <form id="formAttachmentInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" autocomplete="off">
 
                     <h2 th:utext="#{enroll.agency.attachement.explain}">Text explicatif : A rédiger</h2>
 
                     <div class="form-group" th:each="file,fileStat : ${files}" th:id="#{'container_'+${file}}">
-                        <label th:for="${file}" th:text="#{'file.'+${file}}">File input</label>
+                        <label th:for="${file}" th:inline="text" th:text="">[[#{'file.'+${file}}]]<span th:if="${requiredFiles[__${file}__] !=null}">*</span></label>
                         <div class="input-group">
-                            <span class="input-group-addon" th:utext="#{'status.file.'+${filesStatus[__${file}__]}}">OK</span>
+                            <span class="input-group-addon" th:utext="#{'status.file.'+${filesStatus[__${file}__]}}" th:id="#{'status_'+${file}}">OK</span>
                             <span class="form-control" th:id="#{'indicate_'+${file}}"></span>
                             <span class="input-group-btn">
                                 <bouton class="btn btn-default" th:id="#{'pickup_'+${file}}">Selectionner un fichier</bouton>
                             </span>
                         </div>
+                        <span class="help-block" style="display: none;" th:id="#{'error_'+${file}}">Error</span>
                         <div class="progress" style="display: none;" th:id="#{'progress_'+${file}}">
                             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                 <span>0%</span>
                             </div>
                         </div>
                     </div>
-
 
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 

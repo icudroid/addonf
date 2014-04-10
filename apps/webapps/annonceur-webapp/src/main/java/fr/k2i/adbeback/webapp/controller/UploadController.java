@@ -32,8 +32,6 @@ public class UploadController implements HandlerExceptionResolver, Ordered {
 
     public static final String UPLOADED_PARAM = "uploaded";
 
-    public static final String TEXT_PLAIN = "text/plain";
-
     public static final String PDF = "pdf";
     public static final String JPG = "jpg";
     public static final String JPEG = "jpeg";

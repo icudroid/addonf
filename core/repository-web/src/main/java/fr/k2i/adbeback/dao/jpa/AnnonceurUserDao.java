@@ -76,5 +76,33 @@ public class AnnonceurUserDao extends GenericDaoJpa<User, Long> implements UserD
         }
     }
 
+    @Override
+    public User getUserByEmail(String username) {
+        QUser user = QUser.user;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(user)
+                .where(
+                        user.email.eq(username).or(user.username.eq(username))
+                                .and(
+                                        user.instanceOf(MediaUser.class)
+                                                .or(
+                                                        user.instanceOf(AgencyUser.class)
+                                                                .or(
+                                                                        user.instanceOf(BrandUser.class)
+                                                                                .or(
+                                                                                        user.instanceOf(Admin.class)))
+                                                )
+                                )
+                );
+
+        List<User> users = query.list(user);
+
+        if (users == null || users.isEmpty()) {
+            throw new UsernameNotFoundException("user '" + username + "' not found...");
+        } else {
+            return users.get(0);
+        }
+    }
+
 }
 

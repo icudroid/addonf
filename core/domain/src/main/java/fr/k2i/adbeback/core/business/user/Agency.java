@@ -29,8 +29,6 @@ public class Agency extends BaseObject {
 
     private String name;
 
-    private String email;
-
     private String phone;
 
     @Embedded
@@ -65,4 +63,11 @@ public class Agency extends BaseObject {
     @JoinColumn(name = IMetaData.ColumnMetadata.Agency.CONFIG)
     private IhmConfig ihmConfig;
 
+    public void addUser(AgencyUser user) {
+        if(users==null){
+            users = new ArrayList<AgencyUser>();
+        }
+        user.setAgency(this);
+        users.add(user);
+    }
 }

@@ -28,8 +28,6 @@ import java.util.*;
 @DiscriminatorValue("Player")
 public class Player extends User{
 
-    @Enumerated(EnumType.STRING)
-    protected Sex sex;
 
     @Temporal(TemporalType.DATE)
     protected Date birthday;

@@ -42,14 +42,6 @@ public class AgencyDao extends GenericDaoJpa<Agency, Long> implements IAgencyDao
     }
 
     @Override
-    public Agency findByEmail(String email) {
-        QAgency agency = QAgency.agency;
-        JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(agency).where(agency.email.eq(email));
-        return query.uniqueResult(agency);
-    }
-
-    @Override
     public Agency findBySiret(String siret) {
         QAgency agency = QAgency.agency;
         JPAQuery query = new JPAQuery(getEntityManager());

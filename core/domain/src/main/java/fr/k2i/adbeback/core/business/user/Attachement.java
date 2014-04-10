@@ -33,9 +33,6 @@ public class Attachement extends BaseObject implements Serializable {
     @Column(name=IMetaData.ColumnMetadata.Attachement.STATUS,length = 10)
     private AttachementStatus status;
 
-    @ManyToOne
-    private Agency agency;
-
     public Attachement(){
         status = AttachementStatus.NO_PRESENT;
         size=0L;

@@ -14,7 +14,7 @@
         <on-entry>
             <evaluate expression="agencyEnrollHelper.availableFiles(state)" result="viewScope.files"/>
             <evaluate expression="agencyEnrollHelper.requiredFiles(state)" result="viewScope.requiredFiles"/>
-            <evaluate expression="agencyEnrollHelper.uploadedFileStatus(state,agencyEnrollCommand.attachements)" result="viewScope.filesStatus"/>
+            <evaluate expression="agencyEnrollHelper.uploadedFileStatus(flowRequestContext,state)" result="viewScope.filesStatus"/>
         </on-entry>
         <transition on="submit" to="isAllFilePresent" />
         <transition on="back" to="back" />
@@ -23,8 +23,6 @@
         </transition>
     </view-state>
 
-
-
     <action-state id="whereToGo">
         <evaluate expression="flowScope.toGo"/>
         <transition on="${flowScope.toGo}" to="${flowScope.toGo}">
@@ -32,9 +30,8 @@
     </action-state>
 
     <action-state id="isAllFilePresent">
-        <evaluate expression="agencyEnrollHelper.saveFiles(agencyEnrollCommand, externalContext)"/>
+        <evaluate expression="agencyEnrollHelper.saveFiles(flowRequestContext,agencyEnrollCommand,state)"/>
         <transition on="ok" to="end-attachement" />
-        <transition on="ko" to="attachments"/>
         <transition on="NeedMoreFile" to="needMoreFile" />
     </action-state>
 
@@ -45,11 +42,8 @@
     <end-state id="end-attachement">
         <output name="state" value="state"/>
     </end-state>
-    <end-state id="back">
 
-    </end-state>
-
-
+    <end-state id="back" />
 
     <end-state id="step">
         <output name="whereToGo" value="flashScope.whereToGo"/>

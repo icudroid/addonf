@@ -17,8 +17,6 @@ public interface IAgencyDao extends IGenericDao<Agency, Long> {
     @Transactional
     Agency findByName(String name);
 
-    @Transactional
-    Agency findByEmail(String email);
 
     @Transactional
     Agency findBySiret(String siret);

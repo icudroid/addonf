@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Tous les fichiers requis ne sont pas présent</h4>
+</div>
+<div class="modal-body">
+    <p>Vous devez ajouter tous les fichiers marqués comme obligatoire</p>
+</div>
+<div class="modal-footer">
+    <form id="popupActionUser" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" autocomplete="off">
+        <input type="hidden"
+               th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <button type="button" id="back" class="btn btn-default" name="_eventId_back">Retour</button>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+
+    springModal.on('hide.bs.modal', function (e) {
+        Spring.addDecoration(
+                new Spring.AjaxEventDecoration({formId:'popupActionUser',elementId:'back',event:'onclick'}));
+    });
+
+    springModal.on('shown.bs.modal', function (e) {
+        Spring.addDecoration(
+                new Spring.AjaxEventDecoration({formId:'popupActionUser',elementId:'back',event:'onclick'}));
+    });
+
+</script>
+
+</body>
+</html>
