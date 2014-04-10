@@ -11,9 +11,7 @@ import fr.k2i.adbeback.core.business.player.Role;
 import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.crypto.DESCryptoService;
-import fr.k2i.adbeback.dao.ICityDao;
-import fr.k2i.adbeback.dao.ICountryDao;
-import fr.k2i.adbeback.dao.IRoleDao;
+import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.webapp.bean.AddressBean;
 import fr.k2i.adbeback.webapp.bean.FileCommand;
@@ -34,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.webflow.context.ExternalContext;
 import org.springframework.webflow.execution.RequestContext;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -87,6 +86,12 @@ public class AgencyEnrollHelper {
     @Autowired
     private MessageSource messageSource;
 
+
+    @Autowired
+    private IAgencyDao agencyDao;
+
+    @Resource(name = "annonceurUserDao")
+    private IWebUserDao userDao;
 
     public void createAdmin(AgencyEnrollCommand agencyEnrollCommand){
         AgencyUsersCommand users = agencyEnrollCommand.getUsers();
@@ -167,9 +172,9 @@ public class AgencyEnrollHelper {
         for (String file : filesNeeded) {
             FileCommand fileCommand = uploaded.get(file);
             if(fileCommand!=null){
-                res.put(file, AttachementStatus.PRESENT.name());
+                res.put(file, fileCommand.getFileName());
             }else{
-                res.put(file, AttachementStatus.NO_PRESENT.name());
+                res.put(file, "");
             }
         }
 
@@ -257,7 +262,7 @@ public class AgencyEnrollHelper {
 
         agency.setAttachements(fileUploaded);
 
-
+        agency = agencyDao.save(agency);
 
         AgencyUsersCommand users = agencyEnrollCommand.getUsers();
         List<AgencyUserBean> agencyUserBeans = users.getUsers();
@@ -265,6 +270,7 @@ public class AgencyEnrollHelper {
         for (AgencyUserBean agencyUserBean : agencyUserBeans) {
 
             AgencyUser user = new AgencyUser();
+            user.setAddress(null);
 
             user.setAccountExpired(false);
             user.setAccountLocked(false);
@@ -281,7 +287,11 @@ public class AgencyEnrollHelper {
 
             user.setRoles(Sets.<Role>newHashSet(roleDao.getRoleByName(agencyUserBean.getRole().name())));
 
+            user = (AgencyUser) userDao.save(user);
+
             agency.addUser(user);
+
+
 
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getNativeRequest();
             Locale locale = request.getLocale();
@@ -336,7 +346,7 @@ public class AgencyEnrollHelper {
 
 
 
-
+        agencyDao.save(agency);
 
 
     }

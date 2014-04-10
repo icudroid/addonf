@@ -13,11 +13,11 @@
     <p>Vous devez ajouter tous les fichiers marqués comme obligatoire</p>
 </div>
 <div class="modal-footer">
-    <form id="popupActionUser" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" autocomplete="off">
+    <form id="popupNeedMore" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" autocomplete="off">
         <input type="hidden"
                th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-        <button type="button" id="back" class="btn btn-default" name="_eventId_back">Retour</button>
+        <button type="button" id="backToAttachement" class="btn btn-default" name="_eventId_back">Retour</button>
     </form>
 </div>
 
@@ -26,12 +26,14 @@
 
     springModal.on('hide.bs.modal', function (e) {
         Spring.addDecoration(
-                new Spring.AjaxEventDecoration({formId:'popupActionUser',elementId:'back',event:'onclick'}));
+                new Spring.AjaxEventDecoration({formId:'popupNeedMore',elementId:'backToAttachement',event:'onclick'}));
     });
 
     springModal.on('shown.bs.modal', function (e) {
-        Spring.addDecoration(
-                new Spring.AjaxEventDecoration({formId:'popupActionUser',elementId:'back',event:'onclick'}));
+        setTimeout(function(){
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'popupNeedMore',elementId:'backToAttachement',event:'onclick'}));
+        },0);
     });
 
 </script>

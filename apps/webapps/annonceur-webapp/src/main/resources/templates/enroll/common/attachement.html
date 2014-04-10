@@ -11,6 +11,8 @@
     <script th:src="@{/static/lib/plupload-2.1.1/js/plupload.full.min.js}" type="text/javascript"/>
     <script th:src="@{/static/lib/plupload-2.1.1/js/i18n/fr.js}" type="text/javascript"/>
 
+    <script th:src="@{/static/js/addonf/attachement.js}" type="text/javascript"/>
+
     <script type="text/javascript">
         $(function(){
             Spring.addDecoration(
@@ -23,91 +25,23 @@
 
     <script th:inline="javascript">
         $(function(){
-            var files = [[${files}]];
-            var strStatusPresent = [[#{'status.file.PRESENT'}]];
-            var strStatusNoPresent = [[#{'status.file.NO_PRESENT'}]];
 
-            var errors = {
-                "format":[[#{'error.file.format'}]],
-                "size":[[#{'error.file.size'}]]
+            var options = {
+                files : [[${files}]],
+                strStatusPresent : [[#{'status.file.PRESENT'}]],
+                strStatusNoPresent : [[#{'status.file.NO_PRESENT'}]],
+                flash_swf_url : [[@{/static/lib/plupload-2.1.1/js/Moxie.swf}]],
+                silverlight_xap_url : [[@{/static/lib/plupload-2.1.1/js/Moxie.xap}]],
+                url : [[@{/uploadAttachement/_fileId(_csrf=${_csrf.token})}]],
+                errors : {
+                    "format":[[#{'error.file.format'}]],
+                    "size":[[#{'error.file.size'}]]
+                }
             };
 
-
-            for (var i = 0; i < files.length; i++) {
-
-                var who = files[i];
-                var url = [[@{/uploadAttachement/_fileId(_csrf=${_csrf.token})}]];
-
-                new plupload.Uploader({
-                    runtimes : 'html5,flash,silverlight,html4',
-
-                    browse_button : 'pickup_'+who,
-                    container: document.getElementById('container_'+who),
-
-                    url : url.replace('_fileId',who),
-
-                    filters : {
-                        max_file_size : '1.5mb',
-                                mime_types: [
-                            {title : "Fichier Image", extensions : "jpg,gif,png"},
-                            {title : "Document", extensions : "pdf,doc,docx"}
-                        ]
-                    },
-
-                    // Flash settings
-                    flash_swf_url : [[@{/static/lib/plupload-2.1.1/js/Moxie.swf}]],
-
-                    // Silverlight settings
-                    silverlight_xap_url : [[@{/static/lib/plupload-2.1.1/js/Moxie.xap}]],
+            new Addonf.Enroll.attachement(options);
 
 
-                    init: {
-                        PostInit: function() {
-
-                        },
-
-                        FilesAdded: function(up, files) {
-                            plupload.each(files, function(file) {
-                                $("#indicate_"+who).html(file.name);
-                                $("#error_"+who).hide();
-                                uploader.start();
-                                $("#progress_"+who).show();
-                                $("#continue").hide();
-                                $("#back").hide();
-                            });
-                        },
-
-                        UploadProgress: function(up, file) {
-                            var progress = $("#progress_"+who);
-                            progress.find(".progress-bar").attr("aria-valuenow",file.percent);
-                            progress.find("span").html(file.percent + "%");
-                            //document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
-                        },
-
-                        FileUploaded : function(up, file,response) {
-                            var resJson = $.parseJSON(response.response);
-                            $("#progress_"+who).hide();
-
-                            $("#continue").show();
-                            $("#back").show();
-
-                            if(json.error == 'no'){
-                                $("#status_"+who).html(strStatusPresent);
-                            }else{
-                                $("#error_"+who).html(errors[resJson.error]).show();
-                            }
-
-                        },
-
-                        Error: function(up, err) {
-                            $("#error_"+who).html(err.code + ": " + err.message).show();
-                            $("#continue").show();
-                            $("#back").show();
-                        }
-                    }
-                }).init();
-
-            }
         });
     </script>
 </head>
@@ -123,10 +57,13 @@
                     <h2 th:utext="#{enroll.agency.attachement.explain}">Text explicatif : A rédiger</h2>
 
                     <div class="form-group" th:each="file,fileStat : ${files}" th:id="#{'container_'+${file}}">
-                        <label th:for="${file}" th:inline="text" th:text="">[[#{'file.'+${file}}]]<span th:if="${requiredFiles[__${file}__] !=null}">*</span></label>
+                        <label th:for="${file}" th:inline="text" >[[#{'file.'+${file}}]]<span th:if="${#lists.contains(requiredFiles, file)}">*</span></label>
                         <div class="input-group">
-                            <span class="input-group-addon" th:utext="#{'status.file.'+${filesStatus[__${file}__]}}" th:id="#{'status_'+${file}}">OK</span>
-                            <span class="form-control" th:id="#{'indicate_'+${file}}"></span>
+
+                            <span class="input-group-addon" th:if="${#strings.isEmpty(filesStatus[__${file}__]) == false}"  th:id="#{'status_'+${file}}"><span class="glyphicon glyphicon-ok"></span></span>
+                            <span class="input-group-addon" th:if="${#strings.isEmpty(filesStatus[__${file}__]) == true}" th:id="#{'status_'+${file}}"><span class="glyphicon glyphicon-remove"></span></span>
+
+                            <span class="form-control" th:id="#{'indicate_'+${file}}" th:text="${filesStatus[__${file}__]}"></span>
                             <span class="input-group-btn">
                                 <bouton class="btn btn-default" th:id="#{'pickup_'+${file}}">Selectionner un fichier</bouton>
                             </span>

@@ -15,7 +15,7 @@ public class Attachement extends BaseObject implements Serializable {
     @Id
     @SequenceGenerator(name = "Attachement_Gen", sequenceName = "Attachement_Sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Attachement_Gen")
-    private String id;
+    private Long id;
 
     @Column(name=IMetaData.ColumnMetadata.Attachement.ORIGINAL_NAME,length = 255)
     private String originalName;

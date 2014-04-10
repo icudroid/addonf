@@ -18,13 +18,14 @@
 
 
     <subflow-state id="media" subflow="enroll/media">
-        <transition on="recap-validation" to="enrollAgency"/>
-        <on-exit>
-            <evaluate expression="agencyEnrollHelper.createAccount(agencyEnrollCommand,state)"/>
-        </on-exit>
+
     </subflow-state>
 
     <subflow-state id="agency" subflow="enroll/agency">
+        <transition on="recap-validation" to="enrollAgency"/>
+        <on-exit>
+            <evaluate expression="agencyEnrollHelper.createAccount(flowRequestContext,currentEvent.attributes.agencyEnrollCommand,currentEvent.attributes.state)"/>
+        </on-exit>
     </subflow-state>
 
     <subflow-state id="adv" subflow="enroll/adv">

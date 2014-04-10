@@ -7,7 +7,9 @@ import fr.k2i.adbeback.core.business.user.Agency;
 import fr.k2i.adbeback.core.business.user.AgencyUser;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.IAgencyDao;
+import fr.k2i.adbeback.dao.IRoleDao;
 import fr.k2i.adbeback.logger.LogHelper;
+import fr.k2i.adbeback.webapp.bean.enroll.AgencyRole;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,31 +54,36 @@ public class AgencyServiceFacade {
     private MessageSource messageSource;
 
 
+    @Autowired
+    private IRoleDao roleDao;
+
     @Transactional
     public void sendAgencyUserValidation(Long agencyId, Locale locale) {
         Agency agency = agencyDao.get(agencyId);
         List<AgencyUser> users = agency.getUsers();
         for (AgencyUser user : users) {
-            //create users and send validate account when le administrator has validate her account
-            String url = agencyAdminConfirmBaseUrl + desCryptoService.generateOtpConfirm(agency.getName() + "|" + user.getEmail(), user, 48);
+            if(!user.getRoles().contains(roleDao.getRoleByName(AgencyRole.ADMIN.name()))){
+                //create users and send validate account when le administrator has validate her account
+                String url = agencyUserConfirmBaseUrl + desCryptoService.generateOtpConfirm(agency.getName() + "|" + user.getEmail(), user, 48);
 
-            Map<String, Object> model = new HashMap<String, Object>();
+                Map<String, Object> model = new HashMap<String, Object>();
 
-            model.put("url", url);
-            model.put("user", user);
-            model.put("agency", agency);
+                model.put("url", url);
+                model.put("user", user);
+                model.put("agency", agency);
 
-            Email email = Email.builder()
-                    .subject(messageSource.getMessage("mail.enrolled.agency.user", new Object[]{}, locale))
-                    .model(model)
-                    .content("email/agency_user_enrolled")
-                    .recipients(user.getEmail())
-                    .noAttachements()
-                    .build();
-            try {
-                mailEngine.sendMessage(email, locale);
-            } catch (SendException e) {
-                logger.error("error sending email", e);
+                Email email = Email.builder()
+                        .subject(messageSource.getMessage("mail.enrolled.agency.user", new Object[]{}, locale))
+                        .model(model)
+                        .content("email/agency_user_enrolled")
+                        .recipients(user.getEmail())
+                        .noAttachements()
+                        .build();
+                try {
+                    mailEngine.sendMessage(email, locale);
+                } catch (SendException e) {
+                    logger.error("error sending email", e);
+                }
             }
         }
     }

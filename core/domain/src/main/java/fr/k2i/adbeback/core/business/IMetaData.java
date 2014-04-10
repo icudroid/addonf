@@ -183,6 +183,7 @@ public interface IMetaData {
             String ATTACHEMENTS =                        "attachement_id";
             String CONFIG =                              "config_id" ;
             String LEGAL_STATUS =                        "legal_status";
+            String USER_JOIN =                           "agency_id";
         }
 
         public interface Attachement {

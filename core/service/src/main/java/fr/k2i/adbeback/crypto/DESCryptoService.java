@@ -112,7 +112,10 @@ public class DESCryptoService {
 
     @Transactional
     public String generateOtpConfirm(String toEncodeStr, User user, int expirationHours){
-        OTPUserSecurityConfirm optSecurity =  otpSecurityDao.findByUser(user);
+        OTPUserSecurityConfirm optSecurity = null;
+        if(user.getId()!=null){
+            optSecurity =  otpSecurityDao.findByUser(user);
+        }
 
         if(optSecurity==null){
             NumberFormat numberFormat = new DecimalFormat("0000000");

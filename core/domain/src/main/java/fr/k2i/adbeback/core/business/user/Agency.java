@@ -50,7 +50,8 @@ public class Agency extends BaseObject {
     @Column(name = IMetaData.ColumnMetadata.Agency.LEGAL_STATUS)
     private LegalStatus legalStatus;
 
-    @OneToMany(mappedBy = "agency",cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = IMetaData.ColumnMetadata.Agency.USER_JOIN)
     private List<AgencyUser> users = new ArrayList<AgencyUser>();
 
     @OneToMany(cascade = {CascadeType.ALL})

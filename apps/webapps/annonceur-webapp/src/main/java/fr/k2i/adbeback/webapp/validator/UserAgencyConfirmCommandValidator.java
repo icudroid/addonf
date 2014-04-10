@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
  * Goal:
  */
 @Component
-public class UserAgencyConfirmCommandValidator {
+public class UserAgencyConfirmCommandValidator  implements Validator {
     private Logger logger = LogHelper.getLogger(this.getClass());
 
     @Autowired
@@ -30,7 +31,10 @@ public class UserAgencyConfirmCommandValidator {
     @Autowired
     private ValidatorHelper validatorHelper;
 
-    public void validate(UserAgencyConfirmCommand userAgencyConfirmCommand, Errors errors) {
+    @Override
+    public void validate(Object o, Errors errors) {
+
+        UserAgencyConfirmCommand userAgencyConfirmCommand = (UserAgencyConfirmCommand) o;
 
         if(StringUtils.isEmpty(userAgencyConfirmCommand.getPassword())){
             errors.rejectValue("password","required");
@@ -97,4 +101,10 @@ public class UserAgencyConfirmCommandValidator {
 
         }
     }
+
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return UserAgencyConfirmCommand.class.isAssignableFrom(aClass);
+    }
+
 }

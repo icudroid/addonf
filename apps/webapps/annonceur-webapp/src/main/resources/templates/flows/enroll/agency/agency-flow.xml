@@ -69,17 +69,19 @@
 
 
     <subflow-state id="attachements" subflow="enroll/agency/attachement">
-        <input name="state" value="state"></input>
-        <input name="agencyEnrollCommand" value="agencyEnrollCommand"></input>
+        <input name="state"></input>
+        <input name="agencyEnrollCommand"></input>
 
         <transition on="needMoreFile" to="needMoreFile" />
-        <transition on="end-attachement" to="recap-validation" />
+        <transition on="end-attachement" to="recap-validation">
+            <set name="state" value="currentEvent.attributes.state"/>
+            <set name="agencyEnrollCommand" value="currentEvent.attributes.agencyEnrollCommand"/>
+        </transition>
         <transition on="back" to="users" />
 
         <transition on="step" to="whereToGo">
             <set name="flowScope.toGo" value="currentEvent.attributes.whereToGo"/>
         </transition>
-
     </subflow-state>
 
 

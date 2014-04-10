@@ -24,7 +24,7 @@ public class OTPSecurityDao extends GenericDaoJpa<OTPSecurity, Long> implements 
     public OTPUserSecurityConfirm findByUser(User user) {
         QOTPUserSecurityConfirm securityConfirm = QOTPUserSecurityConfirm.oTPUserSecurityConfirm;
         JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(securityConfirm).where(securityConfirm.user.eq(user));
+        query.from(securityConfirm).where(securityConfirm.user.id.eq(user.getId()));
 
         return query.uniqueResult(securityConfirm);
     }

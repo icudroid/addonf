@@ -89,7 +89,7 @@ public class UploadController implements HandlerExceptionResolver, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return 100;
     }
 }
 

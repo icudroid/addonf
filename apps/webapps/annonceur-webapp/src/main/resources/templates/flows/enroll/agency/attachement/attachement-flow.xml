@@ -3,19 +3,19 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-    <var name="state" class="fr.k2i.adbeback.webapp.state.enroll.AgencyEnrollFlowState"/>
-    <var name="agencyEnrollCommand" class="fr.k2i.adbeback.webapp.bean.enroll.AgencyEnrollCommand"/>
+    <input name="state"></input>
+    <input name="agencyEnrollCommand"></input>
 
     <on-start>
         <set name="flowScope.activeId" value="5"/>
     </on-start>
 
     <view-state id="attachments" view="enroll/common/attachement">
-        <on-entry>
+        <on-render>
             <evaluate expression="agencyEnrollHelper.availableFiles(state)" result="viewScope.files"/>
             <evaluate expression="agencyEnrollHelper.requiredFiles(state)" result="viewScope.requiredFiles"/>
             <evaluate expression="agencyEnrollHelper.uploadedFileStatus(flowRequestContext,state)" result="viewScope.filesStatus"/>
-        </on-entry>
+        </on-render>
         <transition on="submit" to="isAllFilePresent" />
         <transition on="back" to="back" />
         <transition to="step">
@@ -32,7 +32,7 @@
     <action-state id="isAllFilePresent">
         <evaluate expression="agencyEnrollHelper.saveFiles(flowRequestContext,agencyEnrollCommand,state)"/>
         <transition on="ok" to="end-attachement" />
-        <transition on="NeedMoreFile" to="needMoreFile" />
+        <transition on="needMoreFile" to="needMoreFile" />
     </action-state>
 
     <view-state id="needMoreFile" view="enroll/common/popup/needMoreFile" popup="true">
@@ -41,6 +41,7 @@
 
     <end-state id="end-attachement">
         <output name="state" value="state"/>
+        <output name="agencyEnrollCommand" value="agencyEnrollCommand"/>
     </end-state>
 
     <end-state id="back" />
