@@ -1,0 +1,39 @@
+<div class="row breadcrumbs margin-bottom-40">
+    <div class="container">
+        <div class="col-md-4 col-sm-4">
+            <h1 th:text="#{enroll.adv.breadcrumb.title}">Inscription d'une agence</h1>
+        </div>
+        <div class="col-md-8 col-sm-8">
+            <ul class="pull-right breadcrumb">
+
+                <li th:if="${active==1}" class="active" th:text="#{enroll.adv.breadcrumb.step1}">Informations</li>
+                <li th:if="${active gt 1}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step1'})}" th:text="#{enroll.adv.breadcrumb.step1}">Informations</a></li>
+
+                <li th:if="${active==2}" class="active" th:text="#{enroll.adv.breadcrumb.step2}">Société</li>
+                <li th:if="${active gt 2}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step2'})}" th:text="#{enroll.adv.breadcrumb.step2}">Société</a></li>
+                <li th:if="${active lt 2}" th:text="#{enroll.adv.breadcrumb.step2}">Société</li>
+
+                <li th:if="${active==3}" class="active" th:text="#{enroll.adv.breadcrumb.step3}">Compte utilisateur</li>
+                <li th:if="${active gt 3}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step3'})}" th:text="#{enroll.adv.breadcrumb.step3}">Compte utilisateur</a></li>
+                <li th:if="${active lt 3}" th:text="#{enroll.adv.breadcrumb.step3}">Compte utilisateur</li>
+
+                <li th:if="${active==4}" class="active" th:text="#{enroll.adv.breadcrumb.step4}">Informations complémentaires</li>
+                <li th:if="${active gt 4}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step4'})}" th:text="#{enroll.adv.breadcrumb.step4}">Informations complémentaires</a></li>
+                <li th:if="${active lt 4}" th:text="#{enroll.adv.breadcrumb.step4}">Informations complémentaires</li>
+
+                <li th:if="${active==5}" class="active" th:text="#{enroll.adv.breadcrumb.step5}">Ciblage clients</li>
+                <li th:if="${active gt 5}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step5'})}" th:text="#{enroll.adv.breadcrumb.step}">Ciblage clients</a></li>
+                <li th:if="${active lt 5}" th:text="#{enroll.adv.breadcrumb.step5}">Ciblage clients</li>
+
+                <li th:if="${active==6}" class="active" th:text="#{enroll.adv.breadcrumb.step6}">Pièces</li>
+                <li th:if="${active gt 6}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step6'})}" th:text="#{enroll.adv.breadcrumb.step6}">Pièces</a></li>
+                <li th:if="${active lt 6}" th:text="#{enroll.adv.breadcrumb.step6}">Pièces</li>
+
+                <li th:if="${active==7}" class="active" th:text="#{enroll.adv.breadcrumb.step7}">Recapitulatif</li>
+                <li th:if="${active gt 7}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step7'})}" th:text="#{enroll.adv.breadcrumb.step7}">Recapitulatif</a></li>
+                <li th:if="${active lt 7}" th:text="#{enroll.adv.breadcrumb.step7}">Recapitulatif</li>
+
+            </ul>
+        </div>
+    </div>
+</div>

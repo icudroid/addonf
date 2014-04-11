@@ -11,7 +11,7 @@ COPY country (id, code) FROM stdin;
 -- Name: country_sequence; Type: SEQUENCE SET; Schema: public; Owner: mtzik
 --
 
-SELECT pg_catalog.setval('country_sequence', 1, false);
+SELECT pg_catalog.setval('country_sequence', 2, false);
 
 
 
@@ -36826,4 +36826,29 @@ COPY city (id, city, lat, lon, zipcode, country_id) FROM stdin;
 -- Name: city_sequence; Type: SEQUENCE SET; Schema: public; Owner: mtzik
 --
 
-SELECT pg_catalog.setval('city_sequence', 1, false);
+SELECT pg_catalog.setval('city_sequence', 287027, false);
+
+
+
+
+
+--
+-- Data for Name: role; Type: TABLE DATA; Schema: public; Owner: addonf
+--
+
+COPY role (id, description, name) FROM stdin;
+1       ROLE_ADMIN      ROLE_ADMIN
+2       ROLE_USER       ROLE_USER
+3       ROLE_ANNONCEUR  ROLE_ANNONCEUR
+4       ROLE_MEDIA      ROLE_MEDIA
+5       ROLE_AGENCY_ADMIN       ROLE_AGENCY_ADMIN
+6       ROLE_AGENCY_USER_READ   ROLE_AGENCY_USER_READ
+7       ROLE_AGENCY_USER_WRITE  ROLE_AGENCY_USER_WRITE
+\.
+
+
+--
+-- Name: role_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
+--
+
+SELECT pg_catalog.setval('role_sequence', 8, false);

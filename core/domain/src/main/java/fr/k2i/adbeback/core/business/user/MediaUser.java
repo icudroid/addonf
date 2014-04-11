@@ -22,4 +22,6 @@ public class MediaUser extends User{
     @Column(name = "ext_id",unique = true)
     private String extId;
 
+
+
 }

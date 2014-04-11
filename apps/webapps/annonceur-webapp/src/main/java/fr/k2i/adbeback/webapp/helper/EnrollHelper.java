@@ -2,16 +2,12 @@ package fr.k2i.adbeback.webapp.helper;
 
 import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.core.business.player.Sex;
-import fr.k2i.adbeback.core.business.user.Attachement;
-import fr.k2i.adbeback.core.business.user.AttachementStatus;
 import fr.k2i.adbeback.core.business.user.LegalStatus;
 import fr.k2i.adbeback.dao.ICountryDao;
-import fr.k2i.adbeback.webapp.bean.FileCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.*;
-import fr.k2i.adbeback.webapp.state.enroll.AgencyEnrollFlowState;
+import fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 

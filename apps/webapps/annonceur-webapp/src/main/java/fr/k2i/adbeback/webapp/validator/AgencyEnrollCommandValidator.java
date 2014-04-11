@@ -4,35 +4,31 @@ import edu.vt.middleware.password.*;
 import fr.k2i.adbeback.dao.IAgencyDao;
 import fr.k2i.adbeback.dao.IBrandDao;
 import fr.k2i.adbeback.dao.IWebUserDao;
-import fr.k2i.adbeback.dao.jpa.AnnonceurUserDao;
 import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.webapp.bean.AddressBean;
-import fr.k2i.adbeback.webapp.bean.ContactBean;
-import fr.k2i.adbeback.webapp.bean.EnrollBrandCommand;
-import fr.k2i.adbeback.webapp.bean.enroll.AgencyEnrollCommand;
-import fr.k2i.adbeback.webapp.bean.enroll.AgencyInformationCommand;
-import fr.k2i.adbeback.webapp.bean.enroll.AgencyRole;
-import fr.k2i.adbeback.webapp.bean.enroll.AgencyUserBean;
+import fr.k2i.adbeback.webapp.bean.enroll.InformationCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyEnrollCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyRole;
+import fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyUserBean;
 import fr.k2i.adbeback.webapp.util.PhoneNumberUtils;
 import fr.k2i.adbeback.webapp.util.SirenSiretValidator;
 import fr.k2i.adbeback.webapp.util.ValidatorHelper;
-import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.groups.Default;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,8 +66,8 @@ public class AgencyEnrollCommandValidator{
 
     public void validateAgency(Object o, Errors errors) {
         AgencyEnrollCommand command = (AgencyEnrollCommand) o;
-        AgencyInformationCommand info = command.getInfo();
-        Set<ConstraintViolation<AgencyInformationCommand>> validate = beanValidator.validate(info, Default.class);
+        InformationCommand info = command.getInfo();
+        Set<ConstraintViolation<InformationCommand>> validate = beanValidator.validate(info, Default.class);
         validatorHelper.importBeanValidationErrors(validate,errors,"info.");
 
 
@@ -201,12 +197,6 @@ public class AgencyEnrollCommandValidator{
             // don't allow alphabetical sequences
             AlphabeticalSequenceRule alphaSeqRule = new AlphabeticalSequenceRule();
 
-            // don't allow numerical sequences of length 3
-            //NumericalSequenceRule numSeqRule = new NumericalSequenceRule(3);
-
-            // don't allow qwerty sequences
-            QwertySequenceRule qwertySeqRule = new QwertySequenceRule();
-
             // don't allow 4 repeat characters
             RepeatCharacterRegexRule repeatRule = new RepeatCharacterRegexRule(4);
 
@@ -216,8 +206,6 @@ public class AgencyEnrollCommandValidator{
             ruleList.add(whitespaceRule);
             ruleList.add(charRule);
             ruleList.add(alphaSeqRule);
-            //ruleList.add(numSeqRule);
-            ruleList.add(qwertySeqRule);
             ruleList.add(repeatRule);
 
 

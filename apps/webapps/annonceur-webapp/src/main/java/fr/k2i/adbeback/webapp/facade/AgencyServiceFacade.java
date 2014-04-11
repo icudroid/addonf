@@ -9,7 +9,7 @@ import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.IAgencyDao;
 import fr.k2i.adbeback.dao.IRoleDao;
 import fr.k2i.adbeback.logger.LogHelper;
-import fr.k2i.adbeback.webapp.bean.enroll.AgencyRole;
+import fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyRole;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +62,7 @@ public class AgencyServiceFacade {
         Agency agency = agencyDao.get(agencyId);
         List<AgencyUser> users = agency.getUsers();
         for (AgencyUser user : users) {
-            if(!user.getRoles().contains(roleDao.getRoleByName(AgencyRole.ADMIN.name()))){
+            if(!user.getRoles().contains(roleDao.getRoleByName(AgencyRole.ADMIN.getRoleDb()))){
                 //create users and send validate account when le administrator has validate her account
                 String url = agencyUserConfirmBaseUrl + desCryptoService.generateOtpConfirm(agency.getName() + "|" + user.getEmail(), user, 48);
 

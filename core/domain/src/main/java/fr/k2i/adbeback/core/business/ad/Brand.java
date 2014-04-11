@@ -3,15 +3,14 @@ package fr.k2i.adbeback.core.business.ad;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.player.Address;
-import fr.k2i.adbeback.core.business.player.Role;
+import fr.k2i.adbeback.core.business.user.Attachement;
+import fr.k2i.adbeback.core.business.user.BrandUser;
+import fr.k2i.adbeback.core.business.user.MediaType;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -50,6 +49,36 @@ public class Brand extends BaseObject implements Serializable{
     @Column(name = IMetaData.ColumnMetadata.Brand.LOGIN, nullable = false, unique = true)
     private String email;
 
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = IMetaData.ColumnMetadata.Brand.USER_JOIN)
+    private BrandUser user;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name=IMetaData.TableMetadata.ATTACHEMENTS)
+    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32)
+    private Map<String,Attachement> attachements;
+
+
+    @ManyToOne
+    @JoinColumn(name = IMetaData.ColumnMetadata.Brand.TYPE)
+    protected Sector sector;
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Brand.JOIN)
+    protected List<CustomerTarget> targetCustomers;
+
+    @ElementCollection
+    @CollectionTable(name = "target_media", joinColumns = @JoinColumn(name = "brand_id"))
+    @Column(name = "target_media")
+    @Enumerated(EnumType.STRING)
+    protected List<MediaType> targetMedia;
+
+    @ElementCollection
+    @CollectionTable(name = "product_line", joinColumns = @JoinColumn(name = "brand_id"))
+    @Column(name = "product_line")
+    protected List<String> productLines;
 
     public void setMain(Contact main) {
         if(!contacts.contains(main)){

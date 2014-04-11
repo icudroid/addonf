@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 @Controller  
-public class UploadController implements HandlerExceptionResolver, Ordered {
+public class UploadController {
     protected final Log logger = LogFactory.getLog(this.getClass());
 
     public static final String UPLOADED_PARAM = "uploaded";
@@ -80,17 +80,12 @@ public class UploadController implements HandlerExceptionResolver, Ordered {
     }
 
 
-    @Override
-    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        modelAndView.addObject(JsonResultError.errorSize());
-        return modelAndView;
+
+    @ExceptionHandler(Exception.class)
+    public JsonResultError handleError(HttpServletRequest req, Exception exception) {
+        return JsonResultError.errorSize();
     }
 
-    @Override
-    public int getOrder() {
-        return 100;
-    }
 }
 
 

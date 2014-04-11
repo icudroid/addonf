@@ -2,12 +2,10 @@ package fr.k2i.adbeback.webapp.controller;
 
 import fr.k2i.adbeback.core.business.user.Agency;
 import fr.k2i.adbeback.core.business.user.AgencyUser;
-import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.IWebUserDao;
-import fr.k2i.adbeback.webapp.bean.enroll.UserAgencyConfirmCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.agency.UserAgencyConfirmCommand;
 import fr.k2i.adbeback.webapp.facade.AgencyServiceFacade;
-import fr.k2i.adbeback.webapp.facade.BrandServiceFacade;
 import fr.k2i.adbeback.webapp.facade.OtpServiceFacade;
 import fr.k2i.adbeback.webapp.validator.UserAgencyConfirmCommandValidator;
 import org.springframework.beans.factory.annotation.Autowired;

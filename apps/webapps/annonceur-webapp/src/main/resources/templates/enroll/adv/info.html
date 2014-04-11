@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/corporate/unlogged">
+<head>
+    <title>Inscription Agence</title>
+
+    <script th:src="@{/static/js/addonf/townPostalCodeCheck.js}" type="text/javascript"/>
+    <script th:src="@{/static/metronic_v2.0.2/admin/template/assets/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js}" type="text/javascript"/>
+
+    <script th:inline="javascript">
+
+        Spring.addDecoration(
+                new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'submit',event:'onclick'}));
+
+        Spring.addDecoration(
+                new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'back',event:'onclick'}));
+
+        $(function(){
+            $('#zipcode').postalCodeConsistency({
+                baseUrl   : addonf.base,
+                townId    : "city",
+                countryId : "country"
+            });
+
+            $("#creationDate").inputmask("dd/mm/yyyy",{ "placeholder": "dd/mm/yyyy" });
+        });
+
+    </script>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:substituteby="enroll/adv/fragment/breadcrumb(active=2)"></div>
+
+    <div class="container margin-bottom-40">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
+                <form id="formDataInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" th:object="${advEnrollCommand}" autocomplete="off">
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                    <h2 th:utext="#{enroll.adv.info.explain}">Text explicatif : A rédiger</h2>
+
+
+                    <div th:class="${#fields.hasErrors('info.name')}? 'form-group has-error':'form-group'">
+                        <label for="name" class=" control-label" th:text="#{enroll.company.name}">Nom de la société</label>
+                        <input type="text" class="form-control" id="name" th:field="*{info.name}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('info.name')}" th:errors="*{info.name}">Error</span>
+                    </div>
+
+                    <div th:class="${#fields.hasErrors('info.legalStatus')}? 'form-group has-error':'form-group'">
+                        <label for="legalStatus" class=" control-label" th:text="#{enroll.company.legalStatus}">Statut</label>
+                        <select id="legalStatus" class="form-control" th:field="*{info.legalStatus}">
+                            <option th:each="legalStatus : ${values['legalStatus']}"
+                                    th:value="${legalStatus}"
+                                    th:text="#{${'legalStatus.'+legalStatus}}">SARL</option>
+                        </select>
+                        <span class="help-block" th:if="${#fields.hasErrors('info.legalStatus')}" th:errors="*{info.legalStatus}">Error</span>
+                    </div>
+
+                    <div th:class="${#fields.hasErrors('info.creationDate')}? 'form-group has-error':'form-group'">
+                        <label for="creationDate" class=" control-label" th:text="#{enroll.company.creationDate}">Date de création</label>
+                        <input type="text" class="form-control" id="creationDate" th:field="*{info.creationDate}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('info.creationDate')}" th:errors="*{info.creationDate}">Error</span>
+                    </div>
+
+
+                    <div th:class="${#fields.hasErrors('info.address.street')}? 'form-group has-error':'form-group'">
+                        <label for="street" class=" control-label" th:text="#{enroll.company.street}">Adresse</label>
+                        <input type="text" class="form-control" id="street" th:field="*{info.address.street}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('info.address.street')}" th:errors="*{info.address.street}">Error</span>
+                    </div>
+                    <div th:class="${#fields.hasErrors('info.address.zipcode')}? 'form-group has-error':'form-group'">
+                        <label for="zipcode" class=" control-label" th:text="#{enroll.company.zipcode}">Code postal</label>
+                        <input type="text" class="form-control" id="zipcode" th:field="*{info.address.zipcode}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('info.address.zipcode')}" th:errors="*{info.address.zipcode}">Error</span>
+                    </div>
+                    <div th:class="${#fields.hasErrors('info.address.city')}? 'form-group has-error':'form-group'">
+                        <label for="city" class=" control-label" th:text="#{enroll.company.city}">Ville</label>
+                        <input type="text" class="form-control" id="city" th:field="*{info.address.city}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('info.address.city')}" th:errors="*{info.address.city}">Error</span>
+                    </div>
+                    <div th:class="${#fields.hasErrors('info.address.country')}? 'form-group has-error':'form-group'">
+                        <label for="country" class=" control-label" th:text="#{enroll.company.country}">Pays</label>
+                        <select id="country" class="form-control" th:field="*{info.address.country}">
+                            <option th:each="country : ${values['countries']}"
+                                    th:value="${country}"
+                                    th:text="#{${'country.'+country}}">France</option>
+                        </select>
+                        <span class="help-block" th:if="${#fields.hasErrors('info.address.country')}" th:errors="*{info.address.country}">Error</span>
+                    </div>
+
+
+                    <div th:class="${#fields.hasErrors('info.siret')}? 'form-group has-error':'form-group'">
+                        <label for="siret" class=" control-label" th:text="#{enroll.company.siret}">SIRET</label>
+                        <input type="tel" class="form-control" id="siret" th:field="*{info.siret}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('info.siret')}" th:errors="*{info.siret}">Error</span>
+                    </div>
+
+                    <div th:class="${#fields.hasErrors('info.phone')}? 'form-group has-error':'form-group'">
+                        <label for="siret" class=" control-label" th:text="#{enroll.company.phone}">Téléhone</label>
+                        <input type="tel" class="form-control" id="phone" th:field="*{info.phone}" />
+                        <span class="help-block" th:if="${#fields.hasErrors('info.phone')}" th:errors="*{info.phone}">Error</span>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div class="col-md-12 form-actions right">
+                            <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default"/>
+                            <input type="submit" id="submit" name="_eventId_submit" th:value="#{btn.next}" class="btn blue"/>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+</body>
+</html>

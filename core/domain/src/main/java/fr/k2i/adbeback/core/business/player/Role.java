@@ -27,7 +27,7 @@ public class Role extends BaseObject implements Serializable {
     @SequenceGenerator(name = "Role_Gen", sequenceName = "Role_Sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Role_Gen")
     private Long id;
-    @Column(length = 20)
+    @Column(length = 30)
     private String name;
     @Column(length = 64)
     private String description;

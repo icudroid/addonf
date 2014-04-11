@@ -1,8 +1,8 @@
-package fr.k2i.adbeback.webapp.bean.enroll;
+package fr.k2i.adbeback.webapp.bean.enroll.agency;
 
+import fr.k2i.adbeback.webapp.bean.enroll.AttachementsCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.InformationCommand;
 import lombok.Data;
-import org.springframework.binding.message.MessageContext;
-import org.springframework.binding.validation.ValidationContext;
 
 import java.io.Serializable;
 
@@ -14,13 +14,13 @@ import java.io.Serializable;
  */
 @Data
 public class AgencyEnrollCommand implements Serializable {
-    private AgencyInformationCommand info;
+    private InformationCommand info;
     private AgencyUsersCommand users;
     private AttachementsCommand attachements;
 
 
     public AgencyEnrollCommand(){
-        info = new AgencyInformationCommand();
+        info = new InformationCommand();
         users = new AgencyUsersCommand();
         attachements = new AttachementsCommand();
     }

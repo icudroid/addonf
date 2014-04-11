@@ -1,4 +1,4 @@
-package fr.k2i.adbeback.webapp.bean.enroll;
+package fr.k2i.adbeback.webapp.bean.enroll.agency;
 
 import fr.k2i.adbeback.webapp.bean.ContactBean;
 import lombok.Data;

@@ -55,8 +55,8 @@ public class Agency extends BaseObject {
     private List<AgencyUser> users = new ArrayList<AgencyUser>();
 
     @OneToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name=IMetaData.TableMetadata.ATTACHEMENT_AGENCY)
-    @MapKeyColumn(name=IMetaData.ColumnMetadata.Agency.ATTACHEMENTS,length = 32)
+    @JoinTable(name=IMetaData.TableMetadata.ATTACHEMENTS)
+    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32)
     private Map<String,Attachement> attachements;
 
 

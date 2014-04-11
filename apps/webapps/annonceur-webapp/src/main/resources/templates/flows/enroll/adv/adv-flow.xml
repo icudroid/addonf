@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <var name="state" class="fr.k2i.adbeback.webapp.state.enroll.AdvEnrollFlowState"/>
+    <var name="advEnrollCommand" class="fr.k2i.adbeback.webapp.bean.enroll.adv.AdvEnrollCommand"/>
+
+
+    <on-start>
+        <evaluate expression="enrollHelper.defaultModelNeeded()" result="conversationScope.values"/>
+    </on-start>
+
+
+    <view-state id="intro" view="enroll/adv/intro">
+        <transition to="adv"/>
+    </view-state>
+
+
+    <view-state id="adv" view="enroll/adv/info" model="advEnrollCommand">
+        <transition on="submit" to="adminUser" />
+        <transition on="back" to="intro"/>
+    </view-state>
+
+    <view-state id="adminUser" view="enroll/adv/admin" model="advEnrollCommand">
+        <transition on="submit" to="customize" />
+        <transition on="back" to="adv" />
+    </view-state>
+
+    <view-state id="customize" view="enroll/adv/customize" model="advEnrollCommand">
+        <transition on="submit" to="customerTarget" />
+        <transition on="back" to="adminUser" />
+    </view-state>
+
+    <view-state id="customerTarget" view="enroll/adv/target" model="advEnrollCommand">
+        <transition on="submit" to="attachements" />
+        <transition on="back" to="customize" />
+    </view-state>
+
+    <subflow-state id="attachements" subflow="enroll/adv/attachement">
+        <input name="state"></input>
+        <input name="advEnrollCommand"></input>
+
+        <transition on="needMoreFile" to="needMoreFile" />
+        <transition on="end-attachement" to="recap-validation">
+            <set name="state" value="currentEvent.attributes.state"/>
+            <set name="advEnrollCommand" value="currentEvent.attributes.advEnrollCommand"/>
+        </transition>
+        <transition on="back" to="customerTarget" />
+
+        <transition on="step" to="whereToGo">
+            <set name="flowScope.toGo" value="currentEvent.attributes.whereToGo"/>
+        </transition>
+    </subflow-state>
+
+
+    <action-state id="whereToGo">
+        <evaluate expression="flowScope.toGo"/>
+        <transition on="${flowScope.toGo}" to="${flowScope.toGo}">
+        </transition>
+    </action-state>
+
+    <view-state id="needMoreFile" view="enroll/popup/needMoreFile" popup="true">
+        <transition  on="back"  to="attachements"  />
+    </view-state>
+
+    <end-state id="recap-validation">
+        <output name="state" value="state"/>
+        <output name="advEnrollCommand" value="advEnrollCommand"/>
+    </end-state>
+
+
+    <global-transitions>
+        <transition on="step1" to="intro" validate="false"></transition>
+        <transition on="step2" to="adv" validate="false"></transition>
+        <transition on="step3" to="adminUser" validate="false"></transition>
+        <transition on="step4" to="customize" validate="false"></transition>
+        <transition on="step5" to="customerTarget" validate="false"></transition>
+        <transition on="step6" to="attachements" validate="false"></transition>
+    </global-transitions>
+
+</flow>

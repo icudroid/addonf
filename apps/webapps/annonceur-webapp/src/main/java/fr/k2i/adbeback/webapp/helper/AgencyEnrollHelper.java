@@ -1,14 +1,11 @@
 package fr.k2i.adbeback.webapp.helper;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
-import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Role;
-import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.*;
@@ -16,20 +13,17 @@ import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.webapp.bean.AddressBean;
 import fr.k2i.adbeback.webapp.bean.FileCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.*;
+import fr.k2i.adbeback.webapp.bean.enroll.agency.*;
 import fr.k2i.adbeback.webapp.controller.UploadController;
 import fr.k2i.adbeback.webapp.facade.FileUtils;
 import fr.k2i.adbeback.webapp.state.enroll.AgencyEnrollFlowState;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.webflow.context.ExternalContext;
 import org.springframework.webflow.execution.RequestContext;
 
 import javax.annotation.Resource;
@@ -214,7 +208,7 @@ public class AgencyEnrollHelper {
     public void createAccount(RequestContext context,AgencyEnrollCommand agencyEnrollCommand,AgencyEnrollFlowState state) throws ParseException, IOException {
 
         Agency agency = new Agency();
-        AgencyInformationCommand info = agencyEnrollCommand.getInfo();
+        InformationCommand info = agencyEnrollCommand.getInfo();
         AddressBean addressBean = info.getAddress();
 
         Address address = new Address();
@@ -285,7 +279,7 @@ public class AgencyEnrollHelper {
             user.setFirstname(agencyUserBean.getFirstname());
             user.setLastname(agencyUserBean.getLastname());
 
-            user.setRoles(Sets.<Role>newHashSet(roleDao.getRoleByName(agencyUserBean.getRole().name())));
+            user.setRoles(Sets.<Role>newHashSet(roleDao.getRoleByName(agencyUserBean.getRole().getRoleDb())));
 
             user = (AgencyUser) userDao.save(user);
 

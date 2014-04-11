@@ -40,10 +40,9 @@ public abstract  class Ad extends BaseObject implements Serializable {
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.INITIAL_AMOUNT)
     protected Double initialAmount;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = IMetaData.ColumnMetadata.Ad.TYPE)
-	protected AdType type;
-
+    @ManyToOne
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.TYPE)
+	protected Sector sector;
 
     @Temporal(TemporalType.DATE)
     @Column(name = IMetaData.ColumnMetadata.Ad.START_DATE)

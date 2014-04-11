@@ -12,8 +12,8 @@ public class Product extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 8346229795953025008L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = IMetaData.ColumnMetadata.Product.ID)
+    @SequenceGenerator(name = "Product_Gen", sequenceName = "Product_Sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Product_Gen")
 	private Long id;
 
     @Column(name = IMetaData.ColumnMetadata.Product.NAME)

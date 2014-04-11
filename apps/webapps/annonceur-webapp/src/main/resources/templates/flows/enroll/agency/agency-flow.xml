@@ -4,7 +4,7 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
     <var name="state" class="fr.k2i.adbeback.webapp.state.enroll.AgencyEnrollFlowState"/>
-    <var name="agencyEnrollCommand" class="fr.k2i.adbeback.webapp.bean.enroll.AgencyEnrollCommand"/>
+    <var name="agencyEnrollCommand" class="fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyEnrollCommand"/>
 
 
     <on-start>

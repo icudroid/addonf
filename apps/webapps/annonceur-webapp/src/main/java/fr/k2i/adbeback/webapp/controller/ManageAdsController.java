@@ -1,7 +1,6 @@
 package fr.k2i.adbeback.webapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.k2i.adbeback.core.business.ad.AdType;
 import fr.k2i.adbeback.core.business.ad.rule.AgeRule;
 import fr.k2i.adbeback.core.business.ad.rule.CityRule;
 import fr.k2i.adbeback.core.business.ad.rule.CountryRule;

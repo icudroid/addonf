@@ -20,7 +20,12 @@ public interface IMetaData {
         String CITY =                                   "city";
         String OTP =                                    "one_time_pwd";
         String GOOSE_LEVEL =                            "goose_level";
-        String ATTACHEMENT_AGENCY =                     "attachements";
+        String ATTACHEMENTS =                           "attachements";
+        String SECTOR =                                 "sector";
+
+        String CUSTOMER_TARGET =                        "customer_target";
+        String CATEGORY_PRICE =                         "cat_price";
+        String CATEGORY =                               "category";
     }
 
     interface ColumnMetadata {
@@ -73,7 +78,7 @@ public interface IMetaData {
             String BRAND =                              "brand_id";
             String PRODUCT =                            "product_id";
             String RULE_JOIN =                          "ad_id";
-            String TYPE =                               "type";
+            String TYPE =                               "sector_id";
             String INITIAL_AMOUNT =                     "initial_amount";
             String START_DATE =                         "start_date";
             String END_DATE =                           "end_date";
@@ -103,6 +108,9 @@ public interface IMetaData {
             String ROLE_JOIN =                          "role_id";
             String BRAND_JOIN =                         "brand_id";
             String LOGIN =                              "email";
+            String USER_JOIN =                          "user_id";
+            String TYPE =                               "sector";
+            String JOIN =                               "brand_id";
         }
 
         public interface Contact {
@@ -186,12 +194,25 @@ public interface IMetaData {
             String USER_JOIN =                           "agency_id";
         }
 
+
+        public interface Media {
+            String CREATED_DATE =                        "creation_date";
+            String SIRET_NUMBER =                        "siret";
+            String SIREN_NUMBER =                        "siren";
+            String ATTACHEMENTS =                        "attachement_id";
+            String CONFIG =                              "config_id" ;
+            String LEGAL_STATUS =                        "legal_status";
+            String USER_JOIN =                           "agency_id";
+        }
+
+
         public interface Attachement {
             String ORIGINAL_NAME                        = "origin_name";
             String SIZE                                 = "size";
             String FULL_PATH                            = "full_path";
             String STATUS                               = "status";
             String EXTENTION                            = "extention";
+            String ID                                   = "attachement_id";
         }
     }
 }

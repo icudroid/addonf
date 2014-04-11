@@ -2,8 +2,7 @@ package fr.k2i.adbeback.webapp.validator;
 
 import edu.vt.middleware.password.*;
 import fr.k2i.adbeback.logger.LogHelper;
-import fr.k2i.adbeback.webapp.bean.enroll.EnrollFlowState;
-import fr.k2i.adbeback.webapp.bean.enroll.UserAgencyConfirmCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.agency.UserAgencyConfirmCommand;
 import fr.k2i.adbeback.webapp.util.ValidatorHelper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

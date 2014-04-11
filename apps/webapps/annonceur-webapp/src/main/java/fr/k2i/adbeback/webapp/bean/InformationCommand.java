@@ -1,7 +1,6 @@
 package fr.k2i.adbeback.webapp.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fr.k2i.adbeback.core.business.ad.AdType;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
