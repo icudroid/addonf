@@ -285,8 +285,6 @@ public class AgencyEnrollHelper {
 
             agency.addUser(user);
 
-
-
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getNativeRequest();
             Locale locale = request.getLocale();
 
@@ -313,29 +311,7 @@ public class AgencyEnrollHelper {
                 } catch (SendException e) {
                     logger.error("error sending email", e);
                 }
-            }/*else{
-                //create users and send validate account when le administrator has validate her account
-                String url = agencyAdminConfirmBaseUrl + desCryptoService.generateOtpConfirm(agency.getName() + "|" + user.getEmail(), user, 48);
-
-                Map<String, Object> model = new HashMap<String, Object>();
-
-                model.put("url", url);
-                model.put("user", user);
-                model.put("agency", agency);
-
-                Email email = Email.builder()
-                        .subject(messageSource.getMessage("mail.enrolled.agency.user", new Object[]{}, locale))
-                        .model(model)
-                        .content("email/agency_user_enrolled")
-                        .recipients(user.getEmail())
-                        .noAttachements()
-                        .build();
-                try {
-                    mailEngine.sendMessage(email, locale);
-                } catch (SendException e) {
-                    logger.error("error sending email", e);
-                }
-            }*/
+            }
         }
 
 

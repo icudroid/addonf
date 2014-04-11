@@ -5,6 +5,7 @@ import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.user.Attachement;
 import fr.k2i.adbeback.core.business.user.BrandUser;
+import fr.k2i.adbeback.core.business.user.LegalStatus;
 import fr.k2i.adbeback.core.business.user.MediaType;
 import lombok.Data;
 
@@ -49,6 +50,13 @@ public class Brand extends BaseObject implements Serializable{
     @Column(name = IMetaData.ColumnMetadata.Brand.LOGIN, nullable = false, unique = true)
     private String email;
 
+    @Temporal(TemporalType.DATE)
+    private Date CreatedDate;
+
+    @Enumerated(EnumType.STRING)
+    private LegalStatus legalStatus;
+
+    private String phone;
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = IMetaData.ColumnMetadata.Brand.USER_JOIN)

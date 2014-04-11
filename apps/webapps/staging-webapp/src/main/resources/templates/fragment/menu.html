@@ -1,0 +1,19 @@
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <li th:class="${activeMenu=='home'}? 'active':''">
+            <a th:href="@{/}">
+                Acceuil
+            </a>
+        </li>
+        <li th:class="${activeMenu=='siret'}? 'active':''">
+            <a th:href="@{/generate/siret.html}">
+                Générer un siret
+            </a>
+        </li>
+        <li th:class="${activeMenu=='siren'}? 'active':''">
+            <a th:href="@{/generate/siren.html}">
+                Générer un siren
+            </a>
+        </li>
+    </ul>
+</div>

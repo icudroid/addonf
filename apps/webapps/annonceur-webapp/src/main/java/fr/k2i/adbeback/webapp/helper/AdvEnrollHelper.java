@@ -4,6 +4,8 @@ import com.google.common.collect.Sets;
 import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
+import fr.k2i.adbeback.core.business.Constants;
+import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Role;
 import fr.k2i.adbeback.core.business.user.*;
@@ -14,6 +16,7 @@ import fr.k2i.adbeback.webapp.bean.AddressBean;
 import fr.k2i.adbeback.webapp.bean.FileCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.*;
 import fr.k2i.adbeback.webapp.bean.enroll.adv.AdvEnrollCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.adv.AdvUserBean;
 import fr.k2i.adbeback.webapp.bean.enroll.agency.*;
 import fr.k2i.adbeback.webapp.controller.UploadController;
 import fr.k2i.adbeback.webapp.facade.FileUtils;
@@ -75,11 +78,8 @@ public class AdvEnrollHelper {
     @Autowired
     private IMailEngine mailEngine;
 
-    @Value("${agency.base.admin.confirm.url}")
-    private String agencyAdminConfirmBaseUrl;
-
-    @Value("${agency.base.user.confirm.url}")
-    private String agencyUserConfirmBaseUrl;
+    @Value("${adv.base.user.confirm.url}")
+    private String advUserConfirmBaseUrl;
 
 
     @Autowired
@@ -87,7 +87,7 @@ public class AdvEnrollHelper {
 
 
     @Autowired
-    private IAgencyDao agencyDao;
+    private IBrandDao brandDao;
 
     @Resource(name = "annonceurUserDao")
     private IWebUserDao userDao;
@@ -156,8 +156,8 @@ public class AdvEnrollHelper {
 
     @Transactional
     public void createAccount(RequestContext context,AdvEnrollCommand advEnrollCommand,AdvEnrollFlowState state) throws ParseException, IOException {
-/*
-        Agency agency = new Agency();
+
+        Brand brand = new Brand();
         InformationCommand info = advEnrollCommand.getInfo();
         AddressBean addressBean = info.getAddress();
 
@@ -166,15 +166,15 @@ public class AdvEnrollHelper {
         address.setCountry(countryDao.findByCode(addressBean.getCountry()));
         address.setAddress(addressBean.getStreet());
 
-        agency.setAddress(address);
+        brand.setAddress(address);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        agency.setCreatedDate(sdf.parse(info.getCreationDate()));
+        brand.setCreatedDate(sdf.parse(info.getCreationDate()));
 
-        agency.setLegalStatus(info.getLegalStatus());
-        agency.setName(info.getName());
-        agency.setPhone(info.getPhone());
-        agency.setSiret(info.getSiret());
+        brand.setLegalStatus(info.getLegalStatus());
+        brand.setName(info.getName());
+        brand.setPhone(info.getPhone());
+        brand.setSiret(info.getSiret());
 
 
         Map<String, Attachement> fileUploaded = new HashMap<String, Attachement>();
@@ -183,37 +183,29 @@ public class AdvEnrollHelper {
         for (Map.Entry<String, FileCommand> file : files.entrySet()) {
             String key = file.getKey();
             FileCommand value = file.getValue();
-            if("LOGO".equals(key)){
-                IhmConfig config = new IhmConfig();
-                config.setLogo(FileUtils.saveFile(value.getContent(), logoPath));
-                agency.setIhmConfig(config);
-            }else{
-                Attachement attachement = new Attachement();
+            Attachement attachement = new Attachement();
 
-                attachement.setStatus(AttachementStatus.PRESENT);
-                String originalName = value.getFileName();
-                attachement.setOriginalName(originalName);
-                attachement.setSize(value.getSize());
+            attachement.setStatus(AttachementStatus.PRESENT);
+            String originalName = value.getFileName();
+            attachement.setOriginalName(originalName);
+            attachement.setSize(value.getSize());
 
-                attachement.setFullPath(FileUtils.saveFile(value.getContent(), privatePath));
+            attachement.setFullPath(FileUtils.saveFile(value.getContent(), privatePath));
 
-                int dot = originalName.lastIndexOf(".");
-                attachement.setExtention(originalName.substring(dot + 1));
+            int dot = originalName.lastIndexOf(".");
+            attachement.setExtention(originalName.substring(dot + 1));
 
-                fileUploaded.put(key,attachement);
-            }
+            fileUploaded.put(key,attachement);
+
         }
 
-        agency.setAttachements(fileUploaded);
+        brand.setAttachements(fileUploaded);
 
-        agency = agencyDao.save(agency);
+        brand = brandDao.save(brand);
 
-        AgencyUsersCommand users = advEnrollCommand.getUsers();
-        List<AgencyUserBean> agencyUserBeans = users.getUsers();
+        AdvUserBean advUserBean = advEnrollCommand.getUser();
 
-        for (AgencyUserBean agencyUserBean : agencyUserBeans) {
-
-            AgencyUser user = new AgencyUser();
+            BrandUser user = new BrandUser();
             user.setAddress(null);
 
             user.setAccountExpired(false);
@@ -221,76 +213,47 @@ public class AdvEnrollHelper {
             user.setCredentialsExpired(false);
             user.setEnabled(false);
 
-            user.setEmail(agencyUserBean.getEmail());
-            user.setPassword(passwordEncoder.encodePassword(agencyUserBean.getPassword(),null));
-            user.setPhone(agencyUserBean.getPhone());
+            user.setEmail(advUserBean.getEmail());
+            user.setPassword(passwordEncoder.encodePassword(advUserBean.getPassword(), null));
+            user.setPhone(advUserBean.getPhone());
 
-            user.setUsername(agencyUserBean.getEmail());
-            user.setFirstname(agencyUserBean.getFirstname());
-            user.setLastname(agencyUserBean.getLastname());
+            user.setUsername(advUserBean.getEmail());
+            user.setFirstname(advUserBean.getFirstname());
+            user.setLastname(advUserBean.getLastname());
 
-            user.setRoles(Sets.<Role>newHashSet(roleDao.getRoleByName(agencyUserBean.getRole().getRoleDb())));
+            user.setRoles(Sets.<Role>newHashSet(roleDao.getRoleByName(Constants.ANNONCEUR_ROLE)));
 
-            user = (AgencyUser) userDao.save(user);
-
-            agency.addUser(user);
+            user = (BrandUser) userDao.save(user);
+            brand.setUser(user);
 
 
 
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getNativeRequest();
             Locale locale = request.getLocale();
 
-            if(agencyUserBean.getRole().equals(AgencyRole.ADMIN)){
-                //create admin user and send creation recap and valide account
 
-                String url = agencyAdminConfirmBaseUrl + desCryptoService.generateOtpConfirm(agency.getName() + "|" + user.getEmail(), user, 48);
+            String url = advUserConfirmBaseUrl + desCryptoService.generateOtpConfirm(brand.getName() + "|" + user.getEmail(), user, 48);
 
-                Map<String, Object> model = new HashMap<String, Object>();
+            Map<String, Object> model = new HashMap<String, Object>();
 
-                model.put("url", url);
-                model.put("user", user);
-                model.put("agency", agency);
+            model.put("url", url);
+            model.put("user", user);
+            model.put("brand", brand);
 
-                Email email = Email.builder()
-                        .subject(messageSource.getMessage("mail.enrolled.agency.admin", new Object[]{}, locale))
-                        .model(model)
-                        .content("email/agency_admin_enrolled")
-                        .recipients(user.getEmail())
-                        .noAttachements()
-                        .build();
-                try {
-                    mailEngine.sendMessage(email, locale);
-                } catch (SendException e) {
-                    logger.error("error sending email", e);
-                }
-            }*//*else{
-                //create users and send validate account when le administrator has validate her account
-                String url = agencyAdminConfirmBaseUrl + desCryptoService.generateOtpConfirm(agency.getName() + "|" + user.getEmail(), user, 48);
+            Email email = Email.builder()
+                    .subject(messageSource.getMessage("mail.enrolled.brand", new Object[]{}, locale))
+                    .model(model)
+                    .content("email/adv_user_enrolled")
+                    .recipients(user.getEmail())
+                    .noAttachements()
+                    .build();
+            try {
+                mailEngine.sendMessage(email, locale);
+            } catch (SendException e) {
+                logger.error("error sending email", e);
+            }
 
-                Map<String, Object> model = new HashMap<String, Object>();
-
-                model.put("url", url);
-                model.put("user", user);
-                model.put("agency", agency);
-
-                Email email = Email.builder()
-                        .subject(messageSource.getMessage("mail.enrolled.agency.user", new Object[]{}, locale))
-                        .model(model)
-                        .content("email/agency_user_enrolled")
-                        .recipients(user.getEmail())
-                        .noAttachements()
-                        .build();
-                try {
-                    mailEngine.sendMessage(email, locale);
-                } catch (SendException e) {
-                    logger.error("error sending email", e);
-                }
-            }*//*
-        }
-
-
-
-        agencyDao.save(agency);*/
+        brandDao.save(brand);
 
 
     }

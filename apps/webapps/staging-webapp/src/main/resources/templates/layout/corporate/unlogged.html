@@ -100,29 +100,6 @@
 
 <!-- BEGIN HEADER -->
 <div class="header navbar navbar-default navbar-static-top">
-    <!-- BEGIN TOP BAR -->
-    <div class="front-topbar">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-9 col-sm-9">
-                    <ul class="list-unstyled inline">
-                        <li><i class="fa fa-phone topbar-info-icon top-2"></i>Téléphone: <span>+336.79.27.04.41</span></li>
-                        <li class="sep"><span>|</span></li>
-                        <li><i class="fa fa-envelope-o topbar-info-icon top-2"></i>Email:
-                            <span>contact@adbeback.com</span></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 col-sm-3 login-reg-links">
-                    <ul class="list-unstyled inline">
-                        <li><a th:href="@{/login}">Se connecter</a></li>
-                        <li class="sep"><span>|</span></li>
-                        <li><a th:href="@{/enroll.html}">S'enregistrer</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END TOP BAR -->
     <div class="container">
         <div class="navbar-header">
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -140,15 +117,19 @@
         </div>
 
         <!-- BEGIN TOP NAVIGATION MENU -->
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" layout:fragment="menu">
             <ul class="nav navbar-nav">
                 <li class="active">
                     <a th:href="@{/}">
                         Acceuil
                     </a>
+                </li>
+                <li>
                     <a th:href="@{/generate/siret.html}">
                         Générer un siret
                     </a>
+                </li>
+                <li>
                     <a th:href="@{/generate/siren.html}">
                         Générer un siren
                     </a>
@@ -527,57 +508,6 @@
 <!-- END CONTAINER -->
 </div>
 <!-- END PAGE CONTAINER -->
-
-<!-- BEGIN FOOTER -->
-<div class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-sm-4 space-mobile">
-                <!-- BEGIN ABOUT -->
-                <h2>A propos</h2>
-
-                <p class="margin-bottom-30">
-                    Nous sommes une régis publicitaire sous la forme de blindtest.<br/>
-                    En utilisant notre technologie, vos utilisteurs pourrons voir la publicité d'une autre façon sans être géné par la publicité.<br/>
-                </p>
-
-                <div class="clearfix"></div>
-               <!-- END ABOUT -->
-
-            </div>
-            <div class="col-md-4 col-sm-4 space-mobile">
-                <!-- BEGIN CONTACTS -->
-                <h2>Nous contacter</h2>
-                <address class="margin-bottom-40">
-                    AdBeBack <br/>
-                    ... <br/>
-                    ... <br/>
-                    ... <br/>
-                    Email: <a href="mailto:contact@adbeback.com">contact@adbeback.com</a>
-                </address>
-                <!-- END CONTACTS -->
-
-                <!-- BEGIN SUBSCRIBE -->
-                <h2>Newsletter</h2>
-
-                <p>Souscrire à la newsletter !!!</p>
-
-                <form action="#" class="form-subscribe">
-                    <div class="input-group input-large">
-                        <input class="form-control" type="text"/>
-                            <span class="input-group-btn">
-                                <button class="btn theme-btn" type="button">Souscrire</button>
-                            </span>
-                    </div>
-                </form>
-
-                <!-- END SUBSCRIBE -->
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- END FOOTER -->
 
 <!-- BEGIN COPYRIGHT -->
 <div class="copyright">
