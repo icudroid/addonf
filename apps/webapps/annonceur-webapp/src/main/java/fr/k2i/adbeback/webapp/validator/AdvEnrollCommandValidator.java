@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.webapp.validator;
 
 import edu.vt.middleware.password.*;
+import fr.k2i.adbeback.core.business.user.MediaType;
 import fr.k2i.adbeback.dao.IAgencyDao;
 import fr.k2i.adbeback.dao.IBrandDao;
 import fr.k2i.adbeback.dao.IWebUserDao;
@@ -9,6 +10,8 @@ import fr.k2i.adbeback.webapp.bean.AddressBean;
 import fr.k2i.adbeback.webapp.bean.enroll.InformationCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.adv.AdvEnrollCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.adv.AdvUserBean;
+import fr.k2i.adbeback.webapp.bean.enroll.adv.CustomerTargetCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.adv.CustomizeCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyRole;
 import fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyUserBean;
 import fr.k2i.adbeback.webapp.util.PhoneNumberUtils;
@@ -26,10 +29,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.groups.Default;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -242,14 +242,32 @@ public class AdvEnrollCommandValidator {
 
     public void validateCustomize(Object o, Errors errors) {
         AdvEnrollCommand command = (AdvEnrollCommand) o;
-        //Todo:
 
+        CustomizeCommand customize = command.getCustomize();
+        Long sectorId = customize.getSectorId();
+        if(sectorId==null || sectorId ==-1){
+            errors.rejectValue("customize.sectorId","required");
+        }
+
+        List<MediaType> targetMedia = customize.getTargetMedia();
+        if(targetMedia==null || targetMedia.isEmpty()){
+            errors.rejectValue("customize.targetMedia","empty");
+        }
     }
 
 
     public void validateCustomerTarget(Object o, Errors errors) {
         AdvEnrollCommand command = (AdvEnrollCommand) o;
-        //Todo:
+
+        CustomerTargetCommand currentCustomerTarget = command.getCustomize().getCurrentCustomerTarget();
+
+         if(currentCustomerTarget.getAgeGroup()==null){
+             errors.rejectValue("customize.currentCustomerTarget.ageGroup","empty");
+         }
+        if(currentCustomerTarget.getSex()==null){
+            errors.rejectValue("customize.currentCustomerTarget.sex","empty");
+        }
+
 
     }
  }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/corporate/unlogged">
+<head>
+    <title>Inscription Media</title>
+
+    <script th:inline="javascript">
+        $(function(){
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'triggerform',elementId:'continue',event:'onclick'}));
+        });
+    </script>
+</head>
+<body>
+
+    <div layout:fragment="content">
+        <div th:substituteby="enroll/media/fragment/breadcrumb(active=1)"></div>
+        <div class="container margin-bottom-40">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
+                    <form id="triggerform" method="post" th:action="${flowExecutionUrl}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                        <h2 th:utext="#{enroll.media.title}">Text explicatif : A rédiger</h2>
+                        <p th:utext="#{enroll.media.explain}">Text explicatif : A rédiger</p>
+
+                        <div class="row">
+                            <div class="col-md-12 form-actions right">
+                                <input type="submit" id="continue" name="_eventId_continue" th:value="#{btn.next}" class="btn blue"/>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

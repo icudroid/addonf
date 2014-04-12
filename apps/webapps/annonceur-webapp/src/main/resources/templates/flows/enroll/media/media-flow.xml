@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <var name="state" class="fr.k2i.adbeback.webapp.state.enroll.MediaEnrollFlowState"/>
+    <var name="mediaEnrollCommand" class="fr.k2i.adbeback.webapp.bean.enroll.media.MediaEnrollCommand"/>
+
+
+    <on-start>
+        <evaluate expression="enrollHelper.defaultModelNeeded()" result="conversationScope.values"/>
+    </on-start>
+
+
+    <view-state id="intro" view="enroll/media/intro">
+        <transition to="media"/>
+    </view-state>
+
+
+    <view-state id="media" view="enroll/media/info" model="mediaEnrollCommand">
+        <transition on="submit" to="adminUser" />
+        <transition on="back" to="intro"/>
+    </view-state>
+
+    <view-state id="adminUser" view="enroll/media/admin" model="mediaEnrollCommand">
+        <transition on="submit" to="descriptionService" />
+        <transition on="back" to="media" />
+    </view-state>
+
+
+    <view-state id="descriptionService" view="enroll/media/service" model="mediaEnrollCommand">
+        <transition on="deleteService" to="deleteServiceConfirm" validate="false">
+            <set name="flashScope.uid" value="requestParameters.uid"/>
+        </transition>
+        <transition on="addService" to="addService"/>
+        <transition on="submit" to="isServiceEmpty" validate="false"/>
+        <transition on="back" to="adminUser" validate="false"/>
+    </view-state>
+
+    <action-state id="isServiceEmpty">
+        <evaluate expression="mediaEnrollHelper.isServiceEmpty(mediaEnrollCommand)"/>
+        <transition on="ok" to="attachements" />
+        <transition on="empty" to="needServiceTarget" />
+    </action-state>
+
+
+    <view-state id="needServiceTarget" view="enroll/media/popup/needMoreService" popup="true">
+        <transition  on="back"  to="customerTarget" />
+    </view-state>
+
+    <view-state id="deleteServiceConfirm" view="enroll/media/popup/deleteServicePopup" popup="true">
+        <on-render>
+            <set name="viewScope.uid" value="flashScope.uid"/>
+        </on-render>
+        <transition on="yes" to="descriptionService">
+            <evaluate expression="mediaEnrollHelper.deleteService(mediaEnrollCommand,viewScope.uid)" />
+        </transition>
+        <transition on="no" to="descriptionService"/>
+    </view-state>
+
+
+    <action-state id="addService">
+        <evaluate expression="mediaEnrollHelper.addService(mediaEnrollCommand)"/>
+        <transition on="ok" to="descriptionService" />
+    </action-state>
+
+    <subflow-state id="attachements" subflow="enroll/media/attachement">
+        <input name="state"></input>
+        <input name="mediaEnrollCommand"></input>
+
+        <transition on="needMoreFile" to="needMoreFile" />
+        <transition on="end-attachement" to="recap-validation">
+            <set name="state" value="currentEvent.attributes.state"/>
+            <set name="mediaEnrollCommand" value="currentEvent.attributes.mediaEnrollCommand"/>
+        </transition>
+        <transition on="back" to="descriptionService" />
+
+        <transition on="step" to="whereToGo">
+            <set name="flowScope.toGo" value="currentEvent.attributes.whereToGo"/>
+        </transition>
+    </subflow-state>
+
+
+    <action-state id="whereToGo">
+        <evaluate expression="flowScope.toGo"/>
+        <transition on="${flowScope.toGo}" to="${flowScope.toGo}">
+        </transition>
+    </action-state>
+
+    <view-state id="needMoreFile" view="enroll/popup/needMoreFile" popup="true">
+        <transition  on="back"  to="attachements"  />
+    </view-state>
+
+    <end-state id="recap-validation">
+        <output name="state" value="state"/>
+        <output name="mediaEnrollCommand" value="mediaEnrollCommand"/>
+    </end-state>
+
+
+    <global-transitions>
+        <transition on="step1" to="intro" validate="false"></transition>
+        <transition on="step2" to="adv" validate="false"></transition>
+        <transition on="step3" to="adminUser" validate="false"></transition>
+        <transition on="step4" to="descriptionService" validate="false"></transition>
+        <transition on="step5" to="attachements" validate="false"></transition>
+    </global-transitions>
+
+</flow>

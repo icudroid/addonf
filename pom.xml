@@ -103,9 +103,14 @@
     </dependencyManagement>
 
 
-<!--
 
     <repositories>
+        <repository>
+            <id>lib-snapshots</id>
+            <url>http://repo.spring.io/libs-snapshot</url>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/snapshot</url>
@@ -127,7 +132,7 @@
             <url>http://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
--->
+
 
 
 

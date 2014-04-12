@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/corporate/unlogged">
+<head>
+    <title>Inscription Media</title>
+
+    <script th:inline="javascript">
+        $(function(){
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'triggerform',elementId:'continue',event:'onclick'}));
+        });
+    </script>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div th:substituteby="enroll/agency/fragment/breadcrumb(active=6)"></div>
+    <div class="container margin-bottom-40">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
+                <h2>Nous avons bien pris en compte votre demande d'inscription à votre service.</h2>
+                <br/><br/>
+                <p>Vous allez recevoir un e-mail qui va vous permettre de finaliser votre demande de inscription.</p>
+                <p>Merci de suivre les instructions d'écrites dans cet e-mail.</p>
+                <p> Nous vous remercions de votre intérêt pour notre service</p>
+                <br/><br/>
+                L'équipe AdBeBack
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

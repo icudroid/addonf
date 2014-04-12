@@ -104,5 +104,11 @@ public class AnnonceurUserDao extends GenericDaoJpa<User, Long> implements UserD
         }
     }
 
+    @Transactional
+    @Override
+    public void enable(Long idUser) {
+        get(idUser).setEnabled(true);
+    }
+
 }
 

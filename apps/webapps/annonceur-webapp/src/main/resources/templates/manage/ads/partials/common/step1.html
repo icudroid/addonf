@@ -121,7 +121,7 @@
                                             <label for="amount" class="control-label" th:text="#{'addonf.campaign.initialAmount.'+${actionCampaign}}">Montant max.</label>
 
                                             <div class="input-group col-md-4">
-                                                <span class="input-group-addon">€</span>
+                                                <span class="input-group-addon">&euro;</span>
                                                 <input type="number" class="form-control" id="amount"  th:field="*{initialAmonut}"/>
                                                 <span class="help-block" th:if="${#fields.hasErrors('initialAmonut')}" th:errors="*{initialAmonut}">Error</span>
                                             </div>

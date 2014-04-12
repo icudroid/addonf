@@ -53,8 +53,8 @@ public class Media extends BaseObject {
     private MediaUser user;
 
     @OneToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name=IMetaData.TableMetadata.ATTACHEMENTS)
-    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32)
+    @JoinTable(name=IMetaData.TableMetadata.ATTACHMENTS_MEDIA)
+    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32,nullable = true)
     private Map<String,Attachement> attachements;
 
 

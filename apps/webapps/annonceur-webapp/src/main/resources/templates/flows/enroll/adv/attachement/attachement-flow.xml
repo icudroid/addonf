@@ -7,7 +7,7 @@
     <input name="advEnrollCommand"></input>
 
     <on-start>
-        <set name="flowScope.activeId" value="5"/>
+        <set name="flowScope.activeId" value="6"/>
     </on-start>
 
     <view-state id="attachments" view="enroll/common/attachement">

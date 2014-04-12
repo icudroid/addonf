@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <input name="state"></input>
+    <input name="mediaEnrollCommand"></input>
+
+    <on-start>
+        <set name="flowScope.activeId" value="5"/>
+    </on-start>
+
+    <view-state id="attachments" view="enroll/common/attachement">
+        <on-render>
+            <evaluate expression="mediaEnrollHelper.availableFiles(state)" result="viewScope.files"/>
+            <evaluate expression="mediaEnrollHelper.requiredFiles(state)" result="viewScope.requiredFiles"/>
+            <evaluate expression="mediaEnrollHelper.uploadedFileStatus(flowRequestContext,state)" result="viewScope.filesStatus"/>
+        </on-render>
+        <transition on="submit" to="isAllFilePresent" />
+        <transition on="back" to="back" />
+        <transition to="step">
+            <set value="currentEvent.id" name="flashScope.whereToGo"/>
+        </transition>
+    </view-state>
+
+    <action-state id="whereToGo">
+        <evaluate expression="flowScope.toGo"/>
+        <transition on="${flowScope.toGo}" to="${flowScope.toGo}">
+        </transition>
+    </action-state>
+
+    <action-state id="isAllFilePresent">
+        <evaluate expression="mediaEnrollHelper.saveFiles(flowRequestContext,mediaEnrollCommand,state)"/>
+        <transition on="ok" to="end-attachement" />
+        <transition on="needMoreFile" to="needMoreFile" />
+    </action-state>
+
+    <view-state id="needMoreFile" view="enroll/common/popup/needMoreFile" popup="true">
+        <transition  on="back"  to="attachments" />
+    </view-state>
+
+    <end-state id="end-attachement">
+        <output name="state" value="state"/>
+        <output name="mediaEnrollCommand" value="mediaEnrollCommand"/>
+    </end-state>
+
+    <end-state id="back" />
+
+    <end-state id="step">
+        <output name="whereToGo" value="flashScope.whereToGo"/>
+    </end-state>
+
+</flow>

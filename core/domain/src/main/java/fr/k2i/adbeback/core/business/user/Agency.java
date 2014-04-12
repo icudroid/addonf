@@ -55,8 +55,8 @@ public class Agency extends BaseObject {
     private List<AgencyUser> users = new ArrayList<AgencyUser>();
 
     @OneToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name=IMetaData.TableMetadata.ATTACHEMENTS)
-    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32)
+    @JoinTable(name=IMetaData.TableMetadata.ATTACHMENTS_AGENCY)
+    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32,nullable = true)
     private Map<String,Attachement> attachements;
 
 
@@ -70,5 +70,39 @@ public class Agency extends BaseObject {
         }
         user.setAgency(this);
         users.add(user);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Agency)) return false;
+
+        Agency agency = (Agency) o;
+
+        if (legalStatus != agency.legalStatus) return false;
+        if (name != null ? !name.equals(agency.name) : agency.name != null) return false;
+        if (siren != null ? !siren.equals(agency.siren) : agency.siren != null) return false;
+        if (siret != null ? !siret.equals(agency.siret) : agency.siret != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (siret != null ? siret.hashCode() : 0);
+        result = 31 * result + (siren != null ? siren.hashCode() : 0);
+        result = 31 * result + (legalStatus != null ? legalStatus.hashCode() : 0);
+        return result;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Agency{" +
+                "name='" + name + '\'' +
+                ", siret='" + siret + '\'' +
+                '}';
     }
 }

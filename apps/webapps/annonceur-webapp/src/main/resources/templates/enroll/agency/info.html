@@ -43,7 +43,8 @@
 
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                    <h2 th:utext="#{enroll.agency.info.explain}">Text explicatif : A rédiger</h2>
+                    <h2 th:utext="#{enroll.agency.info.title}">Text explicatif : A rédiger</h2>
+                    <p th:utext="#{enroll.agency.info.explain}">Text explicatif : A rédiger</p>
 
 
                     <div th:class="${#fields.hasErrors('info.name')}? 'form-group has-error':'form-group'">

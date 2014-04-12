@@ -32,7 +32,10 @@
             <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
                 <form id="formUsersInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" th:object="${agencyEnrollCommand}" autocomplete="off">
 
-                    <h2 th:utext="#{enroll.agency.users.explain}">Text explicatif : A rédiger</h2>
+                    <h2 th:utext="#{enroll.agency.users.title}">Text explicatif : A rédiger</h2>
+
+                    <p th:utext="#{enroll.agency.users.explain}">Text explicatif : A rédiger</p>
+
                     <!-- Liste des utilisateurs déjà créer avec la possibilité de la supprimer -->
 
 

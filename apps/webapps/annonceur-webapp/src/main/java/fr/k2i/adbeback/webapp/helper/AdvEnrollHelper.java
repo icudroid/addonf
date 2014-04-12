@@ -6,6 +6,7 @@ import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
 import fr.k2i.adbeback.core.business.Constants;
 import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.core.business.ad.CustomerTarget;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Role;
 import fr.k2i.adbeback.core.business.user.*;
@@ -17,6 +18,8 @@ import fr.k2i.adbeback.webapp.bean.FileCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.*;
 import fr.k2i.adbeback.webapp.bean.enroll.adv.AdvEnrollCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.adv.AdvUserBean;
+import fr.k2i.adbeback.webapp.bean.enroll.adv.CustomerTargetCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.adv.CustomizeCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.agency.*;
 import fr.k2i.adbeback.webapp.controller.UploadController;
 import fr.k2i.adbeback.webapp.facade.FileUtils;
@@ -37,10 +40,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: dimitri
@@ -91,6 +91,10 @@ public class AdvEnrollHelper {
 
     @Resource(name = "annonceurUserDao")
     private IWebUserDao userDao;
+
+
+    @Autowired
+    private ISectorDao sectorDao;
 
 
     public List<String> availableFiles(AdvEnrollFlowState state){
@@ -201,6 +205,22 @@ public class AdvEnrollHelper {
 
         brand.setAttachements(fileUploaded);
 
+        CustomizeCommand customize = advEnrollCommand.getCustomize();
+        List<CustomerTargetCommand> customersTarget = customize.getCustomersTarget();
+
+        List<CustomerTarget> tcs = new ArrayList<CustomerTarget>();
+        for (CustomerTargetCommand customerTargetCommand : customersTarget) {
+            CustomerTarget target = new CustomerTarget(customerTargetCommand.getSex(),customerTargetCommand.getAgeGroup());
+            tcs.add(target);
+        }
+        brand.setTargetCustomers(tcs);
+
+        Long sectorId = customize.getSectorId();
+        brand.setSector(sectorDao.get(sectorId));
+
+        List<MediaType> targetMedia = customize.getTargetMedia();
+        brand.setTargetMedia(targetMedia);
+
         brand = brandDao.save(brand);
 
         AdvUserBean advUserBean = advEnrollCommand.getUser();
@@ -258,4 +278,30 @@ public class AdvEnrollHelper {
 
     }
 
+
+    public String addTarget(AdvEnrollCommand advEnrollCommand){
+        CustomerTargetCommand currentCustomerTarget = advEnrollCommand.getCustomize().getCurrentCustomerTarget();
+        currentCustomerTarget.setUid(UUID.randomUUID().toString());
+        advEnrollCommand.getCustomize().getCustomersTarget().add(currentCustomerTarget);
+        advEnrollCommand.getCustomize().setCurrentCustomerTarget(new CustomerTargetCommand());
+        return "ok";
+    }
+
+    public String isCustomerTargetEmpty(AdvEnrollCommand advEnrollCommand){
+        List<CustomerTargetCommand> customersTarget = advEnrollCommand.getCustomize().getCustomersTarget();
+        return customersTarget.isEmpty()?"empty":"ok";
+    }
+
+
+    public void deleteTarget(AdvEnrollCommand advEnrollCommand,String uid){
+        List<CustomerTargetCommand> customersTarget = advEnrollCommand.getCustomize().getCustomersTarget();
+        CustomerTargetCommand toDelete = null;
+        for (CustomerTargetCommand customerTargetCommand : customersTarget) {
+           if(customerTargetCommand.getUid().equals(uid)){
+               toDelete = customerTargetCommand;
+           }
+        }
+
+        customersTarget.remove(toDelete);
+    }
 }

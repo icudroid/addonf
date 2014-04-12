@@ -375,11 +375,11 @@ ALTER TABLE public.attachement_sequence OWNER TO addonf;
 --
 
 CREATE TABLE attachements (
-    agency_id bigint NOT NULL,
+    agency_id bigint NULL,
     attachements_id bigint NOT NULL,
     attachement_id character varying(32) NOT NULL,
-    media_id bigint NOT NULL,
-    brand_id bigint NOT NULL
+    media_id bigint NULL,
+    brand_id bigint NULL
 );
 
 
@@ -39082,13 +39082,6 @@ ALTER TABLE ONLY in_charge_of
 ALTER TABLE ONLY goose_case
     ADD CONSTRAINT fk_77a7gux9xu997gdyc1jct6gus FOREIGN KEY (goosejump_id) REFERENCES goose_case(id);
 
-
---
--- Name: fk_77w1jrhm735ugalqxsmsc4lvh; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY attachements
-    ADD CONSTRAINT fk_77w1jrhm735ugalqxsmsc4lvh FOREIGN KEY (media_id) REFERENCES media(id);
 
 
 --

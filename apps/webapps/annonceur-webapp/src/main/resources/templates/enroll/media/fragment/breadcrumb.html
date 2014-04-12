@@ -1,0 +1,35 @@
+<div class="row breadcrumbs margin-bottom-40">
+    <div class="container">
+        <div class="col-md-4 col-sm-4">
+            <h1 th:text="#{enroll.media.breadcrumb.title}">Inscription Media</h1>
+        </div>
+        <div class="col-md-8 col-sm-8">
+            <ul class="pull-right breadcrumb">
+
+                <li th:if="${active==1}" class="active" th:text="#{enroll.media.breadcrumb.step1}">Informations</li>
+                <li th:if="${active gt 1}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step1'})}" th:text="#{enroll.media.breadcrumb.step1}">Informations</a></li>
+
+                <li th:if="${active==2}" class="active" th:text="#{enroll.media.breadcrumb.step2}">Société</li>
+                <li th:if="${active gt 2}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step2'})}" th:text="#{enroll.media.breadcrumb.step2}">Société</a></li>
+                <li th:if="${active lt 2}" th:text="#{enroll.media.breadcrumb.step2}">Société</li>
+
+                <li th:if="${active==3}" class="active" th:text="#{enroll.media.breadcrumb.step3}">Compte utilisateur</li>
+                <li th:if="${active gt 3}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step3'})}" th:text="#{enroll.media.breadcrumb.step3}">Compte utilisateur</a></li>
+                <li th:if="${active lt 3}" th:text="#{enroll.media.breadcrumb.step3}">Compte utilisateur</li>
+
+                <li th:if="${active==4}" class="active" th:text="#{enroll.media.breadcrumb.step4}">Prix</li>
+                <li th:if="${active gt 4}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step4'})}" th:text="#{enroll.media.breadcrumb.step4}">Prix</a></li>
+                <li th:if="${active lt 4}" th:text="#{enroll.media.breadcrumb.step4}">Prix</li>
+
+                <li th:if="${active==5}" class="active" th:text="#{enroll.media.breadcrumb.step5}">Pièces</li>
+                <li th:if="${active gt 5}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step5'})}" th:text="#{enroll.media.breadcrumb.step5}">Pièces</a></li>
+                <li th:if="${active lt 5}" th:text="#{enroll.media.breadcrumb.step5}">Pièces</li>
+
+                <li th:if="${active==6}" class="active" th:text="#{enroll.media.breadcrumb.step6}">Recapitulatif</li>
+                <li th:if="${active gt 6}"><a th:href="@{${flowExecutionUrl}(_eventId=${'step6'})}" th:text="#{enroll.media.breadcrumb.step6}">Recapitulatif</a></li>
+                <li th:if="${active lt 6}" th:text="#{enroll.media.breadcrumb.step6}">Recapitulatif</li>
+
+            </ul>
+        </div>
+    </div>
+</div>

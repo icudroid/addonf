@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="attachement")
+@Table(name="attachment")
 @Data
 public class Attachement extends BaseObject implements Serializable {
 

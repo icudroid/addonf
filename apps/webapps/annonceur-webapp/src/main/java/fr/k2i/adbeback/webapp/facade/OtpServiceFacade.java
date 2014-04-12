@@ -58,7 +58,6 @@ public class OtpServiceFacade {
             if(otp.getExpirationDate().before(now)){
                 return ConfirmationRegistration.TIME_OUT;
             }else{
-                user.setEnabled(true);
                 return ConfirmationRegistration.OK;
             }
         }else{

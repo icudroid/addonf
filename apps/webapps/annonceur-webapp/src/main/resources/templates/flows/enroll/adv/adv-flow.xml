@@ -33,9 +33,40 @@
     </view-state>
 
     <view-state id="customerTarget" view="enroll/adv/target" model="advEnrollCommand">
-        <transition on="submit" to="attachements" />
-        <transition on="back" to="customize" />
+        <transition on="deleteTarget" to="deleteTargetConfirm" validate="false">
+            <set name="flashScope.uid" value="requestParameters.uid"/>
+        </transition>
+        <transition on="addTarget" to="addTarget"/>
+        <transition on="submit" to="isCustomerTargetEmpty" validate="false"/>
+        <transition on="back" to="customize" validate="false"/>
     </view-state>
+
+    <action-state id="isCustomerTargetEmpty">
+        <evaluate expression="advEnrollHelper.isCustomerTargetEmpty(advEnrollCommand)"/>
+        <transition on="ok" to="attachements" />
+        <transition on="empty" to="needMoreCustomerTarget" />
+    </action-state>
+
+
+    <view-state id="needMoreCustomerTarget" view="enroll/adv/popup/needMoreCustomerTarget" popup="true">
+        <transition  on="back"  to="customerTarget" />
+    </view-state>
+
+    <view-state id="deleteTargetConfirm" view="enroll/adv/popup/deleteTargetPopup" popup="true">
+        <on-render>
+            <set name="viewScope.uid" value="flashScope.uid"/>
+        </on-render>
+        <transition on="yes" to="customerTarget">
+            <evaluate expression="advEnrollHelper.deleteTarget(advEnrollCommand,viewScope.uid)" />
+        </transition>
+        <transition on="no" to="customerTarget"/>
+    </view-state>
+
+
+    <action-state id="addTarget">
+        <evaluate expression="advEnrollHelper.addTarget(advEnrollCommand)"/>
+        <transition on="ok" to="customerTarget" />
+    </action-state>
 
     <subflow-state id="attachements" subflow="enroll/adv/attachement">
         <input name="state"></input>

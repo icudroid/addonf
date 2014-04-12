@@ -24,7 +24,15 @@
             <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
                 <form id="formAdminInfo" method="post" class="form-horizontal" role="form" th:object="${userAgencyConfirmCommand}" autocomplete="off">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <h2>Pour finaliser votre inscrition vos devez choir votre mot de passe. Votre identifiant de connection est l'email sur lequel vos avez reçu l'email de confirmation.</h2>
+
+                    <h2>Création de votre compte utilisateur adbeback</h2>
+                    <p>
+                        <ul>
+                            <li>Pour finaliser votre inscrition vos devez choir votre mot de passe. Votre identifiant de connection est l'email sur lequel vos avez reçu l'email de confirmation.</li>
+                            <li>Le mot de passe doit être fort : il doit avoir 8 caractères alphanumériques minimun, contenir au moins une majuscule, une minuscule et un caractère spéciale</li>
+                        </ul>
+
+                    </p>
 
                     <div class="form-group">
                         <label for="email" class=" control-label" th:text="#{enroll.company.identifiant}">Votre identifiant</label>
@@ -46,8 +54,7 @@
 
                     <div class="row">
                         <div class="col-md-12 form-actions right">
-                            <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default"/>
-                            <input type="submit" id="submit" name="_eventId_submit" value="Continuer" class="btn blue"/>
+                            <input type="submit" id="submit" value="Continuer" class="btn blue"/>
                         </div>
                     </div>
 

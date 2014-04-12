@@ -31,7 +31,8 @@
                 <form id="formAdminInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" th:object="${advEnrollCommand}" autocomplete="off">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                    <h2 th:utext="#{enroll.adv.admin.explain}">Text explicatif : A rédiger</h2>
+                    <h2 th:utext="#{enroll.adv.admin.title}">Text explicatif : A rédiger</h2>
+                    <p th:utext="#{enroll.adv.admin.explain}">Text explicatif : A rédiger</p>
 
                     <!-- Création de l'administrateur -->
 

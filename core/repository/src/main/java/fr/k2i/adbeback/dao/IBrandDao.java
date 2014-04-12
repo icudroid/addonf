@@ -20,8 +20,8 @@ public interface IBrandDao extends IGenericDao<Brand, Long> {
     @Transactional
     Brand findByName(String name);
 
-    @Transactional
-    Brand findByEmail(String email);
+/*    @Transactional
+    Brand findByEmail(String email);*/
 
     @Transactional
     Brand findBySiret(String siret);

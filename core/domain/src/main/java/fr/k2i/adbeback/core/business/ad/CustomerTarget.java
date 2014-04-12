@@ -24,11 +24,15 @@ public class CustomerTarget extends BaseObject implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CustomerTarget_Gen")
     private Long id;
 
-
     @Enumerated(EnumType.STRING)
     private Sex sex;
 
     @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
 
+    public CustomerTarget(){}
+    public CustomerTarget(Sex sex, AgeGroup ageGroup) {
+        this.sex = sex;
+        this.ageGroup = ageGroup;
+    }
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Ciblage clientèle</h4>
+</div>
+<div class="modal-body">
+    <p>Vous devez ajouter au une cible client</p>
+</div>
+<div class="modal-footer">
+    <form id="popupNeedMore" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" autocomplete="off">
+        <input type="hidden"
+               th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <button type="button" id="backToAttachement" class="btn btn-default" name="_eventId_back">Retour</button>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+
+    springModal.on('hide.bs.modal', function (e) {
+        Spring.addDecoration(
+                new Spring.AjaxEventDecoration({formId:'popupNeedMore',elementId:'backToAttachement',event:'onclick'}));
+    });
+
+    springModal.on('shown.bs.modal', function (e) {
+        setTimeout(function(){
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'popupNeedMore',elementId:'backToAttachement',event:'onclick'}));
+        },0);
+    });
+
+</script>
+
+</body>
+</html>

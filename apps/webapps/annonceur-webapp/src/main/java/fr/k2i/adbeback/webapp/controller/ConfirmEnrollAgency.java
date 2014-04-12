@@ -4,6 +4,7 @@ import fr.k2i.adbeback.core.business.user.Agency;
 import fr.k2i.adbeback.core.business.user.AgencyUser;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.IWebUserDao;
+import fr.k2i.adbeback.webapp.bean.ChangePasswordBean;
 import fr.k2i.adbeback.webapp.bean.enroll.agency.UserAgencyConfirmCommand;
 import fr.k2i.adbeback.webapp.facade.AgencyServiceFacade;
 import fr.k2i.adbeback.webapp.facade.OtpServiceFacade;
@@ -11,6 +12,7 @@ import fr.k2i.adbeback.webapp.validator.UserAgencyConfirmCommandValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * User: dimitri
@@ -56,16 +59,22 @@ public class ConfirmEnrollAgency {
         session.setAttribute("email",email);
 
 
-        if(res.equals(OtpServiceFacade.ConfirmationRegistration.OK)){
-            //send user mail confirmation
-            AgencyUser user = (AgencyUser) webUserDao.getUserByEmail(email);
-            Agency agency = user.getAgency();
-            agencyServiceFacade.sendAgencyUserValidation(agency.getId(),req.getLocale());
-            otpServiceFacade.removeOtp(email,name,code);
+        switch (res){
+            case TIME_OUT:
+                return IMetaDataController.View.REGISTRATION_TIMEOUT;
+            case OK:
+                //send user mail confirmation
+                AgencyUser user = (AgencyUser) webUserDao.getUserByEmail(email);
+                Agency agency = user.getAgency();
+                webUserDao.enable(user.getId());
+                agencyServiceFacade.sendAgencyUserValidation(agency.getId(),req.getLocale());
+                otpServiceFacade.removeOtp(email,name,code);
+                return IMetaDataController.View.REGISTRATION_AGENCY_ADMIN_CONFIRM;
+            case KO:
+                return IMetaDataController.View.REGISTRATION_KO;
+            default:
+                return IMetaDataController.View.REGISTRATION_KO;
         }
-
-
-        return IMetaDataController.View.REGISTRATION_AGENCY_ADMIN_CONFIRM;
 
 
     }
@@ -79,12 +88,22 @@ public class ConfirmEnrollAgency {
         String email = strings[1];
 
         OtpServiceFacade.ConfirmationRegistration res = otpServiceFacade.confirmRegistration(email,name,code);
+
         HttpSession session = req.getSession();
         session.setAttribute("result",res.name());
         session.setAttribute("email",email);
 
         modelMap.put("userAgencyConfirmCommand",new UserAgencyConfirmCommand(email));
-        return IMetaDataController.View.REGISTRATION_AGENCY_USER_CONFIRM;
+        switch (res){
+            case TIME_OUT:
+                return IMetaDataController.View.REGISTRATION_TIMEOUT;
+            case OK:
+                return IMetaDataController.View.REGISTRATION_AGENCY_USER_CONFIRM;
+            case KO:
+                return IMetaDataController.View.REGISTRATION_KO;
+            default:
+                return IMetaDataController.View.REGISTRATION_KO;
+        }
 
     }
 
@@ -97,21 +116,35 @@ public class ConfirmEnrollAgency {
     }
 
     @RequestMapping(value = IMetaDataController.Path.REGISTRATION_AGENCY_USER_CONFIRM,method = RequestMethod.POST)
-    public String confirmUserRegistrationSubmit(@Valid @ModelAttribute("userAgencyConfirmCommand") UserAgencyConfirmCommand userAgencyConfirmCommand,@PathVariable String crypt,@PathVariable String code,ModelMap modelMap, HttpServletRequest req) throws Exception {
+    public String confirmUserRegistrationSubmit(@PathVariable("crypt") String crypt,@PathVariable("code") String code,@Valid @ModelAttribute("userAgencyConfirmCommand") UserAgencyConfirmCommand userAgencyConfirmCommand,BindingResult bindingResult,Map<String, Object> model) {
+
         String[] strings = desCryptoService.decrypt(crypt).split("\\|");
 
         String name = strings[0];
         String email = strings[1];
 
         OtpServiceFacade.ConfirmationRegistration res = otpServiceFacade.confirmRegistration(email,name,code);
-        otpServiceFacade.removeOtp(email,name,code);
+        model.put("result",res.name());
+        model.put("email",email);
 
+        switch (res){
+            case TIME_OUT:
+                return IMetaDataController.View.REGISTRATION_TIMEOUT;
+            case OK:
+                if(!bindingResult.hasErrors()){
+                    if(res.equals(OtpServiceFacade.ConfirmationRegistration.OK)){
+                        webUserDao.enable(webUserDao.getUserByEmail(email).getId());
+                        otpServiceFacade.removeOtp(email,name,code);
+                        return IMetaDataController.View.REGISTRATION_AGENCY_USER_CONFIRMED;
+                    }
+                }
+                return IMetaDataController.View.REGISTRATION_AGENCY_USER_CONFIRM;
+            case KO:
+                return IMetaDataController.View.REGISTRATION_KO;
+            default:
+                return IMetaDataController.View.REGISTRATION_KO;
+        }
 
-        HttpSession session = req.getSession();
-        session.setAttribute("result",res.name());
-        session.setAttribute("email",email);
-
-        return IMetaDataController.View.REGISTRATION_AGENCY_USER_CONFIRM;
 
     }
 

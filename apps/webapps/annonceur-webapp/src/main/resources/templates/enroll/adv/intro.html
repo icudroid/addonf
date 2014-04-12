@@ -25,7 +25,8 @@
                     <form id="triggerform" method="post" th:action="${flowExecutionUrl}">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                        <h2 th:utext="#{enroll.adv.explain}">Text explicatif : A rédiger</h2>
+                        <h2 th:utext="#{enroll.adv.title}">Text explicatif : A rédiger</h2>
+                        <p th:utext="#{enroll.adv.explain}">Text explicatif : A rédiger</p>
 
                         <div class="row">
                             <div class="col-md-12 form-actions right">

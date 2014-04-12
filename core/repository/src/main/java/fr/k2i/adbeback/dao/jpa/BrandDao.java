@@ -59,13 +59,13 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
         return query.uniqueResult(qBrand);
     }
 
-    @Override
+/*    @Override
     public Brand findByEmail(String email) {
         QBrand qBrand = QBrand.brand;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qBrand).where(qBrand.email.eq(email));
         return query.uniqueResult(qBrand);
-    }
+    }*/
 
     @Override
     public Brand findBySiret(String siret) {

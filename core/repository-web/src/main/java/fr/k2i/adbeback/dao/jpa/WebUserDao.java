@@ -80,5 +80,10 @@ public class WebUserDao extends GenericDaoJpa<User, Long> implements UserDetails
             return users.get(0);
         }
     }
+
+    @Override
+    public void enable(Long idUser) {
+        get(idUser).setEnabled(true);
+    }
 }
 

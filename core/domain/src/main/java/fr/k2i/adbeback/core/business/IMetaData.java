@@ -26,6 +26,9 @@ public interface IMetaData {
         String CUSTOMER_TARGET =                        "customer_target";
         String CATEGORY_PRICE =                         "cat_price";
         String CATEGORY =                               "category";
+        String ATTACHMENTS_BRAND =                     "brand_attachment";
+        String ATTACHMENTS_AGENCY =                    "agency_attachment";
+        String ATTACHMENTS_MEDIA =                      "media_attachment";
     }
 
     interface ColumnMetadata {

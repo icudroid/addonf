@@ -54,7 +54,8 @@
             <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
                 <form id="formAttachmentInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" autocomplete="off">
 
-                    <h2 th:utext="#{enroll.agency.attachement.explain}">Text explicatif : A rédiger</h2>
+                    <h2 th:utext="#{${'enroll.'+state.registration+'.attachement.title'}}">Text explicatif : A rédiger</h2>
+                    <p th:utext="#{${'enroll.'+state.registration+'.attachement.explain'}}">Text explicatif : A rédiger</p>
 
                     <div class="form-group" th:each="file,fileStat : ${files}" th:id="#{'container_'+${file}}">
                         <label th:for="${file}" th:inline="text" >[[#{'file.'+${file}}]]<span th:if="${#lists.contains(requiredFiles, file)}">*</span></label>

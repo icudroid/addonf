@@ -63,5 +63,8 @@ public interface IMetaDataController {
         String MODIFY_CAMPAIGN_STEP_2=                  "manage/ads/partials/common/step2";
         String MODIFY_CAMPAIGN_STEP_3 =                 "manage/ads/partials/common/step3";
 
+        String REGISTRATION_AGENCY_USER_CONFIRMED =     "enroll/agency/userCreated";
+        String REGISTRATION_TIMEOUT =                   "enroll/common/timeout";
+        String REGISTRATION_KO =                        "enroll/common/ko";
     }
 }
