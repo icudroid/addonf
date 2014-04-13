@@ -1,67 +1,132 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/unlogged">
+      layout:decorator="layout/login">
+<!-- BEGIN HEAD -->
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="signin.css" th:href="@{/static/css/signin.css}" />
+    <meta charset="utf-8"/>
+    <script th:src="@{/static/metronic_v2.0.2/admin/template/assets/scripts/custom/login.js}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+        $(function() {
+            Login.init();
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+
 </head>
-<body>
-<div layout:fragment="content">
-    <h4 class="innerAll margin-none border-bottom text-center" th:utext="#{addonf.login.title}"><i class="fa fa-lock"></i> Login to your Account</h4>
-    <div class="col-app col-unscrollable">
+<!-- BEGIN BODY -->
+<body class="login">
 
-        <!-- col-app -->
-        <div class="col-app">
-            <div class="login">
-                <div class="placeholder text-center"><i class="fa fa-lock"></i></div>
-                <div class="panel panel-default col-sm-6 col-sm-offset-3">
+<div class="content" layout:fragment="content">
 
-                    <div class="panel-body">
-                        <form role="form" class="form-signin" th:action="@{/login}" method="POST">
+<form role="form" class="login-form"  th:action="@{/login}" method="POST">
+    <input type="hidden"
+           th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                            <p th:if="${param.logout}" class="alert">You have been logged out</p>
-                            <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
+    <h3 class="form-title">Page de connection</h3>
 
-
-                            <div class="form-group">
-                                <label for="username" th:text="#{addonf.login.username.label}">Id</label>
-                                <input id="username" class="form-control" type="text" name="username" value="" th:placeholder="#{addonf.login.username.placeholder}" />
-                            </div>
-                            <div class="form-group">
-                                <label for="pwd" th:text="#{addonf.login.password.label}">Password</label>
-                                <input class="form-control" type="password" id="pwd" name="password" th:placeholder="#{addonf.login.password.placeholder}" />
-                            </div>
-
-
-                            <input type="hidden"
-                                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                            <button type="submit" class="btn btn-primary btn-block" th:text="#{addonf.login.btn}">Login</button>
-
-                        </form>
-
-                    </div>
-
-                </div>
-                <div class="col-sm-4 col-sm-offset-4 text-center">
-                    <div class="innerAll">
-                        <a th:href="@{/signup.html}" class="btn btn-info" th:utext="#{addonf.login.create.btn}">Create a new account? <i class="fa fa-pencil"></i> </a>
-                        <div class="separator"></div>
-                        <a th:href="@{/getForgottenPwd}" class="btn btn-link" th:utext="#{addonf.login.forgotten.btn}">Forgotten password</a>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-
-            </div>
-
-
-        </div>
-        <!-- // END col-app -->
-
+    <div th:if="${param.error}" class="alert alert-danger">
+        <button class="close" data-close="alert"></button>
+        <span th:if="${param.error}" class="alert alert-error">There was an error, please try again</span>
     </div>
 
+    <div th:if="${param.logout}" class="alert alert-danger">
+        <button class="close" data-close="alert"></button>
+        <span th:if="${param.logout}" class="alert">You have been logged out</span>
+    </div>
+
+    <div class="form-group">
+        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+        <label class="control-label visible-ie8 visible-ie9">E-mail</label>
+        <div class="input-icon">
+            <i class="fa fa-user"></i>
+            <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="E-mail" name="username"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Mot de passe</label>
+        <div class="input-icon">
+            <i class="fa fa-lock"></i>
+            <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Mot de passe" name="password"/>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn green pull-right">
+            Se connecter <i class="m-icon-swapright m-icon-white"></i>
+        </button>
+    </div>
+
+    <div class="forget-password">
+        <h4>Vous avez oublié votre mot de passe ?</h4>
+        <p>
+            pas de problèmes, cliquez
+            <a href="javascript:;" id="forget-password">
+                ici
+            </a>
+            pour réinitialiser votre mot de passe.
+        </p>
+    </div>
+</form>
+<!-- END LOGIN FORM -->
+<!-- BEGIN FORGOT PASSWORD FORM -->
+
+<form class="forget-form" th:action="@{/getForgottenPwd}" method="post">
+    <input type="hidden"
+           th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <h3>Mot de passe oublié ?</h3>
+    <p>
+        Entrer votre e-mail ci-dessous pour réinitiliaser votre mot de passe.<br/>
+        Vous receverez un e-mail avec les instructions.
+    </p>
+    <div class="form-group">
+        <div class="input-icon">
+            <i class="fa fa-envelope"></i>
+            <input class="form-control" type="text" id="username" name="username" th:placeholder="#{addonf.getForgottenPwd.username.placeholder}" placeholder="Email"/>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="button" id="back-btn" class="btn">
+            <i class="m-icon-swapleft"></i> Retour </button>
+        <button type="submit" class="btn green pull-right">
+            Valider <i class="m-icon-swapright m-icon-white"></i>
+        </button>
+    </div>
+</form>
+
+
+    <div class="modal fade" id="confirm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" th:text="#{addonf.getForgottenPwd.modal.title}">Confirmation</h4>
+                </div>
+                <div class="modal-body"  th:utext="#{addonf.getForgottenPwd.modal.body}">
+                    <p>Vous allez recevoir un email pour réinitiaser votre mot de passe !!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{addonf.getForgottenPwd.modal.close}">Fermer</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
+<!-- END BODY -->
 </html>
-
-

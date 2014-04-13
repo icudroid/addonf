@@ -7,6 +7,7 @@ import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.webapp.bean.ChangePasswordBean;
 import fr.k2i.adbeback.webapp.bean.ForgottenPasswordBean;
 import fr.k2i.adbeback.webapp.facade.UserFacade;
+import fr.k2i.adbeback.webapp.validator.ChangePasswordBeanValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -38,11 +39,19 @@ public class ForgotPasswordController {
     @Autowired
     private IMailEngine mailEngine;
 
+    @Autowired
+    private ChangePasswordBeanValidator changePasswordBeanValidator;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(validator);
     }
+
+    @InitBinder(value = "changePasswordBean")
+    protected void initBinderChangePasswordBean(WebDataBinder binder) {
+        binder.setValidator(changePasswordBeanValidator);
+    }
+
 
     @Autowired
     private UserFacade userFacade;
@@ -57,14 +66,11 @@ public class ForgotPasswordController {
     @RequestMapping(value = "/getForgottenPwd",method = RequestMethod.POST)
     public String sendEmail(@Valid  @ModelAttribute("passwordBean")ForgottenPasswordBean username,BindingResult bindingResult,Map<String, Object> model,HttpServletRequest request) throws SendException {
 
-        model.put("sended",false);
-
         if(!bindingResult.hasErrors()){
             userFacade.sendForgottenPasswd(username.getUsername(),request);
-            model.put("sended",true);
         }
 
-        return "getForgottenPwd";
+        return IMetaDataController.PathUtils.REDIRECT+"login";
     }
 
     @RequestMapping(value = "/pwdinit/{encryt}/{key}" ,method = RequestMethod.GET)
@@ -89,6 +95,7 @@ public class ForgotPasswordController {
 
         if(!bindingResult.hasErrors()){
             userFacade.changePasswd(username, changePasswordBean.getPassword());
+
             model.put("changed",true);
             return "changePwd";
         }else{

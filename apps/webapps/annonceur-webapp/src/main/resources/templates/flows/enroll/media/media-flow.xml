@@ -45,7 +45,7 @@
 
 
     <view-state id="needServiceTarget" view="enroll/media/popup/needMoreService" popup="true">
-        <transition  on="back"  to="customerTarget" />
+        <transition  on="back"  to="descriptionService" />
     </view-state>
 
     <view-state id="deleteServiceConfirm" view="enroll/media/popup/deleteServicePopup" popup="true">

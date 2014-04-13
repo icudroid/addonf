@@ -133,7 +133,9 @@ public class ConfirmEnrollAgency {
             case OK:
                 if(!bindingResult.hasErrors()){
                     if(res.equals(OtpServiceFacade.ConfirmationRegistration.OK)){
-                        webUserDao.enable(webUserDao.getUserByEmail(email).getId());
+                        Long id = webUserDao.getUserByEmail(email).getId();
+                        webUserDao.setPassword(id,userAgencyConfirmCommand.getPassword());
+                        webUserDao.enable(id);
                         otpServiceFacade.removeOtp(email,name,code);
                         return IMetaDataController.View.REGISTRATION_AGENCY_USER_CONFIRMED;
                     }

@@ -29,6 +29,7 @@ public interface IMetaData {
         String ATTACHMENTS_BRAND =                     "brand_attachment";
         String ATTACHMENTS_AGENCY =                    "agency_attachment";
         String ATTACHMENTS_MEDIA =                      "media_attachment";
+        String ATTACHMENTS =                            "company_attachment";
     }
 
     interface ColumnMetadata {
@@ -205,7 +206,8 @@ public interface IMetaData {
             String ATTACHEMENTS =                        "attachement_id";
             String CONFIG =                              "config_id" ;
             String LEGAL_STATUS =                        "legal_status";
-            String USER_JOIN =                           "agency_id";
+            String USER_JOIN =                           "user_id";
+            String JOIN =                                "media_id";
         }
 
 

@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -309,52 +308,12 @@ ALTER TABLE public.adscore_sequence OWNER TO addonf;
 --
 
 CREATE TABLE agency (
-    id bigint NOT NULL,
-    address character varying(150),
-    comp_address character varying(150),
-    creation_date timestamp without time zone,
-    legal_status character varying(255),
-    name character varying(255),
-    phone character varying(255),
-    siren character varying(255),
-    siret character varying(255),
-    city_id bigint,
-    country_id bigint,
+    company_id bigint NOT NULL,
     config_id bigint
 );
 
 
 ALTER TABLE public.agency OWNER TO addonf;
-
---
--- Name: agency_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
---
-
-CREATE SEQUENCE agency_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.agency_sequence OWNER TO addonf;
-
---
--- Name: attachement; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
---
-
-CREATE TABLE attachement (
-    id bigint NOT NULL,
-    extention character varying(10),
-    full_path character varying(255),
-    origin_name character varying(255),
-    size bigint,
-    status character varying(10)
-);
-
-
-ALTER TABLE public.attachement OWNER TO addonf;
 
 --
 -- Name: attachement_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
@@ -371,35 +330,28 @@ CREATE SEQUENCE attachement_sequence
 ALTER TABLE public.attachement_sequence OWNER TO addonf;
 
 --
--- Name: attachements; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
+-- Name: attachment; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
 --
 
-CREATE TABLE attachements (
-    agency_id bigint NULL,
-    attachements_id bigint NOT NULL,
-    attachement_id character varying(32) NOT NULL,
-    media_id bigint NULL,
-    brand_id bigint NULL
+CREATE TABLE attachment (
+    id bigint NOT NULL,
+    extention character varying(10),
+    full_path character varying(255),
+    origin_name character varying(255),
+    size bigint,
+    status character varying(10)
 );
 
 
-ALTER TABLE public.attachements OWNER TO addonf;
+ALTER TABLE public.attachment OWNER TO addonf;
 
 --
 -- Name: brand; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
 --
 
 CREATE TABLE brand (
-    id bigint NOT NULL,
-    address character varying(150),
-    comp_address character varying(150),
-    email character varying(255) NOT NULL,
     logo character varying(255),
-    name character varying(255),
-    siret character varying(255),
-    city_id bigint,
-    country_id bigint,
-    main_contact_id bigint,
+    company_id bigint NOT NULL,
     sector bigint,
     user_id bigint
 );
@@ -420,29 +372,15 @@ CREATE TABLE brand_no_display_with (
 ALTER TABLE public.brand_no_display_with OWNER TO addonf;
 
 --
--- Name: brand_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
---
-
-CREATE SEQUENCE brand_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.brand_sequence OWNER TO addonf;
-
---
 -- Name: cat_price; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
 --
 
 CREATE TABLE cat_price (
     id bigint NOT NULL,
+    media_type character varying(255),
     min_price double precision,
     cat_id bigint,
-    media_id bigint,
-    min_price_by_media_type_key character varying(255)
+    media_id bigint
 );
 
 
@@ -520,23 +458,52 @@ CREATE SEQUENCE city_sequence
 ALTER TABLE public.city_sequence OWNER TO addonf;
 
 --
--- Name: contact; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
+-- Name: company; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
 --
 
-CREATE TABLE contact (
+CREATE TABLE company (
     id bigint NOT NULL,
-    email character varying(60),
-    firstname character varying(60),
-    function character varying(60),
-    lastname character varying(60),
-    mobile character varying(15),
-    phone character varying(15),
-    sex character varying(5),
-    brand_id bigint
+    address character varying(150),
+    comp_address character varying(150),
+    creation_date timestamp without time zone,
+    legal_status character varying(255),
+    name character varying(255),
+    phone character varying(255),
+    siren character varying(255),
+    siret character varying(255),
+    city_id bigint,
+    country_id bigint
 );
 
 
-ALTER TABLE public.contact OWNER TO addonf;
+ALTER TABLE public.company OWNER TO addonf;
+
+--
+-- Name: company_attachment; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
+--
+
+CREATE TABLE company_attachment (
+    company_id bigint NOT NULL,
+    attachements_id bigint NOT NULL,
+    attachement_id character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.company_attachment OWNER TO addonf;
+
+--
+-- Name: company_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
+--
+
+CREATE SEQUENCE company_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.company_sequence OWNER TO addonf;
 
 --
 -- Name: contact_form; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
@@ -551,20 +518,6 @@ CREATE TABLE contact_form (
 
 
 ALTER TABLE public.contact_form OWNER TO addonf;
-
---
--- Name: contact_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
---
-
-CREATE SEQUENCE contact_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.contact_sequence OWNER TO addonf;
 
 --
 -- Name: contactform_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
@@ -826,36 +779,12 @@ ALTER TABLE public.in_charge_of OWNER TO addonf;
 --
 
 CREATE TABLE media (
-    id bigint NOT NULL,
-    address character varying(150),
-    comp_address character varying(150),
-    creation_date timestamp without time zone,
-    legal_status character varying(255),
-    name character varying(255),
-    phone character varying(255),
-    siren character varying(255),
-    siret character varying(255),
-    city_id bigint,
-    country_id bigint,
-    agency_id bigint
+    company_id bigint NOT NULL,
+    user_id bigint
 );
 
 
 ALTER TABLE public.media OWNER TO addonf;
-
---
--- Name: media_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
---
-
-CREATE SEQUENCE media_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.media_sequence OWNER TO addonf;
 
 --
 -- Name: merchant; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
@@ -1316,22 +1245,7 @@ SELECT pg_catalog.setval('adscore_sequence', 1, false);
 -- Data for Name: agency; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY agency (id, address, comp_address, creation_date, legal_status, name, phone, siren, siret, city_id, country_id, config_id) FROM stdin;
-\.
-
-
---
--- Name: agency_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
---
-
-SELECT pg_catalog.setval('agency_sequence', 1, false);
-
-
---
--- Data for Name: attachement; Type: TABLE DATA; Schema: public; Owner: addonf
---
-
-COPY attachement (id, extention, full_path, origin_name, size, status) FROM stdin;
+COPY agency (company_id, config_id) FROM stdin;
 \.
 
 
@@ -1343,10 +1257,10 @@ SELECT pg_catalog.setval('attachement_sequence', 1, false);
 
 
 --
--- Data for Name: attachements; Type: TABLE DATA; Schema: public; Owner: addonf
+-- Data for Name: attachment; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY attachements (agency_id, attachements_id, attachement_id, media_id, brand_id) FROM stdin;
+COPY attachment (id, extention, full_path, origin_name, size, status) FROM stdin;
 \.
 
 
@@ -1354,7 +1268,7 @@ COPY attachements (agency_id, attachements_id, attachement_id, media_id, brand_i
 -- Data for Name: brand; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY brand (id, address, comp_address, email, logo, name, siret, city_id, country_id, main_contact_id, sector, user_id) FROM stdin;
+COPY brand (logo, company_id, sector, user_id) FROM stdin;
 \.
 
 
@@ -1367,17 +1281,10 @@ COPY brand_no_display_with (brand_rule_id, brand_id) FROM stdin;
 
 
 --
--- Name: brand_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
---
-
-SELECT pg_catalog.setval('brand_sequence', 1, false);
-
-
---
 -- Data for Name: cat_price; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY cat_price (id, min_price, cat_id, media_id, min_price_by_media_type_key) FROM stdin;
+COPY cat_price (id, media_type, min_price, cat_id, media_id) FROM stdin;
 \.
 
 
@@ -1393,6 +1300,12 @@ SELECT pg_catalog.setval('categorieprice_sequence', 1, false);
 --
 
 COPY category (id, key, main_id) FROM stdin;
+1	1	\N
+2	2	\N
+3	3	\N
+4	4	\N
+5	5	\N
+6	6	\N
 \.
 
 
@@ -38214,15 +38127,30 @@ COPY city (id, city, lat, lon, zipcode, country_id) FROM stdin;
 -- Name: city_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
-SELECT pg_catalog.setval('city_sequence', 1, false);
+SELECT pg_catalog.setval('city_sequence', 287027, false);
 
 
 --
--- Data for Name: contact; Type: TABLE DATA; Schema: public; Owner: addonf
+-- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY contact (id, email, firstname, function, lastname, mobile, phone, sex, brand_id) FROM stdin;
+COPY company (id, address, comp_address, creation_date, legal_status, name, phone, siren, siret, city_id, country_id) FROM stdin;
 \.
+
+
+--
+-- Data for Name: company_attachment; Type: TABLE DATA; Schema: public; Owner: addonf
+--
+
+COPY company_attachment (company_id, attachements_id, attachement_id) FROM stdin;
+\.
+
+
+--
+-- Name: company_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
+--
+
+SELECT pg_catalog.setval('company_sequence', 1, false);
 
 
 --
@@ -38231,13 +38159,6 @@ COPY contact (id, email, firstname, function, lastname, mobile, phone, sex, bran
 
 COPY contact_form (id, email, message, subject) FROM stdin;
 \.
-
-
---
--- Name: contact_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
---
-
-SELECT pg_catalog.setval('contact_sequence', 1, false);
 
 
 --
@@ -38260,7 +38181,7 @@ COPY country (id, code) FROM stdin;
 -- Name: country_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
-SELECT pg_catalog.setval('country_sequence', 1, false);
+SELECT pg_catalog.setval('country_sequence', 2, false);
 
 
 --
@@ -38380,15 +38301,8 @@ COPY in_charge_of (agency_id, brand_id) FROM stdin;
 -- Data for Name: media; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY media (id, address, comp_address, creation_date, legal_status, name, phone, siren, siret, city_id, country_id, agency_id) FROM stdin;
+COPY media (company_id, user_id) FROM stdin;
 \.
-
-
---
--- Name: media_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
---
-
-SELECT pg_catalog.setval('media_sequence', 1, false);
 
 
 --
@@ -38516,6 +38430,40 @@ SELECT pg_catalog.setval('role_sequence', 1, false);
 --
 
 COPY sector (id, code, description) FROM stdin;
+1	1	Agriculture
+2	2	Chimie, pharmacie
+3	3	Énergie
+4	4	Maintenance, entretien
+5	5	Armée, sécurité
+6	6	Commerce, distribution
+7	7	Enseignement
+8	8	Mécanique
+9	9	Art, Design
+10	10	Communication - Marketing - Pub
+11	11	Environnement
+12	12	Mode, industrie textile
+13	13	Audiovisuel - Spectacle
+14	14	Construction aéronautique, ferroviaire et navale
+15	15	Fonction publique
+16	16	Recherche
+17	17	Audit, gestion
+18	18	Culture - Artisanat d'art
+19	19	Hôtellerie, restauration
+20	20	Santé
+21	21	Automobile
+22	22	Droit, justice
+23	23	Industrie alimentaire
+24	24	Social
+25	25	Banque, assurance
+26	26	Edition, Journalisme
+27	27	Informatique et télécoms : des débouchés pour les débutants
+28	28	Sport, loisirs – Tourisme
+29	29	Bois (filière)
+30	30	Électronique
+31	31	Logistique, transport
+32	32	Traduction - interprétariat
+33	33	BTP, architecture
+34	34	Verre, béton, céramique
 \.
 
 
@@ -38648,23 +38596,15 @@ ALTER TABLE ONLY admin_role
 --
 
 ALTER TABLE ONLY agency
-    ADD CONSTRAINT agency_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT agency_pkey PRIMARY KEY (company_id);
 
 
 --
--- Name: attachement_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
+-- Name: attachment_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
 --
 
-ALTER TABLE ONLY attachement
-    ADD CONSTRAINT attachement_pkey PRIMARY KEY (id);
-
-
---
--- Name: attachements_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
---
-
-ALTER TABLE ONLY attachements
-    ADD CONSTRAINT attachements_pkey PRIMARY KEY (brand_id, attachement_id);
+ALTER TABLE ONLY attachment
+    ADD CONSTRAINT attachment_pkey PRIMARY KEY (id);
 
 
 --
@@ -38672,7 +38612,7 @@ ALTER TABLE ONLY attachements
 --
 
 ALTER TABLE ONLY brand
-    ADD CONSTRAINT brand_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT brand_pkey PRIMARY KEY (company_id);
 
 
 --
@@ -38700,19 +38640,27 @@ ALTER TABLE ONLY city
 
 
 --
+-- Name: company_attachment_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
+--
+
+ALTER TABLE ONLY company_attachment
+    ADD CONSTRAINT company_attachment_pkey PRIMARY KEY (company_id, attachement_id);
+
+
+--
+-- Name: company_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
+--
+
+ALTER TABLE ONLY company
+    ADD CONSTRAINT company_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: contact_form_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
 --
 
 ALTER TABLE ONLY contact_form
     ADD CONSTRAINT contact_form_pkey PRIMARY KEY (id);
-
-
---
--- Name: contact_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
---
-
-ALTER TABLE ONLY contact
-    ADD CONSTRAINT contact_pkey PRIMARY KEY (id);
 
 
 --
@@ -38784,7 +38732,7 @@ ALTER TABLE ONLY ihm_config
 --
 
 ALTER TABLE ONLY media
-    ADD CONSTRAINT media_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT media_pkey PRIMARY KEY (company_id);
 
 
 --
@@ -38884,14 +38832,6 @@ ALTER TABLE ONLY country
 
 
 --
--- Name: uk_ghr655cuvnenokp8odahx2aqw; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
---
-
-ALTER TABLE ONLY attachements
-    ADD CONSTRAINT uk_ghr655cuvnenokp8odahx2aqw UNIQUE (attachements_id);
-
-
---
 -- Name: uk_gig5s6an2w3uiw2t7rvx9pomn; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
 --
 
@@ -38908,11 +38848,11 @@ ALTER TABLE ONLY ad_user
 
 
 --
--- Name: uk_tly6e6jmqmqtsqaygqg6ak4nd; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
+-- Name: uk_mk3g8bbmwufbx5dn8nb0igl4s; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
 --
 
-ALTER TABLE ONLY brand
-    ADD CONSTRAINT uk_tly6e6jmqmqtsqaygqg6ak4nd UNIQUE (email);
+ALTER TABLE ONLY company_attachment
+    ADD CONSTRAINT uk_mk3g8bbmwufbx5dn8nb0igl4s UNIQUE (attachements_id);
 
 
 --
@@ -38944,7 +38884,15 @@ ALTER TABLE ONLY goose_win
 --
 
 ALTER TABLE ONLY product
-    ADD CONSTRAINT fk_1td6gorl25rsvufiiive2svlx FOREIGN KEY (brand_id) REFERENCES brand(id);
+    ADD CONSTRAINT fk_1td6gorl25rsvufiiive2svlx FOREIGN KEY (brand_id) REFERENCES brand(company_id);
+
+
+--
+-- Name: fk_25x52g2wvhkuntcy3mep5oc28; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY company_attachment
+    ADD CONSTRAINT fk_25x52g2wvhkuntcy3mep5oc28 FOREIGN KEY (company_id) REFERENCES company(id);
 
 
 --
@@ -38953,14 +38901,6 @@ ALTER TABLE ONLY product
 
 ALTER TABLE ONLY cat_price
     ADD CONSTRAINT fk_272cqs5sgc5k1mtt3vbj8gy3s FOREIGN KEY (cat_id) REFERENCES category(id);
-
-
---
--- Name: fk_2c808o2wllonpae0olox2wft8; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY brand
-    ADD CONSTRAINT fk_2c808o2wllonpae0olox2wft8 FOREIGN KEY (main_contact_id) REFERENCES contact(id);
 
 
 --
@@ -38984,7 +38924,7 @@ ALTER TABLE ONLY ad_response
 --
 
 ALTER TABLE ONLY ad_user
-    ADD CONSTRAINT fk_48609sw19kp6mdb5awj289ijw FOREIGN KEY (agency_id) REFERENCES agency(id);
+    ADD CONSTRAINT fk_48609sw19kp6mdb5awj289ijw FOREIGN KEY (agency_id) REFERENCES agency(company_id);
 
 
 --
@@ -38996,19 +38936,11 @@ ALTER TABLE ONLY ad_rule
 
 
 --
--- Name: fk_593l6120p24xm4rjqtc30ikeq; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY brand
-    ADD CONSTRAINT fk_593l6120p24xm4rjqtc30ikeq FOREIGN KEY (country_id) REFERENCES country(id);
-
-
---
 -- Name: fk_5ruocpbafpbr9r1hvdk6068vu; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
 ALTER TABLE ONLY brand_no_display_with
-    ADD CONSTRAINT fk_5ruocpbafpbr9r1hvdk6068vu FOREIGN KEY (brand_id) REFERENCES brand(id);
+    ADD CONSTRAINT fk_5ruocpbafpbr9r1hvdk6068vu FOREIGN KEY (brand_id) REFERENCES brand(company_id);
 
 
 --
@@ -39020,19 +38952,19 @@ ALTER TABLE ONLY goose_win
 
 
 --
--- Name: fk_6194o0tcb02jj1uvtcpq5ilix; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY media
-    ADD CONSTRAINT fk_6194o0tcb02jj1uvtcpq5ilix FOREIGN KEY (city_id) REFERENCES city(id);
-
-
---
 -- Name: fk_634hxkccr1kr83hgcietjbste; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
 ALTER TABLE ONLY goose_level
     ADD CONSTRAINT fk_634hxkccr1kr83hgcietjbste FOREIGN KEY (goose_game_id) REFERENCES goose_game(id);
+
+
+--
+-- Name: fk_6375rhh2tyjm32i7i1r8lb4ew; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY company
+    ADD CONSTRAINT fk_6375rhh2tyjm32i7i1r8lb4ew FOREIGN KEY (country_id) REFERENCES country(id);
 
 
 --
@@ -39044,27 +38976,11 @@ ALTER TABLE ONLY ad_response
 
 
 --
--- Name: fk_698okil84g8fdbsxa71e5ft1t; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY media
-    ADD CONSTRAINT fk_698okil84g8fdbsxa71e5ft1t FOREIGN KEY (country_id) REFERENCES country(id);
-
-
---
 -- Name: fk_6l4vqhp2xv5s95vbeh0t724e2; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
 ALTER TABLE ONLY statitics
     ADD CONSTRAINT fk_6l4vqhp2xv5s95vbeh0t724e2 FOREIGN KEY (city_id) REFERENCES city(id);
-
-
---
--- Name: fk_6lsoentvajq356pqag1371cfg; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY contact
-    ADD CONSTRAINT fk_6lsoentvajq356pqag1371cfg FOREIGN KEY (brand_id) REFERENCES brand(id);
 
 
 --
@@ -39081,7 +38997,6 @@ ALTER TABLE ONLY in_charge_of
 
 ALTER TABLE ONLY goose_case
     ADD CONSTRAINT fk_77a7gux9xu997gdyc1jct6gus FOREIGN KEY (goosejump_id) REFERENCES goose_case(id);
-
 
 
 --
@@ -39105,7 +39020,15 @@ ALTER TABLE ONLY one_time_pwd_action
 --
 
 ALTER TABLE ONLY product_line
-    ADD CONSTRAINT fk_7y3l8d1q27c4ji42wmi538fuy FOREIGN KEY (brand_id) REFERENCES brand(id);
+    ADD CONSTRAINT fk_7y3l8d1q27c4ji42wmi538fuy FOREIGN KEY (brand_id) REFERENCES brand(company_id);
+
+
+--
+-- Name: fk_8bncevv4ukevxceln84sgtayl; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY company
+    ADD CONSTRAINT fk_8bncevv4ukevxceln84sgtayl FOREIGN KEY (city_id) REFERENCES city(id);
 
 
 --
@@ -39114,14 +39037,6 @@ ALTER TABLE ONLY product_line
 
 ALTER TABLE ONLY possibility
     ADD CONSTRAINT fk_8kouf5xfet4rb0i8xeyhhfbw FOREIGN KEY (possibility_id) REFERENCES adchoise(id);
-
-
---
--- Name: fk_8qoh13tvkv2o983cycpf5n73; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY agency
-    ADD CONSTRAINT fk_8qoh13tvkv2o983cycpf5n73 FOREIGN KEY (city_id) REFERENCES city(id);
 
 
 --
@@ -39141,11 +39056,11 @@ ALTER TABLE ONLY statitics
 
 
 --
--- Name: fk_bbjk9a8hmedbiv6ug5c3bw4p1; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+-- Name: fk_ahk302ghpyps81ki6yupav7cy; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
-ALTER TABLE ONLY attachements
-    ADD CONSTRAINT fk_bbjk9a8hmedbiv6ug5c3bw4p1 FOREIGN KEY (agency_id) REFERENCES agency(id);
+ALTER TABLE ONLY agency
+    ADD CONSTRAINT fk_ahk302ghpyps81ki6yupav7cy FOREIGN KEY (company_id) REFERENCES company(id);
 
 
 --
@@ -39173,14 +39088,6 @@ ALTER TABLE ONLY brand_no_display_with
 
 
 --
--- Name: fk_cn07dadaic75sdcimu4ff8esx; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY media
-    ADD CONSTRAINT fk_cn07dadaic75sdcimu4ff8esx FOREIGN KEY (agency_id) REFERENCES ad_user(id);
-
-
---
 -- Name: fk_cub5xpoe7ku7wc28wp1c6lb3a; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
@@ -39193,7 +39100,7 @@ ALTER TABLE ONLY goose_case
 --
 
 ALTER TABLE ONLY in_charge_of
-    ADD CONSTRAINT fk_d1lldpcujvjeyuq8en3t9awgu FOREIGN KEY (brand_id) REFERENCES brand(id);
+    ADD CONSTRAINT fk_d1lldpcujvjeyuq8en3t9awgu FOREIGN KEY (brand_id) REFERENCES brand(company_id);
 
 
 --
@@ -39201,7 +39108,7 @@ ALTER TABLE ONLY in_charge_of
 --
 
 ALTER TABLE ONLY target_media
-    ADD CONSTRAINT fk_dc9n0483anuv47synutc6j770 FOREIGN KEY (brand_id) REFERENCES brand(id);
+    ADD CONSTRAINT fk_dc9n0483anuv47synutc6j770 FOREIGN KEY (brand_id) REFERENCES brand(company_id);
 
 
 --
@@ -39225,7 +39132,7 @@ ALTER TABLE ONLY city
 --
 
 ALTER TABLE ONLY ad_user
-    ADD CONSTRAINT fk_drqmq7up9qsfxbunjqnlyguax FOREIGN KEY (brand_id) REFERENCES brand(id);
+    ADD CONSTRAINT fk_drqmq7up9qsfxbunjqnlyguax FOREIGN KEY (brand_id) REFERENCES brand(company_id);
 
 
 --
@@ -39269,14 +39176,6 @@ ALTER TABLE ONLY ad_response
 
 
 --
--- Name: fk_g6ayaws2hpfwdf11dvuytvbi3; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY attachements
-    ADD CONSTRAINT fk_g6ayaws2hpfwdf11dvuytvbi3 FOREIGN KEY (brand_id) REFERENCES brand(id);
-
-
---
 -- Name: fk_gcyitqy7nkgi36jltuf1ofl9d; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
@@ -39293,14 +39192,6 @@ ALTER TABLE ONLY adgame
 
 
 --
--- Name: fk_ghr655cuvnenokp8odahx2aqw; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY attachements
-    ADD CONSTRAINT fk_ghr655cuvnenokp8odahx2aqw FOREIGN KEY (attachements_id) REFERENCES attachement(id);
-
-
---
 -- Name: fk_gwkmhclanul8t7a9giwxmx273; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
@@ -39313,7 +39204,7 @@ ALTER TABLE ONLY adchoise
 --
 
 ALTER TABLE ONLY ad
-    ADD CONSTRAINT fk_hoqhoi1bd798u8xrnx8c5swf3 FOREIGN KEY (partner_id) REFERENCES agency(id);
+    ADD CONSTRAINT fk_hoqhoi1bd798u8xrnx8c5swf3 FOREIGN KEY (partner_id) REFERENCES agency(company_id);
 
 
 --
@@ -39353,7 +39244,15 @@ ALTER TABLE ONLY ad
 --
 
 ALTER TABLE ONLY cat_price
-    ADD CONSTRAINT fk_jixq07kp7rh2bnp3470o7axjw FOREIGN KEY (media_id) REFERENCES media(id);
+    ADD CONSTRAINT fk_jixq07kp7rh2bnp3470o7axjw FOREIGN KEY (media_id) REFERENCES media(company_id);
+
+
+--
+-- Name: fk_jrldptt2ef7wi9podhls4fgak; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY media
+    ADD CONSTRAINT fk_jrldptt2ef7wi9podhls4fgak FOREIGN KEY (user_id) REFERENCES ad_user(id);
 
 
 --
@@ -39361,7 +39260,7 @@ ALTER TABLE ONLY cat_price
 --
 
 ALTER TABLE ONLY possibility
-    ADD CONSTRAINT fk_jt0grjm68t39n6d89ynmc0mqo FOREIGN KEY (brand_id) REFERENCES brand(id);
+    ADD CONSTRAINT fk_jt0grjm68t39n6d89ynmc0mqo FOREIGN KEY (brand_id) REFERENCES brand(company_id);
 
 
 --
@@ -39370,6 +39269,14 @@ ALTER TABLE ONLY possibility
 
 ALTER TABLE ONLY adgame
     ADD CONSTRAINT fk_jy2yrx9b090uyf7a40etcn2sa FOREIGN KEY (player_id) REFERENCES ad_user(id);
+
+
+--
+-- Name: fk_kh94n82guhsrqvyigghhb5818; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY media
+    ADD CONSTRAINT fk_kh94n82guhsrqvyigghhb5818 FOREIGN KEY (company_id) REFERENCES company(id);
 
 
 --
@@ -39413,11 +39320,27 @@ ALTER TABLE ONLY viewed_ad
 
 
 --
+-- Name: fk_mk3g8bbmwufbx5dn8nb0igl4s; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY company_attachment
+    ADD CONSTRAINT fk_mk3g8bbmwufbx5dn8nb0igl4s FOREIGN KEY (attachements_id) REFERENCES attachment(id);
+
+
+--
 -- Name: fk_mtde7ihx2d4jhvebjct8j02pk; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
 ALTER TABLE ONLY customer_target
-    ADD CONSTRAINT fk_mtde7ihx2d4jhvebjct8j02pk FOREIGN KEY (brand_id) REFERENCES brand(id);
+    ADD CONSTRAINT fk_mtde7ihx2d4jhvebjct8j02pk FOREIGN KEY (brand_id) REFERENCES brand(company_id);
+
+
+--
+-- Name: fk_n7p5gury8orsnn171upbbtoc4; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY brand
+    ADD CONSTRAINT fk_n7p5gury8orsnn171upbbtoc4 FOREIGN KEY (company_id) REFERENCES company(id);
 
 
 --
@@ -39442,14 +39365,6 @@ ALTER TABLE ONLY ad_rule
 
 ALTER TABLE ONLY reduction
     ADD CONSTRAINT fk_o2249lv05ply9j5xtnem5tvdm FOREIGN KEY (merchant_id) REFERENCES merchant(id);
-
-
---
--- Name: fk_p6na5n0hct42mlju2n9vj1og2; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY brand
-    ADD CONSTRAINT fk_p6na5n0hct42mlju2n9vj1og2 FOREIGN KEY (city_id) REFERENCES city(id);
 
 
 --
@@ -39497,15 +39412,7 @@ ALTER TABLE ONLY possibility
 --
 
 ALTER TABLE ONLY ad
-    ADD CONSTRAINT fk_shchb8t2gyd44gx1n7n81brah FOREIGN KEY (brand_id) REFERENCES brand(id);
-
-
---
--- Name: fk_srojbhv02fawnijejkit0o7un; Type: FK CONSTRAINT; Schema: public; Owner: addonf
---
-
-ALTER TABLE ONLY agency
-    ADD CONSTRAINT fk_srojbhv02fawnijejkit0o7un FOREIGN KEY (country_id) REFERENCES country(id);
+    ADD CONSTRAINT fk_shchb8t2gyd44gx1n7n81brah FOREIGN KEY (brand_id) REFERENCES brand(company_id);
 
 
 --

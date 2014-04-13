@@ -2,6 +2,7 @@ package fr.k2i.adbeback.core.business.user;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.company.Company;
 import fr.k2i.adbeback.core.business.player.Address;
 import lombok.Data;
 
@@ -20,44 +21,13 @@ import java.util.Map;
 @Entity
 @Data
 @Table(name="agency")
-public class Agency extends BaseObject {
+@PrimaryKeyJoinColumn(name="company_id")
+public class Agency extends Company {
 
-    @Id
-    @SequenceGenerator(name = "Agency_Gen", sequenceName = "Agency_Sequence")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Agency_Gen")
-    private Long id;
-
-    private String name;
-
-    private String phone;
-
-    @Embedded
-    private Address address = new Address();
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = IMetaData.ColumnMetadata.Agency.CREATED_DATE)
-    private Date createdDate;
-
-
-    @Column(name = IMetaData.ColumnMetadata.Agency.SIRET_NUMBER)
-    private String siret;
-
-    @Column(name = IMetaData.ColumnMetadata.Agency.SIREN_NUMBER)
-    private String siren;
-
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = IMetaData.ColumnMetadata.Agency.LEGAL_STATUS)
-    private LegalStatus legalStatus;
 
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = IMetaData.ColumnMetadata.Agency.USER_JOIN)
     private List<AgencyUser> users = new ArrayList<AgencyUser>();
-
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name=IMetaData.TableMetadata.ATTACHMENTS_AGENCY)
-    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32,nullable = true)
-    private Map<String,Attachement> attachements;
 
 
     @OneToOne(cascade = {CascadeType.ALL})

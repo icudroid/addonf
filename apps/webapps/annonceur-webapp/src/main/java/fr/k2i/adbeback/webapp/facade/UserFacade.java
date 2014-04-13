@@ -19,6 +19,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -39,8 +40,10 @@ import java.util.Map;
 @Component
 public class UserFacade {
 
+/*
     @Autowired
     private BrandManager brandManager;
+*/
 
     @Autowired
     private IWebUserDao webUserDao;
@@ -114,8 +117,8 @@ public class UserFacade {
 
     @Transactional
     public void sendForgottenPasswd(String username,HttpServletRequest request) throws SendException {
-/*
-        Brand user = brandDao.findByEmail(username);
+
+        User user = webUserDao.getUserByEmail(username);
 
         if(user != null){
 
@@ -137,7 +140,7 @@ public class UserFacade {
 
             }
         }
-*/
+
 
     }
 
@@ -145,17 +148,17 @@ public class UserFacade {
 
     @Transactional
     public boolean isValidateOtp(String username, String key){
-/*        Brand user = brandDao.findByEmail(username);
+        User user = webUserDao.getUserByEmail(username);
         if(user ==null){
             return false;
         }
-        OTPUserSecurityConfirm otp = securityDao.findByBrand(user);
+        OTPUserSecurityConfirm otp = securityDao.findByUser(user);
         if(otp == null){
             return false;
         }
         if(!otp.getKey().equals(key)){
             return false;
-        }*/
+        }
 
         return true;
     }
@@ -163,17 +166,20 @@ public class UserFacade {
 
     @Transactional
     public void changePasswd(String username, String password) {
-        brandManager.changePasswd(username, password);
+        User user = webUserDao.getUserByEmail(username);
+        webUserDao.setPassword(user.getId(), password);
+        OTPUserSecurityConfirm otp = securityDao.findByUser(user);
+        securityDao.remove(otp);
     }
 
     @Transactional
     public void changePasswd(String password) throws Exception {
-        //brandManager.changePasswd(getCurrentUser(), password);
+        webUserDao.setPassword(getCurrentUser().getId(), password);
     }
 
     public void validateChangePwdBean(ChangePwdBean changePwdBean, Errors errors,Locale locale) throws Exception {
 
-/*        if(!errors.hasErrors()){
+        if(!errors.hasErrors()){
             String password = getCurrentUser().getPassword();
             String old = passwordEncoder.encodePassword(changePwdBean.getOldPassword(), null);
             if(!password.equals(old)){
@@ -183,7 +189,7 @@ public class UserFacade {
             if(!changePwdBean.getNewConfirmPassword().equals(changePwdBean.getNewPassword())){
                 errors.rejectValue("newConfirmPassword","notMatch",messageSource.getMessage("addonf.notMatch",null,locale));
             }
-        }*/
+        }
 
     }
 

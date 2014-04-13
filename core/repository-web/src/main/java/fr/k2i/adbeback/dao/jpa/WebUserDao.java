@@ -7,6 +7,8 @@ import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.core.business.user.QUser;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.IWebUserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +29,9 @@ import java.util.List;
 */
 @Repository
 public class WebUserDao extends GenericDaoJpa<User, Long> implements UserDetailsService,IWebUserDao {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Constructor that sets the entity to User.class.
@@ -84,6 +89,13 @@ public class WebUserDao extends GenericDaoJpa<User, Long> implements UserDetails
     @Override
     public void enable(Long idUser) {
         get(idUser).setEnabled(true);
+    }
+
+
+    @Transactional
+    @Override
+    public void setPassword(Long idUser, String password) {
+        get(idUser).setPassword(passwordEncoder.encodePassword(password,null));
     }
 }
 

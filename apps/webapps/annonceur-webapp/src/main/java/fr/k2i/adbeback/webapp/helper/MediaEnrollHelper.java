@@ -15,8 +15,10 @@ import fr.k2i.adbeback.webapp.bean.AddressBean;
 import fr.k2i.adbeback.webapp.bean.FileCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.AttachementsCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.InformationCommand;
+import fr.k2i.adbeback.webapp.bean.enroll.media.CategoryPriceBean;
 import fr.k2i.adbeback.webapp.bean.enroll.media.MediaEnrollCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.media.MediaUserBean;
+import fr.k2i.adbeback.webapp.bean.enroll.media.PriceInformationCommand;
 import fr.k2i.adbeback.webapp.controller.UploadController;
 import fr.k2i.adbeback.webapp.facade.FileUtils;
 import fr.k2i.adbeback.webapp.state.enroll.MediaEnrollFlowState;
@@ -87,7 +89,8 @@ public class MediaEnrollHelper {
     @Resource(name = "annonceurUserDao")
     private IWebUserDao userDao;
 
-
+    @Autowired
+    private ICategoryDao categoryDao;
 
     public List<String> availableFiles(MediaEnrollFlowState state){
         return state.getRegistration().availableFiles();
@@ -197,6 +200,23 @@ public class MediaEnrollHelper {
 
         media.setAttachements(fileUploaded);
 
+        List<CategoryPrice> minPriceByMediaType = new ArrayList<CategoryPrice>();
+        Map<MediaType, List<CategoryPriceBean>> prices = mediaEnrollCommand.getPrices().getPrices();
+
+
+        for (List<CategoryPriceBean> categoryPriceBeans : prices.values()) {
+            for (CategoryPriceBean categoryPriceBean : categoryPriceBeans) {
+                CategoryPrice cat = new CategoryPrice();
+
+                cat.setCategory(categoryDao.findByKey(categoryPriceBean.getCategory()));
+                cat.setMediaType(categoryPriceBean.getMediaType());
+                cat.setMinPrice(categoryPriceBean.getPrice());
+                minPriceByMediaType.add(cat);
+            }
+        }
+
+        media.setMinPriceByMediaType(minPriceByMediaType);
+
 
         media = mediaDao.save(media);
 
@@ -251,6 +271,54 @@ public class MediaEnrollHelper {
 
         mediaDao.save(media);
 
+
+    }
+
+
+
+
+    public String addService(MediaEnrollCommand mediaEnrollCommand){
+        CategoryPriceBean current = mediaEnrollCommand.getPrices().getCurrent();
+        current.setUid(UUID.randomUUID().toString());
+        Map<MediaType, List<CategoryPriceBean>> prices = mediaEnrollCommand.getPrices().getPrices();
+        List<CategoryPriceBean> list = prices.get(current.getMediaType());
+        if(list==null){
+            list = new ArrayList<CategoryPriceBean>();
+            prices.put(current.getMediaType(),list);
+        }
+        list.add(current);
+        mediaEnrollCommand.getPrices().setCurrent(new CategoryPriceBean());
+        return "ok";
+    }
+
+    public String isServiceEmpty(MediaEnrollCommand mediaEnrollCommand){
+        Map<MediaType, List<CategoryPriceBean>> prices = mediaEnrollCommand.getPrices().getPrices();
+        return prices.isEmpty()?"empty":"ok";
+    }
+
+
+    public void deleteService(MediaEnrollCommand mediaEnrollCommand,String uid){
+        Map<MediaType, List<CategoryPriceBean>> prices = mediaEnrollCommand.getPrices().getPrices();
+
+        CategoryPriceBean toDelete = null;
+        for (Map.Entry<MediaType, List<CategoryPriceBean>> mediaTypeListEntry : prices.entrySet()) {
+
+            for (CategoryPriceBean priceBean : mediaTypeListEntry.getValue()) {
+                if(priceBean.getUid().equals(uid)){
+                    toDelete = priceBean;
+                    break;
+                }
+            }
+            if(toDelete!=null)break;
+        }
+
+        if(toDelete!=null){
+            List<CategoryPriceBean> categoryPriceBeans = prices.get(toDelete.getMediaType());
+            categoryPriceBeans.remove(toDelete);
+            if(categoryPriceBeans.isEmpty()){
+                prices.remove(toDelete.getMediaType());
+            }
+        }
 
     }
 

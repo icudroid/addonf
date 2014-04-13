@@ -25,6 +25,9 @@ public class CategoryPrice extends BaseObject implements Serializable {
 
     private Double minPrice;
 
+    @Enumerated(EnumType.STRING)
+    private MediaType mediaType;
+
     @ManyToOne
     @JoinColumn(name = "cat_id")
     private Category category;

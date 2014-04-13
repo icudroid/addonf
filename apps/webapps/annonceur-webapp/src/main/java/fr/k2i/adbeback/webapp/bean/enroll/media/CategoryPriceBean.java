@@ -15,6 +15,7 @@ import java.io.Serializable;
  */
 @Data
 public class CategoryPriceBean implements Serializable{
+    private String uid;
     private Double price;
     private String category;
     private MediaType mediaType;

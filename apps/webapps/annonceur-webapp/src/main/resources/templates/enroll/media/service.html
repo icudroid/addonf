@@ -37,7 +37,7 @@
 
                     <br/>
 
-                    <div th:if="${#lists.isEmpty(mediaEnrollCommand.prices) == false}">
+                    <div th:if="${#maps.isEmpty(mediaEnrollCommand.prices.prices) == false}">
                         <h4 th:utext="#{enroll.media.list.services}">Prix / categorie / Media</h4>
                         <fieldset>
                             <table class="table">
@@ -47,9 +47,23 @@
                                     <th th:text="#{enroll.media.table.service.price}">Prix</th>
                                     <th th:text="#{enroll.media.table.service.actions}">Action</th>
                                 </tr>
-                                <tr th:each="p,pStat : ${mediaEnrollCommand.prices}">
-                                    <td th:if="${pStat.index == 0}">Radio</td>
-                                </tr>
+
+                                <no th:each="media : ${mediaEnrollCommand.prices.prices}">
+                                    <tr th:each="categoryPrice,pCategoryPrice : ${mediaEnrollCommand.prices.prices[__${media.key}__]}">
+                                        <td th:if="${pCategoryPrice.index == 0}" th:rowspan="${pCategoryPrice.size}" th:text="#{${'media.type.'+categoryPrice.mediaType}}">Radio</td>
+                                        <td th:text="#{${'category.'+categoryPrice.category}}">category</td>
+                                        <td th:text="${categoryPrice.price}">0.30</td>
+                                        <td>
+                                            <a th:id="${'deleteBtn_'+pCategoryPrice.index}" class="btn btn-default" th:text="#{btn.delete}" th:href="@{${flowExecutionUrl}(_eventId='deleteService',uid=${categoryPrice.uid})}">Supprimer</a>
+                                            <script th:inline="javascript">
+                                                Spring.addDecoration(
+                                                        new Spring.AjaxEventDecoration({elementId:[[${'deleteBtn_'+pCategoryPrice.index}]],event:'onclick'}));
+                                            </script>
+                                        </td>
+                                    </tr>
+                                </no>
+
+
                             </table>
                         </fieldset>
                     </div>

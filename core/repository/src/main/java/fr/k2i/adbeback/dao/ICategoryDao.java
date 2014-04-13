@@ -13,4 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface ICategoryDao extends IGenericDao<Category, Long> {
 
+    Category findByKey(String category);
 }

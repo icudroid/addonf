@@ -36861,40 +36861,40 @@ SELECT pg_catalog.setval('role_sequence', 1, false);
 --
 
 COPY sector (id, code, description) FROM stdin;
-1       1       Agriculture
-2       2       Chimie, pharmacie
-3       3       Énergie
-4       4       Maintenance, entretien
-5       5       Armée, sécurité
-6       6       Commerce, distribution
-7       7       Enseignement
-8       8       Mécanique
-9       9       Art, Design
-10      10      Communication - Marketing - Pub
-11      11      Environnement
-12      12      Mode, industrie textile
-13      13      Audiovisuel - Spectacle
-14      14      Construction aéronautique, ferroviaire et navale
-15      15      Fonction publique
-16      16      Recherche
-17      17      Audit, gestion
-18      18      Culture - Artisanat d'art
-19      19      Hôtellerie, restauration
-20      20      Santé
-21      21      Automobile
-22      22      Droit, justice
-23      23      Industrie alimentaire
-24      24      Social
-25      25      Banque, assurance
-26      26      Edition, Journalisme
-27      27      Informatique et télécoms : des débouchés pour les débutants
-28      28      Sport, loisirs – Tourisme
-29      29      Bois (filière)
-30      30      Électronique
-31      31      Logistique, transport
-32      32      Traduction - interprétariat
-33      33      BTP, architecture
-34      34      Verre, béton, céramique
+1	1	Agriculture
+2	2	Chimie, pharmacie
+3	3	Énergie
+4	4	Maintenance, entretien
+5	5	Armée, sécurité
+6	6	Commerce, distribution
+7	7	Enseignement
+8	8	Mécanique
+9	9	Art, Design
+10	10	Communication - Marketing - Pub
+11	11	Environnement
+12	12	Mode, industrie textile
+13	13	Audiovisuel - Spectacle
+14	14	Construction aéronautique, ferroviaire et navale
+15	15	Fonction publique
+16	16	Recherche
+17	17	Audit, gestion
+18	18	Culture - Artisanat d'art
+19	19	Hôtellerie, restauration
+20	20	Santé
+21	21	Automobile
+22	22	Droit, justice
+23	23	Industrie alimentaire
+24	24	Social
+25	25	Banque, assurance
+26	26	Edition, Journalisme
+27	27	Informatique et télécoms : des débouchés pour les débutants
+28	28	Sport, loisirs – Tourisme
+29	29	Bois (filière)
+30	30	Électronique
+31	31	Logistique, transport
+32	32	Traduction - interprétariat
+33	33	BTP, architecture
+34	34	Verre, béton, céramique
 \.
 
 
@@ -36903,3 +36903,25 @@ COPY sector (id, code, description) FROM stdin;
 --
 
 SELECT pg_catalog.setval('sector_sequence', 1, false);
+
+
+
+--
+-- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: addonf
+--
+
+COPY category (id, key, main_id) FROM stdin;
+1	1	\N
+2	2	\N
+3	3	\N
+4	4	\N
+5	5	\N
+6	6	\N
+\.
+
+
+--
+-- Name: category_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
+--
+
+SELECT pg_catalog.setval('category_sequence', 1, false);

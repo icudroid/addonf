@@ -2,11 +2,13 @@ package fr.k2i.adbeback.core.business.user;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.company.Company;
 import fr.k2i.adbeback.core.business.player.Address;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,49 +20,15 @@ import java.util.Map;
 @Entity
 @Data
 @Table(name="media")
-public class Media extends BaseObject {
-
-    @Id
-    @SequenceGenerator(name = "Media_Gen", sequenceName = "Media_Sequence")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Media_Gen")
-    private Long id;
-
-    private String name;
-
-    private String phone;
-
-    @Embedded
-    private Address address = new Address();
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = IMetaData.ColumnMetadata.Media.CREATED_DATE)
-    private Date createdDate;
-
-
-    @Column(name = IMetaData.ColumnMetadata.Media.SIRET_NUMBER)
-    private String siret;
-
-    @Column(name = IMetaData.ColumnMetadata.Media.SIREN_NUMBER)
-    private String siren;
-
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = IMetaData.ColumnMetadata.Media.LEGAL_STATUS)
-    private LegalStatus legalStatus;
+@PrimaryKeyJoinColumn(name="company_id")
+public class Media extends Company {
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = IMetaData.ColumnMetadata.Media.USER_JOIN)
     private MediaUser user;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name=IMetaData.TableMetadata.ATTACHMENTS_MEDIA)
-    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32,nullable = true)
-    private Map<String,Attachement> attachements;
-
-
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="media_id")
-    @MapKeyEnumerated(EnumType.STRING)
-    private Map<MediaType,CategoryPrice> minPriceByMediaType;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Media.JOIN)
+    private List<CategoryPrice> minPriceByMediaType;
 
 }

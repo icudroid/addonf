@@ -67,7 +67,7 @@ var Login = function () {
 	            focusInvalid: false, // do not focus the last invalid input
 	            ignore: "",
 	            rules: {
-	                email: {
+	                username: {
 	                    required: true,
 	                    email: true
 	                }
@@ -98,6 +98,7 @@ var Login = function () {
 	            },
 
 	            submitHandler: function (form) {
+                    $('#confirm').modal({show:true});
 	                form.submit();
 	            }
 	        });
@@ -218,7 +219,7 @@ var Login = function () {
 	            },
 
 	            submitHandler: function (form) {
-	                form.submit();
+                    form.submit();
 	            }
 	        });
 

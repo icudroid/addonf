@@ -2,6 +2,7 @@ package fr.k2i.adbeback.core.business.ad;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.company.Company;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.user.Attachement;
 import fr.k2i.adbeback.core.business.user.BrandUser;
@@ -16,59 +17,23 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = IMetaData.TableMetadata.BRAND)
-public class Brand extends BaseObject implements Serializable{
-	private static final long serialVersionUID = -2695302801414355764L;
-
-    @Id
-    @SequenceGenerator(name = "Brand_Gen", sequenceName = "Brand_Sequence")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Brand_Gen")
-    private Long id;
+@PrimaryKeyJoinColumn(name="company_id")
+public class Brand extends Company{
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Brand.PRODUCT_JOIN)
     private List<Product> products;
 
-    @Column(name = IMetaData.ColumnMetadata.Brand.NAME)
-    private String name;
-
     @Column(name = IMetaData.ColumnMetadata.Brand.LOGO)
 	private String logo;
-
-    @OneToMany(mappedBy = "brand",cascade = {CascadeType.ALL})
-    private List<Contact> contacts = new ArrayList<Contact>();
-
-    @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = IMetaData.ColumnMetadata.Brand.MAIN_CONTACT)
-    private Contact main;
-
-    @Column(name = IMetaData.ColumnMetadata.Brand.SIRET)
-    private String siret;
-
-    @Embedded
-    private Address address;
-
-    @Temporal(TemporalType.DATE)
-    private Date CreatedDate;
-
-    @Enumerated(EnumType.STRING)
-    private LegalStatus legalStatus;
-
-    private String phone;
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = IMetaData.ColumnMetadata.Brand.USER_JOIN)
     private BrandUser user;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name=IMetaData.TableMetadata.ATTACHMENTS_BRAND)
-    @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID, length = 32, nullable = true)
-    private Map<String,Attachement> attachements;
-
-
     @ManyToOne
     @JoinColumn(name = IMetaData.ColumnMetadata.Brand.TYPE)
     protected Sector sector;
-
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Brand.JOIN)
@@ -84,14 +49,6 @@ public class Brand extends BaseObject implements Serializable{
     @CollectionTable(name = "product_line", joinColumns = @JoinColumn(name = "brand_id"))
     @Column(name = "product_line")
     protected List<String> productLines;
-
-    public void setMain(Contact main) {
-        if(!contacts.contains(main)){
-            contacts.add(main);
-            main.setBrand(this);
-        }
-        this.main = main;
-    }
 
 
     @Override

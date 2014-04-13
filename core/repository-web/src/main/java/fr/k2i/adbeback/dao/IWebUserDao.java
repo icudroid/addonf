@@ -20,4 +20,5 @@ public interface IWebUserDao extends IGenericDao<User, Long> {
 
     void enable(Long idUser);
 
+    void setPassword(Long idUser, String password);
 }
