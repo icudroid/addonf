@@ -242,8 +242,12 @@ public class UserFacade {
     @Transactional
     public List<AdBean> getAdsForConnectedUser() throws Exception {
         List<Brand> brands = getBrandForConnectedUser();
-
         List<AdBean> res = new ArrayList<AdBean>();
+
+        if(brands.isEmpty()){
+            return res;
+        }
+
         List<Ad> ads = adDao.findByBrands(brands);
 
         for (Ad ad : ads) {
