@@ -39,3 +39,4 @@ logs
 overlays
 log.txt
 pom.xml.versionsBackup
+node_modules/**
