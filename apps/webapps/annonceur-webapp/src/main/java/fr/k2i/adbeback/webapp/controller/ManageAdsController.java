@@ -1,16 +1,11 @@
 package fr.k2i.adbeback.webapp.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.k2i.adbeback.core.business.ad.rule.AgeRule;
-import fr.k2i.adbeback.core.business.ad.rule.CityRule;
-import fr.k2i.adbeback.core.business.ad.rule.CountryRule;
-import fr.k2i.adbeback.core.business.ad.rule.SexRule;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenMultiRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
-import fr.k2i.adbeback.webapp.facade.BrandServiceFacade;
+import fr.k2i.adbeback.webapp.facade.UserFacade;
 import fr.k2i.adbeback.webapp.validator.CampaignCommandValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -51,7 +46,7 @@ public class ManageAdsController {
 
     public static final String UPLOADED_IMG = "uploadedImg";
     @Autowired
-    private BrandServiceFacade brandServiceFacade;
+    private UserFacade userFacade;
 
 
     @Autowired
@@ -71,7 +66,7 @@ public class ManageAdsController {
 
     @RequestMapping(value = IMetaDataController.Path.LIST_CAMPAIGNS)
     public String showCampaignAds(ModelMap model) throws Exception {
-        List<AdBean> ads = brandServiceFacade.getAdsForConnectedUser();
+        List<AdBean> ads = userFacade.getAdsForConnectedUser();
         model.addAttribute("campaigns",ads);
         return IMetaDataController.View.LIST_CAMPAIGNS;
     }
@@ -86,7 +81,8 @@ public class ManageAdsController {
 
     @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN,method = RequestMethod.GET)
     public String modifyCampaign(@PathVariable Long idAd,Map<String, Object> model,HttpServletRequest request) throws Exception {
-        CampaignCommand campaignCommand = brandServiceFacade.loadCampaign(idAd);
+
+        CampaignCommand campaignCommand = userFacade.loadCampaign(idAd);
         request.getSession().setAttribute("campaignCommand", campaignCommand);
         return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_1;
     }
@@ -721,7 +717,7 @@ public ModelAndView addOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
 
-        this.brandServiceFacade.save(campaignCommand);
+        this.userFacade.save(campaignCommand);
         request.getSession().removeAttribute("campaignCommand");
         request.getSession().removeAttribute(UPLOADED_IMG);
         return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.LIST_CAMPAIGNS;
@@ -733,7 +729,7 @@ public ModelAndView addOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean
 
         CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
 
-        this.brandServiceFacade.save(campaignCommand);
+        this.userFacade.save(campaignCommand);
         request.getSession().removeAttribute("campaignCommand");
         return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.LIST_CAMPAIGNS;
     }
@@ -774,7 +770,7 @@ public ModelAndView addOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean
 
     @RequestMapping(IMetaDataController.Path.GET_ALL_ADS)
     public @ResponseBody Page<AdBean> getAll(Pageable pageable) throws Exception {
-        return brandServiceFacade.getAllForConnectedUser(pageable);
+        return userFacade.getAllForConnectedUser(pageable);
     }
 
 

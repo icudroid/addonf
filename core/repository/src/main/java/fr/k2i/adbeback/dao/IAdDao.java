@@ -42,5 +42,9 @@ public interface IAdDao extends IGenericDao<Ad, Long> {
 
     @Transactional
     List<Ad> getAllValidForAndProvidedBy(Player player, MediaUser media);
+
+    List<Ad> findByBrands(List<Brand> brands);
+
+    Page<Ad> findByBrands(List<Brand> brands, Pageable pageable);
 }
 

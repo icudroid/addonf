@@ -290,6 +290,15 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         return query.list(qAd);
     }
 
+
+    @Override
+    public List<Ad> findByBrands(List<Brand> brands) {
+        QAd qAd = QAd.ad;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qAd).where(qAd.brand.in(brands));
+        return query.list(qAd);
+    }
+
     @Override
     public Page<Ad> findByBrand(Brand brand, Pageable pageable) {
         QAd qAd = QAd.ad;
@@ -297,6 +306,16 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         query.from(qAd).where(qAd.brand.eq(brand));
         return new PageImpl<Ad>(query.list(qAd),pageable,query.count());
     }
+
+
+    @Override
+    public Page<Ad> findByBrands(List<Brand> brands, Pageable pageable) {
+        QAd qAd = QAd.ad;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(qAd).where(qAd.brand.in(brands));
+        return new PageImpl<Ad>(query.list(qAd),pageable,query.count());
+    }
+
 
     @Override
     public List<VideoAd> findNoEncodedAd() {
