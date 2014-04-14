@@ -18,7 +18,10 @@
 
 
     <subflow-state id="media" subflow="enroll/media">
-
+        <transition on="recap-validation" to="mediaAgency"/>
+        <on-exit>
+            <evaluate expression="mediaEnrollHelper.createAccount(flowRequestContext,currentEvent.attributes.mediaEnrollCommand,currentEvent.attributes.state)"/>
+        </on-exit>
     </subflow-state>
 
     <subflow-state id="agency" subflow="enroll/agency">
@@ -40,5 +43,8 @@
     </end-state>
 
     <end-state id="advAgency" view="enroll/adv/recap">
+    </end-state>
+
+    <end-state id="mediaAgency" view="enroll/media/recap">
     </end-state>
 </flow>
