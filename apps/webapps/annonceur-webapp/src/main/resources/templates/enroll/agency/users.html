@@ -68,7 +68,7 @@
 
                     <!-- Création des utilisateurs -->
 
-                    <div th:class="${#fields.hasErrors('users.current.role')}? 'form-group has-error':'form-group'">
+<!--                    <div th:class="${#fields.hasErrors('users.current.role')}? 'form-group has-error':'form-group'">
                         <label for="role" class=" control-label" th:text="#{enroll.agency.role}">Role</label>
                         <select id="role" class="form-control" th:field="*{users.current.role}">
                             <option th:each="role : ${values['roles']}"
@@ -76,7 +76,7 @@
                                     th:text="#{${'role.'+role}}">Admin</option>
                         </select>
                         <span class="help-block" th:if="${#fields.hasErrors('users.current.role')}" th:errors="*{users.current.role}">Error</span>
-                    </div>
+                    </div>-->
 
 
                     <div th:class="${#fields.hasErrors('users.current.sex')}? 'form-group has-error':'form-group'">

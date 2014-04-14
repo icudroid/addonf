@@ -4,6 +4,8 @@ import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.user.Agency;
+import fr.k2i.adbeback.core.business.user.User;
+import fr.k2i.adbeback.core.business.user.UserAccess;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
@@ -64,6 +67,11 @@ public abstract  class Ad extends BaseObject implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.PARTNER)
     protected Agency providedBy;
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.JOIN)
+    protected List<UserAccess> access;
 
     @Override
 	public int hashCode() {

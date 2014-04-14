@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -1078,6 +1079,20 @@ CREATE TABLE target_media (
 ALTER TABLE public.target_media OWNER TO addonf;
 
 --
+-- Name: user_acces; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
+--
+
+CREATE TABLE user_acces (
+    id bigint NOT NULL,
+    ad_right character varying(255),
+    user_id bigint,
+    ad_id bigint
+);
+
+
+ALTER TABLE public.user_acces OWNER TO addonf;
+
+--
 -- Name: user_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
 --
 
@@ -1090,6 +1105,20 @@ CREATE SEQUENCE user_sequence
 
 
 ALTER TABLE public.user_sequence OWNER TO addonf;
+
+--
+-- Name: useraccess_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
+--
+
+CREATE SEQUENCE useraccess_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.useraccess_sequence OWNER TO addonf;
 
 --
 -- Name: viewed_ad; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
@@ -38413,8 +38442,7 @@ COPY role (id, description, name) FROM stdin;
 3	ROLE_ANNONCEUR	ROLE_ANNONCEUR
 4	ROLE_MEDIA	ROLE_MEDIA
 5	ROLE_AGENCY_ADMIN	ROLE_AGENCY_ADMIN
-6	ROLE_AGENCY_USER_READ	ROLE_AGENCY_USER_READ
-7	ROLE_AGENCY_USER_WRITE	ROLE_AGENCY_USER_WRITE
+6	ROLE_AGENCY_USER	ROLE_AGENCY_USER
 \.
 
 
@@ -38498,10 +38526,25 @@ COPY target_media (brand_id, target_media) FROM stdin;
 
 
 --
+-- Data for Name: user_acces; Type: TABLE DATA; Schema: public; Owner: addonf
+--
+
+COPY user_acces (id, ad_right, user_id, ad_id) FROM stdin;
+\.
+
+
+--
 -- Name: user_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
 SELECT pg_catalog.setval('user_sequence', 1, false);
+
+
+--
+-- Name: useraccess_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
+--
+
+SELECT pg_catalog.setval('useraccess_sequence', 1, false);
 
 
 --
@@ -38853,6 +38896,14 @@ ALTER TABLE ONLY ad_user
 
 ALTER TABLE ONLY company_attachment
     ADD CONSTRAINT uk_mk3g8bbmwufbx5dn8nb0igl4s UNIQUE (attachements_id);
+
+
+--
+-- Name: user_acces_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
+--
+
+ALTER TABLE ONLY user_acces
+    ADD CONSTRAINT user_acces_pkey PRIMARY KEY (id);
 
 
 --
@@ -39272,6 +39323,14 @@ ALTER TABLE ONLY adgame
 
 
 --
+-- Name: fk_kbuvpxes1ujkx4yspg2c549l; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY user_acces
+    ADD CONSTRAINT fk_kbuvpxes1ujkx4yspg2c549l FOREIGN KEY (user_id) REFERENCES ad_user(id);
+
+
+--
 -- Name: fk_kh94n82guhsrqvyigghhb5818; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
@@ -39293,6 +39352,14 @@ ALTER TABLE ONLY category
 
 ALTER TABLE ONLY possibility
     ADD CONSTRAINT fk_lqb6973mwmp7etpgbjuiwybse FOREIGN KEY (correct_possibility_id) REFERENCES adchoise(id);
+
+
+--
+-- Name: fk_lx6pi2shcoioxeegn6ua90olc; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY user_acces
+    ADD CONSTRAINT fk_lx6pi2shcoioxeegn6ua90olc FOREIGN KEY (ad_id) REFERENCES ad(id);
 
 
 --

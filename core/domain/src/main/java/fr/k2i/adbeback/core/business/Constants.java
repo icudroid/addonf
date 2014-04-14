@@ -78,8 +78,7 @@ public final class Constants {
      * role pour les agences
      */
     public static final String AGENCY_ADMIN_ROLE = "ROLE_AGENCY_ADMIN";
-    public static final String AGENCY_USER_READ_ROLE = "ROLE_AGENCY_USER_READ";
-    public static final String AGENCY_USER_WRITE_ROLE = "ROLE_AGENCY_USER_WRITE";
+    public static final String AGENCY_USER_ROLE = "ROLE_AGENCY_USER";
 
     /**
      * The name of the user's role list, a request-scoped attribute

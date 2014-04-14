@@ -110,6 +110,7 @@ public class AgencyEnrollHelper {
     public void addUser(AgencyEnrollCommand agencyEnrollCommand){
         AgencyUsersCommand users = agencyEnrollCommand.getUsers();
         AgencyUserBean current = users.getCurrent();
+        current.setRole(AgencyRole.USER);
         users.getUsers().add(current);
     }
 

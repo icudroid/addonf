@@ -247,9 +247,11 @@ public class AgencyEnrollCommandValidator{
         Set<ConstraintViolation<AgencyUserBean>> validate = beanValidator.validate(user, Default.class);
         validatorHelper.importBeanValidationErrors(validate,errors,"users.current.");
 
+/*
         if(AgencyRole.ADMIN.equals(user.getRole())){
             errors.rejectValue("users.current.role","not.admin");
         }
+*/
 
         if(StringUtils.isEmpty(user.getEmail())){
             errors.rejectValue("users.current.email","required");

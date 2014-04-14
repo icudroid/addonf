@@ -9,7 +9,7 @@ import fr.k2i.adbeback.core.business.Constants;
  * Goal:
  */
 public enum AgencyRole {
-    ADMIN(Constants.AGENCY_ADMIN_ROLE),USER_WRITE(Constants.AGENCY_USER_WRITE_ROLE),USER_READ(Constants.AGENCY_USER_READ_ROLE);
+    ADMIN(Constants.AGENCY_ADMIN_ROLE),USER(Constants.AGENCY_USER_ROLE);
 
     private String roleDb;
     AgencyRole(String roleDb){
