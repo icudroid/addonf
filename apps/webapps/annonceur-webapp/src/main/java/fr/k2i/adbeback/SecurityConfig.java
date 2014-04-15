@@ -73,6 +73,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/confirmAgencyUser/**").permitAll()
 
 
+                .antMatchers("/confirmMediaUser/**").permitAll()
+                .antMatchers("/confirmAdvUser/**").permitAll()
+
+
+
                 .anyRequest().authenticated();
 
 /*                .antMatchers("/custom-logout").hasRole("ANNONCEUR")

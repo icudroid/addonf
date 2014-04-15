@@ -40,6 +40,10 @@ public interface IMetaDataController {
         String UPLOAD =                                 "/uploadAttachement/{fileId}";
         String REGISTRATION_AGENCY_ADMIN_CONFIRM =      "/confirmAgencyAdmin/{crypt}/{code}";
         String REGISTRATION_AGENCY_USER_CONFIRM =      "/confirmAgencyUser/{crypt}/{code}";
+
+        String REGISTRATION_MEDIA_USER_CONFIRM =      "/confirmMediaUser/{crypt}/{code}";
+        String REGISTRATION_ADV_USER_CONFIRM =        "/confirmAdvUser/{crypt}/{code}";
+
     }
 
     interface View{
