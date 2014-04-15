@@ -62,7 +62,7 @@ Addonf.Enroll.attachement.prototype = {
 
                 UploadProgress: function(up, file) {
                     var progress = $("#progress_"+who);
-                    progress.find(".progress-bar").attr("aria-valuenow",file.percent);
+                    progress.find(".progress-bar").css("width",file.percent);
                     progress.find("span").html(file.percent + "%");
                     //document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
                 },

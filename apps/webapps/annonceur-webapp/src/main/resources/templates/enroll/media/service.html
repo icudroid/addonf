@@ -103,7 +103,7 @@
                         <div class="col-md-9">
                             <div th:class="${#fields.hasErrors('prices.current.price')}? 'form-group has-error':'form-group'">
                                 <label for="name" class=" control-label" th:text="#{enroll.media.price}">prix</label>
-                                <input type="number" class="form-control" id="name" th:field="*{prices.current.price}" /> &euro;
+                                <input type="number" class="form-control" id="name" th:field="*{prices.current.price}" style="width: 60px;"/>&euro;
                                 <span class="help-block" th:if="${#fields.hasErrors('prices.current.price')}" th:errors="*{prices.current.price}">Error</span>
                             </div>
                         </div>
