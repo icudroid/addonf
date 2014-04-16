@@ -15,4 +15,5 @@ public class AdGameBean implements Serializable{
     private List<PlayerGooseGame> gooseGames;
     private Integer userToken;
     private boolean multiple;
+    private String logoMedia;
 }

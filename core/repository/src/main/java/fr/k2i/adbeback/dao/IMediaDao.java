@@ -15,4 +15,6 @@ public interface IMediaDao extends IGenericDao<Media, Long> {
     MediaUser findbyExtId(String idPartnerExt);
 
      boolean existTransaction(String idPartnerExt, String idTransactionExt);
+
+    Media findByMediaUser(MediaUser user);
 }

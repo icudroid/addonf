@@ -8,6 +8,8 @@ import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.*;
+import fr.k2i.adbeback.core.business.user.Media;
+import fr.k2i.adbeback.core.business.user.MediaUser;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
@@ -118,17 +120,24 @@ public class AdGameFacade {
     IMediaDao partnerDao;
 
 
+
+
     @Transactional
     public AdGameBean createAdGame(PaymentConfigure configure, HttpServletRequest request) throws Exception {
 
         HttpSession session = request.getSession();
 
         //0 : verifier
-        if(partnerDao.findbyExtId(configure.getIdPartner())==null){
+        MediaUser mediaUser = partnerDao.findbyExtId(configure.getIdPartner());
+        Media media = null;
+        if(mediaUser ==null){
             return null;
         }else{
             if(partnerDao.existTransaction(configure.getIdPartner(),configure.getIdTransaction())){
                 return null;
+            }else{
+                media = partnerDao.findByMediaUser(mediaUser);
+                //mediaUser.get
             }
         }
 
@@ -211,6 +220,8 @@ public class AdGameFacade {
         }
 
         Map<Integer, List<Long>> answers = new HashMap<Integer, List<Long>>();
+
+        res.setLogoMedia(media.getLogo());
 
         session.setAttribute(LIMITED_TIME,gooseLevel.getLimitedTime());
         session.setAttribute(PLAYER_GOOSE_GAME, pgg);

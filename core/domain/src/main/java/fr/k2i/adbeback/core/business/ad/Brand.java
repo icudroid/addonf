@@ -24,9 +24,6 @@ public class Brand extends Company{
     @JoinColumn(name = IMetaData.ColumnMetadata.Brand.PRODUCT_JOIN)
     private List<Product> products;
 
-    @Column(name = IMetaData.ColumnMetadata.Brand.LOGO)
-	private String logo;
-
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = IMetaData.ColumnMetadata.Brand.USER_JOIN)
     private BrandUser user;

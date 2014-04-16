@@ -4,6 +4,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.game.QAdGameTransaction;
 import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.core.business.user.MediaUser;
+import fr.k2i.adbeback.core.business.user.QMedia;
 import fr.k2i.adbeback.core.business.user.QMediaUser;
 import fr.k2i.adbeback.dao.IMediaDao;
 import org.springframework.stereotype.Repository;
@@ -29,6 +30,18 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
         return query.uniqueResult(qPartner);
     }
+
+
+    @Override
+    public Media findByMediaUser(MediaUser user) {
+        QMedia media = QMedia.media;
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(media).where(media.user.eq(user));
+
+        return query.uniqueResult(media);
+    }
+
 
     @Override
     public boolean existTransaction(String idPartnerExt, String idTransactionExt) {

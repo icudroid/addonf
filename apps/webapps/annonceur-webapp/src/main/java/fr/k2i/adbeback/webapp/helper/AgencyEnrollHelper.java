@@ -236,8 +236,10 @@ public class AgencyEnrollHelper {
             FileCommand value = file.getValue();
             if("LOGO".equals(key)){
                 IhmConfig config = new IhmConfig();
-                config.setLogo(FileUtils.saveFile(value.getContent(), logoPath));
+                String logo = FileUtils.saveFile(value.getContent(), logoPath);
+                config.setLogo(logo);
                 agency.setIhmConfig(config);
+                agency.setLogo(logo);
             }else{
                 Attachement attachement = new Attachement();
 

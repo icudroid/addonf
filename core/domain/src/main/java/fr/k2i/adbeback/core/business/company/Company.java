@@ -58,6 +58,7 @@ public abstract class Company extends BaseObject implements Serializable {
     @MapKeyColumn(name=IMetaData.ColumnMetadata.Attachement.ID,length = 32,nullable = true)
     protected Map<String,Attachement> attachements;
 
+    protected String logo;
 
     @Override
     public boolean equals(Object o) {

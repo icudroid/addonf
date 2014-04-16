@@ -182,19 +182,23 @@ public class MediaEnrollHelper {
         for (Map.Entry<String, FileCommand> file : files.entrySet()) {
             String key = file.getKey();
             FileCommand value = file.getValue();
-            Attachement attachement = new Attachement();
+            if("LOGO".equals(key)){
+                media.setLogo(FileUtils.saveFile(value.getContent(), logoPath));
+            }else{
+                Attachement attachement = new Attachement();
 
-            attachement.setStatus(AttachementStatus.PRESENT);
-            String originalName = value.getFileName();
-            attachement.setOriginalName(originalName);
-            attachement.setSize(value.getSize());
+                attachement.setStatus(AttachementStatus.PRESENT);
+                String originalName = value.getFileName();
+                attachement.setOriginalName(originalName);
+                attachement.setSize(value.getSize());
 
-            attachement.setFullPath(FileUtils.saveFile(value.getContent(), privatePath));
+                attachement.setFullPath(FileUtils.saveFile(value.getContent(), privatePath));
 
-            int dot = originalName.lastIndexOf(".");
-            attachement.setExtention(originalName.substring(dot + 1));
+                int dot = originalName.lastIndexOf(".");
+                attachement.setExtention(originalName.substring(dot + 1));
 
-            fileUploaded.put(key,attachement);
+                fileUploaded.put(key,attachement);
+            }
 
         }
 
