@@ -3,6 +3,7 @@ package fr.k2i.adbeback.webapp.facade;
 import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
+import fr.k2i.adbeback.core.business.Constants;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.StaticAd;
@@ -53,6 +54,12 @@ public class UserFacade {
     @Autowired
     private BrandManager brandManager;
 */
+
+    @Autowired
+    private IAgencyDao agencyDao;
+
+    @Autowired
+    private IRoleDao roleDao;
 
     @Autowired
     private IWebUserDao webUserDao;
@@ -293,7 +300,7 @@ public class UserFacade {
 
         Ad ad = null;
 
-        Brand brand = brandDao.get(campaignCommand.getBrandId());
+        Brand brand = brandDao.get(campaignCommand.getBrand().getId());
 
         InformationCommand information = campaignCommand.getInformation();
 
@@ -650,6 +657,35 @@ public class UserFacade {
 
 
         return campaignCommand;
+    }
+
+    @Transactional
+    public List<BrandBean> getBrandInChargeOfCurrentUser() {
+        try {
+            AgencyUser currentUser = (AgencyUser) getCurrentUser();
+            List<BrandBean> brands = new ArrayList<BrandBean>();
+
+            if(currentUser.getRoles().contains(roleDao.getRoleByName(Constants.AGENCY_ADMIN_ROLE))){
+                //show all agency Brand
+                Agency agency = currentUser.getAgency();
+                List<Brand> agencyBrands = agencyDao.findAllBrandsForAgency(agency);
+
+                for (Brand brand : agencyBrands) {
+                    brands.add(new BrandBean(brand));
+                }
+
+            }else{
+                for (Brand brand : currentUser.getInChargeOf()) {
+                    brands.add(new BrandBean(brand));
+                }
+            }
+
+            return brands;
+        } catch (Exception e) {
+            return null;
+        }
+
+
     }
 
 

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 @Data
-public class ContactBean implements Serializable {
+public class UserBean implements Serializable {
     @NotNull
     private Sex sex;
     private String lastname;
@@ -24,6 +24,8 @@ public class ContactBean implements Serializable {
     @Email
     private String email;
     private String emailConfirm;
+
+    private Long id;
 
 
 }

@@ -48,9 +48,9 @@
     <script src="js/service/services.js" th:src="@{/static/js/service/game-services.js}"></script>
 
 
-    <style>
+    <style th:inline="javascript">
         body {
-            background-image: url("static/img/game-bg.jpg");
+            background-image: url([[@{/static/img/game-bg.jpg}]]);
         }
     </style>
 </head>

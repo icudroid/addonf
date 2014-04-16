@@ -5,6 +5,12 @@
 
     <var name="which" class="fr.k2i.adbeback.webapp.bean.enroll.EnrollFlowState"/>
 
+    <action-state id="agencyCreateAdv">
+        <evaluate expression="enrollHelper.isAgencyLoggued()" />
+        <transition on="agencyUser" to="adv" />
+        <transition to="intro"/>
+    </action-state>
+
     <view-state id="intro" view="enroll/common/which" model="which">
         <transition to="chooseEnroll"/>
     </view-state>
@@ -21,6 +27,7 @@
         <transition on="recap-validation" to="mediaAgency"/>
         <on-exit>
             <evaluate expression="mediaEnrollHelper.createAccount(flowRequestContext,currentEvent.attributes.mediaEnrollCommand,currentEvent.attributes.state)"/>
+            <evaluate expression="enrollHelper.emptyUploaded(flowRequestContext)"/>
         </on-exit>
     </subflow-state>
 
@@ -28,6 +35,7 @@
         <transition on="recap-validation" to="enrollAgency"/>
         <on-exit>
             <evaluate expression="agencyEnrollHelper.createAccount(flowRequestContext,currentEvent.attributes.agencyEnrollCommand,currentEvent.attributes.state)"/>
+            <evaluate expression="enrollHelper.emptyUploaded(flowRequestContext)"/>
         </on-exit>
     </subflow-state>
 
@@ -35,6 +43,7 @@
         <transition on="recap-validation" to="advAgency"/>
         <on-exit>
             <evaluate expression="advEnrollHelper.createAccount(flowRequestContext,currentEvent.attributes.advEnrollCommand,currentEvent.attributes.state)"/>
+            <evaluate expression="enrollHelper.emptyUploaded(flowRequestContext)"/>
         </on-exit>
     </subflow-state>
 
@@ -42,7 +51,17 @@
     <end-state id="enrollAgency" view="enroll/agency/recap">
     </end-state>
 
-    <end-state id="advAgency" view="enroll/adv/recap">
+    <action-state id="advAgency">
+        <evaluate expression="enrollHelper.isAgencyLoggued()" />
+        <transition on="agencyUser" to="createStep0"></transition>
+        <transition on="unlogguedAdvAgency"/>
+    </action-state>
+
+    <end-state id="createStep0" view="redirect:/createCampaign/step0">
+    </end-state>
+
+
+    <end-state id="unlogguedAdvAgency" view="enroll/adv/recap">
     </end-state>
 
     <end-state id="mediaAgency" view="enroll/media/recap">

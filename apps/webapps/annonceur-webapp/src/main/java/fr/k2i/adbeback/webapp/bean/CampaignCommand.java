@@ -14,11 +14,12 @@ import java.io.Serializable;
  */
 @Data
 public class CampaignCommand implements Serializable{
+    private UserRightsCommand userRights = new  UserRightsCommand();
     private InformationCommand information = new InformationCommand();
     private ProductBean product = new ProductBean();
     private AdRulesCommand rules = new AdRulesCommand();
     private AdService adServices = new AdService();
-    private Long BrandId;
+    private BrandBean brand = new BrandBean();
 
 
 

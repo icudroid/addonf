@@ -20,5 +20,8 @@ public interface IAgencyDao extends IGenericDao<Agency, Long> {
 
     @Transactional
     Agency findBySiret(String siret);
+
+    @Transactional
+    List<Brand> findAllBrandsForAgency(Agency agency);
 }
 

@@ -50,6 +50,9 @@ public class EmailConfig {
     @Value("${email.resources.uri}/images")
     private String imagesResources;
 
+    @Value("${email.send:false}")
+    private Boolean sendMail;
+
     @Autowired
     private SpringTemplateEngine templateEngine;
 
@@ -70,7 +73,7 @@ public class EmailConfig {
 
     @Bean
     public IMailEngine mailEngine() throws Exception{
-        IMailEngine mailEngine = new MailEngine(mailSender(),defaultFrom,templateEngine,imagesResources);
+        IMailEngine mailEngine = new MailEngine(mailSender(),defaultFrom,templateEngine,imagesResources,sendMail);
         return mailEngine;
     }
 

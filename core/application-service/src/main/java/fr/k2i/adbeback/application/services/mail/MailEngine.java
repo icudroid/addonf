@@ -35,15 +35,17 @@ public class MailEngine implements IMailEngine{
     private String defaultFrom;
     private SpringTemplateEngine templateEngine;
     private String imagesResources;
+    private boolean send;
 
     private static final String OUTPUT_ENCODING = "UTF-8";
 
 
-    public MailEngine(JavaMailSender mailSender, String defaultFrom,SpringTemplateEngine templateEngine,String imagesResources) throws SendException {
+    public MailEngine(JavaMailSender mailSender, String defaultFrom,SpringTemplateEngine templateEngine,String imagesResources,boolean send) throws SendException {
         this.mailSender = mailSender;
         this.defaultFrom = defaultFrom;
         this.templateEngine = templateEngine;
         this.imagesResources = imagesResources;
+        this.send = send;
     }
 
     @Override
@@ -76,34 +78,36 @@ public class MailEngine implements IMailEngine{
         content = retrieveContent(email, context);
         subject = email.getSubject();
 
-        try {
-            mailSender.send(new MimeMessagePreparator() {
-                public void prepare(MimeMessage mimeMessage) throws MessagingException {
-                    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-                    message.setFrom(defaultFrom);
-                    message.setTo(recipients.toArray(new String[recipients.size()]));
-                    message.setSubject(subject);
-                    message.setText(content,true);
+        if(send){
+            try {
+                mailSender.send(new MimeMessagePreparator() {
+                    public void prepare(MimeMessage mimeMessage) throws MessagingException {
+                        MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+                        message.setFrom(defaultFrom);
+                        message.setTo(recipients.toArray(new String[recipients.size()]));
+                        message.setSubject(subject);
+                        message.setText(content,true);
 
-                    Collection<String> imgToSearch = findImgToSearch(content);
+                        Collection<String> imgToSearch = findImgToSearch(content);
 
-                    if (imgToSearch != null) {
-                        for (String filename : imgToSearch) {
-                            ClassPathResource resource = new ClassPathResource(imagesResources+File.separator+filename);
-                            message.addInline(filename, resource);
+                        if (imgToSearch != null) {
+                            for (String filename : imgToSearch) {
+                                ClassPathResource resource = new ClassPathResource(imagesResources+File.separator+filename);
+                                message.addInline(filename, resource);
+                            }
+                        }
+
+                        if(!attachements.isEmpty()){
+                            for (Attachement attachement : attachements) {
+                                message.addAttachment(attachement.getAttachmentName(),attachement.getResource());
+                            }
                         }
                     }
-
-                    if(!attachements.isEmpty()){
-                        for (Attachement attachement : attachements) {
-                            message.addAttachment(attachement.getAttachmentName(),attachement.getResource());
-                        }
-                    }
-                }
-            });
-        } catch (MailException e) {
-            log.error("Problem while sending email message : " , e);
-            throw new SendException("Problem while sending email message to '" + email.getRecipients() + "'", e);
+                });
+            } catch (MailException e) {
+                log.error("Problem while sending email message : " , e);
+                throw new SendException("Problem while sending email message to '" + email.getRecipients() + "'", e);
+            }
         }
     }
 

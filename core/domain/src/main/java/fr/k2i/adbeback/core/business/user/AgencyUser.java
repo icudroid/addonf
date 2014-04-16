@@ -5,6 +5,7 @@ import fr.k2i.adbeback.core.business.ad.Brand;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,4 +32,39 @@ public class AgencyUser extends User{
     )
     private List<Brand> inChargeOf;
 
+
+    public void addInChargeOf(Brand brand){
+        if(inChargeOf==null){
+            inChargeOf = new ArrayList<Brand>();
+        }
+        inChargeOf.add(brand);
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AgencyUser)) return false;
+        if (!super.equals(o)) return false;
+
+        AgencyUser that = (AgencyUser) o;
+
+        if (agency != null ? !agency.equals(that.agency) : that.agency != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (agency != null ? agency.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AgencyUser{" +
+                "agency=" + agency.getName() +
+                '}';
+    }
 }

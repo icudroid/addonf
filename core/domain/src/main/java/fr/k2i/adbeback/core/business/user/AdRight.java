@@ -7,5 +7,5 @@ package fr.k2i.adbeback.core.business.user;
  * Goal:
  */
 public enum AdRight {
-    READ,WRITE;
+    NONE,READ,WRITE;
 }

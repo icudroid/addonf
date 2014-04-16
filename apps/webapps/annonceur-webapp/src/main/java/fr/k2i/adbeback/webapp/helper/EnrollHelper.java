@@ -4,18 +4,21 @@ import fr.k2i.adbeback.core.business.ad.Sector;
 import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
 import fr.k2i.adbeback.core.business.player.Sex;
-import fr.k2i.adbeback.core.business.user.Category;
-import fr.k2i.adbeback.core.business.user.LegalStatus;
-import fr.k2i.adbeback.core.business.user.MediaType;
+import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.dao.ICategoryDao;
 import fr.k2i.adbeback.dao.ICountryDao;
 import fr.k2i.adbeback.dao.ISectorDao;
 import fr.k2i.adbeback.webapp.bean.enroll.*;
 import fr.k2i.adbeback.webapp.bean.enroll.agency.AgencyRole;
+import fr.k2i.adbeback.webapp.controller.UploadController;
+import fr.k2i.adbeback.webapp.facade.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.webflow.execution.RequestContext;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -35,6 +38,9 @@ public class EnrollHelper {
 
     @Autowired
     private ICategoryDao categoryDao;
+
+    @Autowired
+    private UserFacade userFacade;
 
     @Transactional
     public Map<String,Object> defaultModelNeeded(){
@@ -98,7 +104,26 @@ public class EnrollHelper {
     }
 
 
+    public void emptyUploaded(RequestContext context){
+        HttpSession session = ((HttpServletRequest)context.getExternalContext().getNativeRequest()).getSession();
+        session.removeAttribute(UploadController.UPLOADED_PARAM);
+    }
 
+
+
+    @Transactional
+    public String isAgencyLoggued(){
+        try {
+            User currentUser = userFacade.getCurrentUser();
+            if (currentUser instanceof AgencyUser) {
+                return "agencyUser";
+            }else {
+                return "user";
+            }
+        } catch (Exception e) {
+            return "notLoggued";
+        }
+    }
 
 
 }

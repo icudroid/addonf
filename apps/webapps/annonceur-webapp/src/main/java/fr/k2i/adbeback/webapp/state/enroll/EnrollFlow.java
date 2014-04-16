@@ -66,7 +66,8 @@ public enum EnrollFlow {
             ArrayList<String> res = Lists.newArrayList(
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
-                    AttachementFileId.RIB.name()
+                    AttachementFileId.RIB.name(),
+                    AttachementFileId.LOGO.name()
             );
             return res;
         }
@@ -81,7 +82,9 @@ public enum EnrollFlow {
             ArrayList<String> res = Lists.newArrayList(
                     AttachementFileId.CID.name(),
                     AttachementFileId.KBIS.name(),
-                    AttachementFileId.RIB.name()
+                    AttachementFileId.RIB.name(),
+                    AttachementFileId.LOGO.name()
+
             );
             return res;
         }

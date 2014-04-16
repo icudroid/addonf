@@ -1,5 +1,10 @@
 package fr.k2i.adbeback.webapp.controller;
 
+import fr.k2i.adbeback.core.business.Constants;
+import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.core.business.user.AgencyUser;
+import fr.k2i.adbeback.core.business.user.BrandUser;
+import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
@@ -7,11 +12,14 @@ import fr.k2i.adbeback.webapp.bean.adservice.OpenMultiRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
 import fr.k2i.adbeback.webapp.facade.UserFacade;
 import fr.k2i.adbeback.webapp.validator.CampaignCommandValidator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.*;
@@ -43,6 +51,7 @@ import java.util.*;
 @Controller
 public class ManageAdsController {
 
+    protected final Log logger = LogFactory.getLog(this.getClass());
 
     public static final String UPLOADED_IMG = "uploadedImg";
     @Autowired
@@ -73,10 +82,23 @@ public class ManageAdsController {
 
 
     @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN,method = RequestMethod.GET)
-    public String createCampaign(Map<String, Object> model,HttpServletRequest request){
+    public String createCampaign(Map<String, Object> model,HttpServletRequest request) throws Exception {
         CampaignCommand campaignCommand  = new CampaignCommand();
+
+        String res = null;
+        User currentUser = userFacade.getCurrentUser();
+        if (currentUser instanceof AgencyUser) {
+            res = IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_0;
+        }else if (currentUser instanceof BrandUser) {
+            BrandUser user = (BrandUser) currentUser;
+            campaignCommand.setBrand(new BrandBean(user.getBrand()));
+            res = IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1;
+        }else{
+            throw new Exception("");
+        }
+
         request.getSession().setAttribute("campaignCommand", campaignCommand);
-        return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1;
+        return res;
     }
 
     @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN,method = RequestMethod.GET)
@@ -107,6 +129,39 @@ public class ManageAdsController {
         model.put("informationCommand",campaignCommand.getInformation());
         model.put("actionCampaign","modify");
         return IMetaDataController.View.MODIFY_CAMPAIGN_STEP_1;
+    }
+
+
+
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_0,method = RequestMethod.GET)
+    public String step0(Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        if(campaignCommand ==null){
+            campaignCommand = new CampaignCommand();
+            request.getSession().setAttribute("campaignCommand", campaignCommand);
+        }
+        List<BrandBean> brands = userFacade.getBrandInChargeOfCurrentUser();
+        model.put("brands",brands);
+        model.put("brandBean",campaignCommand.getBrand());
+        model.put("actionCampaign","create");
+        return IMetaDataController.View.CREATE_CAMPAIGN_STEP_0;
+    }
+
+
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_0,method = RequestMethod.POST)
+    public String step0Submit(@ModelAttribute("brandBean") BrandBean brandBean,BindingResult bindingResults,Map<String, Object> model,HttpServletRequest request) throws IOException {
+
+        if(brandBean.getId()==null || brandBean.getId() == -1){
+            bindingResults.rejectValue("id","required");
+        }
+
+        if(bindingResults.hasErrors()){
+            return IMetaDataController.View.CREATE_CAMPAIGN_STEP_0;
+        }else{
+            CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+            campaignCommand.setBrand(brandBean);
+            return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.CREATE_CAMPAIGN_STEP_1;
+        }
     }
 
 

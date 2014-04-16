@@ -23,6 +23,7 @@ import fr.k2i.adbeback.webapp.bean.enroll.adv.CustomizeCommand;
 import fr.k2i.adbeback.webapp.bean.enroll.agency.*;
 import fr.k2i.adbeback.webapp.controller.UploadController;
 import fr.k2i.adbeback.webapp.facade.FileUtils;
+import fr.k2i.adbeback.webapp.facade.UserFacade;
 import fr.k2i.adbeback.webapp.state.enroll.AdvEnrollFlowState;
 import fr.k2i.adbeback.webapp.state.enroll.AdvEnrollFlowState;
 import org.slf4j.Logger;
@@ -51,7 +52,11 @@ import java.util.*;
 @Service
 public class AdvEnrollHelper {
 
+
     private static Logger logger = LogHelper.getLogger(AdvEnrollHelper.class);
+
+    @Autowired
+    private UserFacade userFacade;
 
     @Autowired
     private ICountryDao countryDao;
@@ -162,6 +167,7 @@ public class AdvEnrollHelper {
     public void createAccount(RequestContext context,AdvEnrollCommand advEnrollCommand,AdvEnrollFlowState state) throws ParseException, IOException {
 
         Brand brand = new Brand();
+
         InformationCommand info = advEnrollCommand.getInfo();
         AddressBean addressBean = info.getAddress();
 
@@ -187,19 +193,26 @@ public class AdvEnrollHelper {
         for (Map.Entry<String, FileCommand> file : files.entrySet()) {
             String key = file.getKey();
             FileCommand value = file.getValue();
-            Attachement attachement = new Attachement();
 
-            attachement.setStatus(AttachementStatus.PRESENT);
-            String originalName = value.getFileName();
-            attachement.setOriginalName(originalName);
-            attachement.setSize(value.getSize());
+            if("LOGO".equals(key)){
+                brand.setLogo(FileUtils.saveFile(value.getContent(), logoPath));
+            }else{
+                Attachement attachement = new Attachement();
+                attachement.setStatus(AttachementStatus.PRESENT);
+                String originalName = value.getFileName();
+                attachement.setOriginalName(originalName);
+                attachement.setSize(value.getSize());
 
-            attachement.setFullPath(FileUtils.saveFile(value.getContent(), privatePath));
+                attachement.setFullPath(FileUtils.saveFile(value.getContent(), privatePath));
 
-            int dot = originalName.lastIndexOf(".");
-            attachement.setExtention(originalName.substring(dot + 1));
+                int dot = originalName.lastIndexOf(".");
+                attachement.setExtention(originalName.substring(dot + 1));
 
-            fileUploaded.put(key,attachement);
+                fileUploaded.put(key,attachement);
+
+            }
+
+
 
         }
 
@@ -272,6 +285,16 @@ public class AdvEnrollHelper {
             } catch (SendException e) {
                 logger.error("error sending email", e);
             }
+
+        try {
+            User currentUser = userFacade.getCurrentUser();
+            if (currentUser instanceof AgencyUser) {
+                AgencyUser u = (AgencyUser) currentUser;
+                u.addInChargeOf(brand);
+            }
+        } catch (Exception e) {
+            logger.debug("not loggued user");
+        }
 
         brandDao.save(brand);
 

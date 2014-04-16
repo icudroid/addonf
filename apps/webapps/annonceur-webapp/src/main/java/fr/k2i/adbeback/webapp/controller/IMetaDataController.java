@@ -18,6 +18,7 @@ public interface IMetaDataController {
         String ENROLL_FORM =                            "/signup.html";
         String REGISTRATION_CONFIRM =                   "/confirmEnroll/{crypt}/{code}";
 
+        String CREATE_CAMPAIGN_STEP_0 =                 "/createCampaign/step0";
         String CREATE_CAMPAIGN_STEP_1 =                 "/createCampaign/step1";
         String CREATE_CAMPAIGN_STEP_2 =                 "/createCampaign/step2";
         String CREATE_CAMPAIGN_STEP_3 =                 "/createCampaign/step3";
@@ -44,6 +45,7 @@ public interface IMetaDataController {
         String REGISTRATION_MEDIA_USER_CONFIRM =      "/confirmMediaUser/{crypt}/{code}";
         String REGISTRATION_ADV_USER_CONFIRM =        "/confirmAdvUser/{crypt}/{code}";
 
+
     }
 
     interface View{
@@ -59,6 +61,7 @@ public interface IMetaDataController {
         String DASHBOARD_ADS =                          "manage/ads/show";
         String LIST_CAMPAIGNS =                         "campaigns";
 
+        String CREATE_CAMPAIGN_STEP_0 =                 "manage/ads/partials/common/step0";
         String CREATE_CAMPAIGN_STEP_1=                  "manage/ads/partials/common/step1";
         String CREATE_CAMPAIGN_STEP_2=                  "manage/ads/partials/common/step2";
         String CREATE_CAMPAIGN_STEP_3 =                 "manage/ads/partials/common/step3";
@@ -70,5 +73,6 @@ public interface IMetaDataController {
         String REGISTRATION_AGENCY_USER_CONFIRMED =     "enroll/agency/userCreated";
         String REGISTRATION_TIMEOUT =                   "enroll/common/timeout";
         String REGISTRATION_KO =                        "enroll/common/ko";
+
     }
 }

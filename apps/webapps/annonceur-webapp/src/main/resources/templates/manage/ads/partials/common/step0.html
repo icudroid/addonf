@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged"
+        ng-app="myModule">
+
+<head>
+    <title>MTZik</title>
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${actionCampaign})"></div>
+</div>
+
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{'addonf.'+${actionCampaign}+'.ad'}"></h4>
+
+
+<div layout:fragment="content" class="col-table">
+
+
+
+    <div class="widget" ng-controller="Step1Ctrl">
+
+        <div class="wizard" id="rootwizard">
+
+            <!-- Wizard heading -->
+            <div class="wizard-head">
+                <ul class="bwizard-steps">
+                    <li class="active"><a th:text="#{addonf.campaign.brand.info}">Choix de l'annonceur</a></li>
+                    <li><a th:text="#{addonf.campaign.general.info}">Informations Générales</a></li>
+                    <li><a th:text="#{addonf.campaign.public}">Choix du public</a></li>
+                    <li><a th:text="#{addonf.campaign.adService}">Choix d'affichages</a></li>
+                </ul>
+            </div>
+            <!-- // Wizard heading END -->
+
+            <div class="widget">
+
+                <div class="widget-body">
+                    <div class="tab-content">
+
+                        <!-- Step 1 -->
+                        <div class="tab-pane active">
+
+                            <form role="form" th:action="@{'/'+${actionCampaign}+'Campaign/step0'(${_csrf.parameterName}=${_csrf.token})}" th:object="${brandBean}" method="post">
+
+
+                                <div th:class="${#fields.hasErrors('id')}? 'form-group has-error':'form-group'">
+                                    <label for="brands" class="control-label" th:text="#{addonf.campaign.brand}">Choisir un annonceur</label>
+                                    <select id="brands" th:field="*{id}">
+                                         <option value="">Sélectionner un annonceur</option>
+                                         <option th:each="b : ${brands}" th:value="${b.id}" th:text="${b.name}"></option>
+                                    </select>
+                                    <span class="help-block" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">Error</span>
+                                </div>
+
+                                <a th:href="@{/enroll.html}" th:text="#{addonf.campaign.create.brand}">Création d'un announceur</a>
+
+                                <div class="text-right innerAll border-top">
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="submit" class="btn btn-primary" th:utext="#{addonf.campaign.next}"><i class="fa fa-fw fa-check"></i> Suivant</button>
+                                    </div>
+                                </div>
+
+
+                            </form>
+
+
+
+                        </div>
+                        <!-- // Step 1 END -->
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

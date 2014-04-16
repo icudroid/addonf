@@ -14,7 +14,7 @@ public class EnrollBrandCommand implements Serializable {
     private String name;
     private String siret;
     private AddressBean address;
-    private ContactBean contact;
+    private UserBean contact;
     @Size(message = "wrong",min = 8,max = 30)
     private String password;
     @Size(message = "wrong",min = 8,max = 30)
@@ -44,11 +44,11 @@ public class EnrollBrandCommand implements Serializable {
         this.address = address;
     }
 
-    public ContactBean getContact() {
+    public UserBean getContact() {
         return contact;
     }
 
-    public void setContact(ContactBean contact) {
+    public void setContact(UserBean contact) {
         this.contact = contact;
     }
 
