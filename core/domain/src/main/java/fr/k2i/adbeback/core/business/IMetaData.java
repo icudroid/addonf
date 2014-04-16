@@ -92,6 +92,8 @@ public interface IMetaData {
             String AD_FILE_ENCODED =                    "encoded";
             String PARTNER =                            "partner_id";
             String JOIN =                               "ad_id";
+            String MEDIA_ID =                           "media_id";
+            String DISPLAY_ON_MEDIA =                   "display_on_media";
 
             public interface Discrimator {
                 String DISCRIMINATOR =                  "classe";
