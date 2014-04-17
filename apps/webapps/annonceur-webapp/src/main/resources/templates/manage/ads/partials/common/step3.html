@@ -47,15 +47,7 @@
 
         <div class="wizard" id="rootwizard">
 
-            <!-- Wizard heading -->
-            <div class="wizard-head">
-                <ul class="bwizard-steps">
-                    <li><a th:text="#{addonf.campaign.general.info}">Informations Générales</a></li>
-                    <li><a th:text="#{addonf.campaign.public}">Choix du public</a></li>
-                    <li class="active"><a th:text="#{addonf.campaign.adService}">Choix d'affichages</a></li>
-                </ul>
-            </div>
-            <!-- // Wizard heading END -->
+            <div th:substituteby="manage/ads/fragment/wizard(active=3)"></div>
 
             <div class="widget">
 
@@ -121,7 +113,7 @@
                             <div class="text-right innerAll border-top">
                                 <div class="btn-group btn-group-sm">
                                     <a class="btn btn-default" th:href="@{'/'+${actionCampaign}+'Campaign/step2'}" th:utext="#{addonf.campaign.step3.previous}"><i class="fa fa-chevron-left"></i> Retour</a>
-                                    <a class="btn btn-primary" th:href="@{'/'+${actionCampaign}+'Campaign/save'}" th:utext="#{addonf.campaign.step3.validate}"><i class="fa fa-fw fa-check"></i> Valider</a>
+                                    <a class="btn btn-primary" th:href="@{'/'+${actionCampaign}+'Campaign/step4'}" th:utext="#{addonf.campaign.step3.validate}"><i class="fa fa-fw fa-check"></i> Valider</a>
                                 </div>
                             </div>
 

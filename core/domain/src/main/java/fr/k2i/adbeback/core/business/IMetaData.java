@@ -30,6 +30,7 @@ public interface IMetaData {
         String ATTACHMENTS_AGENCY =                    "agency_attachment";
         String ATTACHMENTS_MEDIA =                      "media_attachment";
         String ATTACHMENTS =                            "company_attachment";
+        String BID_CATEGORY_MEDIA =                     "bid_cat_media";
     }
 
     interface ColumnMetadata {

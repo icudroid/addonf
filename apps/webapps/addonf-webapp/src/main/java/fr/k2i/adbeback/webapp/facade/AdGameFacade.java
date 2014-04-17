@@ -128,16 +128,13 @@ public class AdGameFacade {
         HttpSession session = request.getSession();
 
         //0 : verifier
-        MediaUser mediaUser = partnerDao.findbyExtId(configure.getIdPartner());
-        Media media = null;
-        if(mediaUser ==null){
+        Media media = partnerDao.findByExtId(configure.getIdPartner());
+
+        if(media ==null){
             return null;
         }else{
             if(partnerDao.existTransaction(configure.getIdPartner(),configure.getIdTransaction())){
                 return null;
-            }else{
-                media = partnerDao.findByMediaUser(mediaUser);
-                //mediaUser.get
             }
         }
 

@@ -9,6 +9,7 @@ import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.core.business.user.MediaUser;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
@@ -76,7 +77,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
 
     @Override
-    public List<Ad> getAllValidForAndProvidedBy(Player player, MediaUser media) {
+    public List<Ad> getAllValidForAndProvidedBy(Player player, Media media) {
 
         /*
             Les règles sont les suivantes :

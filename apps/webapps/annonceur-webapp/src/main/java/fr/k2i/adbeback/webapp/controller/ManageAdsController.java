@@ -10,6 +10,7 @@ import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenMultiRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
+import fr.k2i.adbeback.webapp.facade.AdCampaignFacade;
 import fr.k2i.adbeback.webapp.facade.UserFacade;
 import fr.k2i.adbeback.webapp.validator.CampaignCommandValidator;
 import org.apache.commons.logging.Log;
@@ -56,6 +57,9 @@ public class ManageAdsController {
     public static final String UPLOADED_IMG = "uploadedImg";
     @Autowired
     private UserFacade userFacade;
+
+    @Autowired
+    private AdCampaignFacade adCampaignFacade;
 
 
     @Autowired
@@ -751,6 +755,31 @@ public ModelAndView addOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean
 
         return view;
     }
+
+
+    /**********************************************************************************************************************/
+
+
+
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_4,method = RequestMethod.GET)
+    public String step4(Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        DisplayOnMediasBean medias = campaignCommand.getMedias();
+        if(medias ==null){
+            //load media
+            medias = adCampaignFacade.loadMediasBid();
+        }
+
+        model.put("medias", medias);
+        model.put("actionCampaign","create");
+        return IMetaDataController.View.CREATE_CAMPAIGN_STEP_4;
+    }
+
+
+
+
+
+
 
 
 

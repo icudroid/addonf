@@ -3,10 +3,7 @@ package fr.k2i.adbeback.core.business.ad;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
-import fr.k2i.adbeback.core.business.user.Agency;
-import fr.k2i.adbeback.core.business.user.Media;
-import fr.k2i.adbeback.core.business.user.User;
-import fr.k2i.adbeback.core.business.user.UserAccess;
+import fr.k2i.adbeback.core.business.user.*;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -74,13 +71,10 @@ public abstract  class Ad extends BaseObject implements Serializable {
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.JOIN)
     protected List<UserAccess> access;
 
-    @ManyToMany
-    @JoinTable(
-            name = IMetaData.ColumnMetadata.Ad.DISPLAY_ON_MEDIA,
-            joinColumns = { @JoinColumn(name = IMetaData.ColumnMetadata.Ad.MEDIA_ID) },
-            inverseJoinColumns = @JoinColumn(name = IMetaData.ColumnMetadata.Ad.JOIN)
-    )
-    private List<Media> displayOnMedia;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Ad.JOIN)
+    private List<BidCategoryMedia> bidCategoryMedias;
+
 
     @Override
 	public int hashCode() {

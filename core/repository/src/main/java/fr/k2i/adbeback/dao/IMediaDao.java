@@ -12,9 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface IMediaDao extends IGenericDao<Media, Long> {
     @Transactional
-    MediaUser findbyExtId(String idPartnerExt);
+    Media findByExtId(String idPartnerExt);
 
-     boolean existTransaction(String idPartnerExt, String idTransactionExt);
+    @Transactional
+    boolean existTransaction(String idPartnerExt, String idTransactionExt);
 
+    @Transactional
     Media findByMediaUser(MediaUser user);
 }

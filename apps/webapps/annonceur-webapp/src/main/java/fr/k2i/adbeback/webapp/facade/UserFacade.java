@@ -655,6 +655,8 @@ public class UserFacade {
         campaignCommand.setAdServices(service);
 
 
+        campaignCommand.setBrand(new BrandBean(ad.getBrand()));
+
 
         return campaignCommand;
     }

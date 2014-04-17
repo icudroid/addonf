@@ -31,4 +31,10 @@ public class Media extends Company {
     @JoinColumn(name = IMetaData.ColumnMetadata.Media.JOIN)
     private List<CategoryPrice> minPriceByMediaType;
 
+    private String passPhrase;
+
+    @Column(name = "ext_id",unique = true)
+    private String extId;
+
+
 }

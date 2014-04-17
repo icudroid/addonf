@@ -22,6 +22,7 @@ public interface IMetaDataController {
         String CREATE_CAMPAIGN_STEP_1 =                 "/createCampaign/step1";
         String CREATE_CAMPAIGN_STEP_2 =                 "/createCampaign/step2";
         String CREATE_CAMPAIGN_STEP_3 =                 "/createCampaign/step3";
+        String CREATE_CAMPAIGN_STEP_4 =                 "/createCampaign/step4";
 
         String MANAGE_ADS_PARTIALS =                    "/manageAds/partials/{html}.html";
         String GET_ALL_ADS =                            "/manageAds/getAll";
@@ -46,6 +47,7 @@ public interface IMetaDataController {
         String REGISTRATION_ADV_USER_CONFIRM =        "/confirmAdvUser/{crypt}/{code}";
 
 
+
     }
 
     interface View{
@@ -58,6 +60,10 @@ public interface IMetaDataController {
         String REGISTRATION_BRAND_CONFIRM =             "enrollConfirmed";
         String REGISTRATION_AGENCY_ADMIN_CONFIRM =      "enroll/agency/adminConfirmed";
         String REGISTRATION_AGENCY_USER_CONFIRM =       "enroll/agency/userConfirmed";
+
+        String REGISTRATION_MEDIA_CONFIRM =             "enroll/media/userCreated";
+        String REGISTRATION_ADV_CONFIRM =               "enroll/adv/userCreated";
+
         String DASHBOARD_ADS =                          "manage/ads/show";
         String LIST_CAMPAIGNS =                         "campaigns";
 
@@ -65,6 +71,7 @@ public interface IMetaDataController {
         String CREATE_CAMPAIGN_STEP_1=                  "manage/ads/partials/common/step1";
         String CREATE_CAMPAIGN_STEP_2=                  "manage/ads/partials/common/step2";
         String CREATE_CAMPAIGN_STEP_3 =                 "manage/ads/partials/common/step3";
+        String CREATE_CAMPAIGN_STEP_4 =                 "manage/ads/partials/common/step4";
 
         String MODIFY_CAMPAIGN_STEP_1=                  "manage/ads/partials/common/step1";
         String MODIFY_CAMPAIGN_STEP_2=                  "manage/ads/partials/common/step2";
@@ -73,6 +80,7 @@ public interface IMetaDataController {
         String REGISTRATION_AGENCY_USER_CONFIRMED =     "enroll/agency/userCreated";
         String REGISTRATION_TIMEOUT =                   "enroll/common/timeout";
         String REGISTRATION_KO =                        "enroll/common/ko";
+
 
     }
 }

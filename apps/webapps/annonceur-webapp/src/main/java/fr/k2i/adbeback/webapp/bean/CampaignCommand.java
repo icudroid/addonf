@@ -20,7 +20,5 @@ public class CampaignCommand implements Serializable{
     private AdRulesCommand rules = new AdRulesCommand();
     private AdService adServices = new AdService();
     private BrandBean brand = new BrandBean();
-
-
-
+    private DisplayOnMediasBean medias = null;
 }

@@ -17,10 +17,6 @@ import javax.persistence.Entity;
 @DiscriminatorValue("Media")
 public class MediaUser extends User{
 
-    private String passPhrase;
-
-    @Column(name = "ext_id",unique = true)
-    private String extId;
 
 
 

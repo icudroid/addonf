@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged"
+        ng-app="myModule">
+
+<head>
+    <title>MTZik</title>
+
+    <link rel="stylesheet" th:href="@{/static/css/chosen-mtzik.css}"/>
+    <script th:src="@{/static/lib/chosen/chosen.jquery.min.js}"></script>
+
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'ads'},activeSecondMenu=${actionCampaign})"></div>
+</div>
+
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:text="#{'addonf.'+${actionCampaign}+'.ad'}"></h4>
+
+
+<div layout:fragment="content" class="col-table">
+
+    <div class="widget" ng-controller="Step3Ctrl">
+
+        <div class="wizard" id="rootwizard">
+
+            <div th:substituteby="manage/ads/fragment/wizard(active=4)"></div>
+
+            <div class="widget">
+
+                <div class="widget-body">
+                    <div class="tab-content">
+
+
+                        <div class="tab-pane active">
+                            <div class="separator bottom"></div>
+
+                            <fieldset th:each="media : ${medias.displays}">
+                                <h2 th:text="${media.key.name}">MTZik</h2>
+                                <table class="table">
+                                    <tr>
+                                        <th th:text="#{enroll.media.table.service.mediaType}">Type de media</th>
+                                        <th th:text="#{enroll.media.table.service.category}">Category</th>
+                                        <th th:text="#{enroll.media.table.service.price}">Prix</th>
+                                        <th th:text="#{enroll.media.table.service.bid}">Enchère</th>
+                                        <th th:text="#{enroll.media.table.service.actions}">Action</th>
+                                    </tr>
+                                    <no th:each="mediaTypeCatPrice : ${media.value}">
+                                        <tr th:each="m,mStat : ${mediaTypeCatPrice.value}">
+<!--                                            <td th:if="${pCategoryPrice.index == 0}" th:rowspan="${pCategoryPrice.size}" th:text="#{${'media.type.'+categoryPrice.mediaType}}">Radio</td>
+                                            <td th:text="#{${'category.'+categoryPrice.category}}">category</td>
+                                            <td th:text="${categoryPrice.price}">0.30</td>-->
+                                        </tr>
+                                    </no>
+                                </table>
+                            </fieldset>
+
+<!--                            <table class="table">
+                                <tr>
+                                    <th th:text="#{enroll.media.table.service.mediaType}">Type de media</th>
+                                    <th th:text="#{enroll.media.table.service.category}">Category</th>
+                                    <th th:text="#{enroll.media.table.service.price}">Prix</th>
+                                    <th th:text="#{enroll.media.table.service.actions}">Action</th>
+                                </tr>
+
+                                <no th:each="media : ${mediaEnrollCommand.prices.prices}">
+                                    <tr th:each="categoryPrice,pCategoryPrice : ${mediaEnrollCommand.prices.prices[__${media.key}__]}">
+                                        <td th:if="${pCategoryPrice.index == 0}" th:rowspan="${pCategoryPrice.size}" th:text="#{${'media.type.'+categoryPrice.mediaType}}">Radio</td>
+                                        <td th:text="#{${'category.'+categoryPrice.category}}">category</td>
+                                        <td th:text="${categoryPrice.price}">0.30</td>
+                                        <td>
+                                            <a th:id="${'deleteBtn_'+pCategoryPrice.index}" class="btn btn-default" th:text="#{btn.delete}" th:href="@{${flowExecutionUrl}(_eventId='deleteService',uid=${categoryPrice.uid})}">Supprimer</a>
+                                            <script th:inline="javascript">
+                                                Spring.addDecoration(
+                                                        new Spring.AjaxEventDecoration({elementId:[[${'deleteBtn_'+pCategoryPrice.index}]],event:'onclick'}));
+                                            </script>
+                                        </td>
+                                    </tr>
+                                </no>
+
+
+                            </table>-->
+
+
+
+
+                            <div class="text-right innerAll border-top">
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-default" th:href="@{'/'+${actionCampaign}+'Campaign/step3'}" th:utext="#{addonf.campaign.step4.previous}"><i class="fa fa-chevron-left"></i> Retour</a>
+                                    <a class="btn btn-primary" th:href="@{'/'+${actionCampaign}+'Campaign/save'}" th:utext="#{addonf.campaign.step4.validate}"><i class="fa fa-fw fa-check"></i> Valider</a>
+                                </div>
+                            </div>
+
+
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+</body>
+</html>

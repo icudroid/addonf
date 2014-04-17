@@ -38,15 +38,7 @@
 
         <div class="wizard" id="rootwizard">
 
-            <!-- Wizard heading -->
-            <div class="wizard-head">
-                <ul class="bwizard-steps">
-                    <li><a th:text="#{addonf.campaign.general.info}">Informations Générales</a></li>
-                    <li class="active"><a th:text="#{addonf.campaign.public}">Choix du public</a></li>
-                    <li><a th:text="#{addonf.campaign.adService}">Choix d'affichages</a></li>
-                </ul>
-            </div>
-            <!-- // Wizard heading END -->
+            <div th:substituteby="manage/ads/fragment/wizard(active=2)"></div>
 
             <div class="widget">
 

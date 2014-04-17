@@ -22,13 +22,13 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
 
 
     @Override
-    public MediaUser findbyExtId(String idPartnerExt) {
-        QMediaUser qPartner = QMediaUser.mediaUser;
+    public Media findByExtId(String idPartnerExt) {
+        QMedia media = QMedia.media;
 
         JPAQuery query = new JPAQuery(getEntityManager());
-        query.from(qPartner).where(qPartner.extId.eq(idPartnerExt));
+        query.from(media).where(media.extId.eq(idPartnerExt));
 
-        return query.uniqueResult(qPartner);
+        return query.uniqueResult(media);
     }
 
 

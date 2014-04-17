@@ -177,8 +177,6 @@ CREATE TABLE ad_user (
     birthday date,
     newsletter boolean,
     validated_level integer,
-    ext_id character varying(255),
-    pass_phrase character varying(255),
     city_id bigint,
     country_id bigint,
     agency_id bigint,
@@ -347,11 +345,40 @@ CREATE TABLE attachment (
 ALTER TABLE public.attachment OWNER TO addonf;
 
 --
+-- Name: bid_cat_media; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
+--
+
+CREATE TABLE bid_cat_media (
+    id bigint NOT NULL,
+    media_type character varying(255),
+    min_price double precision,
+    cat_id bigint,
+    media_id bigint,
+    ad_id bigint
+);
+
+
+ALTER TABLE public.bid_cat_media OWNER TO addonf;
+
+--
+-- Name: bidcategorymedia_sequence; Type: SEQUENCE; Schema: public; Owner: addonf
+--
+
+CREATE SEQUENCE bidcategorymedia_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bidcategorymedia_sequence OWNER TO addonf;
+
+--
 -- Name: brand; Type: TABLE; Schema: public; Owner: addonf; Tablespace: 
 --
 
 CREATE TABLE brand (
-    logo character varying(255),
     company_id bigint NOT NULL,
     sector bigint,
     user_id bigint
@@ -468,6 +495,7 @@ CREATE TABLE company (
     comp_address character varying(150),
     creation_date timestamp without time zone,
     legal_status character varying(255),
+    logo character varying(255),
     name character varying(255),
     phone character varying(255),
     siren character varying(255),
@@ -780,6 +808,8 @@ ALTER TABLE public.in_charge_of OWNER TO addonf;
 --
 
 CREATE TABLE media (
+    ext_id character varying(255),
+    pass_phrase character varying(255),
     company_id bigint NOT NULL,
     user_id bigint
 );
@@ -1207,7 +1237,10 @@ SELECT pg_catalog.setval('ad_sequence', 1, false);
 -- Data for Name: ad_user; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY ad_user (classe, id, account_expired, account_locked, address, comp_address, credentials_expired, email, account_enabled, firstname, lastname, password, phone, sex, username, version, age_group, birthday, newsletter, validated_level, ext_id, pass_phrase, city_id, country_id, agency_id, brand_id) FROM stdin;
+COPY ad_user (classe, id, account_expired, account_locked, address, comp_address, credentials_expired, email, account_enabled, firstname, lastname, password, phone, sex, username, version, age_group, birthday, newsletter, validated_level, city_id, country_id, agency_id, brand_id) FROM stdin;
+Agency	50	f	f	\N	\N	f	dimitri.kahn@adbeback.com	t	Dimitri	KAHN	2740570b8b59096657daff4479dfd12083a5ed13	0679270441	\N	dimitri.kahn@adbeback.com	2	\N	\N	\N	\N	\N	\N	50	\N
+Agency	51	f	f	\N	\N	f	dimitri@d-kahn.net	t	Dimitri	KAHN	2740570b8b59096657daff4479dfd12083a5ed13	\N	\N	dimitri@d-kahn.net	3	\N	\N	\N	\N	\N	\N	50	\N
+Media	52	f	f	\N	\N	f	dimitri.kahn@mtzik.fr	t	Dimitri	KAHN	2740570b8b59096657daff4479dfd12083a5ed13	0679270441	\N	dimitri.kahn@mtzik.fr	1	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -1239,6 +1272,9 @@ COPY adgame (classe, id, generated, status_game, id_transaction, player_id, scor
 --
 
 COPY admin_role (user_id, role_id) FROM stdin;
+50	5
+51	6
+52	4
 \.
 
 
@@ -1275,6 +1311,7 @@ SELECT pg_catalog.setval('adscore_sequence', 1, false);
 --
 
 COPY agency (company_id, config_id) FROM stdin;
+50	50
 \.
 
 
@@ -1282,7 +1319,7 @@ COPY agency (company_id, config_id) FROM stdin;
 -- Name: attachement_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
-SELECT pg_catalog.setval('attachement_sequence', 1, false);
+SELECT pg_catalog.setval('attachement_sequence', 1, true);
 
 
 --
@@ -1290,14 +1327,35 @@ SELECT pg_catalog.setval('attachement_sequence', 1, false);
 --
 
 COPY attachment (id, extention, full_path, origin_name, size, status) FROM stdin;
+50	jpg	7309bc18-4677-4147-8616-cb4d711a4c08	en.jpg	801	PRESENT
+51	jpg	5998ba61-16e6-4c5f-a68e-b3f802d5a9eb	en.jpg	801	PRESENT
+52	jpg	0c4f2b09-4364-409b-935c-7e32ae435a88	en.jpg	801	PRESENT
+53	jpg	46c82b76-87ca-4fd3-bae6-8faaf055ebf9	en.jpg	801	PRESENT
+54	jpg	bd0780ec-f106-422b-803c-4d17762d5156	en.jpg	801	PRESENT
+55	jpg	d0a43e54-3896-48ea-9cd7-b840761d931f	en.jpg	801	PRESENT
 \.
+
+
+--
+-- Data for Name: bid_cat_media; Type: TABLE DATA; Schema: public; Owner: addonf
+--
+
+COPY bid_cat_media (id, media_type, min_price, cat_id, media_id, ad_id) FROM stdin;
+\.
+
+
+--
+-- Name: bidcategorymedia_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
+--
+
+SELECT pg_catalog.setval('bidcategorymedia_sequence', 1, false);
 
 
 --
 -- Data for Name: brand; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY brand (logo, company_id, sector, user_id) FROM stdin;
+COPY brand (company_id, sector, user_id) FROM stdin;
 \.
 
 
@@ -1314,6 +1372,7 @@ COPY brand_no_display_with (brand_rule_id, brand_id) FROM stdin;
 --
 
 COPY cat_price (id, media_type, min_price, cat_id, media_id) FROM stdin;
+50	WEB	0.900000000000000022	4	51
 \.
 
 
@@ -1321,7 +1380,7 @@ COPY cat_price (id, media_type, min_price, cat_id, media_id) FROM stdin;
 -- Name: categorieprice_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
-SELECT pg_catalog.setval('categorieprice_sequence', 1, false);
+SELECT pg_catalog.setval('categorieprice_sequence', 1, true);
 
 
 --
@@ -38163,7 +38222,9 @@ SELECT pg_catalog.setval('city_sequence', 287027, false);
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY company (id, address, comp_address, creation_date, legal_status, name, phone, siren, siret, city_id, country_id) FROM stdin;
+COPY company (id, address, comp_address, creation_date, legal_status, logo, name, phone, siren, siret, city_id, country_id) FROM stdin;
+50	add	\N	2001-01-01 00:00:00	SARL	e0c35b96-3588-41b7-82cd-d5812bc82fd8	AdBeBack	0679270441	\N	65330998921806	260245	1
+51	add	\N	2001-01-01 00:00:00	SARL	4f258163-a6ec-473e-bb3b-6f39a7074053	MTZIk	0679270441	\N	02022168527606	260245	1
 \.
 
 
@@ -38172,6 +38233,12 @@ COPY company (id, address, comp_address, creation_date, legal_status, name, phon
 --
 
 COPY company_attachment (company_id, attachements_id, attachement_id) FROM stdin;
+50	50	KBIS
+50	51	RIB
+50	52	CID
+51	53	KBIS
+51	54	RIB
+51	55	CID
 \.
 
 
@@ -38179,7 +38246,7 @@ COPY company_attachment (company_id, attachements_id, attachement_id) FROM stdin
 -- Name: company_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
-SELECT pg_catalog.setval('company_sequence', 1, false);
+SELECT pg_catalog.setval('company_sequence', 1, true);
 
 
 --
@@ -38308,6 +38375,7 @@ SELECT pg_catalog.setval('hibernate_sequence', 1, false);
 --
 
 COPY ihm_config (id, logo) FROM stdin;
+50	e0c35b96-3588-41b7-82cd-d5812bc82fd8
 \.
 
 
@@ -38315,7 +38383,7 @@ COPY ihm_config (id, logo) FROM stdin;
 -- Name: ihmconfig_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
-SELECT pg_catalog.setval('ihmconfig_sequence', 1, false);
+SELECT pg_catalog.setval('ihmconfig_sequence', 1, true);
 
 
 --
@@ -38330,7 +38398,8 @@ COPY in_charge_of (agency_id, brand_id) FROM stdin;
 -- Data for Name: media; Type: TABLE DATA; Schema: public; Owner: addonf
 --
 
-COPY media (company_id, user_id) FROM stdin;
+COPY media (ext_id, pass_phrase, company_id, user_id) FROM stdin;
+\N	\N	51	52
 \.
 
 
@@ -38376,7 +38445,7 @@ SELECT pg_catalog.setval('onetimepassword_sequence', 1, false);
 -- Name: otpsecurity_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
-SELECT pg_catalog.setval('otpsecurity_sequence', 1, false);
+SELECT pg_catalog.setval('otpsecurity_sequence', 1, true);
 
 
 --
@@ -38537,7 +38606,7 @@ COPY user_acces (id, ad_right, user_id, ad_id) FROM stdin;
 -- Name: user_sequence; Type: SEQUENCE SET; Schema: public; Owner: addonf
 --
 
-SELECT pg_catalog.setval('user_sequence', 1, false);
+SELECT pg_catalog.setval('user_sequence', 1, true);
 
 
 --
@@ -38648,6 +38717,14 @@ ALTER TABLE ONLY agency
 
 ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bid_cat_media_pkey; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
+--
+
+ALTER TABLE ONLY bid_cat_media
+    ADD CONSTRAINT bid_cat_media_pkey PRIMARY KEY (id);
 
 
 --
@@ -38883,19 +38960,19 @@ ALTER TABLE ONLY ad_user
 
 
 --
--- Name: uk_hjo83cekj6nbw7b3u84wglj8; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
---
-
-ALTER TABLE ONLY ad_user
-    ADD CONSTRAINT uk_hjo83cekj6nbw7b3u84wglj8 UNIQUE (ext_id);
-
-
---
 -- Name: uk_mk3g8bbmwufbx5dn8nb0igl4s; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
 --
 
 ALTER TABLE ONLY company_attachment
     ADD CONSTRAINT uk_mk3g8bbmwufbx5dn8nb0igl4s UNIQUE (attachements_id);
+
+
+--
+-- Name: uk_p5nhwhggx8m94d1dyw43793eg; Type: CONSTRAINT; Schema: public; Owner: addonf; Tablespace: 
+--
+
+ALTER TABLE ONLY media
+    ADD CONSTRAINT uk_p5nhwhggx8m94d1dyw43793eg UNIQUE (ext_id);
 
 
 --
@@ -39035,6 +39112,14 @@ ALTER TABLE ONLY statitics
 
 
 --
+-- Name: fk_6oubyq00gpf5pa4u2t63342go; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY bid_cat_media
+    ADD CONSTRAINT fk_6oubyq00gpf5pa4u2t63342go FOREIGN KEY (media_id) REFERENCES media(company_id);
+
+
+--
 -- Name: fk_6rnxlmy7d2x1b66mytf9o0n0a; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
@@ -39139,6 +39224,14 @@ ALTER TABLE ONLY brand_no_display_with
 
 
 --
+-- Name: fk_ckkdttax614wbu4ft0s7gfl7p; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY bid_cat_media
+    ADD CONSTRAINT fk_ckkdttax614wbu4ft0s7gfl7p FOREIGN KEY (cat_id) REFERENCES category(id);
+
+
+--
 -- Name: fk_cub5xpoe7ku7wc28wp1c6lb3a; Type: FK CONSTRAINT; Schema: public; Owner: addonf
 --
 
@@ -39239,7 +39332,7 @@ ALTER TABLE ONLY ad_rule
 --
 
 ALTER TABLE ONLY adgame
-    ADD CONSTRAINT fk_gdwg07pi2xou16m98rd992p1u FOREIGN KEY (partner_id) REFERENCES ad_user(id);
+    ADD CONSTRAINT fk_gdwg07pi2xou16m98rd992p1u FOREIGN KEY (partner_id) REFERENCES media(company_id);
 
 
 --
@@ -39440,6 +39533,14 @@ ALTER TABLE ONLY reduction
 
 ALTER TABLE ONLY ad_rule
     ADD CONSTRAINT fk_pigo8nkiparkkt320s4l8yk59 FOREIGN KEY (ad_id) REFERENCES ad(id);
+
+
+--
+-- Name: fk_pr3nob9rynvc7a0ix7hjf84qo; Type: FK CONSTRAINT; Schema: public; Owner: addonf
+--
+
+ALTER TABLE ONLY bid_cat_media
+    ADD CONSTRAINT fk_pr3nob9rynvc7a0ix7hjf84qo FOREIGN KEY (ad_id) REFERENCES ad(id);
 
 
 --

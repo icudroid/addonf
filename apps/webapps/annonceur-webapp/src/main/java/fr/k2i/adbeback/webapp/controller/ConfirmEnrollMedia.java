@@ -62,7 +62,7 @@ public class ConfirmEnrollMedia {
                 User user = webUserDao.getUserByEmail(email);
                 webUserDao.enable(user.getId());
                 otpServiceFacade.removeOtp(email,name,code);
-                return IMetaDataController.View.REGISTRATION_AGENCY_ADMIN_CONFIRM;
+                return IMetaDataController.View.REGISTRATION_MEDIA_CONFIRM;
             case KO:
                 return IMetaDataController.View.REGISTRATION_KO;
             default:

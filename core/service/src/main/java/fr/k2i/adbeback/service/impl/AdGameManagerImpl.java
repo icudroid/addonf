@@ -80,7 +80,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
         }else{
             game = new AdGameTransaction();
             ((AdGameTransaction)game).setIdTransaction(idTransaction);
-            ((AdGameTransaction)game).setMedia(mediaDao.findbyExtId(idPartner));
+            ((AdGameTransaction)game).setMedia(mediaDao.findByExtId(idPartner));
         }
 
 

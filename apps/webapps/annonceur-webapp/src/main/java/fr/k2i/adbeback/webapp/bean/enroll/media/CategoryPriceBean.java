@@ -19,4 +19,5 @@ public class CategoryPriceBean implements Serializable{
     private Double price;
     private String category;
     private MediaType mediaType;
+    private Double bid;
 }

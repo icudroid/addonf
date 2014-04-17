@@ -56,7 +56,7 @@ public class ConfirmEnrollAdv {
                 User user = webUserDao.getUserByEmail(email);
                 webUserDao.enable(user.getId());
                 otpServiceFacade.removeOtp(email, name, code);
-                return IMetaDataController.View.REGISTRATION_AGENCY_ADMIN_CONFIRM;
+                return IMetaDataController.View.REGISTRATION_ADV_CONFIRM;
             case KO:
                 return IMetaDataController.View.REGISTRATION_KO;
             default:

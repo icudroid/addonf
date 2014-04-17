@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.core.business.game;
 
+import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.core.business.user.MediaUser;
 import lombok.Data;
 
@@ -20,7 +21,7 @@ public class AdGameTransaction extends AbstractAdGame {
 
     @ManyToOne
     @JoinColumn(name = "partner_id")
-    private MediaUser media;
+    private Media media;
 
     @Override
     public String toString() {
