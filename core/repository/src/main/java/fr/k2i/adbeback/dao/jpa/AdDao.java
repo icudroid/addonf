@@ -9,8 +9,7 @@ import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.core.business.user.Media;
-import fr.k2i.adbeback.core.business.user.MediaUser;
+import fr.k2i.adbeback.core.business.user.*;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.springframework.data.domain.Page;
@@ -315,6 +314,17 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.in(brands));
         return new PageImpl<Ad>(query.list(qAd),pageable,query.count());
+    }
+
+    @Override
+    public List<Ad> findByMedia(Media media,Date date) {
+        QAd qAd = QAd.ad;
+        QBidCategoryMedia bidCategoryMedia = QBidCategoryMedia.bidCategoryMedia;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        query.from(qAd).join(qAd.bidCategoryMedias,bidCategoryMedia).where(bidCategoryMedia.media.eq(media).and(qAd.startDate.lt(date).and(qAd.endDate.gt(date))));
+
+        return query.list(qAd);
     }
 
 

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,5 +48,7 @@ public interface IAdDao extends IGenericDao<Ad, Long> {
     List<Ad> findByBrands(List<Brand> brands);
 
     Page<Ad> findByBrands(List<Brand> brands, Pageable pageable);
+
+    List<Ad> findByMedia(Media media, Date date);
 }
 

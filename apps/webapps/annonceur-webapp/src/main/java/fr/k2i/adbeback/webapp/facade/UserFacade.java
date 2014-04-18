@@ -21,6 +21,7 @@ import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenMultiRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
+import fr.k2i.adbeback.webapp.bean.enroll.media.CategoryPriceBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -120,6 +121,12 @@ public class UserFacade {
 
     @Autowired
     private IAdGameDao adGameDao;
+
+    @Autowired
+    private IMediaDao mediaDao;
+
+    @Autowired
+    private ICategoryDao categoryDao;
 
 
     @Transactional
@@ -319,7 +326,11 @@ public class UserFacade {
         ad.setDuration(information.getDisplayDuration()*1000);
 
         if(information.getAdFileCommand()!=null){
-            ad.setAdFile(FileUtils.saveFile(information.getAdFileCommand().getContent(),adsPathTmp));
+            if (AdDisplay.VIDEO.equals(information.getDisplayAd())){
+                ad.setAdFile(FileUtils.saveFile(information.getAdFileCommand().getContent(),adsPathTmp));
+            }else{
+                ad.setAdFile(FileUtils.saveFile(information.getAdFileCommand().getContent(),adsPath));
+            }
         }
         ad.setBrand(brand);
         ad.setEndDate(information.getEndDate());
@@ -516,6 +527,42 @@ public class UserFacade {
         }
 
 
+        List<BidCategoryMedia> bidCategoryMedias = new ArrayList<BidCategoryMedia>();
+
+        if(ad.getBidCategoryMedias()!=null){
+            ad.getBidCategoryMedias().clear();
+            bidCategoryMedias = ad.getBidCategoryMedias();
+        }else {
+            ad.setBidCategoryMedias(bidCategoryMedias);
+        }
+
+
+        DisplayOnMediasBean medias = campaignCommand.getMedias();
+
+        for (Map.Entry<MediaBean, Map<MediaType, List<CategoryPriceBean>>> mediaBeanMapEntry : medias.getDisplays().entrySet()) {
+            MediaBean key = mediaBeanMapEntry.getKey();
+            Media media = mediaDao.get(key.getId());
+
+            Map<MediaType, List<CategoryPriceBean>> value = mediaBeanMapEntry.getValue();
+            for (Map.Entry<MediaType, List<CategoryPriceBean>> mediaTypeListEntry : value.entrySet()) {
+                MediaType mediaType = mediaTypeListEntry.getKey();
+
+                List<CategoryPriceBean> categoryPriceBeans = mediaTypeListEntry.getValue();
+                for (CategoryPriceBean categoryPriceBean : categoryPriceBeans) {
+
+                    BidCategoryMedia bidCategoryMedia = new BidCategoryMedia();
+                    bidCategoryMedia.setMedia(media);
+                    bidCategoryMedia.setMediaType(mediaType);
+                    bidCategoryMedia.setCategory(categoryDao.findByKey(categoryPriceBean.getCategory()));
+                    bidCategoryMedia.setBid(categoryPriceBean.getBid());
+
+                    bidCategoryMedias.add(bidCategoryMedia);
+                }
+
+            }
+
+        }
+
         adDao.save(ad);
 
     }
@@ -656,6 +703,41 @@ public class UserFacade {
 
 
         campaignCommand.setBrand(new BrandBean(ad.getBrand()));
+
+
+        DisplayOnMediasBean medias = new DisplayOnMediasBean();
+        HashMap<MediaBean, Map<MediaType, List<CategoryPriceBean>>> displays = new HashMap<MediaBean, Map<MediaType, List<CategoryPriceBean>>>();
+
+
+        List<BidCategoryMedia> bidCategoryMedias = ad.getBidCategoryMedias();
+        for (BidCategoryMedia bidCategoryMedia : bidCategoryMedias) {
+            MediaBean mediaBean = new MediaBean(bidCategoryMedia.getMedia().getId(), bidCategoryMedia.getMedia().getName());
+            Map<MediaType, List<CategoryPriceBean>> mediaTypeListMap = displays.get(mediaBean);
+            if(mediaTypeListMap==null){
+                mediaTypeListMap = new HashMap<MediaType, List<CategoryPriceBean>>();
+                displays.put(mediaBean,mediaTypeListMap);
+            }
+
+            List<CategoryPriceBean> categoryPriceBeans = mediaTypeListMap.get(bidCategoryMedia.getMediaType());
+            if(categoryPriceBeans==null){
+                categoryPriceBeans = new ArrayList<CategoryPriceBean>();
+                mediaTypeListMap.put(bidCategoryMedia.getMediaType(),categoryPriceBeans);
+            }
+
+            CategoryPriceBean categoryPriceBean = new CategoryPriceBean();
+            CategoryPrice categoryPrice = mediaDao.findCategoryPrice(bidCategoryMedia.getMedia().getId(),bidCategoryMedia.getMediaType(),bidCategoryMedia.getCategory().getKey());
+            categoryPriceBean.setPrice(categoryPrice.getMinPrice());
+            categoryPriceBean.setMediaType(bidCategoryMedia.getMediaType());
+            categoryPriceBean.setCategory(bidCategoryMedia.getCategory().getKey());
+            categoryPriceBean.setBid(bidCategoryMedia.getBid());
+            categoryPriceBean.setMediaId(bidCategoryMedia.getMedia().getId());
+
+            categoryPriceBeans.add(categoryPriceBean);
+        }
+
+        medias.setDisplays(displays);
+
+        campaignCommand.setMedias(medias);
 
 
         return campaignCommand;

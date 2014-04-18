@@ -50,6 +50,7 @@ public class AdCampaignFacade {
                 if(mediaTypeListMap == null){
                     mediaTypeListMap  = new HashMap<MediaType, List<CategoryPriceBean>>();
                     mediaTypeListMap.put(mediaType,new ArrayList<CategoryPriceBean>());
+                    displays.put(mediaBean,mediaTypeListMap);
                 }
 
                 List<CategoryPriceBean> categoryPriceBeans = mediaTypeListMap.get(mediaType);
@@ -59,6 +60,7 @@ public class AdCampaignFacade {
                 cp.setCategory(categoryPrice.getCategory().getKey());
                 cp.setMediaType(mediaType);
                 cp.setPrice(categoryPrice.getMinPrice());
+                cp.setMediaId(media.getId());
 
                 categoryPriceBeans.add(cp);
 

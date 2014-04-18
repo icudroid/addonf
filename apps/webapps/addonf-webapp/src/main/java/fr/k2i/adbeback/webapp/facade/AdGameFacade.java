@@ -9,7 +9,6 @@ import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.*;
 import fr.k2i.adbeback.core.business.user.Media;
-import fr.k2i.adbeback.core.business.user.MediaUser;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
@@ -117,7 +116,7 @@ public class AdGameFacade {
 
 
     @Autowired
-    IMediaDao partnerDao;
+    IMediaDao mediaDao;
 
 
 
@@ -128,12 +127,12 @@ public class AdGameFacade {
         HttpSession session = request.getSession();
 
         //0 : verifier
-        Media media = partnerDao.findByExtId(configure.getIdPartner());
+        Media media = mediaDao.findByExtId(configure.getIdPartner());
 
         if(media ==null){
             return null;
         }else{
-            if(partnerDao.existTransaction(configure.getIdPartner(),configure.getIdTransaction())){
+            if(mediaDao.existTransaction(configure.getIdPartner(),configure.getIdTransaction())){
                 return null;
             }
         }
@@ -146,6 +145,11 @@ public class AdGameFacade {
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(webPlayer, webPlayer.getPassword(), webPlayer.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
+        //all possible ads
+        List<Ad> ads = adDao.findByMedia(media,new Date());
+        Map<Ad,Double> winBidAds  = bidSystem(ads,configure);
+
+
         //moyen 0.20 euro / pub
         //2 : estimate min score
         Double nb = configure.getAmount() / AVERAGE_AP_PRICE;
@@ -156,6 +160,8 @@ public class AdGameFacade {
         if(left!=0){
             minScore++;
         }
+
+
 
         //3 : find level for NB ads
         SingleGooseLevel gooseLevel = gooseLevelDao.findForNbAds(minScore);
@@ -234,6 +240,13 @@ public class AdGameFacade {
         session.setAttribute(GOOSE_LEVEL, gooseLevel.getId());
         session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
         session.setAttribute(AD_CHOISES,choises);
+
+        return res;
+    }
+
+    private Map<Ad, Double> bidSystem(List<Ad> ads, PaymentConfigure configure) {
+        Map<Ad, Double> res = new HashMap<Ad, Double>();
+
 
         return res;
     }

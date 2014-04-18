@@ -1,9 +1,11 @@
 <!-- Wizard heading -->
 <div class="wizard-head">
     <ul class="bwizard-steps">
+        <li th:if="${active==0}" class="active"><a th:text="#{addonf.campaign.brand.info}">Choix annonceur</a></li>
         <li th:class="${active==1}?'active':''"><a th:text="#{addonf.campaign.general.info}">Informations Générales</a></li>
         <li th:class="${active==2}?'active':''"><a th:text="#{addonf.campaign.public}">Choix du public</a></li>
         <li th:class="${active==3}?'active':''"><a th:text="#{addonf.campaign.adService}">Choix d'affichages</a></li>
+        <li th:class="${active==4}?'active':''"><a th:text="#{addonf.campaign.media}">Choix des medias</a></li>
     </ul>
 </div>
 <!-- // Wizard heading END -->

@@ -23,7 +23,7 @@ public class BidCategoryMedia extends BaseObject implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BidCategoryMedia_Gen")
     private Long id;
 
-    private Double minPrice;
+    private Double bid;
 
     @Enumerated(EnumType.STRING)
     private MediaType mediaType;
@@ -44,14 +44,14 @@ public class BidCategoryMedia extends BaseObject implements Serializable {
         BidCategoryMedia that = (BidCategoryMedia) o;
 
         if (category != null ? !category.equals(that.category) : that.category != null) return false;
-        if (minPrice != null ? !minPrice.equals(that.minPrice) : that.minPrice != null) return false;
+        if (bid != null ? !bid.equals(that.bid) : that.bid != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = minPrice != null ? minPrice.hashCode() : 0;
+        int result = bid != null ? bid.hashCode() : 0;
         result = 31 * result + (category != null ? category.hashCode() : 0);
         return result;
     }
@@ -60,7 +60,7 @@ public class BidCategoryMedia extends BaseObject implements Serializable {
     public String toString() {
         return "CategoryPrice{" +
                 "category=" + category +
-                ", minPrice=" + minPrice +
+                ", minPrice=" + bid +
                 '}';
     }
 }

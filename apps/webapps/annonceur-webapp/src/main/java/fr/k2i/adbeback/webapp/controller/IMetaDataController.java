@@ -37,6 +37,7 @@ public interface IMetaDataController {
         String MODIFY_CAMPAIGN_STEP_1 =                 "/modifyCampaign/step1";
         String MODIFY_CAMPAIGN_STEP_2 =                 "/modifyCampaign/step2";
         String MODIFY_CAMPAIGN_STEP_3 =                 "/modifyCampaign/step3";
+        String MODIFY_CAMPAIGN_STEP_4 =                 "/modifyCampaign/step4";
 
         String MODIFY =                                 "/modifyCampaign/save";
         String UPLOAD =                                 "/uploadAttachement/{fileId}";
@@ -76,6 +77,7 @@ public interface IMetaDataController {
         String MODIFY_CAMPAIGN_STEP_1=                  "manage/ads/partials/common/step1";
         String MODIFY_CAMPAIGN_STEP_2=                  "manage/ads/partials/common/step2";
         String MODIFY_CAMPAIGN_STEP_3 =                 "manage/ads/partials/common/step3";
+        String MODIFY_CAMPAIGN_STEP_4 =                 "manage/ads/partials/common/step4";
 
         String REGISTRATION_AGENCY_USER_CONFIRMED =     "enroll/agency/userCreated";
         String REGISTRATION_TIMEOUT =                   "enroll/common/timeout";

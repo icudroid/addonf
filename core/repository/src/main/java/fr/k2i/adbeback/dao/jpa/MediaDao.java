@@ -2,10 +2,7 @@ package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.game.QAdGameTransaction;
-import fr.k2i.adbeback.core.business.user.Media;
-import fr.k2i.adbeback.core.business.user.MediaUser;
-import fr.k2i.adbeback.core.business.user.QMedia;
-import fr.k2i.adbeback.core.business.user.QMediaUser;
+import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.dao.IMediaDao;
 import org.springframework.stereotype.Repository;
 
@@ -40,6 +37,18 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         query.from(media).where(media.user.eq(user));
 
         return query.uniqueResult(media);
+    }
+
+    @Override
+    public CategoryPrice findCategoryPrice(Long idMedia, MediaType mediaType,String categoryKey) {
+        QMedia media = QMedia.media;
+        QCategoryPrice qCategoryPrice = QCategoryPrice.categoryPrice;
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(media).join(media.minPriceByMediaType,qCategoryPrice)
+                .where(media.id.eq(idMedia).and(qCategoryPrice.category.key.eq(categoryKey).and(qCategoryPrice.mediaType.eq(mediaType))));
+
+        return query.uniqueResult(qCategoryPrice);
     }
 
 

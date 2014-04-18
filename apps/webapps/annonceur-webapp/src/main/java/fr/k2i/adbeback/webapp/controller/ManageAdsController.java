@@ -4,12 +4,15 @@ import fr.k2i.adbeback.core.business.Constants;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.user.AgencyUser;
 import fr.k2i.adbeback.core.business.user.BrandUser;
+import fr.k2i.adbeback.core.business.user.MediaType;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.adservice.AdResponseBean;
 import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenMultiRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
+import fr.k2i.adbeback.webapp.bean.enroll.media.CategoryPriceBean;
+import fr.k2i.adbeback.webapp.bean.enroll.media.CategoryPriceBeans;
 import fr.k2i.adbeback.webapp.facade.AdCampaignFacade;
 import fr.k2i.adbeback.webapp.facade.UserFacade;
 import fr.k2i.adbeback.webapp.validator.CampaignCommandValidator;
@@ -768,6 +771,7 @@ public ModelAndView addOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean
         if(medias ==null){
             //load media
             medias = adCampaignFacade.loadMediasBid();
+            campaignCommand.setMedias(medias);
         }
 
         model.put("medias", medias);
@@ -778,11 +782,116 @@ public ModelAndView addOpenMultiRule(@RequestBody OpenMultiRuleBean openRuleBean
 
 
 
+    @RequestMapping(value = IMetaDataController.Path.CREATE_CAMPAIGN_STEP_4,method = RequestMethod.POST)
+    public String step4Submit(@ModelAttribute("categoryPriceBeans") CategoryPriceBeans categoryPriceBeans,BindingResult bindingResult,Map<String, Object> model,HttpServletRequest request) throws Exception {
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        DisplayOnMediasBean medias = campaignCommand.getMedias();
+        List<CategoryPriceBean> cps = categoryPriceBeans.getCategoryPriceBeans();
+
+        boolean oneCpFilled = false;
+        for (CategoryPriceBean cp : cps) {
+            if(cp.getBid()!=null){
+                oneCpFilled=true;
+                setCategoryPriceBean(medias,cp);
+            }
+        }
+
+        if(!oneCpFilled){
+            bindingResult.reject("one.media.required");
+            return IMetaDataController.View.CREATE_CAMPAIGN_STEP_4;
+        }else{
+            this.userFacade.save(campaignCommand);
+            request.getSession().removeAttribute("campaignCommand");
+            request.getSession().removeAttribute(UPLOADED_IMG);
+            return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.LIST_CAMPAIGNS;
+        }
+
+    }
 
 
 
 
 
+
+
+    @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_4,method = RequestMethod.GET)
+    public String mofifyStep4(Map<String, Object> model,HttpServletRequest request){
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        DisplayOnMediasBean medias = campaignCommand.getMedias();
+        if(medias ==null){
+            //load media
+            medias = adCampaignFacade.loadMediasBid();
+            campaignCommand.setMedias(medias);
+        }
+
+        model.put("medias", medias);
+        model.put("actionCampaign","modify");
+        return IMetaDataController.View.MODIFY_CAMPAIGN_STEP_4;
+    }
+
+
+
+
+    @RequestMapping(value = IMetaDataController.Path.MODIFY_CAMPAIGN_STEP_4,method = RequestMethod.POST)
+    public String modifyStep4Submit(@ModelAttribute("categoryPriceBeans") CategoryPriceBeans categoryPriceBeans,BindingResult bindingResult,Map<String, Object> model,HttpServletRequest request) throws Exception {
+        CampaignCommand campaignCommand = (CampaignCommand) request.getSession().getAttribute("campaignCommand");
+        DisplayOnMediasBean medias = campaignCommand.getMedias();
+        List<CategoryPriceBean> cps = categoryPriceBeans.getCategoryPriceBeans();
+
+        boolean oneCpFilled = false;
+        for (CategoryPriceBean cp : cps) {
+            if(cp.getBid()!=null){
+                oneCpFilled=true;
+                setCategoryPriceBean(medias,cp);
+            }
+        }
+
+        if(!oneCpFilled){
+            bindingResult.reject("one.media.required");
+            model.put("actionCampaign","modify");
+            return IMetaDataController.View.MODIFY_CAMPAIGN_STEP_4;
+        }else{
+            this.userFacade.save(campaignCommand);
+            request.getSession().removeAttribute("campaignCommand");
+            request.getSession().removeAttribute(UPLOADED_IMG);
+            return IMetaDataController.PathUtils.REDIRECT+IMetaDataController.Path.LIST_CAMPAIGNS;
+        }
+
+    }
+
+
+    private void setCategoryPriceBean(DisplayOnMediasBean medias, CategoryPriceBean cp) {
+
+        Map<MediaBean, Map<MediaType, List<CategoryPriceBean>>> displays = medias.getDisplays();
+
+        for (MediaBean mediaBean : displays.keySet()) {
+            if(mediaBean.getId().equals(cp.getMediaId())){
+
+                Map<MediaType, List<CategoryPriceBean>> mediaTypeListMap = displays.get(mediaBean);
+
+                for (MediaType mediaType : mediaTypeListMap.keySet()) {
+
+                    if(mediaType.equals(cp.getMediaType())){
+                        List<CategoryPriceBean> categoryPriceBeans = mediaTypeListMap.get(cp.getMediaType());
+
+                        int index = 0;
+                        for (CategoryPriceBean categoryPriceBean : categoryPriceBeans) {
+                            if(categoryPriceBean.getMediaType()==cp.getMediaType() && categoryPriceBean.getMediaId().equals(cp.getMediaId()) &&
+                                    categoryPriceBean.getCategory().equals(cp.getCategory())){
+                                cp.setPrice(categoryPriceBean.getPrice());
+                                categoryPriceBeans.set(index,cp);
+                                return;
+                            }
+                            index++;
+                        }
+
+                    }
+                }
+                break;
+            }
+        }
+
+    }
 
 
     /**********************************************************************************************************************/
