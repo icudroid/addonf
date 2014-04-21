@@ -13,6 +13,6 @@ public class Information {
     private AgeInformation age;
     private CityInformation city;
     private SexInformation sex;
-    private  CountryInformation country;
+    private CountryInformation country;
 }
 

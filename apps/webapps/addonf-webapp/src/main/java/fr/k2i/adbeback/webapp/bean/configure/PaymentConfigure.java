@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.bean.configure;
 
+import fr.k2i.adbeback.core.business.user.MediaType;
 import fr.k2i.adbeback.webapp.bean.configure.information.Information;
 import fr.k2i.adbeback.webapp.bean.configure.url.Url;
 import lombok.Data;
@@ -21,5 +22,6 @@ public class PaymentConfigure{
     private Information informations;
     private Url callSysUrl;
     private Url callBackUrl;
-    private Boolean selfAd;//utilise ses propre pub
+    private Boolean selfAd;//utilise ses propres pub
+    private MediaType mediaType;
 }

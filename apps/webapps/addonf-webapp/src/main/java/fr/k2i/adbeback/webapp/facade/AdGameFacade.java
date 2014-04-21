@@ -8,7 +8,9 @@ import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.*;
+import fr.k2i.adbeback.core.business.user.BidCategoryMedia;
 import fr.k2i.adbeback.core.business.user.Media;
+import fr.k2i.adbeback.core.business.user.MediaType;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
@@ -145,32 +147,42 @@ public class AdGameFacade {
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(webPlayer, webPlayer.getPassword(), webPlayer.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        //all possible ads
-        List<Ad> ads = adDao.findByMedia(media,new Date());
-        Map<Ad,Double> winBidAds  = bidSystem(ads,configure);
+        //get all valid ad for player
+        List<Ad> ads = null;
+        if(configure.getSelfAd()){
+            ads = adDao.getAllValidForAndProvidedBy(player,media);
+        }else{
+            ads= adDao.getAllValidFor(player);
+        }
 
+        Map<Double,List<Ad>> adsSortedByBid = constructBidsSortedMap(ads);
+
+        //bid system to calculate min ad neeeded
+        Map<Ad,Double> winBidAds  = bidSystem(adsSortedByBid,configure);
 
         //moyen 0.20 euro / pub
         //2 : estimate min score
-        Double nb = configure.getAmount() / AVERAGE_AP_PRICE;
+        /*Double nb = configure.getAmount() / AVERAGE_AP_PRICE;
         Double left = configure.getAmount() % AVERAGE_AP_PRICE;
         Integer minScore =  nb.intValue();
 
         //one more if exemple 3.75 => 4
         if(left!=0){
             minScore++;
-        }
+        }*/
 
-
+        Integer minScore = winBidAds.size();
 
         //3 : find level for NB ads
         SingleGooseLevel gooseLevel = gooseLevelDao.findForNbAds(minScore);
 
         int maxErr = gooseLevel.getNbMaxAdByPlay() - gooseLevel.getMinScore();
 
+        //need more add for max Err
+        bidSystemNeedMoreAdForErr(winBidAds,adsSortedByBid, maxErr);
 
         //4 : generate game
-        AbstractAdGame generateAdGame = adGameManager.generate(configure.getSelfAd(),configure.getIdPartner(),configure.getIdTransaction(),player.getId(),gooseLevel);
+        AbstractAdGame generateAdGame = adGameManager.generate(winBidAds,configure.getIdPartner(),configure.getIdTransaction(),player.getId(),gooseLevel);
 
         //5 : set urlCall in session
         session.setAttribute(CALL_BACK_URL,configure.getCallBackUrl());
@@ -244,11 +256,77 @@ public class AdGameFacade {
         return res;
     }
 
-    private Map<Ad, Double> bidSystem(List<Ad> ads, PaymentConfigure configure) {
+    private void bidSystemNeedMoreAdForErr(Map<Ad, Double> winBidAds, Map<Double,List<Ad>> adsSortedByBid, int needMoreAds) {
+        for (int i = 0; i < needMoreAds; i++) {
+            doBid(winBidAds, adsSortedByBid);
+        }
+    }
+
+
+
+    private Map<Ad, Double> bidSystem(Map<Double,List<Ad>> adsSortedByBid, final PaymentConfigure configure) {
         Map<Ad, Double> res = new HashMap<Ad, Double>();
-
-
+        double amount = configure.getAmount();
+        while (amount>0.0){
+            amount-=doBid(res, adsSortedByBid);
+        }
         return res;
+    }
+
+
+    private Double doBid(Map<Ad, Double> res, Map<Double, List<Ad>> adsSortedByBid) {
+        TreeSet<Double> bids = (TreeSet<Double>) adsSortedByBid.keySet();
+
+        Double highBid = bids.first();
+        List<Ad> adsBidHigh = adsSortedByBid.get(highBid);
+        adsSortedByBid.remove(highBid);
+
+        bids = (TreeSet<Double>) adsSortedByBid.keySet();
+        Double justBefore = bids.first();
+
+        Double winBid = justBefore+0.01;
+
+        Ad adWinbid = null;
+        if(adsBidHigh.size()>1){
+            //take one random
+            Random chooseAd = new Random();
+            int index = chooseAd.nextInt(adsBidHigh.size());
+            adWinbid = adsBidHigh.get(index);
+            adsBidHigh.remove(index);
+            adsSortedByBid.put(highBid,adsBidHigh);
+        }else{
+            adWinbid = adsBidHigh.get(0);
+        }
+
+        res.put(adWinbid,winBid);
+        return winBid;
+    }
+
+    private Map<Double, List<Ad>>  constructBidsSortedMap(List<Ad> ads) {
+
+        // 1 - sort by bid asc
+        Map<Double,List<Ad>> adsSortedByBid = new TreeMap<Double,List<Ad>>(new Comparator<Double>() {
+            @Override
+            public int compare(Double bid1, Double bid2) {
+                return bid2.compareTo(bid1);
+            }
+        });
+
+        for (Ad ad : ads) {
+            List<BidCategoryMedia> bidCategoryMedias = ad.getBidCategoryMedias();
+
+            for (BidCategoryMedia bidCategoryMedia : bidCategoryMedias) {
+                List<Ad> bidValueForAds = adsSortedByBid.get(bidCategoryMedia.getBid());
+                if(bidValueForAds == null){
+                    bidValueForAds = new ArrayList<Ad>();
+                    adsSortedByBid.put(bidCategoryMedia.getBid(),bidValueForAds);
+                }
+                bidValueForAds.add(ad);
+            }
+
+        }
+
+        return adsSortedByBid;
     }
 
     /**

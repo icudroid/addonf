@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
@@ -21,14 +22,15 @@ public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
 	 * Generation du jeu$
      *
      *
-     * @param selfAd
+     *
+     * @param winBidAds
      * @param idPartner
      * @param idTransaction
      * @param idPlayer
      * @param gooseLevel   @return
      * @throws Exception
 	 */
-	AbstractAdGame generate(Boolean selfAd, String idPartner, String idTransaction, Long idPlayer, GooseLevel gooseLevel)throws Exception;
+	AbstractAdGame generate(Map<Ad, Double> winBidAds, String idPartner, String idTransaction, Long idPlayer, GooseLevel gooseLevel)throws Exception;
 	
 
 	/**

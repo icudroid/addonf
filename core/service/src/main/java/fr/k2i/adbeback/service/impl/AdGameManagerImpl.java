@@ -1,14 +1,7 @@
 package fr.k2i.adbeback.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
 
 
 import fr.k2i.adbeback.core.business.ad.ViewedAd;
@@ -71,7 +64,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
     @Transactional
-	public AbstractAdGame generate(Boolean selfAd, String idPartner, String idTransaction, Long idPlayer, GooseLevel level) throws Exception {
+	public AbstractAdGame generate(Map<Ad, Double> winBidAds, String idPartner, String idTransaction, Long idPlayer, GooseLevel level) throws Exception {
 
         AbstractAdGame game = null;
 
@@ -83,9 +76,6 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
             ((AdGameTransaction)game).setMedia(mediaDao.findByExtId(idPartner));
         }
 
-
-		//game.setMinScore(level.getMinScore());
-
 		game.setGenerated(new Date());
 
 		AdScore score = new AdScore();
@@ -93,94 +83,74 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 		game.setScore(score);
 
         Player player = playerDao.get(idPlayer);
-        game.setChoises(generateChoises(selfAd,level.getNbMaxAdByPlay(), game,player));
+        game.setChoises(generateChoises(winBidAds, game,player));
 
 		game.setPlayer(player);
 		return adGameDao.save(game);
 	}
 
-	private Map<Integer, AdChoise> generateChoises(Boolean selfAd, Integer nbAds, AbstractAdGame game, Player player) throws Exception {
-		Map<Integer, AdChoise> res = new HashMap<Integer, AdChoise>();
+	private Map<Integer, AdChoise> generateChoises(Map<Ad, Double> allAds, AbstractAdGame game, Player player) throws Exception {
+		Map<Integer, AdChoise> res = new TreeMap<Integer, AdChoise>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1.compareTo(o2);
+            }
+        });
 
-        Address address = player.getAddress();
+        Random ramRandom = new Random();
 
+        for (Entry<Ad, Double> adEntry : allAds.entrySet()) {
+            Ad adWinned = adEntry.getKey();
 
-        Map<Integer, Ad> mapTest = new HashMap<Integer, Ad>();
-
-        List<Ad> allAds = null;
-        if(selfAd){
-            allAds = adDao.getAllValidForAndProvidedBy(player,((AdGameTransaction)game).getMedia());
-        }else{
-            allAds = adDao.getAllValidFor(player);
-        }
-
-		Random ramRandom = new Random();
-        if(nbAds>allAds.size()){
-            throw new Exception("No more pub");
-        }
-
-		int i = 0;
-		while (i < nbAds-1) {
-            // Todo : comment mettre en concurence les annonceurs
-			int nextInt = ramRandom.nextInt(allAds.size());
-			Ad ad = mapTest.get(nextInt);
-			if (ad == null) {
-				ad = allAds.get(nextInt);
-				mapTest.put(nextInt, ad);
-
-				AdChoise choises = new AdChoise();
-				int correct = ramRandom.nextInt(3);
+            int index = 0;
+            do{
+                index = ramRandom.nextInt(allAds.size());
+            }while (res.get(index) !=null);
 
 
-                //TODO : comment choisir la règle
-				List<AdRule> rules = ad.getRules();
-                List<AdService> rulesPossible = new ArrayList<AdService>();
+            AdChoise choises = new AdChoise();
+            int correct = ramRandom.nextInt(3);
+            choises.setWinBidPrice(adEntry.getValue());
 
-                LocalDate now = new LocalDate();
+            //TODO : comment choisir la règle
+            List<AdRule> rules = adWinned.getRules();
+            List<AdService> rulesPossible = new ArrayList<AdService>();
 
-				for (AdRule adRule : rules) {
-                    if (AdService.class.isAssignableFrom(adRule.getClass())) {
-                        addValidAdService(player, rulesPossible, now, (AdService) adRule);
-                    }
-				}
+            LocalDate now = new LocalDate();
 
-                if(rulesPossible.isEmpty()){
-                    if(mapTest.size()==allAds.size()){
-                        throw new Exception("No more pub");
-                    }
-                    continue;
+            for (AdRule adRule : rules) {
+                if (AdService.class.isAssignableFrom(adRule.getClass())) {
+                    addValidAdService(player, rulesPossible, now, (AdService) adRule);
                 }
+            }
 
-                AdService rule = (AdService) rulesPossible.get(ramRandom.nextInt(rulesPossible.size()));
+            AdService rule = rulesPossible.get(ramRandom.nextInt(rulesPossible.size()));
 
-				choises.setQuestion(rule.getQuestion());
-
-
-
-                List<Possibility> corrects = choises.getCorrects();
-                if (corrects ==null){
-                    corrects = new ArrayList<Possibility>();
-                    choises.setCorrects(corrects);
-                }
-
-
-                if (rule instanceof MultiResponseRule) {
-                    MultiResponseRule multiResponseRule = (MultiResponseRule) rule;
-                    generatePossibiliesAndCorrects(ad,multiResponseRule,choises);
-                }else{
-                    choises.setPossiblities(generatePossibilies(ad, correct,rule));
-                    corrects.add(choises.getPossiblities().get(correct));
-                }
+            choises.setQuestion(rule.getQuestion());
 
 
 
-                choises.setNumber(i);
-                choises.setAdGame(game);
-                choises.setGeneratedBy((AdService) rule);
-				res.put(i, choises);
+            List<Possibility> corrects = choises.getCorrects();
+            if (corrects ==null){
+                corrects = new ArrayList<Possibility>();
+                choises.setCorrects(corrects);
+            }
 
-				i++;
-			}
+
+            if (rule instanceof MultiResponseRule) {
+                MultiResponseRule multiResponseRule = (MultiResponseRule) rule;
+                generatePossibiliesAndCorrects(adWinned,multiResponseRule,choises);
+            }else{
+                choises.setPossiblities(generatePossibilies(adWinned, correct,rule));
+                corrects.add(choises.getPossiblities().get(correct));
+            }
+
+            choises.setNumber(index);
+            choises.setAdGame(game);
+            choises.setGeneratedBy(rule);
+            res.put(index, choises);
+
+
 		}
 
 		return res;
@@ -189,13 +159,13 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
     private void addValidAdService(Player player, List<AdService> rulesPossible, LocalDate now, AdService adRule) {
-        if(now.toDate().after(((AdService) adRule).getStartDate()) && now.toDate().before(((AdService) adRule).getEndDate())){
-            ViewedAd forToday = viewedAdDao.findForToday(player, (AdService) adRule);
-            if(((AdService) adRule).getMaxDisplayByUser()==null){
-                rulesPossible.add((AdService) adRule);
+        if(now.toDate().after((adRule).getStartDate()) && now.toDate().before((adRule).getEndDate())){
+            ViewedAd forToday = viewedAdDao.findForToday(player,  adRule);
+            if((adRule).getMaxDisplayByUser()==null){
+                rulesPossible.add( adRule);
             }else{
-                if(forToday==null || forToday.getNb() < ((AdService) adRule).getMaxDisplayByUser()){
-                    rulesPossible.add((AdService) adRule);
+                if(forToday==null || forToday.getNb() < ( adRule).getMaxDisplayByUser()){
+                    rulesPossible.add( adRule);
                 }
             }
         }
