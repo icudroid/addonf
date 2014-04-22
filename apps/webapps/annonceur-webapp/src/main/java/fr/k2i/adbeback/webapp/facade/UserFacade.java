@@ -569,6 +569,7 @@ public class UserFacade {
 
     private void deleteNotNeededBrandRule(Ad ad, List<BrandRuleBean> brandRules) {
         List<BrandRule> rules = ad.getRules(BrandRule.class);
+        List<BrandRule> toRemove = new ArrayList<BrandRule>();
         for (BrandRule rule : rules) {
             boolean found = false;
             for (BrandRuleBean brandRule : brandRules) {
@@ -578,9 +579,12 @@ public class UserFacade {
                 }
             }
             if(!found){
-                rules.remove(rule);
+                toRemove.add(rule);
+                //rules.remove(rule);
             }
         }
+        ad.getRules().removeAll(toRemove);
+
     }
 
 

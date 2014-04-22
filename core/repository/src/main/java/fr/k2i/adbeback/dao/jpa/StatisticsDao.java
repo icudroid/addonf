@@ -136,7 +136,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
                 "join game.score.answers as answer " +
                 "where " +
                 "game.generated between :start and :end " +
-                "and answer.response = choise.correct " +
+                "and answer.responses = choise.corrects " +
                 "group by game.player.address.city, game.player.sex, game.player.ageGroup, choise.generatedBy");
 
         LocalDate d = new LocalDate(day);

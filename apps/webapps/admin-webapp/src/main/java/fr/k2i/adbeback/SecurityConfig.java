@@ -32,7 +32,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService((UserDetailsService) context.getBean("webAdminDao"));
+        authenticationProvider.setUserDetailsService((UserDetailsService) context.getBean("webUserDao"));
         auth.authenticationProvider(authenticationProvider);
     }
 

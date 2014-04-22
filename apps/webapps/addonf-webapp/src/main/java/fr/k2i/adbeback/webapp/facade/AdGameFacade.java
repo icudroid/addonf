@@ -195,7 +195,8 @@ public class AdGameFacade {
         AdGameBean res = createAdBeans(adsVideo, correctResponse, choises);
 
         //6 : time limit
-        if(gooseLevel.getLimitedTime()){
+        Boolean limitedTime = (gooseLevel.getLimitedTime() !=null)?gooseLevel.getLimitedTime():false ;
+        if(limitedTime !=null && limitedTime ==true) {
             res.setTimeLimite((long) (minScore * 30));//30 seconds by ad
         }else{
             res.setTimeLimite(-1L);
@@ -238,7 +239,7 @@ public class AdGameFacade {
 
         res.setLogoMedia(media.getLogo());
 
-        session.setAttribute(LIMITED_TIME,gooseLevel.getLimitedTime());
+        session.setAttribute(LIMITED_TIME, limitedTime);
         session.setAttribute(PLAYER_GOOSE_GAME, pgg);
         session.setAttribute(USER_ANSWER, answers);
         session.setAttribute(CORRECT_ANSWER, correctResponse);
@@ -275,13 +276,13 @@ public class AdGameFacade {
 
 
     private Double doBid(Map<Ad, Double> res, Map<Double, List<Ad>> adsSortedByBid) {
-        TreeSet<Double> bids = (TreeSet<Double>) adsSortedByBid.keySet();
+        NavigableSet<Double> bids = (NavigableSet<Double>) adsSortedByBid.keySet();
 
         Double highBid = bids.first();
         List<Ad> adsBidHigh = adsSortedByBid.get(highBid);
         adsSortedByBid.remove(highBid);
 
-        bids = (TreeSet<Double>) adsSortedByBid.keySet();
+        bids = ( NavigableSet<Double>) adsSortedByBid.keySet();
         Double justBefore = bids.first();
 
         Double winBid = justBefore+0.01;
@@ -522,7 +523,7 @@ public class AdGameFacade {
 
             Integer maxErr = (Integer) session.getAttribute(MAX_ERRORS);
 
-            if (nbErrs < maxErr  && index < correctResponse.size()-1  && !(gooseCase instanceof EndLevelGooseCase)) {
+            if (nbErrs <= maxErr  && index < correctResponse.size()-1  && !(gooseCase instanceof EndLevelGooseCase)) {
                 res.setStatus(StatusGame.Playing);
             } else {
                 fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;

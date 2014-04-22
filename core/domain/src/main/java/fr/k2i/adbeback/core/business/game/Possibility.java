@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.ad.rule.AdResponse;
 import lombok.Data;
 
 @Data

@@ -77,42 +77,36 @@ public abstract  class Ad extends BaseObject implements Serializable {
 
 
     @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((brand == null) ? 0 : brand.hashCode());
-		result = prime * result + ((product == null) ? 0 : product.hashCode());
-		return result;
-	}
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Ad)) return false;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Ad other = (Ad) obj;
-		if (brand == null) {
-			if (other.brand != null)
-				return false;
-		} else if (!brand.equals(other.brand))
-			return false;
-		if (product == null) {
-			if (other.product != null)
-				return false;
-		} else if (!product.equals(other.product))
-			return false;
-		return true;
-	}
+        Ad ad = (Ad) o;
 
-	@Override
-	public String toString() {
-		return "Ad [id=" + id + ", brand=" + brand.getName() + ", product=" + product.getName()
-				+ "]";
-	}
+        if (adFile != null ? !adFile.equals(ad.adFile) : ad.adFile != null) return false;
+        if (brand != null ? !brand.equals(ad.brand) : ad.brand != null) return false;
+        if (name != null ? !name.equals(ad.name) : ad.name != null) return false;
 
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = brand != null ? brand.hashCode() : 0;
+        result = 31 * result + (adFile != null ? adFile.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Ad{" +
+                "brand=" + brand +
+                ", endDate=" + endDate +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                '}';
+    }
 
     public <ADRULE extends AdRule> List<ADRULE> getRules(Class<ADRULE> clazz) {
         List<ADRULE> res = new ArrayList<ADRULE>();

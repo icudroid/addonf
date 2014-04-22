@@ -159,7 +159,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
     private void addValidAdService(Player player, List<AdService> rulesPossible, LocalDate now, AdService adRule) {
-        if(now.toDate().after((adRule).getStartDate()) && now.toDate().before((adRule).getEndDate())){
+        if(now.toDate().after((adRule).getStartDate()) ||now.toDate().equals((adRule).getStartDate())  && now.toDate().before((adRule).getEndDate()) || now.toDate().equals((adRule).getEndDate())){
             ViewedAd forToday = viewedAdDao.findForToday(player,  adRule);
             if((adRule).getMaxDisplayByUser()==null){
                 rulesPossible.add( adRule);
@@ -194,6 +194,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
             AdResponse adResponse = responses.get(ramdom);
             pp.setAnswerText(adResponse.getResponse());
             pp.setAnswerImage(adResponse.getImage());
+            pp.setGeneratedBy(adResponse);
 
             possibilities.add(pp);
             if(or.getCorrects().contains(adResponse)){
@@ -269,6 +270,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 				if (correct == i) {
 					pp.setAnswerText(or.getCorrect().getResponse());
                     pp.setAnswerImage(or.getCorrect().getImage());
+                    pp.setGeneratedBy(or.getCorrect());
 				} else {
 					int ramdom;
 					do {
@@ -277,6 +279,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 					answers.add(ramdom);
 					pp.setAnswerText(responses.get(ramdom).getResponse());
                     pp.setAnswerImage(responses.get(ramdom).getImage());
+                    pp.setGeneratedBy(responses.get(ramdom));
 				}
 				possibilities.add(pp);
 			}
@@ -297,6 +300,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
                 answers.add(ramdom);
                 pp.setAnswerText(responses.get(ramdom).getResponse());
                 pp.setAnswerImage(responses.get(ramdom).getImage());
+                pp.setGeneratedBy(responses.get(ramdom));
 
                 possibilities.add(pp);
             }

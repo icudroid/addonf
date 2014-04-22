@@ -16,4 +16,21 @@ import javax.persistence.Entity;
 @DiscriminatorValue(IMetaData.ColumnMetadata.Ad.Discrimator.AUDIO_AD)
 public class AudioAd extends Ad{
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VideoAd)) return false;
+        if (!super.equals(o)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result;
+        return result;
+    }
+
 }

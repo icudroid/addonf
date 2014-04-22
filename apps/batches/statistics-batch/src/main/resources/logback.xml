@@ -18,4 +18,5 @@
 
 	<logger name="org.springframework" level="DEBUG"/>
     <logger name="org.springframework.security" level="DEBUG"/>
+    <logger name="fr.k2i.adbeback" level="DEBUG"/>
 </configuration>

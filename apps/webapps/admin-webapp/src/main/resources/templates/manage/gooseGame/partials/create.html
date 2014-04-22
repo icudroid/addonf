@@ -57,7 +57,7 @@
         <div class="row" ng-repeat="ligne in result.matrice">
             <div class="col-md-1"  ng-repeat="colonne in ligne">
                 <div ng-if="colonne.type != -1">
-                    <img ng-src="{{base}}img/goose/{{colonne.type}}.png"/>
+                    <img ng-src="{{base}}static/img/goose/{{colonne.type}}.png"/>
                     <a style="position: absolute; top: 40px;left: 5px;z-index: 11;" class="dropdown-toggle">{{colonne.number}}</a>
                     <ul class="dropdown-menu">
                         <li ng-repeat="choice in items">
