@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -259,27 +260,19 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
     @Transactional
     @Override
-    public void updateAmountForAd(AdService adRule){
+    public void updateAmountForAd(AdService adRule, Double bid){
         QAmountRule qAmountRule = QAmountRule.amountRule;
-
-        Double price = adRule.getPrice();
         List<AmountRule> rules = adRule.getAd().getRules(AmountRule.class);
-        Long amountRuleId = null;
         for (AmountRule rule : rules) {
-            if(rule.getAmount() > 1.0){
-                amountRuleId = rule.getId();
+            Double amount = rule.getAmount();
+            if(amount > 0.0){
+                BigDecimal amountBD = new BigDecimal(""+amount);
+                BigDecimal bidBD = new BigDecimal(""+bid);
+                BigDecimal amountLeftBD = amountBD.subtract(bidBD);
+                rule.setAmount(amountLeftBD.doubleValue());
                 break;
             }
         }
-
-
-
-        Query query = getEntityManager().createQuery("update AmountRule set amount=amount-:amount where id = :id")
-                .setParameter("amount", price)
-                .setParameter("id", amountRuleId);
-
-        query.executeUpdate();
-
     }
 
     @Override

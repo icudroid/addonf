@@ -504,7 +504,10 @@ public class AdGameFacade {
                 gooseCase = goHeadToken(request);
 
 
-                adDao.updateAmountForAd((AdService) adRule);
+                Map<Integer, AdChoise> choises = (Map<Integer, AdChoise>) session.getAttribute(AD_CHOISES);
+                AdChoise adChoise = choises.get(index);
+
+                adDao.updateAmountForAd((AdService) adRule,adChoise.getWinBidPrice());
 
 
             } else {

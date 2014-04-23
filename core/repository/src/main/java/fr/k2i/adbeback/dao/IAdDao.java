@@ -31,7 +31,7 @@ public interface IAdDao extends IGenericDao<Ad, Long> {
     List<Ad> getAllValidFor(Player player);
 
     @Transactional
-    void updateAmountForAd(AdService adRule);
+    void updateAmountForAd(AdService adRule, Double bid);
 
     @Transactional
     List<Ad> findByBrand(Brand currentUser);

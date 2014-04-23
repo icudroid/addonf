@@ -4,6 +4,7 @@ import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
+import fr.k2i.adbeback.core.business.user.AgencyUser;
 import fr.k2i.adbeback.core.business.user.BrandUser;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.*;
@@ -66,11 +67,26 @@ public class StatisticsFacade {
     public void global(Long idAd, Map<String, Object> model) throws Exception {
 
 
-        Brand brand = getBrandForConnectedUser();
+        //Brand brand = getBrandForConnectedUser();
+
+        User currentUser = userFacade.getCurrentUser();
 
         Ad ad = adDao.get(idAd);
-        if(!ad.getBrand().equals(brand)){
-            throw new Exception("bad user");
+
+        if (currentUser instanceof BrandUser) {
+            BrandUser user = (BrandUser) currentUser;
+            Brand brand = user.getBrand();
+
+            if(!ad.getBrand().equals(brand)){
+                throw new Exception("bad user");
+            }
+
+        }else if (currentUser instanceof AgencyUser) {
+            AgencyUser user = (AgencyUser) currentUser;
+            List<Brand> inChargeOf = user.getInChargeOf();
+            if(!inChargeOf.contains(ad.getBrand())){
+                throw new Exception("bad user");
+            }
         }
 
         long global = statisticsDao.nbGlobal(ad,null,null,null);
