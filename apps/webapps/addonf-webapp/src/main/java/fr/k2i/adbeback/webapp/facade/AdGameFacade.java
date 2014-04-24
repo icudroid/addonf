@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.facade;
 
+import fr.k2i.adbeback.bean.ResponseUser;
 import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
@@ -19,6 +20,7 @@ import fr.k2i.adbeback.webapp.bean.StatusGame;
 import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import fr.k2i.adbeback.webapp.bean.configure.information.*;
 import fr.k2i.adbeback.webapp.bean.configure.url.Url;
+import lombok.Data;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -235,7 +237,7 @@ public class AdGameFacade {
             res.setMinScore(((SingleGooseLevel)gooseLevel).getMinScore());
         }
 
-        Map<Integer, List<Long>> answers = new HashMap<Integer, List<Long>>();
+        Map<Integer, ResponseUser> answers = new HashMap<Integer,ResponseUser>();
 
         res.setLogoMedia(media.getLogo());
 
@@ -476,7 +478,7 @@ public class AdGameFacade {
 
             Map<Integer, List<Long>> correctResponse = (Map<Integer, List<Long>>) session.getAttribute(CORRECT_ANSWER);
             Integer score = (Integer) session.getAttribute(USER_SCORE);
-            Map<Integer, List<Long>> answers = (Map<Integer, List<Long>>) session.getAttribute(USER_ANSWER);
+            Map<Integer, ResponseUser> answers = (Map<Integer, ResponseUser>) session.getAttribute(USER_ANSWER);
             List<Long> correctIds = correctResponse.get(index);
             //Long correctId = correctResponse.get(index);
 
@@ -499,7 +501,7 @@ public class AdGameFacade {
                 score++;
                 res.setScore(score);
                 session.setAttribute(USER_SCORE, score);
-                answers.put(index, responseId);
+                answers.put(index, new ResponseUser(true,responseId, (AdService) adRule));
 
                 gooseCase = goHeadToken(request);
 
@@ -507,13 +509,14 @@ public class AdGameFacade {
                 Map<Integer, AdChoise> choises = (Map<Integer, AdChoise>) session.getAttribute(AD_CHOISES);
                 AdChoise adChoise = choises.get(index);
 
+
                 adDao.updateAmountForAd((AdService) adRule,adChoise.getWinBidPrice());
 
 
             } else {
                 res.setCorrect(false);
                 res.setScore(score);
-                answers.put(index, new ArrayList<Long>());
+                answers.put(index, new ResponseUser(false,responseId,(AdService) adRule));
                 nbErrs++;
                 session.setAttribute(NB_ERRORS, nbErrs);
 /*            if (nbErrs > 6) {
@@ -750,12 +753,12 @@ public class AdGameFacade {
             session.setAttribute(GAME_RESULT, gameResult);
         }else{
             Integer score = (Integer) session.getAttribute(USER_SCORE);
-            Map<Integer, List<Long>> answers = (Map<Integer, List<Long>>) session
+            Map<Integer, ResponseUser> answers = (Map<Integer, ResponseUser>) session
                     .getAttribute(USER_ANSWER);
             Map<Integer, Long> correctResponse = (Map<Integer, Long>) session.getAttribute(CORRECT_ANSWER);
             Integer nbErrs = (Integer) session.getAttribute(NB_ERRORS);
 
-            answers.put(index, null);
+            answers.put(index, new ResponseUser(false,null, (AdService) adRule));
             res.setCorrect(false);
             res.setScore(score);
             nbErrs++;

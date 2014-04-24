@@ -22,7 +22,7 @@ public abstract class AdService extends AdRule{
     @Temporal(TemporalType.DATE)
     protected Date endDate;
     protected Integer maxDisplayByUser;
-    protected Double price;
+    /*protected Double price;*/
 
     @Column(name = IMetaData.ColumnMetadata.AdRule.QUESTION)
     protected String question;

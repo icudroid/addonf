@@ -2,23 +2,20 @@ package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.SimplePath;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.QViewedAd;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.country.City;
-import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.core.business.statistic.*;
+import fr.k2i.adbeback.core.business.statistic.Statistics;
 import fr.k2i.adbeback.dao.IStatisticsDao;
+import fr.k2i.adbeback.dao.bean.*;
+import fr.k2i.adbeback.dao.jpa.GenericDaoJpa;
 import lombok.Data;
 import org.joda.time.*;
 import org.springframework.stereotype.Repository;
@@ -30,67 +27,7 @@ import java.util.*;
 public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IStatisticsDao {
 
     public StatisticsDao() {
-        super(fr.k2i.adbeback.core.business.statistic.Statistics.class);
-    }
-
-    @Data
-    public class Statistics{
-        private AdService service;
-        private Long count;
-
-        public Statistics(AdService service, Long count) {
-            this.service = service;
-            this.count = count;
-        }
-    }
-
-
-    @Data
-    public class StatisticsAge{
-        private AgeGroup ageGroup;
-        private Long count;
-
-        public StatisticsAge(AgeGroup ageGroup, Long count) {
-            this.ageGroup = ageGroup;
-            this.count = count;
-        }
-    }
-
-
-    @Data
-    public class StatisticsSex{
-        private Sex sex;
-        private Long count;
-
-        public StatisticsSex(Sex sex, Long count) {
-            this.sex = sex;
-            this.count = count;
-        }
-    }
-
-    @Data
-    public class StatisticsAgeSex{
-        private AgeGroup ageGroup;
-        private Sex sex;
-        private Long count;
-
-        public StatisticsAgeSex(AgeGroup ageGroup, Sex sex, Long count) {
-            this.ageGroup = ageGroup;
-            this.sex = sex;
-            this.count = count;
-        }
-    }
-
-
-    @Data
-    public class StatisticsCity{
-        private City city;
-        private Long count;
-
-        public StatisticsCity(City city, Long count) {
-            this.city = city;
-            this.count = count;
-        }
+        super(Statistics.class);
     }
 
 
@@ -825,4 +762,5 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
 }
+
 

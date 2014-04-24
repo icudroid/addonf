@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>fr.k2i.adbeback.core.business</OriginalElement>
+  <nodes>
+    <node x="761.2587107646314" y="1631.0">fr.k2i.adbeback.core.business.user.BidCategoryMedia</node>
+    <node x="3417.4565476190483" y="230.0">fr.k2i.adbeback.core.business.country</node>
+    <node x="2211.5974012408224" y="1489.0">fr.k2i.adbeback.core.business.user.AgencyUser</node>
+    <node x="4279.956547619048" y="2249.0">fr.k2i.adbeback.core.business.ad.rule.AdService</node>
+    <node x="529.0" y="3571.0">fr.k2i.adbeback.core.business.LabelValue</node>
+    <node x="915.2587107646314" y="997.5">fr.k2i.adbeback.core.business.user.MediaType</node>
+    <node x="0.0" y="3571.0">fr.k2i.adbeback.core.business.Constants</node>
+    <node x="2338.7372821932036" y="1263.0">fr.k2i.adbeback.core.business.ad.Brand</node>
+    <node x="1100.2587107646316" y="1478.5">fr.k2i.adbeback.core.business.user.AdRight</node>
+    <node x="4987.956547619048" y="2586.0">fr.k2i.adbeback.core.business.ad.rule.OpenRule</node>
+    <node x="810.0" y="3571.0">fr.k2i.adbeback.core.business.IMetaData</node>
+    <node x="2005.6733481351444" y="2301.5">fr.k2i.adbeback.core.business.ad.StaticAd</node>
+    <node x="1162.3656933943462" y="2544.0">fr.k2i.adbeback.core.business.game.AdResponsePlayer</node>
+    <node x="2914.9515679074893" y="2270.0">fr.k2i.adbeback.core.business.game.Possibility</node>
+    <node x="1496.9265679074888" y="230.0">fr.k2i.adbeback.core.business.contact</node>
+    <node x="3426.9565476190483" y="2596.5">fr.k2i.adbeback.core.business.ad.rule.BrandRule</node>
+    <node x="2063.1233481351446" y="1855.0">fr.k2i.adbeback.core.business.ad.Ad</node>
+    <node x="2458.4515679074893" y="1029.0">fr.k2i.adbeback.core.business.ad.CustomerTarget</node>
+    <node x="93.0" y="3272.5">fr.k2i.adbeback.core.business.game.AdGameTransaction</node>
+    <node x="2346.0349012408224" y="0.0">fr.k2i.adbeback.core.business.BaseObject</node>
+    <node x="3557.6183684235857" y="1981.0">fr.k2i.adbeback.core.business.ad.rule.CityRule</node>
+    <node x="1910.014067907489" y="553.0">fr.k2i.adbeback.core.business.user.User</node>
+    <node x="1762.4265679074888" y="700.0">fr.k2i.adbeback.core.business.player.WebRole</node>
+    <node x="2770.4515679074893" y="987.0">fr.k2i.adbeback.core.business.ad.Product</node>
+    <node x="4453.956547619048" y="1970.5">fr.k2i.adbeback.core.business.ad.rule.AmountRule</node>
+    <node x="4287.331547619048" y="2607.0">fr.k2i.adbeback.core.business.ad.rule.ProductRule</node>
+    <node x="1298.4265679074888" y="647.5">fr.k2i.adbeback.core.business.user.Attachement</node>
+    <node x="608.5087107646314" y="1029.0">fr.k2i.adbeback.core.business.user.Category</node>
+    <node x="1514.4265679074888" y="616.0">fr.k2i.adbeback.core.business.user.LegalStatus</node>
+    <node x="3642.9565476190483" y="2523.0">fr.k2i.adbeback.core.business.game.AdChoise</node>
+    <node x="194.17537743129833" y="2596.5">fr.k2i.adbeback.core.business.game.BrandPossibility</node>
+    <node x="2959.9983481351446" y="2801.5">fr.k2i.adbeback.core.business.game.StatusGame</node>
+    <node x="470.00871076463136" y="1284.0">fr.k2i.adbeback.core.business.user.CategoryPrice</node>
+    <node x="5140.034062420858" y="3467.0">fr.k2i.adbeback.core.business.player.AnonymPlayer</node>
+    <node x="5709.307738095238" y="2833.0">fr.k2i.adbeback.core.business.partener</node>
+    <node x="764.5087107646314" y="1060.5">fr.k2i.adbeback.core.business.user.MediaUser</node>
+    <node x="5344.708032172097" y="2617.5">fr.k2i.adbeback.core.business.statistic</node>
+    <node x="2261.8474012408224" y="1039.5">fr.k2i.adbeback.core.business.user.BrandUser</node>
+    <node x="3122.9515679074893" y="2596.5">fr.k2i.adbeback.core.business.game.ProductPossibility</node>
+    <node x="536.2587107646314" y="1468.0">fr.k2i.adbeback.core.business.user.Media</node>
+    <node x="2614.4515679074893" y="1029.0">fr.k2i.adbeback.core.business.ad.Sector</node>
+    <node x="4931.456547619048" y="2270.0">fr.k2i.adbeback.core.business.ad.rule.AdResponse</node>
+    <node x="2906.9515679074893" y="2596.5">fr.k2i.adbeback.core.business.game.PricePossibility</node>
+    <node x="3329.6183684235857" y="1991.5">fr.k2i.adbeback.core.business.ad.rule.CountryRule</node>
+    <node x="2105.6733481351444" y="2291.0">fr.k2i.adbeback.core.business.ad.VideoAd</node>
+    <node x="4710.956547619048" y="2565.0">fr.k2i.adbeback.core.business.ad.rule.MultiResponseRule</node>
+    <node x="5041.445749375967" y="2985.0">fr.k2i.adbeback.core.business.ad.ViewedAd</node>
+    <node x="1153.0323600610127" y="2791.0">fr.k2i.adbeback.core.business.game.AdScore</node>
+    <node x="5699.886091717013" y="3037.5">fr.k2i.adbeback.core.business.goosegame</node>
+    <node x="3998.9565476190483" y="2586.0">fr.k2i.adbeback.core.business.game.OpenPossibility</node>
+    <node x="3316.7483481351446" y="2964.0">fr.k2i.adbeback.core.business.game.AbstractAdGame</node>
+    <node x="1855.2015679074889" y="1050.0">fr.k2i.adbeback.core.business.player.WebUser</node>
+    <node x="2312.673348135145" y="2301.5">fr.k2i.adbeback.core.business.ad.AudioAd</node>
+    <node x="5323.743234574156" y="595.0">fr.k2i.adbeback.core.business.player.AgeGroup</node>
+    <node x="3640.3683684235857" y="359.5">fr.k2i.adbeback.core.business.player.Sex</node>
+    <node x="30.0" y="3467.0">fr.k2i.adbeback.core.business.otp</node>
+    <node x="4992.784062420858" y="3220.0">fr.k2i.adbeback.core.business.player.Player</node>
+    <node x="1273.8046779473952" y="1652.0">fr.k2i.adbeback.core.business.user.UserAccess</node>
+    <node x="5009.956547619048" y="1991.5">fr.k2i.adbeback.core.business.ad.rule.SexRule</node>
+    <node x="1259.1765679074888" y="359.5">fr.k2i.adbeback.core.business.user.AttachementStatus</node>
+    <node x="2040.514067907489" y="1060.5">fr.k2i.adbeback.core.business.user.Admin</node>
+    <node x="1499.926567907489" y="1060.5">fr.k2i.adbeback.core.business.company</node>
+    <node x="2154.5974012408224" y="1662.5">fr.k2i.adbeback.core.business.user.Agency</node>
+    <node x="1694.3121988387634" y="359.5">fr.k2i.adbeback.core.business.player.Role</node>
+    <node x="2371.7849012408224" y="209.0">fr.k2i.adbeback.core.business.user.IhmConfig</node>
+    <node x="4226.956547619048" y="1662.5">fr.k2i.adbeback.core.business.ad.rule.AdRule</node>
+    <node x="1950.3121988387634" y="349.0">fr.k2i.adbeback.core.business.player.Address</node>
+    <node x="4216.956547619048" y="1981.0">fr.k2i.adbeback.core.business.ad.rule.AgeRule</node>
+    <node x="3317.548348135145" y="3293.5">fr.k2i.adbeback.core.business.game.AdGame</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="fr.k2i.adbeback.core.business.game.AdChoise" target="fr.k2i.adbeback.core.business.game.Possibility">
+      <point x="-112.0" y="-109.0" />
+      <point x="3698.9565476190483" y="2433.0" />
+      <point x="3076.9515679074893" y="2433.0" />
+      <point x="54.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.WebUser" target="fr.k2i.adbeback.core.business.player.WebRole">
+      <point x="-27.25" y="-25.0" />
+      <point x="1882.4515679074889" y="917.0" />
+      <point x="1814.9265679074888" y="917.0" />
+      <point x="0.0" y="25.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.CityRule" target="fr.k2i.adbeback.core.business.ad.rule.AdRule">
+      <point x="54.0" y="-46.0" />
+      <point x="3719.6183684235857" y="1835.0" />
+      <point x="4296.956547619048" y="1835.0" />
+      <point x="-28.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdResponsePlayer" target="fr.k2i.adbeback.core.business.game.Possibility">
+      <point x="0.0" y="-88.0" />
+      <point x="1310.3656933943462" y="2453.0" />
+      <point x="2968.9515679074893" y="2453.0" />
+      <point x="-54.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.BrandRule" target="fr.k2i.adbeback.core.business.ad.Brand">
+      <point x="-65.33333333333348" y="-35.5" />
+      <point x="3459.6232142857143" y="2443.0" />
+      <point x="3536.1183684235857" y="2443.0" />
+      <point x="3536.1183684235857" y="1448.0" />
+      <point x="2543.1372821932036" y="1448.0" />
+      <point x="58.40000000000009" y="77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.AdRule" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-35.5" />
+      <point x="4324.956547619048" y="99.0" />
+      <point x="2425.588472669394" y="99.0" />
+      <point x="30.05357142857156" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.company" target="fr.k2i.adbeback.core.business.user.LegalStatus">
+      <point x="0.0" y="-14.5" />
+      <point x="1568.926567907489" y="917.0" />
+      <point x="1628.4265679074888" y="917.0" />
+      <point x="0.0" y="109.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.otp" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-35.0" y="-14.5" />
+      <point x="47.5" y="3442.0" />
+      <point x="71.5" y="3442.0" />
+      <point x="71.5" y="59.0" />
+      <point x="2347.80275838368" y="59.0" />
+      <point x="-47.73214285714266" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.CategoryPrice" target="fr.k2i.adbeback.core.business.user.Category">
+      <point x="0.0" y="-56.5" />
+      <point x="548.0087107646314" y="1223.0" />
+      <point x="642.5087107646314" y="1223.0" />
+      <point x="-34.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.otp" target="fr.k2i.adbeback.core.business.player.Player">
+      <point x="35.0" y="-14.5" />
+      <point x="117.5" y="3442.0" />
+      <point x="5061.034062420858" y="3442.0" />
+      <point x="-68.25" y="98.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.OpenPossibility" target="fr.k2i.adbeback.core.business.game.Possibility">
+      <point x="-49.25" y="-46.0" />
+      <point x="4048.2065476190483" y="2423.0" />
+      <point x="3112.9515679074893" y="2423.0" />
+      <point x="90.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.AdService" target="fr.k2i.adbeback.core.business.ad.rule.AdRule">
+      <point x="54.5" y="-67.0" />
+      <point x="4443.456547619048" y="1835.0" />
+      <point x="4352.956547619048" y="1835.0" />
+      <point x="28.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.BrandPossibility" target="fr.k2i.adbeback.core.business.game.Possibility">
+      <point x="49.0" y="-35.5" />
+      <point x="341.17537743129833" y="2443.0" />
+      <point x="2932.9515679074893" y="2443.0" />
+      <point x="-90.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.statistic" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="53.75" y="-14.5" />
+      <point x="5462.958032172097" y="2503.0" />
+      <point x="5604.243234574156" y="2503.0" />
+      <point x="5604.243234574156" y="79.0" />
+      <point x="2432.6599012408224" y="79.0" />
+      <point x="37.125" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Sector" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-46.0" />
+      <point x="2682.4515679074893" y="159.0" />
+      <point x="2404.3741869551086" y="159.0" />
+      <point x="8.83928571428578" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.BrandRule" target="fr.k2i.adbeback.core.business.ad.rule.AdService">
+      <point x="65.33333333333348" y="-35.5" />
+      <point x="3590.2898809523813" y="2473.0" />
+      <point x="4320.831547619048" y="2473.0" />
+      <point x="-68.125" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AbstractAdGame" target="fr.k2i.adbeback.core.business.player.Player">
+      <point x="118.40000000000009" y="88.0" />
+      <point x="3583.1483481351443" y="3180.0" />
+      <point x="5054.829516966314" y="3180.0" />
+      <point x="-74.45454545454504" y="-98.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Attachement" target="fr.k2i.adbeback.core.business.user.AttachementStatus">
+      <point x="-49.0" y="-77.5" />
+      <point x="0.0" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AbstractAdGame" target="fr.k2i.adbeback.core.business.game.StatusGame">
+      <point x="-59.19999999999982" y="-88.0" />
+      <point x="3405.548348135145" y="2934.0" />
+      <point x="3010.9983481351446" y="2934.0" />
+      <point x="0.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.ProductRule" target="fr.k2i.adbeback.core.business.ad.rule.AdService">
+      <point x="0.0" y="-25.0" />
+      <point x="-13.625" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdChoise" target="fr.k2i.adbeback.core.business.game.AbstractAdGame">
+      <point x="-84.0" y="109.0" />
+      <point x="3726.9565476190483" y="2766.0" />
+      <point x="3805.4565476190483" y="2766.0" />
+      <point x="3805.4565476190483" y="2924.0" />
+      <point x="3464.7483481351446" y="2924.0" />
+      <point x="0.0" y="-88.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.Player" target="fr.k2i.adbeback.core.business.player.AgeGroup">
+      <point x="49.63636363636397" y="-98.5" />
+      <point x="5178.920426057222" y="3170.0" />
+      <point x="5649.386091717013" y="3170.0" />
+      <point x="5649.386091717013" y="967.0" />
+      <point x="5548.743234574156" y="967.0" />
+      <point x="90.0" y="130.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Attachement" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="49.0" y="-77.5" />
+      <point x="1445.6765679074888" y="149.0" />
+      <point x="2379.6241869551086" y="149.0" />
+      <point x="-15.91071428571422" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.AgencyUser" target="fr.k2i.adbeback.core.business.user.User">
+      <point x="-39.75" y="-35.5" />
+      <point x="2251.3474012408224" y="967.0" />
+      <point x="2169.8890679074893" y="967.0" />
+      <point x="70.875" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.AgeRule" target="fr.k2i.adbeback.core.business.ad.rule.AdRule">
+      <point x="0.0" y="-46.0" />
+      <point x="0.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.CityRule" target="fr.k2i.adbeback.core.business.country">
+      <point x="-54.0" y="-46.0" />
+      <point x="3611.6183684235857" y="329.0" />
+      <point x="3505.4565476190483" y="329.0" />
+      <point x="24.0" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.MultiResponseRule" target="fr.k2i.adbeback.core.business.ad.rule.AdResponse">
+      <point x="64.0" y="-67.0" />
+      <point x="4902.956547619048" y="2503.0" />
+      <point x="4982.456547619048" y="2503.0" />
+      <point x="-17.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdScore" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-78.66666666666674" y="-56.5" />
+      <point x="1192.365693394346" y="2766.0" />
+      <point x="183.67537743129833" y="2766.0" />
+      <point x="183.67537743129833" y="69.0" />
+      <point x="2351.338472669394" y="69.0" />
+      <point x="-44.19642857142844" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.statistic" target="fr.k2i.adbeback.core.business.player.AgeGroup">
+      <point x="32.25" y="-14.5" />
+      <point x="5441.458032172097" y="2493.0" />
+      <point x="5458.743234574156" y="2493.0" />
+      <point x="0.0" y="130.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.BrandUser" target="fr.k2i.adbeback.core.business.ad.Brand">
+      <point x="49.0" y="35.5" />
+      <point x="2384.3474012408224" y="1183.0" />
+      <point x="2484.7372821932036" y="1183.0" />
+      <point x="0.0" y="-77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdScore" target="fr.k2i.adbeback.core.business.game.AdResponsePlayer">
+      <point x="0.0" y="-56.5" />
+      <point x="1271.0323600610127" y="2766.0" />
+      <point x="1236.3656933943462" y="2766.0" />
+      <point x="-74.0" y="88.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.BrandUser" target="fr.k2i.adbeback.core.business.ad.Ad">
+      <point x="-49.0" y="35.5" />
+      <point x="2286.3474012408224" y="1233.0" />
+      <point x="2144.0974012408224" y="1233.0" />
+      <point x="2144.0974012408224" y="1805.0" />
+      <point x="2240.4566814684777" y="1805.0" />
+      <point x="-50.666666666666515" y="-172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.CustomerTarget" target="fr.k2i.adbeback.core.business.player.Sex">
+      <point x="0.0" y="-46.0" />
+      <point x="2526.4515679074893" y="967.0" />
+      <point x="2509.2849012408224" y="967.0" />
+      <point x="2509.2849012408224" y="533.0" />
+      <point x="3683.4933684235857" y="533.0" />
+      <point x="-14.375" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.WebUser" target="fr.k2i.adbeback.core.business.user.User">
+      <point x="27.25" y="-25.0" />
+      <point x="1936.9515679074889" y="967.0" />
+      <point x="2028.139067907489" y="967.0" />
+      <point x="-70.875" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.goosegame" target="fr.k2i.adbeback.core.business.partener">
+      <point x="0.0" y="-14.5" />
+      <point x="5775.886091717013" y="2944.0" />
+      <point x="5794.307738095238" y="2944.0" />
+      <point x="17.0" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.Player" target="fr.k2i.adbeback.core.business.ad.ViewedAd">
+      <point x="-24.818181818181984" y="-98.5" />
+      <point x="5104.465880602676" y="3160.0" />
+      <point x="5070.7790827092995" y="3160.0" />
+      <point x="-58.66666666666697" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.otp" target="fr.k2i.adbeback.core.business.user.User">
+      <point x="0.0" y="-14.5" />
+      <point x="82.5" y="947.0" />
+      <point x="1933.639067907489" y="947.0" />
+      <point x="-165.375" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.goosegame" target="fr.k2i.adbeback.core.business.player.Player">
+      <point x="63.33333333333303" y="14.5" />
+      <point x="5839.219425050346" y="3200.0" />
+      <point x="5253.374971511768" y="3200.0" />
+      <point x="124.09090909090901" y="-98.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdGame" target="fr.k2i.adbeback.core.business.game.AbstractAdGame">
+      <point x="0.0" y="-25.0" />
+      <point x="-59.19999999999982" y="88.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.BrandPossibility" target="fr.k2i.adbeback.core.business.ad.Brand">
+      <point x="-49.0" y="-35.5" />
+      <point x="243.17537743129833" y="2229.0" />
+      <point x="750.7587107646314" y="2229.0" />
+      <point x="750.7587107646314" y="1438.0" />
+      <point x="2367.9372821932034" y="1438.0" />
+      <point x="-116.80000000000018" y="77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Admin" target="fr.k2i.adbeback.core.business.user.User">
+      <point x="0.0" y="-14.5" />
+      <point x="-23.625" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.OpenRule" target="fr.k2i.adbeback.core.business.ad.rule.AdService">
+      <point x="-72.0" y="-46.0" />
+      <point x="5023.956547619048" y="2463.0" />
+      <point x="4457.081547619048" y="2463.0" />
+      <point x="68.125" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.SexRule" target="fr.k2i.adbeback.core.business.ad.rule.AdRule">
+      <point x="-49.0" y="-35.5" />
+      <point x="5058.956547619048" y="1815.0" />
+      <point x="4408.956547619048" y="1815.0" />
+      <point x="84.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.AudioAd" target="fr.k2i.adbeback.core.business.ad.Ad">
+      <point x="0.0" y="-14.5" />
+      <point x="2354.173348135145" y="2229.0" />
+      <point x="2291.1233481351446" y="2229.0" />
+      <point x="0.0" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.AmountRule" target="fr.k2i.adbeback.core.business.ad.rule.AdRule">
+      <point x="0.0" y="-56.5" />
+      <point x="4571.956547619048" y="1825.0" />
+      <point x="4380.956547619048" y="1825.0" />
+      <point x="56.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.goosegame" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-50.66666666666697" y="-14.5" />
+      <point x="5725.219425050346" y="2944.0" />
+      <point x="5668.807738095238" y="2944.0" />
+      <point x="5668.807738095238" y="59.0" />
+      <point x="2439.731329812251" y="59.0" />
+      <point x="44.19642857142844" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.CategoryPrice" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-52.0" y="-56.5" />
+      <point x="496.00871076463136" y="1243.0" />
+      <point x="499.75871076463136" y="1243.0" />
+      <point x="499.75871076463136" y="89.0" />
+      <point x="2358.4099012408224" y="89.0" />
+      <point x="-37.125" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.CategoryPrice" target="fr.k2i.adbeback.core.business.user.MediaType">
+      <point x="52.0" y="-56.5" />
+      <point x="600.0087107646314" y="1233.0" />
+      <point x="942.5920440979648" y="1233.0" />
+      <point x="-54.66666666666663" y="77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Ad" target="fr.k2i.adbeback.core.business.ad.Product">
+      <point x="152.0" y="-172.0" />
+      <point x="2443.1233481351446" y="1805.0" />
+      <point x="2918.4515679074893" y="1805.0" />
+      <point x="0.0" y="88.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Ad" target="fr.k2i.adbeback.core.business.ad.Brand">
+      <point x="50.666666666666515" y="-172.0" />
+      <point x="2341.7900148018107" y="1785.0" />
+      <point x="2484.7372821932036" y="1785.0" />
+      <point x="0.0" y="77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Ad" target="fr.k2i.adbeback.core.business.user.BidCategoryMedia">
+      <point x="-202.66666666666652" y="-172.0" />
+      <point x="2088.4566814684777" y="1835.0" />
+      <point x="849.2587107646314" y="1835.0" />
+      <point x="0.0" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.IhmConfig" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-35.5" />
+      <point x="2429.7849012408224" y="179.0" />
+      <point x="2397.30275838368" y="179.0" />
+      <point x="1.7678571428573377" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.WebRole" target="fr.k2i.adbeback.core.business.player.Role">
+      <point x="0.0" y="-25.0" />
+      <point x="1814.9265679074888" y="533.0" />
+      <point x="1733.6455321720966" y="533.0" />
+      <point x="-78.66666666666674" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.ProductPossibility" target="fr.k2i.adbeback.core.business.game.Possibility">
+      <point x="-49.0" y="-35.5" />
+      <point x="3171.9515679074893" y="2453.0" />
+      <point x="3040.9515679074893" y="2453.0" />
+      <point x="18.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.Possibility" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="54.0" y="-46.0" />
+      <point x="3076.9515679074893" y="139.0" />
+      <point x="2411.445615526537" y="139.0" />
+      <point x="15.91071428571422" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.contact" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-14.5" />
+      <point x="1560.4265679074888" y="159.0" />
+      <point x="2383.1599012408224" y="159.0" />
+      <point x="-12.375" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.BrandUser" target="fr.k2i.adbeback.core.business.user.User">
+      <point x="0.0" y="-35.5" />
+      <point x="2335.3474012408224" y="957.0" />
+      <point x="2217.1390679074893" y="957.0" />
+      <point x="118.125" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.CountryRule" target="fr.k2i.adbeback.core.business.country">
+      <point x="-49.0" y="-35.5" />
+      <point x="3378.6183684235857" y="329.0" />
+      <point x="3489.4565476190483" y="329.0" />
+      <point x="8.0" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Brand" target="fr.k2i.adbeback.core.business.user.BrandUser">
+      <point x="-41.71428571428578" y="-77.5" />
+      <point x="2443.022996478918" y="1193.0" />
+      <point x="2335.3474012408224" y="1193.0" />
+      <point x="0.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.BidCategoryMedia" target="fr.k2i.adbeback.core.business.user.Media">
+      <point x="-66.0" y="-67.0" />
+      <point x="783.2587107646314" y="1611.0" />
+      <point x="689.2587107646314" y="1611.0" />
+      <point x="51.0" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdGameTransaction" target="fr.k2i.adbeback.core.business.game.AbstractAdGame">
+      <point x="54.0" y="-46.0" />
+      <point x="255.0" y="3200.0" />
+      <point x="3346.348348135144" y="3200.0" />
+      <point x="-118.40000000000009" y="88.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AbstractAdGame" target="fr.k2i.adbeback.core.business.game.AdChoise">
+      <point x="59.19999999999982" y="-88.0" />
+      <point x="3523.9483481351444" y="2934.0" />
+      <point x="3816.4565476190483" y="2934.0" />
+      <point x="3816.4565476190483" y="2766.0" />
+      <point x="3894.9565476190483" y="2766.0" />
+      <point x="84.0" y="109.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.ViewedAd" target="fr.k2i.adbeback.core.business.player.Player">
+      <point x="58.66666666666697" y="67.0" />
+      <point x="5188.112416042633" y="3160.0" />
+      <point x="5154.10224423904" y="3160.0" />
+      <point x="24.818181818181984" y="-98.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.AdResponse" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-46.0" />
+      <point x="4999.456547619048" y="89.0" />
+      <point x="2429.1241869551086" y="89.0" />
+      <point x="33.58928571428578" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.AgencyUser" target="fr.k2i.adbeback.core.business.ad.Brand">
+      <point x="39.75" y="-35.5" />
+      <point x="2330.8474012408224" y="1448.0" />
+      <point x="2426.3372821932035" y="1448.0" />
+      <point x="-58.40000000000009" y="77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.Possibility" target="fr.k2i.adbeback.core.business.ad.Ad">
+      <point x="-54.0" y="-46.0" />
+      <point x="2968.9515679074893" y="2229.0" />
+      <point x="2382.3233481351444" y="2229.0" />
+      <point x="91.19999999999982" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.SexRule" target="fr.k2i.adbeback.core.business.player.Sex">
+      <point x="49.00000000000023" y="-35.5" />
+      <point x="5156.956547619048" y="533.0" />
+      <point x="3712.2433684235857" y="533.0" />
+      <point x="14.375" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdResponsePlayer" target="fr.k2i.adbeback.core.business.game.AdScore">
+      <point x="74.0" y="88.0" />
+      <point x="1384.3656933943462" y="2766.0" />
+      <point x="1349.6990267276794" y="2766.0" />
+      <point x="78.66666666666674" y="-56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.company" target="fr.k2i.adbeback.core.business.player.Address">
+      <point x="27.59999999999991" y="-14.5" />
+      <point x="1596.526567907489" y="927.0" />
+      <point x="1877.9265679074888" y="927.0" />
+      <point x="1877.9265679074888" y="523.0" />
+      <point x="1982.3121988387634" y="523.0" />
+      <point x="-96.0" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.partener" target="fr.k2i.adbeback.core.business.partener">
+      <point x="-17.0" y="14.5" />
+      <point x="5760.307738095238" y="2892.0" />
+      <point x="5679.307738095238" y="2892.0" />
+      <point x="5679.307738095238" y="2840.25" />
+      <point x="-68.0" y="-7.25" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.OpenPossibility" target="fr.k2i.adbeback.core.business.ad.rule.AdResponse">
+      <point x="49.25" y="-46.0" />
+      <point x="4146.706547619048" y="2493.0" />
+      <point x="4948.456547619048" y="2493.0" />
+      <point x="-51.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.company" target="fr.k2i.adbeback.core.business.user.Attachement">
+      <point x="-27.59999999999991" y="-14.5" />
+      <point x="1541.326567907489" y="927.0" />
+      <point x="1396.4265679074888" y="927.0" />
+      <point x="0.0" y="77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.BidCategoryMedia" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="22.0" y="-67.0" />
+      <point x="871.2587107646314" y="1611.0" />
+      <point x="904.7587107646314" y="1611.0" />
+      <point x="904.7587107646314" y="109.0" />
+      <point x="2365.481329812251" y="109.0" />
+      <point x="-30.05357142857156" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Brand" target="fr.k2i.adbeback.core.business.ad.Sector">
+      <point x="83.42857142857156" y="-77.5" />
+      <point x="2568.165853621775" y="1233.0" />
+      <point x="2648.4515679074893" y="1233.0" />
+      <point x="-34.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.Role" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-56.5" />
+      <point x="1812.3121988387634" y="169.0" />
+      <point x="2386.695615526537" y="169.0" />
+      <point x="-8.83928571428578" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.ViewedAd" target="fr.k2i.adbeback.core.business.ad.rule.AdService">
+      <point x="-44.0" y="-67.0" />
+      <point x="5085.445749375967" y="2944.0" />
+      <point x="4977.456547619048" y="2944.0" />
+      <point x="4977.456547619048" y="2473.0" />
+      <point x="4429.831547619048" y="2473.0" />
+      <point x="40.875" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.VideoAd" target="fr.k2i.adbeback.core.business.ad.Ad">
+      <point x="0.0" y="-25.0" />
+      <point x="-91.19999999999982" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.CustomerTarget" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-45.333333333333485" y="-46.0" />
+      <point x="2481.118234574156" y="967.0" />
+      <point x="2498.2849012408224" y="967.0" />
+      <point x="2498.2849012408224" y="169.0" />
+      <point x="2400.838472669394" y="169.0" />
+      <point x="5.3035714285715585" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.CountryRule" target="fr.k2i.adbeback.core.business.ad.rule.AdRule">
+      <point x="49.0" y="-35.5" />
+      <point x="3476.6183684235857" y="1825.0" />
+      <point x="4268.956547619048" y="1825.0" />
+      <point x="-56.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.country" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-14.5" />
+      <point x="3481.4565476190483" y="129.0" />
+      <point x="2414.981329812251" y="129.0" />
+      <point x="19.44642857142844" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.Address" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-85.33333333333326" y="-67.0" />
+      <point x="1992.9788655054301" y="329.0" />
+      <point x="1973.593234574156" y="329.0" />
+      <point x="1973.593234574156" y="179.0" />
+      <point x="2390.231329812251" y="179.0" />
+      <point x="-5.3035714285715585" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Media" target="fr.k2i.adbeback.core.business.user.CategoryPrice">
+      <point x="-68.0" y="-56.5" />
+      <point x="570.2587107646314" y="1448.0" />
+      <point x="548.0087107646314" y="1448.0" />
+      <point x="0.0" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.statistic" target="fr.k2i.adbeback.core.business.country">
+      <point x="-10.75" y="-14.5" />
+      <point x="5398.458032172097" y="2413.0" />
+      <point x="5302.243234574156" y="2413.0" />
+      <point x="5302.243234574156" y="319.0" />
+      <point x="3521.4565476190483" y="319.0" />
+      <point x="40.0" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.Player" target="fr.k2i.adbeback.core.business.game.AbstractAdGame">
+      <point x="-124.09090909090901" y="-98.5" />
+      <point x="5005.19315332995" y="3200.0" />
+      <point x="3464.7483481351446" y="3200.0" />
+      <point x="0.0" y="88.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.StaticAd" target="fr.k2i.adbeback.core.business.ad.Ad">
+      <point x="-2.2737367544323206E-13" y="-14.5" />
+      <point x="2045.6733481351441" y="2229.0" />
+      <point x="2108.723348135144" y="2229.0" />
+      <point x="-182.4000000000001" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.User" target="fr.k2i.adbeback.core.business.player.Role">
+      <point x="-94.5" y="-172.0" />
+      <point x="2004.514067907489" y="503.0" />
+      <point x="1890.9788655054301" y="503.0" />
+      <point x="78.66666666666674" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AbstractAdGame" target="fr.k2i.adbeback.core.business.game.AdScore">
+      <point x="-118.40000000000009" y="-88.0" />
+      <point x="3346.348348135144" y="2944.0" />
+      <point x="1271.0323600610127" y="2944.0" />
+      <point x="0.0" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.AdService" target="fr.k2i.adbeback.core.business.ad.Ad">
+      <point x="-54.5" y="-67.0" />
+      <point x="4334.456547619048" y="2219.0" />
+      <point x="2473.5233481351443" y="2219.0" />
+      <point x="182.4000000000001" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.AnonymPlayer" target="fr.k2i.adbeback.core.business.player.Player">
+      <point x="0.0" y="-14.5" />
+      <point x="68.25" y="98.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Media" target="fr.k2i.adbeback.core.business.company">
+      <point x="68.0" y="-56.5" />
+      <point x="706.2587107646314" y="1448.0" />
+      <point x="688.0087107646314" y="1448.0" />
+      <point x="688.0087107646314" y="1243.0" />
+      <point x="1551.676567907489" y="1243.0" />
+      <point x="-17.25" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.CustomerTarget" target="fr.k2i.adbeback.core.business.player.AgeGroup">
+      <point x="45.333333333333485" y="-46.0" />
+      <point x="2571.784901240823" y="967.0" />
+      <point x="5368.743234574156" y="967.0" />
+      <point x="-90.0" y="130.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdChoise" target="fr.k2i.adbeback.core.business.ad.rule.AdService">
+      <point x="112.0" y="-109.0" />
+      <point x="3922.9565476190483" y="2483.0" />
+      <point x="4348.081547619048" y="2483.0" />
+      <point x="-40.875" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdGameTransaction" target="fr.k2i.adbeback.core.business.user.Media">
+      <point x="-54.0" y="-46.0" />
+      <point x="147.0" y="1611.0" />
+      <point x="587.2587107646314" y="1611.0" />
+      <point x="-51.0" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.OpenRule" target="fr.k2i.adbeback.core.business.ad.rule.AdResponse">
+      <point x="72.0" y="-46.0" />
+      <point x="5167.956547619048" y="2443.0" />
+      <point x="5050.456547619048" y="2443.0" />
+      <point x="51.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdResponsePlayer" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-98.66666666666674" y="-88.0" />
+      <point x="1211.6990267276794" y="2433.0" />
+      <point x="459.50871076463136" y="2433.0" />
+      <point x="459.50871076463136" y="79.0" />
+      <point x="2354.8741869551086" y="79.0" />
+      <point x="-40.66071428571422" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Ad" target="fr.k2i.adbeback.core.business.user.UserAccess">
+      <point x="-101.33333333333348" y="-172.0" />
+      <point x="2189.7900148018107" y="1815.0" />
+      <point x="1341.8046779473952" y="1815.0" />
+      <point x="0.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AbstractAdGame" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="118.40000000000009" y="-88.0" />
+      <point x="3583.1483481351443" y="2944.0" />
+      <point x="4206.456547619048" y="2944.0" />
+      <point x="4206.456547619048" y="109.0" />
+      <point x="2422.05275838368" y="109.0" />
+      <point x="26.517857142857338" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.ViewedAd" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="44.0" y="-67.0" />
+      <point x="5173.445749375967" y="2944.0" />
+      <point x="5616.636091717013" y="2944.0" />
+      <point x="5616.636091717013" y="69.0" />
+      <point x="2436.195615526537" y="69.0" />
+      <point x="40.66071428571422" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Agency" target="fr.k2i.adbeback.core.business.user.IhmConfig">
+      <point x="-43.0" y="-35.5" />
+      <point x="2219.0974012408224" y="1611.0" />
+      <point x="2201.0974012408224" y="1611.0" />
+      <point x="2201.0974012408224" y="1243.0" />
+      <point x="2429.7849012408224" y="1243.0" />
+      <point x="0.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.AgencyUser" target="fr.k2i.adbeback.core.business.user.Agency">
+      <point x="53.0" y="35.5" />
+      <point x="2344.0974012408224" y="1611.0" />
+      <point x="2348.0974012408224" y="1611.0" />
+      <point x="86.0" y="-35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Ad" target="fr.k2i.adbeback.core.business.ad.Sector">
+      <point x="101.33333333333348" y="-172.0" />
+      <point x="2392.4566814684777" y="1795.0" />
+      <point x="2716.4515679074893" y="1795.0" />
+      <point x="34.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Ad" target="fr.k2i.adbeback.core.business.user.Agency">
+      <point x="0.0" y="-172.0" />
+      <point x="2291.1233481351446" y="1835.0" />
+      <point x="2262.0974012408224" y="1835.0" />
+      <point x="0.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Brand" target="fr.k2i.adbeback.core.business.company">
+      <point x="-83.42857142857156" y="-77.5" />
+      <point x="2401.308710764632" y="1203.0" />
+      <point x="1620.676567907489" y="1203.0" />
+      <point x="51.75" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.User" target="fr.k2i.adbeback.core.business.player.Address">
+      <point x="31.5" y="-172.0" />
+      <point x="2130.5140679074893" y="533.0" />
+      <point x="2174.3121988387634" y="533.0" />
+      <point x="96.0" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.Player" target="fr.k2i.adbeback.core.business.user.User">
+      <point x="-49.63636363636397" y="-98.5" />
+      <point x="5079.647698784494" y="3170.0" />
+      <point x="4700.456547619048" y="3170.0" />
+      <point x="4700.456547619048" y="947.0" />
+      <point x="2264.3890679074893" y="947.0" />
+      <point x="165.375" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.company" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-55.200000000000045" y="-14.5" />
+      <point x="1513.726567907489" y="937.0" />
+      <point x="1248.6765679074888" y="937.0" />
+      <point x="1248.6765679074888" y="139.0" />
+      <point x="2376.088472669394" y="139.0" />
+      <point x="-19.44642857142844" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.Player" target="fr.k2i.adbeback.core.business.goosegame">
+      <point x="74.45454545454504" y="-98.5" />
+      <point x="5203.738607875404" y="3180.0" />
+      <point x="5788.55275838368" y="3180.0" />
+      <point x="12.66666666666697" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.goosegame" target="fr.k2i.adbeback.core.business.goosegame">
+      <point x="-38.0" y="14.5" />
+      <point x="5737.886091717013" y="3096.5" />
+      <point x="5669.886091717013" y="3096.5" />
+      <point x="5669.886091717013" y="3052.0" />
+      <point x="-76.0" y="-0.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.company" target="fr.k2i.adbeback.core.business.company">
+      <point x="-51.75" y="14.5" />
+      <point x="1517.176567907489" y="1109.5" />
+      <point x="1479.926567907489" y="1109.5" />
+      <point x="1479.926567907489" y="1075.0" />
+      <point x="-69.0" y="-0.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.UserAccess" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-46.0" />
+      <point x="1341.8046779473952" y="1601.0" />
+      <point x="1224.7587107646316" y="1601.0" />
+      <point x="1224.7587107646316" y="129.0" />
+      <point x="2372.55275838368" y="129.0" />
+      <point x="-22.982142857142662" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdResponsePlayer" target="fr.k2i.adbeback.core.business.ad.rule.AdService">
+      <point x="98.66666666666674" y="-88.0" />
+      <point x="1409.032360061013" y="2463.0" />
+      <point x="4293.581547619048" y="2463.0" />
+      <point x="-95.375" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.statistic" target="fr.k2i.adbeback.core.business.ad.rule.AdService">
+      <point x="-53.75" y="-14.5" />
+      <point x="5355.458032172097" y="2433.0" />
+      <point x="4484.331547619048" y="2433.0" />
+      <point x="95.375" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Brand" target="fr.k2i.adbeback.core.business.ad.CustomerTarget">
+      <point x="41.71428571428578" y="-77.5" />
+      <point x="0.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.BidCategoryMedia" target="fr.k2i.adbeback.core.business.user.Category">
+      <point x="-22.0" y="-67.0" />
+      <point x="827.2587107646314" y="1611.0" />
+      <point x="819.5087107646314" y="1611.0" />
+      <point x="819.5087107646314" y="1213.0" />
+      <point x="710.5087107646314" y="1213.0" />
+      <point x="34.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.User" target="fr.k2i.adbeback.core.business.player.Sex">
+      <point x="157.5" y="-172.0" />
+      <point x="2256.5140679074893" y="523.0" />
+      <point x="3654.7433684235857" y="523.0" />
+      <point x="-43.125" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.otp" target="fr.k2i.adbeback.core.business.otp">
+      <point x="26.25" y="14.5" />
+      <point x="108.75" y="3526.0" />
+      <point x="0.0" y="3526.0" />
+      <point x="0.0" y="3474.25" />
+      <point x="-52.5" y="-7.25" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Brand" target="fr.k2i.adbeback.core.business.user.MediaType">
+      <point x="-125.14285714285734" y="-77.5" />
+      <point x="2359.594425050346" y="1213.0" />
+      <point x="1051.925377431298" y="1213.0" />
+      <point x="54.66666666666674" y="77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.UserAccess" target="fr.k2i.adbeback.core.business.user.User">
+      <point x="45.33333333333326" y="-46.0" />
+      <point x="1387.1380112807285" y="1611.0" />
+      <point x="2122.0140679074893" y="1611.0" />
+      <point x="23.625" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Media" target="fr.k2i.adbeback.core.business.user.MediaUser">
+      <point x="0.0" y="-56.5" />
+      <point x="638.2587107646314" y="1448.0" />
+      <point x="677.0087107646314" y="1448.0" />
+      <point x="677.0087107646314" y="1223.0" />
+      <point x="812.0087107646314" y="1223.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.statistic" target="fr.k2i.adbeback.core.business.player.Sex">
+      <point x="-32.25" y="-14.5" />
+      <point x="5376.958032172097" y="2423.0" />
+      <point x="5216.456547619048" y="2423.0" />
+      <point x="5216.456547619048" y="523.0" />
+      <point x="3740.9933684235857" y="523.0" />
+      <point x="43.125" y="56.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.PricePossibility" target="fr.k2i.adbeback.core.business.game.Possibility">
+      <point x="0.0" y="-35.5" />
+      <point x="-18.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.rule.MultiResponseRule" target="fr.k2i.adbeback.core.business.ad.rule.AdService">
+      <point x="-64.0" y="-67.0" />
+      <point x="4774.956547619048" y="2483.0" />
+      <point x="4402.581547619048" y="2483.0" />
+      <point x="13.625" y="67.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Ad" target="fr.k2i.adbeback.core.business.ad.rule.AdRule">
+      <point x="202.66666666666652" y="-172.0" />
+      <point x="2493.7900148018107" y="1815.0" />
+      <point x="4240.956547619048" y="1815.0" />
+      <point x="-84.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.ProductPossibility" target="fr.k2i.adbeback.core.business.ad.Product">
+      <point x="49.0" y="-35.5" />
+      <point x="3269.9515679074893" y="2453.0" />
+      <point x="3319.1183684235857" y="2453.0" />
+      <point x="3319.1183684235857" y="1243.0" />
+      <point x="3017.118234574156" y="1243.0" />
+      <point x="98.66666666666652" y="88.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.UserAccess" target="fr.k2i.adbeback.core.business.user.AdRight">
+      <point x="-45.33333333333326" y="-46.0" />
+      <point x="1296.471344614062" y="1611.0" />
+      <point x="1157.2587107646316" y="1611.0" />
+      <point x="0.0" y="46.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.User" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="94.5" y="-172.0" />
+      <point x="2193.5140679074893" y="513.0" />
+      <point x="2269.7640679074893" y="513.0" />
+      <point x="2269.7640679074893" y="189.0" />
+      <point x="2393.7670440979655" y="189.0" />
+      <point x="-1.7678571428573377" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Category" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-46.0" />
+      <point x="676.5087107646314" y="99.0" />
+      <point x="2361.945615526537" y="99.0" />
+      <point x="-33.58928571428578" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.country" target="fr.k2i.adbeback.core.business.country">
+      <point x="-40.0" y="14.5" />
+      <point x="3441.4565476190483" y="289.0" />
+      <point x="3387.4565476190483" y="289.0" />
+      <point x="3387.4565476190483" y="237.25" />
+      <point x="-64.0" y="-7.25" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Agency" target="fr.k2i.adbeback.core.business.user.AgencyUser">
+      <point x="43.0" y="-35.5" />
+      <point x="2305.0974012408224" y="1611.0" />
+      <point x="2291.0974012408224" y="1611.0" />
+      <point x="0.0" y="35.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Ad" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="-152.0" y="-172.0" />
+      <point x="2139.1233481351446" y="1825.0" />
+      <point x="1089.7587107646316" y="1825.0" />
+      <point x="1089.7587107646316" y="119.0" />
+      <point x="2369.0170440979655" y="119.0" />
+      <point x="-26.517857142857338" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.statistic" target="fr.k2i.adbeback.core.business.statistic">
+      <point x="32.25" y="14.5" />
+      <point x="5441.458032172097" y="2676.5" />
+      <point x="5314.708032172097" y="2676.5" />
+      <point x="5314.708032172097" y="2624.75" />
+      <point x="-64.5" y="-7.25" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.contact" target="fr.k2i.adbeback.core.business.contact">
+      <point x="0.0" y="14.5" />
+      <point x="1560.4265679074888" y="279.0" />
+      <point x="1476.9265679074888" y="279.0" />
+      <point x="1476.9265679074888" y="244.5" />
+      <point x="-63.5" y="-0.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Product" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-88.0" />
+      <point x="2918.4515679074893" y="149.0" />
+      <point x="2407.9099012408224" y="149.0" />
+      <point x="12.375" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.game.AdChoise" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-109.0" />
+      <point x="3810.9565476190483" y="2453.0" />
+      <point x="3835.6233481351446" y="2453.0" />
+      <point x="3835.6233481351446" y="119.0" />
+      <point x="2418.5170440979655" y="119.0" />
+      <point x="22.982142857142662" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.BidCategoryMedia" target="fr.k2i.adbeback.core.business.user.MediaType">
+      <point x="66.0" y="-67.0" />
+      <point x="915.2587107646314" y="1611.0" />
+      <point x="997.2587107646314" y="1611.0" />
+      <point x="0.0" y="77.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.ad.Brand" target="fr.k2i.adbeback.core.business.ad.Product">
+      <point x="125.14285714285734" y="-77.5" />
+      <point x="2609.880139336061" y="1243.0" />
+      <point x="2819.784901240823" y="1243.0" />
+      <point x="-98.66666666666652" y="88.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.player.Address" target="fr.k2i.adbeback.core.business.country">
+      <point x="85.33333333333348" y="-67.0" />
+      <point x="2163.645532172097" y="319.0" />
+      <point x="3473.4565476190483" y="319.0" />
+      <point x="-8.0" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.Agency" target="fr.k2i.adbeback.core.business.company">
+      <point x="-86.0" y="-35.5" />
+      <point x="2176.0974012408224" y="1611.0" />
+      <point x="2190.0974012408224" y="1611.0" />
+      <point x="2190.0974012408224" y="1223.0" />
+      <point x="1586.176567907489" y="1223.0" />
+      <point x="17.25" y="14.5" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.user.MediaUser" target="fr.k2i.adbeback.core.business.user.User">
+      <point x="0.0" y="-14.5" />
+      <point x="812.0087107646314" y="957.0" />
+      <point x="1980.889067907489" y="957.0" />
+      <point x="-118.125" y="172.0" />
+    </edge>
+    <edge source="fr.k2i.adbeback.core.business.partener" target="fr.k2i.adbeback.core.business.BaseObject">
+      <point x="0.0" y="-14.5" />
+      <point x="5777.307738095238" y="49.0" />
+      <point x="2443.2670440979655" y="49.0" />
+      <point x="47.73214285714312" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8230324365099319" x="4940.502994011977" y="2666.8609006476845" />
+  <SelectedNodes>
+    <node>fr.k2i.adbeback.core.business.game.AdResponsePlayer</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,19 +1,12 @@
 
 $(function(){
-    var getStat = function(start,end,type,serviceId, global,idElementResult){
+
+    var getStat = function(serviceId){
         $.ajax({
-            type: "POST",
+            type: "GET",
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
-            url: addonf.statUrl,
-            data: JSON.stringify({
-                start : start,
-                end : end,
-                type : type,
-                idAd : addonf.idAd,
-                serviceId : serviceId,
-                global: global
-            })
+            url: addonf.statUrl+"/"+serviceId
         }).done(function( data) {
 
             var options=
@@ -61,16 +54,27 @@ $(function(){
                     defaultTheme: false
                 }
             };
+            $.plot($("#statOk"), data.ok,options);
+            $.plot($("#statKo"), data.ko,options);
+            $.plot($("#statNoResponse"), data.noResponse,options);
+            $("#global").html(data.count);
+            $("#question").html(data.question);
 
-            $.plot($("#"+idElementResult), data,options);
+
+
         });
     };
 
 
-    getStat(null,null,'SEX',null,false,'statSexId');
-    getStat(null,null,'AGE_GROUPE',null,false,'statAgeGroupId');
-    getStat(null,null,'AGE_GROUP_SEX',null,false,'statAgeGroupSexId');
-    getStat(null,null,'CITY',null,false,'statCityId');
+    $("#ruleSelection").change(function(){
+        var selected = $(this).val();
+        if(selected){
+            getStat(selected);
+            $("#response").show();
+        }else{
+            $("#response").hide();
+        }
+    });
 
 
 

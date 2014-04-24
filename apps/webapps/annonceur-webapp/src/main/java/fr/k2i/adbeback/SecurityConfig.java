@@ -1,5 +1,6 @@
 package fr.k2i.adbeback;
 
+import fr.k2i.adbeback.core.business.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -76,7 +77,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/confirmMediaUser/**").permitAll()
                 .antMatchers("/confirmAdvUser/**").permitAll()
 
-
+                .antMatchers("/dashboard/realTime/*").hasAnyRole("AGENCY_ADMIN","AGENCY_USER","ANNONCEUR")
 
                 .anyRequest().authenticated();
 

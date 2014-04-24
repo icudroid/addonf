@@ -2,20 +2,24 @@ package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.core.business.ad.rule.AdRule;
-import fr.k2i.adbeback.core.business.ad.rule.AdService;
+import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.user.AgencyUser;
 import fr.k2i.adbeback.core.business.user.BrandUser;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.*;
+import fr.k2i.adbeback.dao.bean.*;
 import fr.k2i.adbeback.dao.jpa.StatisticsDao;
 import fr.k2i.adbeback.webapp.bean.LabelData;
 import fr.k2i.adbeback.webapp.bean.StatisticSearchBean;
+import fr.k2i.adbeback.webapp.bean.statistic.RuleBean;
+import fr.k2i.adbeback.webapp.controller.StatisticsController;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +39,9 @@ public class StatisticsFacade {
 
     @Autowired
     private IStatisticsDao statisticsDao;
+
+    @Autowired
+    private IStatisticsRealTimeDao statisticsRealTimeDao;
 
     @Autowired
     private IBrandDao brandDao;
@@ -89,9 +96,33 @@ public class StatisticsFacade {
             }
         }
 
-        long global = statisticsDao.nbGlobal(ad,null,null,null);
-        long validated = statisticsDao.nbValidated(ad,null,null,null);
 
+        long global = statisticsRealTimeDao.computeNbViewGlobal(ad);
+        long validated = statisticsRealTimeDao.computeNbValidated(ad);
+
+        List<RuleBean> rules = new ArrayList<RuleBean>();
+        for (AdService rule : ad.getRules(AdService.class)) {
+            rules.add(new RuleBean(rule));
+/*            statisticsRealTimeDao.computeResponsesPlayerOk(rule);
+            statisticsRealTimeDao.computeResponsesPlayerKo(rule);
+            statisticsRealTimeDao.computeNbView(rule);
+            statisticsRealTimeDao.computeNoResponses(rule);
+
+            if (rule instanceof OpenRule) {
+                statisticsRealTimeDao.computeResponsesPlayer((OpenRule) rule);
+            }
+
+            if (rule instanceof MultiResponseRule) {
+                statisticsRealTimeDao.computeResponsesPlayer((MultiResponseRule) rule);
+            }
+
+            if (rule instanceof BrandRule) {
+                statisticsRealTimeDao.computeResponsesPlayer((BrandRule) rule);
+            }*/
+
+        }
+
+        model.put("rules",rules);
         model.put("global",global);
         model.put("validated",validated);
     }
@@ -111,7 +142,7 @@ public class StatisticsFacade {
 
         switch (search.getType()){
             case AGE_GROUPE:{
-                List<StatisticsDao.StatisticsAge> statisticsAges = null;
+                List<StatisticsAge> statisticsAges = null;
 
                 if(search.isGlobal()){
                     statisticsAges = statisticsDao.nbGlobalGroupByGroupAge(ad, search.getStart(), search.getEnd(),(AdService)adRule);
@@ -120,14 +151,14 @@ public class StatisticsFacade {
                 }
 
                 List<LabelData> res = new ArrayList<LabelData>();
-                for (StatisticsDao.StatisticsAge statisticsAge : statisticsAges) {
+                for (StatisticsAge statisticsAge : statisticsAges) {
                     res.add(new LabelData(statisticsAge.getAgeGroup().label(),statisticsAge.getCount()));
                 }
                 return res;
             }
             case AGE_GROUP_SEX:{
 
-                List<StatisticsDao.StatisticsAgeSex> statisticsAgeSexes = null;
+                List<StatisticsAgeSex> statisticsAgeSexes = null;
 
                 if(search.isGlobal()){
                     statisticsAgeSexes = statisticsDao.nbGlobalGroupByGroupAgeAndSex(ad, search.getStart(), search.getEnd(),(AdService)adRule);
@@ -136,13 +167,13 @@ public class StatisticsFacade {
                 }
 
                 List<LabelData> res = new ArrayList<LabelData>();
-                for (StatisticsDao.StatisticsAgeSex statisticsAgeSex : statisticsAgeSexes) {
+                for (StatisticsAgeSex statisticsAgeSex : statisticsAgeSexes) {
                     res.add(new LabelData(statisticsAgeSex.getSex()+" "+statisticsAgeSex.getAgeGroup().label(),statisticsAgeSex.getCount()));
                 }
                 return res;
             }
             case CITY:{
-                List<StatisticsDao.StatisticsCity> statisticsCities= null;
+                List<StatisticsCity> statisticsCities= null;
 
                 if(search.isGlobal()){
                     statisticsCities = statisticsDao.nbGlobalGroupByCity(ad, search.getStart(), search.getEnd(),(AdService)adRule);
@@ -151,13 +182,13 @@ public class StatisticsFacade {
                 }
 
                 List<LabelData> res = new ArrayList<LabelData>();
-                for (StatisticsDao.StatisticsCity statisticsCity : statisticsCities) {
+                for (StatisticsCity statisticsCity : statisticsCities) {
                     res.add(new LabelData(statisticsCity.getCity().getCity(), statisticsCity.getCount()));
                 }
                 return res;
             }
             case SEX:{
-                List<StatisticsDao.StatisticsSex> statisticsSexes= null;
+                List<StatisticsSex> statisticsSexes= null;
 
                 if(search.isGlobal()){
                     statisticsSexes = statisticsDao.nbGlobalGroupBySex(ad, search.getStart(), search.getEnd(),(AdService)adRule);
@@ -166,7 +197,7 @@ public class StatisticsFacade {
                 }
 
                 List<LabelData> res = new ArrayList<LabelData>();
-                for (StatisticsDao.StatisticsSex statisticsCity : statisticsSexes) {
+                for (StatisticsSex statisticsCity : statisticsSexes) {
                     res.add(new LabelData(statisticsCity.getSex().toString(), statisticsCity.getCount()));
                 }
                 return res;
@@ -199,5 +230,67 @@ public class StatisticsFacade {
         model.put("maxDate",ad.getEndDate());
 
 
+    }
+
+    @Data
+    public class RealTimeResponse implements Serializable{
+
+        private String question;
+        private Long count;
+        private List<LabelData> ok;
+        private List<LabelData> ko;
+        private List<LabelData> noResponse;
+
+        private List<StatisticsAgeSexResponse> open;
+        private List<StatisticsAgeSexBrand> brand;
+        private List<StatisticsAgeSexMulti> multi;
+
+    }
+
+    @Transactional
+    public RealTimeResponse realTimeStat(Long idService) {
+        RealTimeResponse res = new RealTimeResponse();
+
+        AdService rule = (AdService) adRuleDao.get(idService);
+
+        res.setQuestion(rule.getQuestion());
+
+        if (rule instanceof OpenRule) {
+            res.setOpen(statisticsRealTimeDao.computeResponsesPlayer((OpenRule) rule));
+        }
+
+        if (rule instanceof MultiResponseRule) {
+            //Todo :
+            //statisticsRealTimeDao.computeResponsesPlayer((MultiResponseRule)rule);
+        }
+
+        if (rule instanceof BrandRule) {
+            res.setBrand(statisticsRealTimeDao.computeResponsesPlayer((BrandRule) rule));
+        }
+
+        List<StatisticsAgeSex> sKo = statisticsRealTimeDao.computeResponsesPlayerKo(rule);
+        List<LabelData> rko = new ArrayList<LabelData>();
+        for (StatisticsAgeSex statisticsAgeSex : sKo) {
+            rko.add(new LabelData(statisticsAgeSex.toString(), statisticsAgeSex.getCount()));
+        }
+        res.setKo(rko);
+
+        List<StatisticsAgeSex> sok = statisticsRealTimeDao.computeResponsesPlayerOk(rule);
+        List<LabelData> rok = new ArrayList<LabelData>();
+        for (StatisticsAgeSex statisticsAgeSex : sok) {
+            rok.add(new LabelData(statisticsAgeSex.toString(), statisticsAgeSex.getCount()));
+        }
+        res.setOk(rok);
+
+        List<StatisticsAgeSex> sNoResp = statisticsRealTimeDao.computeNoResponses(rule);
+        List<LabelData> rNoResp = new ArrayList<LabelData>();
+        for (StatisticsAgeSex statisticsAgeSex : sNoResp) {
+            rNoResp.add(new LabelData(statisticsAgeSex.toString(), statisticsAgeSex.getCount()));
+        }
+        res.setNoResponse(rNoResp);
+
+        res.setCount(statisticsRealTimeDao.computeNbView(rule));
+
+        return res;
     }
 }

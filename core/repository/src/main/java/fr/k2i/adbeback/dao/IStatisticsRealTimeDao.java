@@ -6,14 +6,11 @@ import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
 import fr.k2i.adbeback.core.business.ad.rule.MultiResponseRule;
 import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
-import fr.k2i.adbeback.core.business.statistic.Statistics;
-import fr.k2i.adbeback.core.business.statistic.StatisticsValidated;
-import fr.k2i.adbeback.core.business.statistic.StatisticsViewed;
-import fr.k2i.adbeback.dao.jpa.StatisticsDao;
-import fr.k2i.adbeback.dao.jpa.StatisticsRealTimeDao;
+import fr.k2i.adbeback.dao.bean.StatisticsAgeSex;
+import fr.k2i.adbeback.dao.bean.StatisticsAgeSexBrand;
+import fr.k2i.adbeback.dao.bean.StatisticsAgeSexResponse;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,28 +20,44 @@ import java.util.List;
  */
 public interface IStatisticsRealTimeDao {
 
+    @Transactional
+    List<StatisticsAgeSex> computeResponsesPlayerKo(AdService service);
 
     @Transactional
-    List computeResponsesPlayer(OpenRule rule);
-
-    @Transactional
-    List<Tuple> computeResponsesPlayer(BrandRule rule);
-
-    @Transactional
-    List<Tuple> computeResponsesPlayer(MultiResponseRule rule);
-
-
-
-    @Transactional
-    List<Tuple> computeResponsesPlayerKo(AdService service);
-
-    @Transactional
-    List<Tuple> computeResponsesPlayerOk(AdService service);
+    List<StatisticsAgeSex> computeResponsesPlayerOk(AdService service);
 
     @Transactional
     Long computeNbView(AdService service);
 
     @Transactional
-    Long computeNbViewGlobal();
+    Long computeNbViewGlobal(Ad ad);
+
+    @Transactional
+    Long computeNbValidated(Ad ad);
+
+    List<StatisticsAgeSex> computeNoResponses(AdService service);
+
+    List<Tuple> computeResponsesPlayerKo(Ad ad);
+
+    List<Tuple> computeResponsesPlayerOk(Ad ad);
+
+    List<Tuple> computeNoResponses(Ad ad);
+
+    @Transactional
+    Long computeNbView(Ad ad);
+
+    @Transactional
+    List<StatisticsAgeSexResponse> computeResponsesPlayer(OpenRule rule);
+
+
+    @Transactional
+    List<StatisticsAgeSexBrand> computeResponsesPlayer(BrandRule rule);
+
+
+    @Transactional
+    List<Tuple> computeResponsesPlayer(MultiResponseRule rule);
+
 }
+
+
 

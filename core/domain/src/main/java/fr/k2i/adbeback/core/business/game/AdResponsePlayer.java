@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 
 import fr.k2i.adbeback.core.business.BaseObject;
+import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import lombok.Data;
 
 @Data
@@ -21,8 +23,12 @@ public class AdResponsePlayer extends BaseObject implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AdResponsePlayer_Gen")
 	private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "RESPONSE_ID")
+    @ManyToMany
+    @JoinTable(
+            name = "player_res_possibility",
+            joinColumns = { @JoinColumn(name = "possibility_id") },
+            inverseJoinColumns = @JoinColumn(name = "ad_response_player_id")
+    )
     private List<Possibility> responses;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -31,6 +37,11 @@ public class AdResponsePlayer extends BaseObject implements Serializable {
 
 	private Integer number;
 
+    private Boolean correctAnswer;
+
+    @ManyToOne
+    @JoinColumn(name = "AD_SERVICE_ID")
+    private AdService adService;
 
     @Override
     public boolean equals(Object o) {

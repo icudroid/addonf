@@ -1,9 +1,9 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
+import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.QViewedAd;
 import fr.k2i.adbeback.core.business.ad.ViewedAd;
-import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.IViewedAdDao;
@@ -36,5 +36,17 @@ public class ViewedAdDao extends GenericDaoJpa<ViewedAd, Long> implements IViewe
                 );
 
         return query.uniqueResult(viewedAd);
+    }
+
+    @Override
+    public Long computeTodayNbViewGlobal(Ad ad) {
+        QViewedAd viewedAd = QViewedAd.viewedAd;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(viewedAd)
+                .where(
+                        viewedAd.date.eq(new Date()).and(viewedAd.adRule.ad.eq(ad))
+                );
+
+        return Long.valueOf(query.uniqueResult(viewedAd.nb.sum()));
     }
 }

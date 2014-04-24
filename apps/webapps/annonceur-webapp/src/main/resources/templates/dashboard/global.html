@@ -15,8 +15,7 @@
     <script th:inline="javascript">
 
         addonf.idAd = [[${idAd}]];
-        addonf.statUrl = [[@{/dashboard/search(_csrf=${_csrf.token})}]];
-
+        addonf.statUrl = [[@{/dashboard/realTime}]];
 
     </script>
 
@@ -47,53 +46,63 @@
 
     <div class="widget">
         <div class="widget-head">
-            <h4 class="heading">Nombres globaux</h4>
+            <h4 class="heading">Nombres visualisation ce jour</h4>
         </div>
         <div class="widget-body">
-            Nombre de visualisation globale : <span th:text="${global}"></span><br/>
+            Nombre de visualisation : <span th:text="${global}"></span><br/>
             Nombre de validation : <span th:text="${validated}"></span>
         </div>
     </div>
 
     <div class="widget">
         <div class="widget-head">
-            <h4 class="heading">Statistique par Civilité</h4>
+            <h4 class="heading">Détaille par type d'affichage</h4>
         </div>
         <div class="widget-body">
-            <div id="statSexId" class="flotchart-holder"></div>
+
+            <select id="ruleSelection">
+                <option value="">Sélectionner ...</option>
+                <option th:each="rule : ${rules}" th:value="${rule.id}" th:text="${rule.label}">Rule type</option>
+            </select>
+
         </div>
     </div>
 
+    <div id="response" style="display: none;">
+        <div class="widget">
+            <div class="widget-head">
+                <h4 class="heading">Résultats :</h4>
+            </div>
+            <div class="widget-body">
 
-    <div class="widget">
-        <div class="widget-head">
-            <h4 class="heading">Statistique par Age</h4>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Nombre total de vue : <span id="global">0</span></h4>
+                    </div>
+                    <div class="col-md-12">
+                        <h4>Question : <span id="question">?</span></h4>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h4>Validées</h4>
+                        <div id="statOk" class="flotchart-holder"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Non validées</h4>
+                        <div id="statKo" class="flotchart-holder"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Pas réponse</h4>
+                        <div id="statNoResponse" class="flotchart-holder"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4>tableaux</h4>
+                </div>
+            </div>
         </div>
-        <div class="widget-body">
-            <div id="statAgeGroupId" class="flotchart-holder"></div>
-        </div>
-    </div>
 
-
-
-    <div class="widget">
-        <div class="widget-head">
-            <h4 class="heading">Statistique par Civilité et Age</h4>
-        </div>
-        <div class="widget-body">
-            <div id="statAgeGroupSexId" class="flotchart-holder"></div>
-        </div>
-    </div>
-
-
-
-    <div class="widget">
-        <div class="widget-head">
-            <h4 class="heading">Statistique par Ville</h4>
-        </div>
-        <div class="widget-body">
-            <div id="statCityId" class="flotchart-holder"></div>
-        </div>
     </div>
 
 </div>

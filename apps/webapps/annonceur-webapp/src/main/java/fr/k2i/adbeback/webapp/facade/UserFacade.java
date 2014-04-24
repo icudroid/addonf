@@ -88,13 +88,6 @@ public class UserFacade {
     private IOTPSecurityDao securityDao;
 
 
-
-
-    @Value("${addonf.price.byBrand:0.30}")
-    private Double showBrandPrice;
-    @Value("${addonf.price.byOpen:0.30}")
-    private Double showOpenPrice;
-
     @Value("${addonf.ads.location}")
     private String adsPath;
 
@@ -408,7 +401,7 @@ public class UserFacade {
             b.setAd(ad);
             b.setStartDate(brandRule.getStartDate());
             b.setEndDate(brandRule.getEndDate());
-            b.setPrice(showBrandPrice);
+            //b.setPrice(showBrandPrice);
             b.setQuestion("Quel est le Logo de la publicité ?");
             b.setMaxDisplayByUser(b.getMaxDisplayByUser());
 
@@ -445,7 +438,7 @@ public class UserFacade {
             o.setStartDate(openRule.getStartDate());
             o.setEndDate(openRule.getEndDate());
             o.setQuestion(openRule.getQuestion());
-            o.setPrice(showOpenPrice);
+            //o.setPrice(showOpenPrice);
             o.setMaxDisplayByUser(openRule.getMaxDisplayByUser());
 
             if(o.getResponses()!=null)o.getResponses().clear();
@@ -492,7 +485,7 @@ public class UserFacade {
             o.setStartDate(openRule.getStartDate());
             o.setEndDate(openRule.getEndDate());
             o.setQuestion(openRule.getQuestion());
-            o.setPrice(showOpenPrice);
+            //o.setPrice(showOpenPrice);
             o.setMaxDisplayByUser(openRule.getMaxDisplayByUser());
             o.setAddonText(openRule.getAddonText());
             o.setBtnValidText(openRule.getBtnValidText());

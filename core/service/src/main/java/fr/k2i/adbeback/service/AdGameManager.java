@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import fr.k2i.adbeback.bean.ResponseUser;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.StatusGame;
@@ -35,13 +36,15 @@ public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
 
 	/**
 	 * 
-	 * @param idAdGame
-	 * @param score
-	 * @param answers
-     * @param statusGame
-	 * @throws Exception
+	 *
+     *
+     * @param idAdGame
+     * @param score
+     * @param answers
+* @param statusGame
+* @throws Exception
 	 */
-	void saveResponses(Long idAdGame, Integer score, Map<Integer, List<Long>> answers,StatusGame statusGame)throws Exception;
+	void saveResponses(Long idAdGame, Integer score, Map<Integer,ResponseUser> answers,StatusGame statusGame)throws Exception;
 
 
 }

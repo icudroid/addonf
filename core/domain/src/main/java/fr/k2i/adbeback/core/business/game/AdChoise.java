@@ -24,7 +24,7 @@ public class AdChoise extends BaseObject implements Serializable {
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "POSSIBILITY_ID")
+    @JoinColumn(name = "adchoise_id")
     private List<Possibility> possiblities;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -32,7 +32,7 @@ public class AdChoise extends BaseObject implements Serializable {
 	private AbstractAdGame adGame;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CORRECT_POSSIBILITY_ID")
+    @JoinColumn(name = "correct_for_adchoise_id")
 	private List<Possibility> corrects;
 
 	private String question;

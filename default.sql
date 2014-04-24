@@ -36895,7 +36895,7 @@ COPY sector (id, code, description) FROM stdin;
 25	25	Banque, assurance
 26	26	Edition, Journalisme
 27	27	Informatique et télécoms : des débouchés pour les débutants
-28	28	Sport, loisirs – Tourisme
+28	28	Sport, loisirs - Tourisme
 29	29	Bois (filière)
 30	30	Électronique
 31	31	Logistique, transport

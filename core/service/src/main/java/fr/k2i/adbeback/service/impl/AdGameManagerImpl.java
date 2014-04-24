@@ -4,12 +4,12 @@ import java.util.*;
 import java.util.Map.Entry;
 
 
+import fr.k2i.adbeback.bean.ResponseUser;
 import fr.k2i.adbeback.core.business.ad.ViewedAd;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.IMultiGooseLevel;
-import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.dao.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -312,26 +312,34 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
 	public void saveResponses(Long idAdGame, Integer score,
-			Map<Integer, List<Long>> answers,StatusGame statusGame) throws Exception {
+			Map<Integer,ResponseUser> answers,StatusGame statusGame) throws Exception {
 		AbstractAdGame adGame = adGameDao.get(idAdGame);
 		AdScore adScore = new AdScore();
 		adScore.setScore(score);
 		Map<Integer, AdResponsePlayer> answersPlayer = new HashMap<Integer, AdResponsePlayer>();
-		for (Entry<Integer,  List<Long>> answer : answers.entrySet()) {
+
+		for (Entry<Integer,  ResponseUser> answer : answers.entrySet()) {
 			AdResponsePlayer r = new AdResponsePlayer();
 			r.setAdScore(adScore);
 			r.setNumber(answer.getKey());
-            List<Long> value = answer.getValue();
-            if(value !=null && !value.isEmpty()){
+            ResponseUser value = answer.getValue();
+            List<Long> responses = value.getResponses();
+            Boolean correct = value.isCorrect();
+
+            if(value !=null && !responses.isEmpty()){
 
                 List<Possibility> possibilities = new ArrayList<Possibility>();
-                for (Long idPossibily : value) {
+                for (Long idPossibily : responses) {
                     possibilities.add(possibilityDao.get(idPossibily));
                 }
 
 				r.setResponses(possibilities);
 			}
-			answersPlayer.put(answer.getKey(), r);
+
+            r.setCorrectAnswer(correct);
+            r.setAdService(value.getAdService());
+
+            answersPlayer.put(answer.getKey(), r);
 		}
 		adScore.setAnswers(answersPlayer);
 		adGame.setScore(adScore);
