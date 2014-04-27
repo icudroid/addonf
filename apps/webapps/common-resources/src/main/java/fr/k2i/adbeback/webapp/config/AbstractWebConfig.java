@@ -51,8 +51,8 @@ public abstract class AbstractWebConfig {
     @Bean
     MultipartConfigElement multipartConfigElement() {
         MultiPartConfigFactory factory = new MultiPartConfigFactory();
-        factory.setMaxFileSize("5MB");
-        factory.setMaxRequestSize("5MB");
+        factory.setMaxFileSize("15MB");
+        factory.setMaxRequestSize("25MB");
         return factory.createMultipartConfig();
     }
 

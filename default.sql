@@ -36932,3 +36932,6 @@ COPY category (id, key, main_id) FROM stdin;
 --
 
 SELECT pg_catalog.setval('category_sequence', 1, false);
+
+
+
