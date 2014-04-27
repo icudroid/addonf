@@ -261,7 +261,7 @@ public class StatisticsFacade {
 
         if (rule instanceof MultiResponseRule) {
             //Todo :
-            //statisticsRealTimeDao.computeResponsesPlayer((MultiResponseRule)rule);
+            statisticsRealTimeDao.computeResponsesPlayer((MultiResponseRule)rule);
         }
 
         if (rule instanceof BrandRule) {

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.*;
 
 @Repository
@@ -139,28 +140,61 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
     @Override
     public List<Tuple> computeResponsesPlayer(MultiResponseRule rule) {
-        JPAQuery query = new JPAQuery(entityManager);
+
+        AdResponse[] adResponses = rule.getResponses().toArray(new AdResponse[rule.getResponses().size()]);
 
         LocalDate now = new LocalDate();
-        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
-        QAdScore score = QAdScore.adScore;
-        QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
-        QPlayer player = QPlayer.player;
-        QAdResponse qAdResponse = QAdResponse.adResponse;
 
-        QPossibility possibility = QPossibility.possibility;
-        QOpenPossibility openPossibility = possibility.as(QOpenPossibility.class);
+        for (int i = 1; i < 16; i++) {
+            List<AdResponse> responses4Query = new ArrayList<AdResponse>();
+            if((i & 0x1)==1){
 
-        query.from(game).join(game.score,score).join(game.score.answers,response).join(response.responses,possibility).join(openPossibility.generatedBy,qAdResponse).join(game.player, player).where(
-                response.adService.eq(rule)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
-                        .and(response.responses.isNotEmpty())
-        );
+                //and = getPredicatAdResponse(adResponses[0], openPossibility, and);
 
-        query.groupBy(player.sex,player.ageGroup,openPossibility);
+                responses4Query.add(adResponses[0]);
+            }
 
-        return query.list(player.sex,player.ageGroup,openPossibility,response.count());
+            if((i & 0x2)==2){
+                //and = getPredicatAdResponse(adResponses[1], openPossibility, and);
 
+                responses4Query.add(adResponses[1]);
+            }
+
+            if((i & 0x4)==4){
+                //and = getPredicatAdResponse(adResponses[2], openPossibility, and);
+
+                responses4Query.add(adResponses[2]);
+            }
+
+
+            QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
+            QAdScore score = QAdScore.adScore;
+            QPlayer player = QPlayer.player;
+
+            QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
+            QPossibility possibility = QPossibility.possibility;
+            QOpenPossibility openPossibility = possibility.as(QOpenPossibility.class);
+
+            //select distinct q from Question q join q.tags as t where t.name in (:tags) group by q.id, q.author, q.title, q.content,q.postedAt having count(t.id) = :size
+
+            //entityManager.createQuery("select distinct q from Question q join q.tags as t where t.name in (:tags) group by q.id, q.author, q.title, q.content,q.postedAt having count(t.id) = :size")
+
+
+            JPAQuery query = new JPAQuery(entityManager);
+            query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player, player).join(response.responses, possibility).where(
+                    response.adService.eq(rule)
+                            .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                            .and(openPossibility.generatedBy.in(responses4Query))
+            ).groupBy(response, player.sex, player.ageGroup).having(response.responses.size().eq(responses4Query.size()));
+
+            query.distinct();
+            List<Tuple> list = query.list(response, player.sex, player.ageGroup);
+
+
+        }
+
+
+        return null;
     }
 
 
