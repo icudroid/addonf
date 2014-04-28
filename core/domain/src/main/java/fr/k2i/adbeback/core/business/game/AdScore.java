@@ -27,6 +27,9 @@ public class AdScore extends BaseObject implements Serializable {
     @MapKey(name = "number")
 	private Map<Integer,AdResponsePlayer> answers;
 
+    @OneToOne(mappedBy = "score")
+    private AbstractAdGame game;
+
 
 	@Override
 	public int hashCode() {

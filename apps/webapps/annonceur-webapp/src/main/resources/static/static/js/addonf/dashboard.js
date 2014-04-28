@@ -1,7 +1,52 @@
 
 $(function(){
 
-    var createTableOpen = function(data){
+
+
+
+    function createRowOpen(o, data) {
+        var row = '<td>' + o.ageGroup + '</td>' + '<td>' + o.sex + '</td>';
+
+        for (var j = 0; j < data.responses.length; j++) {
+
+            if (o.response == data.responses[j]) {
+                row += '<td>X</td>'
+            } else {
+                row += '<td></td>';
+            }
+        }
+
+        row += "<td>" + o.count + "</td>"
+        return row;
+    }
+
+
+    function createRowMulti(o, data) {
+        var row = '<td>' + o.ageGroup + '</td>' + '<td>' + o.sex + '</td>';
+
+        for (var j = 0; j < data.responses.length; j++) {
+
+            if(o.responses[j]==data.responses[j]){
+                row+='<td>X</td>'
+            }else{
+                row+='<td></td>';
+            }
+        }
+
+        row += "<td>" + o.count + "</td>"
+        return row;
+    }
+
+
+    function createRowBrand(o, data) {
+        var row = '<td>'+ o.ageGroup+'</td>'+'<td>'+ o.sex+'</td>';
+        row+='<td><img src="'+addonf.static+'logo/'+o.logo+'" style="max-height:50px;max-width:50px;" /></td>'
+        row+="<td>"+o.count+"</td>"
+        return row;
+    }
+
+
+    function createTable(data,type) {
         var $table = $("<table>").addClass("table");
         var $headers = $("<tr>")
         $table.append($headers);
@@ -11,153 +56,49 @@ $(function(){
         var columnsResponses = '';
 
 
-
         for (var i = 0; i < data.responses.length; i++) {
             var o = data.responses[i];
-            columnsResponses+='<td>'+o+'</td>'
+            columnsResponses += '<td>' + o + '</td>'
         }
 
-        $headers.append(columnsAgeSex+columnsResponses+columnCount);
+        $headers.append(columnsAgeSex + columnsResponses + columnCount);
 
 
         for (var i = 0; i < data.statistics.length; i++) {
             var o = data.statistics[i];
-            /*
-             private AgeGroup ageGroup;
-             private Sex sex;
-             private Long count;
-
-             */
             var $bodyTable = $("<tr>")
             $table.append($bodyTable);
-
-            var row = '<td>'+ o.ageGroup+'</td>'+'<td>'+ o.sex+'</td>';
-            for (var j = 0; j < data.responses.length; j++) {
-
-                if(o.response==data.responses[j]){
-                    row+='<td>X</td>'
-                }else{
-                    row+='<td></td>';
-                }
-
-
+            switch (type){
+                case 'open':
+                    $bodyTable.append(createRowOpen(o, data));
+                    break;
+                case 'multi':
+                    $bodyTable.append(createRowMulti(o, data));
+                    break;
+                case 'brand':
+                    $bodyTable.append(createRowBrand(o, data));
+                    break;
 
             }
-            row+="<td>"+o.count+"</td>"
-            $bodyTable.append(row);
-       }
+
+        }
 
 
         $("#rulesStat").html("").append($table);
+    }
 
 
+    var createTableOpen = function(data){
+        createTable(data,'open');
     };
 
 
     var createTableBrand = function(data){
-        var $table = $("<table>").addClass("table");
-        var $headers = $("<tr>")
-        $table.append($headers);
-
-        var columnsAgeSex = '<td>Age</td><td>Civilité</td>';
-        var columnCount = '<td>nb</nb>';
-        var columnsResponses = '';
-
-
-
-        for (var i = 0; i < data.responses.length; i++) {
-            var o = data.responses[i];
-            columnsResponses+='<td>'+o+'</td>'
-        }
-
-        $headers.append(columnsAgeSex+columnsResponses+columnCount);
-
-
-        for (var i = 0; i < data.statistics.length; i++) {
-            var o = data.statistics[i];
-            /*
-             private AgeGroup ageGroup;
-             private Sex sex;
-             private Long count;
-
-             */
-            var $bodyTable = $("<tr>")
-            $table.append($bodyTable);
-
-            var row = '<td>'+ o.ageGroup+'</td>'+'<td>'+ o.sex+'</td>';
-            for (var j = 0; j < data.responses.length; j++) {
-
-                if(o.response==data.responses[j]){
-                    row+='<td>X</td>'
-                }else{
-                    row+='<td></td>';
-                }
-
-
-
-            }
-            row+="<td>"+o.count+"</td>"
-            $bodyTable.append(row);
-        }
-
-
-        $("#rulesStat").html("").append($table);
-
-
+        createTable(data,'brand');
     };
 
-
-
     var createTableMulti = function(data){
-        var $table = $("<table>").addClass("table");
-        var $headers = $("<tr>")
-        $table.append($headers);
-
-        var columnsAgeSex = '<td>Age</td><td>Civilité</td>';
-        var columnCount = '<td>nb</nb>';
-        var columnsResponses = '';
-
-
-
-        for (var i = 0; i < data.responses.length; i++) {
-            var o = data.responses[i];
-            columnsResponses+='<td>'+o+'</td>'
-        }
-
-        $headers.append(columnsAgeSex+columnsResponses+columnCount);
-
-
-        for (var i = 0; i < data.statistics.length; i++) {
-            var o = data.statistics[i];
-            /*
-             private AgeGroup ageGroup;
-             private Sex sex;
-             private Long count;
-
-             */
-            var $bodyTable = $("<tr>")
-            $table.append($bodyTable);
-
-            var row = '<td>'+ o.ageGroup+'</td>'+'<td>'+ o.sex+'</td>';
-            for (var j = 0; j < data.responses.length; j++) {
-
-                if(o.responses[j]==data.responses[j]){
-                    row+='<td>X</td>'
-                }else{
-                    row+='<td></td>';
-                }
-
-
-
-            }
-            row+="<td>"+o.count+"</td>"
-            $bodyTable.append(row);
-        }
-
-
-        $("#rulesStat").html("").append($table);
-
-
+        createTable(data,'multi');
     };
 
 

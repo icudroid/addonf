@@ -320,11 +320,13 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 		for (Entry<Integer,  ResponseUser> answer : answers.entrySet()) {
 			AdResponsePlayer r = new AdResponsePlayer();
+
 			r.setAdScore(adScore);
 			r.setNumber(answer.getKey());
             ResponseUser value = answer.getValue();
             List<Long> responses = value.getResponses();
             Boolean correct = value.isCorrect();
+            r.setPlayed(value.getPlayed());
 
             if(value !=null && responses!=null && !responses.isEmpty()){
 

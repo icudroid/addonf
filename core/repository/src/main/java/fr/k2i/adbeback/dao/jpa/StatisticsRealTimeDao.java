@@ -2,6 +2,7 @@ package fr.k2i.adbeback.dao.jpa;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.Tuple;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
@@ -128,6 +129,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
         query.groupBy(player.sex,player.ageGroup,brand);
 
         Responses stat = new Responses();
+        stat.getResponses().add("logo");
 
         List<StatisticsAgeSexBrand> res = new ArrayList<StatisticsAgeSexBrand>();
 
@@ -184,21 +186,33 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
             QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
             QAdScore score = QAdScore.adScore;
+
             QPlayer player = QPlayer.player;
 
             QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
+            QAdResponsePlayer subResponse = new QAdResponsePlayer("subResponse");
             QPossibility possibility = QPossibility.possibility;
             QOpenPossibility openPossibility = possibility.as(QOpenPossibility.class);
 
-            JPAQuery query = new JPAQuery(entityManager);
-            query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player, player).join(response.responses, possibility).where(
-                    response.adService.eq(rule)
+
+
+            JPASubQuery subQuery = new JPASubQuery();
+            subQuery.from(subResponse).join(subResponse.adScore).join(subResponse.adScore.game,game).join(subResponse.responses, possibility).where(
+                    subResponse.adService.eq(rule)
                             .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
                             .and(openPossibility.generatedBy.in(responses4Query))
-            ).groupBy(response, player.sex, player.ageGroup).having(response.responses.size().eq(responses4Query.size()));
+            ).groupBy(subResponse).having(subResponse.responses.size().eq(responses4Query.size())).distinct();
+
+
+
+            JPAQuery query = new JPAQuery(entityManager);
+            query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player, player).where(
+                    response.in(subQuery.list(subResponse))
+            ).groupBy(player.sex, player.ageGroup);
+
 
             query.distinct();
-            List<Tuple> tuples = query.list(response, player.sex, player.ageGroup,response.count());
+            List<Tuple> tuples = query.list(player.sex, player.ageGroup,response.count());
 
 
             List statistics = stat.getStatistics();

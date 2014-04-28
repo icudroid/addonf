@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.core.business.game;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -38,6 +39,9 @@ public class AdResponsePlayer extends BaseObject implements Serializable {
 	private Integer number;
 
     private Boolean correctAnswer;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date played;
 
     @ManyToOne
     @JoinColumn(name = "AD_SERVICE_ID")
