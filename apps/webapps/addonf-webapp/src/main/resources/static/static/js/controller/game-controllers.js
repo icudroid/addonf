@@ -164,13 +164,16 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                         break;
                     case 'VIDEO':
 
-                        $scope.adVideoWebm = video($scope.index,'webm');
-                        $scope.adVideoOgg = video($scope.index,'ogg');
-                        $scope.adVideoMp4 = video($scope.index,'mp4');
-                        //$scope.$apply();
-                        $scope.videoElt[0].load();
-                        $scope.videoElt[0].play();
+                            $scope.adVideoWebm = video($scope.index,'webm');
+                            $scope.adVideoOgg = video($scope.index,'ogg');
+                            $scope.adVideoMp4 = video($scope.index,'mp4');
+                            $scope.$apply();
+                            $scope.videoElt[0].load();
+                            $scope.videoElt[0].play();
+
                         $scope.videoElt.unbind("ended",$scope.noResponse).bind("ended",$scope.noResponse);
+
+
                         break;
                     case 'STATIC':
                         $scope.adImage = image($scope.index);

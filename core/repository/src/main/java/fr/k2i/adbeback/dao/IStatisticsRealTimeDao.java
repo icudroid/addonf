@@ -6,9 +6,8 @@ import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
 import fr.k2i.adbeback.core.business.ad.rule.MultiResponseRule;
 import fr.k2i.adbeback.core.business.ad.rule.OpenRule;
+import fr.k2i.adbeback.dao.bean.Responses;
 import fr.k2i.adbeback.dao.bean.StatisticsAgeSex;
-import fr.k2i.adbeback.dao.bean.StatisticsAgeSexBrand;
-import fr.k2i.adbeback.dao.bean.StatisticsAgeSexResponse;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -47,15 +46,15 @@ public interface IStatisticsRealTimeDao {
     Long computeNbView(Ad ad);
 
     @Transactional
-    List<StatisticsAgeSexResponse> computeResponsesPlayer(OpenRule rule);
+    Responses computeResponsesPlayer(OpenRule rule);
 
 
     @Transactional
-    List<StatisticsAgeSexBrand> computeResponsesPlayer(BrandRule rule);
+    Responses computeResponsesPlayer(BrandRule rule);
 
 
     @Transactional
-    List<Tuple> computeResponsesPlayer(MultiResponseRule rule);
+    Responses computeResponsesPlayer(MultiResponseRule rule);
 
 }
 

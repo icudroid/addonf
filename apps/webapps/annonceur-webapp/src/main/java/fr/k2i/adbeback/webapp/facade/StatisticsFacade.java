@@ -8,11 +8,9 @@ import fr.k2i.adbeback.core.business.user.BrandUser;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.dao.bean.*;
-import fr.k2i.adbeback.dao.jpa.StatisticsDao;
 import fr.k2i.adbeback.webapp.bean.LabelData;
 import fr.k2i.adbeback.webapp.bean.StatisticSearchBean;
 import fr.k2i.adbeback.webapp.bean.statistic.RuleBean;
-import fr.k2i.adbeback.webapp.controller.StatisticsController;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -241,11 +239,16 @@ public class StatisticsFacade {
         private List<LabelData> ko;
         private List<LabelData> noResponse;
 
-        private List<StatisticsAgeSexResponse> open;
-        private List<StatisticsAgeSexBrand> brand;
-        private List<StatisticsAgeSexMulti> multi;
+
+        private Responses open;
+        private Responses brand;
+        private Responses multi;
 
     }
+
+
+
+
 
     @Transactional
     public RealTimeResponse realTimeStat(Long idService) {
@@ -260,8 +263,7 @@ public class StatisticsFacade {
         }
 
         if (rule instanceof MultiResponseRule) {
-            //Todo :
-            statisticsRealTimeDao.computeResponsesPlayer((MultiResponseRule)rule);
+            res.setMulti(statisticsRealTimeDao.computeResponsesPlayer((MultiResponseRule) rule));
         }
 
         if (rule instanceof BrandRule) {

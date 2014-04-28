@@ -11,7 +11,7 @@ import lombok.Data;
  * Goal:
  */
 @Data
-public class StatisticsAgeSex{
+public class StatisticsAgeSex {
     private AgeGroup ageGroup;
     private Sex sex;
     private Long count;

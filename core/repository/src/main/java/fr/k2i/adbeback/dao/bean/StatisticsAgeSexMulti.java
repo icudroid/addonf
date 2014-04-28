@@ -14,8 +14,8 @@ import java.util.List;
  */
 @Data
 public class StatisticsAgeSexMulti extends StatisticsAgeSex{
-    private List<Boolean> responses;
-    public StatisticsAgeSexMulti(AgeGroup ageGroup, Sex sex, Long count, List<Boolean> responses) {
+    private List<String> responses;
+    public StatisticsAgeSexMulti(AgeGroup ageGroup, Sex sex, Long count, List<String> responses) {
         super(ageGroup, sex, count);
         this.responses = responses;
     }

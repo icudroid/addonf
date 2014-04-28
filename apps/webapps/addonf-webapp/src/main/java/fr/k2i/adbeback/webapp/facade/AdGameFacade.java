@@ -282,12 +282,19 @@ public class AdGameFacade {
 
         Double highBid = bids.first();
         List<Ad> adsBidHigh = adsSortedByBid.get(highBid);
-        adsSortedByBid.remove(highBid);
+        Double winBid = 0.0;
+        if(bids.size()>1){
+            adsSortedByBid.remove(highBid);
+            bids = ( NavigableSet<Double>) adsSortedByBid.keySet();
+            Double justBefore = bids.first();
+            winBid = justBefore+0.01;
+        }else{
+            winBid = highBid;
+        }
 
-        bids = ( NavigableSet<Double>) adsSortedByBid.keySet();
-        Double justBefore = bids.first();
 
-        Double winBid = justBefore+0.01;
+
+
 
         Ad adWinbid = null;
         if(adsBidHigh.size()>1){
@@ -490,8 +497,8 @@ public class AdGameFacade {
 
             //all corrects responses
             boolean isCorrect = true;
-            for (Long resp : responseId) {
-                if(!correctIds.contains(resp)){
+            for (Long resp : correctIds) {
+                if(!responseId.contains(resp)){
                     isCorrect = false;
                 }
             }

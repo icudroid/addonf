@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
+import com.google.common.collect.Lists;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Ad;
@@ -12,16 +13,13 @@ import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.dao.IStatisticsRealTimeDao;
 import fr.k2i.adbeback.dao.IViewedAdDao;
-import fr.k2i.adbeback.dao.bean.StatisticsAgeSex;
-import fr.k2i.adbeback.dao.bean.StatisticsAgeSexBrand;
-import fr.k2i.adbeback.dao.bean.StatisticsAgeSexResponse;
+import fr.k2i.adbeback.dao.bean.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.*;
 
 @Repository
@@ -61,7 +59,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
     @Transactional
     @Override
-    public List<StatisticsAgeSexResponse> computeResponsesPlayer(OpenRule rule){
+    public Responses computeResponsesPlayer(OpenRule rule){
         JPAQuery query = new JPAQuery(entityManager);
 
         LocalDate now = new LocalDate();
@@ -82,6 +80,14 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.groupBy(player.sex, player.ageGroup, qAdResponse);
 
+
+        Responses stat = new Responses();
+        List<AdResponse> responses = rule.getResponses();
+        for (AdResponse adResponse : responses) {
+            stat.getResponses().add(adResponse.getResponse());
+        }
+
+
         List<StatisticsAgeSexResponse> res = new ArrayList<StatisticsAgeSexResponse>();
 
         List<Tuple> tuples = query.list(player.sex, player.ageGroup, qAdResponse, response.count());
@@ -92,12 +98,13 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
             AdResponse adResponse = tuple.get(qAdResponse);
             res.add(new StatisticsAgeSexResponse(ageGroup, sex, nb,adResponse.getResponse()));
         }
+        stat.setStatistics(res);
 
-        return res;
+        return stat;
     }
 
     @Override
-    public List<StatisticsAgeSexBrand> computeResponsesPlayer(BrandRule rule) {
+    public Responses computeResponsesPlayer(BrandRule rule) {
         JPAQuery query = new JPAQuery(entityManager);
 
         LocalDate now = new LocalDate();
@@ -120,7 +127,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.groupBy(player.sex,player.ageGroup,brand);
 
-
+        Responses stat = new Responses();
 
         List<StatisticsAgeSexBrand> res = new ArrayList<StatisticsAgeSexBrand>();
 
@@ -134,35 +141,43 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
             res.add(new StatisticsAgeSexBrand(ageGroup, sex, nb,b.getLogo()));
         }
 
-        return res;
+        stat.setStatistics(res);
+
+        return stat;
 
     }
 
     @Override
-    public List<Tuple> computeResponsesPlayer(MultiResponseRule rule) {
+    public Responses computeResponsesPlayer(MultiResponseRule rule) {
 
-        AdResponse[] adResponses = rule.getResponses().toArray(new AdResponse[rule.getResponses().size()]);
+        List<AdResponse> responses = rule.getResponses();
+        AdResponse[] adResponses = responses.toArray(new AdResponse[responses.size()]);
 
         LocalDate now = new LocalDate();
 
-        for (int i = 1; i < 16; i++) {
+        Responses stat = new Responses();
+
+        for (AdResponse adResponse : adResponses) {
+            stat.getResponses().add(adResponse.getResponse());
+        }
+
+
+        for (int i = 1; i <8; i++) {
+            List<String> responded = Lists.newArrayList(null,null,null);
+
             List<AdResponse> responses4Query = new ArrayList<AdResponse>();
             if((i & 0x1)==1){
-
-                //and = getPredicatAdResponse(adResponses[0], openPossibility, and);
-
+                responded.set(0,adResponses[0].getResponse());
                 responses4Query.add(adResponses[0]);
             }
 
             if((i & 0x2)==2){
-                //and = getPredicatAdResponse(adResponses[1], openPossibility, and);
-
+                responded.set(1,adResponses[1].getResponse());
                 responses4Query.add(adResponses[1]);
             }
 
             if((i & 0x4)==4){
-                //and = getPredicatAdResponse(adResponses[2], openPossibility, and);
-
+                responded.set(2,adResponses[2].getResponse());
                 responses4Query.add(adResponses[2]);
             }
 
@@ -175,11 +190,6 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
             QPossibility possibility = QPossibility.possibility;
             QOpenPossibility openPossibility = possibility.as(QOpenPossibility.class);
 
-            //select distinct q from Question q join q.tags as t where t.name in (:tags) group by q.id, q.author, q.title, q.content,q.postedAt having count(t.id) = :size
-
-            //entityManager.createQuery("select distinct q from Question q join q.tags as t where t.name in (:tags) group by q.id, q.author, q.title, q.content,q.postedAt having count(t.id) = :size")
-
-
             JPAQuery query = new JPAQuery(entityManager);
             query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player, player).join(response.responses, possibility).where(
                     response.adService.eq(rule)
@@ -188,13 +198,26 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
             ).groupBy(response, player.sex, player.ageGroup).having(response.responses.size().eq(responses4Query.size()));
 
             query.distinct();
-            List<Tuple> list = query.list(response, player.sex, player.ageGroup);
+            List<Tuple> tuples = query.list(response, player.sex, player.ageGroup,response.count());
+
+
+            List statistics = stat.getStatistics();
+
+            for (Tuple tuple : tuples) {
+                AgeGroup ageGroup = tuple.get(player.ageGroup);
+                Sex sex = tuple.get(player.sex);
+                Long nb = tuple.get(response.count());
+
+                StatisticsAgeSex r = new StatisticsAgeSexMulti(ageGroup, sex, nb, responded);
+
+                statistics.add(r);
+            }
 
 
         }
 
 
-        return null;
+        return stat;
     }
 
 

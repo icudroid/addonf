@@ -326,7 +326,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
             List<Long> responses = value.getResponses();
             Boolean correct = value.isCorrect();
 
-            if(value !=null && !responses.isEmpty()){
+            if(value !=null && responses!=null && !responses.isEmpty()){
 
                 List<Possibility> possibilities = new ArrayList<Possibility>();
                 for (Long idPossibily : responses) {
