@@ -40,8 +40,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         }
 
 
-        $scope.adVideoWebm = video($scope.index,'webm');
-        $scope.adVideoOgg = video($scope.index,'ogg');
+        //$scope.adVideoWebm = video($scope.index,'webm');
+        $scope.adVideoOgg = video($scope.index,'ogv');
         $scope.adVideoMp4 = video($scope.index,'mp4');
         $scope.adImage = image($scope.index);
         $scope.adAudio = $scope.base + "video/"+$scope.index;
@@ -61,8 +61,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                 $scope.adAudio = $scope.base + "video/"+$scope.index;
                 break;
             case 'VIDEO':
-                $scope.adVideoWebm = video($scope.index,'webm');
-                $scope.adVideoOgg = video($scope.index,'ogg');
+                //$scope.adVideoWebm = video($scope.index,'webm');
+                $scope.adVideoOgg = video($scope.index,'ogv');
                 $scope.adVideoMp4 = video($scope.index,'mp4');
                 $scope.videoElt.unbind("ended",$scope.noResponse).bind("ended",$scope.noResponse);
                 break;
@@ -164,8 +164,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                         break;
                     case 'VIDEO':
 
-                            $scope.adVideoWebm = video($scope.index,'webm');
-                            $scope.adVideoOgg = video($scope.index,'ogg');
+                            //$scope.adVideoWebm = video($scope.index,'webm');
+                            $scope.adVideoOgg = video($scope.index,'ogv');
                             $scope.adVideoMp4 = video($scope.index,'mp4');
                             $scope.$apply();
                             $scope.videoElt[0].load();
