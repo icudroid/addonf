@@ -320,6 +320,10 @@ public class UserFacade {
 
         if(information.getAdFileCommand()!=null){
             if (AdDisplay.VIDEO.equals(information.getDisplayAd())){
+                if (ad instanceof VideoAd) {
+                    VideoAd videoAd = (VideoAd) ad;
+                    videoAd.setAdFileEncoded(false);
+                }
                 ad.setAdFile(FileUtils.saveFile(information.getAdFileCommand().getContent(),adsPathTmp));
             }else{
                 ad.setAdFile(FileUtils.saveFile(information.getAdFileCommand().getContent(),adsPath));
