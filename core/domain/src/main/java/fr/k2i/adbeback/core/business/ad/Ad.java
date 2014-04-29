@@ -66,6 +66,8 @@ public abstract  class Ad extends BaseObject implements Serializable {
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.PARTNER)
     protected Agency providedBy;
 
+    @Enumerated(EnumType.STRING)
+    protected AdStatus status = AdStatus.ENABLE;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Ad.JOIN)

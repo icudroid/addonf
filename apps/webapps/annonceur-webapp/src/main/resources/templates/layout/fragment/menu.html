@@ -7,7 +7,9 @@
         <ul class="list-unstyled">
             <li th:class="${activeFirstMenu == 'home'}?'active':''"><a th:href="@{/}" th:text="#{menu.home}">Home</a></li>
             <li th:class="${activeFirstMenu == 'logo'}?'active':''"><a th:href="@{/setLogo}" th:text="#{menu.change.logo}">Logo</a></li>
-            <li th:class="${activeFirstMenu == 'ads'}?'active':''">
+
+
+            <li th:class="${activeFirstMenu == 'ads'}?'active':''" sec:authorize="hasAnyRole('ROLE_ANNONCEUR','ROLE_AGENCY_ADMIN','ROLE_AGENCY_USER')">
                 <a href="#sidebar-discover-example" data-toggle="sidebar-discover" th:utext="#{menu.manage.ad}">
                     Gestion des publicités
                 </a>
@@ -22,6 +24,21 @@
                     </ul>
                 </div>
             </li>
+
+
+            <li th:class="${activeFirstMenu == 'passphrase'}?'active':''" sec:authorize="hasRole('ROLE_MEDIA')">
+                <a th:href="@{/}" th:utext="#{menu.manage.passphrase}"></a>
+            </li>
+            <li th:class="${activeFirstMenu == 'ext_id'}?'active':''" sec:authorize="hasRole('ROLE_MEDIA')">
+                <a th:href="@{/}" th:utext="#{menu.manage.extId}"></a>
+            </li>
+
+            <li th:class="${activeFirstMenu == 'Mes services'}?'active':''" sec:authorize="hasRole('ROLE_MEDIA')">
+                <a th:href="@{/}" th:utext="#{menu.manage.media.services}"></a>
+            </li>
+
+
+
 
         </ul>
     </div>
