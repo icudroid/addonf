@@ -42,6 +42,8 @@ public class StatisticService {
         List<Statistics> stats = new ArrayList<Statistics>();
         stats.addAll(statisticsDao.doStatisticsViewedForDay(now));
         stats.addAll(statisticsDao.doStatisticsValidatedForDay(now));
+        stats.addAll(statisticsDao.doStatisticsNoResponseForDay(now));
+        stats.addAll(statisticsDao.doStatisticsNotValidatedForDay(now));
 
         for (Statistics stat : stats) {
             statisticsDao.save(stat);

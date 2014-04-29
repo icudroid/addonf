@@ -5,7 +5,7 @@ $(function(){
 
 
     function createRowOpen(o, data) {
-        var row = '<td>' + o.ageGroup + '</td>' + '<td>' + o.sex + '</td>';
+        var row = '<td>' + ((o.ageGroup!=null)?o.ageGroup:'inconnu') + '</td>' + '<td>' + ((o.sex!=null)?o.sex:'inconnue') + '</td>';
 
         for (var j = 0; j < data.responses.length; j++) {
 
@@ -22,7 +22,7 @@ $(function(){
 
 
     function createRowMulti(o, data) {
-        var row = '<td>' + o.ageGroup + '</td>' + '<td>' + o.sex + '</td>';
+        var row = '<td>' + ((o.ageGroup!=null)?o.ageGroup:'inconnu') + '</td>' + '<td>' + ((o.sex!=null)?o.sex:'inconnue') + '</td>';
 
         for (var j = 0; j < data.responses.length; j++) {
 
@@ -39,7 +39,7 @@ $(function(){
 
 
     function createRowBrand(o, data) {
-        var row = '<td>'+ o.ageGroup+'</td>'+'<td>'+ o.sex+'</td>';
+        var row = '<td>' + ((o.ageGroup!=null)?o.ageGroup:'inconnu') + '</td>' + '<td>' + ((o.sex!=null)?o.sex:'inconnue') + '</td>';
         row+='<td><img src="'+addonf.static+'logo/'+o.logo+'" style="max-height:50px;max-width:50px;" /></td>'
         row+="<td>"+o.count+"</td>"
         return row;
@@ -51,7 +51,7 @@ $(function(){
         var $headers = $("<tr>")
         $table.append($headers);
 
-        var columnsAgeSex = '<td>Age</td><td>Civilité</td>';
+        var columnsAgeSex = '<td>Age</td><td>Civilit&eacute;</td>';
         var columnCount = '<td>nb</nb>';
         var columnsResponses = '';
 
@@ -84,7 +84,7 @@ $(function(){
         }
 
 
-        $("#rulesStat").html("").append($table);
+        $("#rulesStat").append($table);
     }
 
 
@@ -163,7 +163,7 @@ $(function(){
             $.plot($("#statNoResponse"), data.noResponse,options);
             $("#global").html(data.count);
             $("#question").html(data.question);
-
+            $("#bidAvg").html(data.averageBid);
 
             //create tables for services
             if(data.open){
@@ -185,6 +185,7 @@ $(function(){
 
     $("#ruleSelection").change(function(){
         var selected = $(this).val();
+        $("#rulesStat").html("");
         if(selected){
             getStat(selected);
             $("#response").show();

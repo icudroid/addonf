@@ -62,7 +62,7 @@
 
             <select id="ruleSelection">
                 <option value="">Sélectionner ...</option>
-                <option th:each="rule : ${rules}" th:value="${rule.id}" th:text="${rule.label}">Rule type</option>
+                <option th:each="rule : ${rules}" th:value="${rule.id}" th:text="#{${rule.label+ ((!rule.activated)?' (Supprimer)':'')}}">Rule type</option>
             </select>
 
         </div>
@@ -83,7 +83,9 @@
                     <div class="col-md-12">
                         <h4>Question : <span id="question">?</span></h4>
                     </div>
-
+                    <div class="col-md-12">
+                        <h4>moyenne des enchères remportées: <span id="bidAvg">?</span></h4>
+                    </div>
                     <div class="col-md-4">
                         <h4>Validées</h4>
                         <div id="statOk" class="flotchart-holder"></div>

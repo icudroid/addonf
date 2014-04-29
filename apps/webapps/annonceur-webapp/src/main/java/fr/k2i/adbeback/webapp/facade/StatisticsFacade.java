@@ -3,6 +3,10 @@ package fr.k2i.adbeback.webapp.facade;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.*;
+import fr.k2i.adbeback.core.business.player.AgeGroup;
+import fr.k2i.adbeback.core.business.player.Sex;
+import fr.k2i.adbeback.core.business.statistic.*;
+import fr.k2i.adbeback.core.business.statistic.Statistics;
 import fr.k2i.adbeback.core.business.user.AgencyUser;
 import fr.k2i.adbeback.core.business.user.BrandUser;
 import fr.k2i.adbeback.core.business.user.User;
@@ -14,6 +18,9 @@ import fr.k2i.adbeback.webapp.bean.statistic.RuleBean;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,29 +105,14 @@ public class StatisticsFacade {
         long global = statisticsRealTimeDao.computeNbViewGlobal(ad);
         long validated = statisticsRealTimeDao.computeNbValidated(ad);
 
+
         List<RuleBean> rules = new ArrayList<RuleBean>();
         for (AdService rule : ad.getRules(AdService.class)) {
-            rules.add(new RuleBean(rule));
-/*            statisticsRealTimeDao.computeResponsesPlayerOk(rule);
-            statisticsRealTimeDao.computeResponsesPlayerKo(rule);
-            statisticsRealTimeDao.computeNbView(rule);
-            statisticsRealTimeDao.computeNoResponses(rule);
-
-            if (rule instanceof OpenRule) {
-                statisticsRealTimeDao.computeResponsesPlayer((OpenRule) rule);
-            }
-
-            if (rule instanceof MultiResponseRule) {
-                statisticsRealTimeDao.computeResponsesPlayer((MultiResponseRule) rule);
-            }
-
-            if (rule instanceof BrandRule) {
-                statisticsRealTimeDao.computeResponsesPlayer((BrandRule) rule);
-            }*/
-
+             rules.add(new RuleBean(rule));
         }
 
         model.put("rules",rules);
+
         model.put("global",global);
         model.put("validated",validated);
     }
@@ -130,15 +122,28 @@ public class StatisticsFacade {
 
 
 
-    public List<LabelData> doSearch(StatisticSearchBean search) {
-        Ad ad = adDao.get(search.getIdAd());
-        AdRule adRule = null;
+    public void doSearch(StatisticSearchBean search, Map<String, Object> model,Pageable pageRequest) {
 
-        if(search.getServiceId()!=null){
-            adRule = adRuleDao.get(search.getServiceId());
-        }
+        /*
+            private String start;
+            private String end;
 
-        switch (search.getType()){
+            private Long idAd;
+            private Long serviceId;
+
+            private AdViewedType adViewedType;
+
+            private AgeGroup ageGroup;
+
+            private Sex sex;
+
+         */
+
+        Page<Statistics> statisticses = statisticsDao.findBy(search.getStartAsDate(), search.getEndAsDate(), search.getIdAd(), search.getServiceId(), search.getAdViewedType(), search.getAgeGroups(), search.getSexes(), pageRequest);
+        model.put("result",statisticses);
+
+
+ /*       switch (search.getAdViewedType()){
             case AGE_GROUPE:{
                 List<StatisticsAge> statisticsAges = null;
 
@@ -202,30 +207,48 @@ public class StatisticsFacade {
             }
             default:
                 return new ArrayList<LabelData>();
-        }
+        }*/
     }
 
+
     public void detail(Long idAd, Map<String, Object> model) throws Exception {
-        Brand brand = getBrandForConnectedUser();
+
+        User currentUser = userFacade.getCurrentUser();
 
         Ad ad = adDao.get(idAd);
-        if(!ad.getBrand().equals(brand)){
-            throw new Exception("bad user");
+
+        if (currentUser instanceof BrandUser) {
+            BrandUser user = (BrandUser) currentUser;
+            Brand brand = user.getBrand();
+
+            if(!ad.getBrand().equals(brand)){
+                throw new Exception("bad user");
+            }
+
+        }else if (currentUser instanceof AgencyUser) {
+            AgencyUser user = (AgencyUser) currentUser;
+            List<Brand> inChargeOf = user.getInChargeOf();
+            if(!inChargeOf.contains(ad.getBrand())){
+                throw new Exception("bad user");
+            }
         }
 
-        List<AdService> rules = ad.getRules(AdService.class);
 
-        fr.k2i.adbeback.webapp.bean.AdService service = new fr.k2i.adbeback.webapp.bean.AdService();
-
-        for (AdService adRule : rules) {
-            boolean used = adGameDao.RuleIsUsed(adRule);
-            service.addService(adRule,logoPath,used);
+        List<RuleBean> rules = new ArrayList<RuleBean>();
+        for (AdService rule : ad.getRules(AdService.class)) {
+            rules.add(new RuleBean(rule));
         }
 
-        model.put("services",service);
+        model.put("rules",rules);
 
         model.put("minDate",ad.getStartDate());
         model.put("maxDate",ad.getEndDate());
+
+        model.put("adsViewed",AdViewedType.values());
+        model.put("ageGroups", AgeGroup.values());
+
+        model.put("sexes", Sex.values());
+
 
 
     }
@@ -243,6 +266,8 @@ public class StatisticsFacade {
         private Responses open;
         private Responses brand;
         private Responses multi;
+
+        private Double averageBid;
 
     }
 
@@ -292,6 +317,8 @@ public class StatisticsFacade {
         res.setNoResponse(rNoResp);
 
         res.setCount(statisticsRealTimeDao.computeNbView(rule));
+
+        res.setAverageBid(statisticsRealTimeDao.computeAverageBid(rule));
 
         return res;
     }

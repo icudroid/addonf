@@ -23,6 +23,8 @@ public abstract class AdService extends AdRule{
     protected Date endDate;
     protected Integer maxDisplayByUser;
     /*protected Double price;*/
+    private Boolean activated = true;
+    private String name;
 
     @Column(name = IMetaData.ColumnMetadata.AdRule.QUESTION)
     protected String question;

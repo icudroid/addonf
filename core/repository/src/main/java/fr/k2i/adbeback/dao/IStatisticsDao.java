@@ -2,15 +2,19 @@ package fr.k2i.adbeback.dao;
 
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
-import fr.k2i.adbeback.core.business.statistic.Statistics;
-import fr.k2i.adbeback.core.business.statistic.StatisticsValidated;
-import fr.k2i.adbeback.core.business.statistic.StatisticsViewed;
+import fr.k2i.adbeback.core.business.player.AgeGroup;
+import fr.k2i.adbeback.core.business.player.Sex;
+import fr.k2i.adbeback.core.business.statistic.*;
 import fr.k2i.adbeback.dao.bean.StatisticsAge;
 import fr.k2i.adbeback.dao.bean.StatisticsAgeSex;
 import fr.k2i.adbeback.dao.bean.StatisticsCity;
 import fr.k2i.adbeback.dao.bean.StatisticsSex;
 import fr.k2i.adbeback.dao.jpa.StatisticsDao;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +26,9 @@ import java.util.List;
 public interface IStatisticsDao extends IGenericDao<Statistics, Long> {
     List<StatisticsViewed> doStatisticsViewedForDay(Date day);
     List<StatisticsValidated> doStatisticsValidatedForDay(Date day);
+    List<StatisticsNoResponse> doStatisticsNoResponseForDay(Date now);
+    List<StatisticsNotValidated> doStatisticsNotValidatedForDay(Date day);
+
     void removeAllInDay(Date day);
 
     List<StatisticsAge> nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, AdService service);
@@ -38,6 +45,15 @@ public interface IStatisticsDao extends IGenericDao<Statistics, Long> {
 
     long nbGlobal(Ad ad, Date start, Date end,AdService service);
     long nbValidated(Ad ad, Date start, Date end,AdService service);
+
+
+    Page<Statistics> findBy(Date startAsDate, Date endAsDate, Long idAd, Long serviceId, AdViewedType adViewedType, List<AgeGroup> ageGroups, List<Sex> sexes, Pageable pageRequest);
+
+
+
+
+
+    
 
 
 

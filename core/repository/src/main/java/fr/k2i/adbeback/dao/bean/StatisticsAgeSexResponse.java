@@ -18,4 +18,6 @@ public class StatisticsAgeSexResponse extends StatisticsAgeSex{
         super(ageGroup, sex, count);
         this.response = response;
     }
+
+
 }

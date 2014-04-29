@@ -156,6 +156,19 @@ public class UserFacade {
             BrandUser brandUser = (BrandUser) user;
             brandUser.getBrand().setLogo(FileUtils.saveFile(logo.getBytes(),logoPath));
         }
+
+        if (user instanceof BrandUser) {
+            BrandUser brandUser = (BrandUser) user;
+            brandUser.getBrand().setLogo(FileUtils.saveFile(logo.getBytes(),logoPath));
+        }else if (user instanceof MediaUser) {
+            MediaUser mediaUser = (MediaUser) user;
+            Media media = mediaDao.findByMediaUser(mediaUser);
+            media.setLogo(FileUtils.saveFile(logo.getBytes(),logoPath));
+        }else if (user instanceof AgencyUser) {
+            AgencyUser agencyUser = (AgencyUser) user;
+            agencyUser.getAgency().setLogo(FileUtils.saveFile(logo.getBytes(),logoPath));
+        }
+
     }
 
 
@@ -400,8 +413,10 @@ public class UserFacade {
                 }
             }else{
                 b = new BrandRule();
+                ad.addRule(b);
             }
 
+            b.setName(brandRule.getName());
             b.setAd(ad);
             b.setStartDate(brandRule.getStartDate());
             b.setEndDate(brandRule.getEndDate());
@@ -414,7 +429,7 @@ public class UserFacade {
             for (BrandBean bNo : noDisplayWith) {
                 b.addNoDisplayWith(brandDao.get(bNo.getId()));
             }
-            ad.addRule(b);
+
         }
 
 
@@ -435,9 +450,10 @@ public class UserFacade {
                 }
             }else{
                 o = new OpenRule();
+                ad.addRule(o);
             }
 
-
+            o.setName(openRule.getName());
             o.setAd(ad);
             o.setStartDate(openRule.getStartDate());
             o.setEndDate(openRule.getEndDate());
@@ -460,7 +476,7 @@ public class UserFacade {
                 }
             }
 
-            ad.addRule(o);
+
         }
 
 
@@ -482,9 +498,10 @@ public class UserFacade {
                 }
             }else{
                 o = new MultiResponseRule();
+                ad.addRule(o);
             }
 
-
+            o.setName(openRule.getName());
             o.setAd(ad);
             o.setStartDate(openRule.getStartDate());
             o.setEndDate(openRule.getEndDate());
@@ -520,7 +537,7 @@ public class UserFacade {
                 }
             }
 
-            ad.addRule(o);
+
         }
 
 
@@ -566,7 +583,7 @@ public class UserFacade {
 
     private void deleteNotNeededBrandRule(Ad ad, List<BrandRuleBean> brandRules) {
         List<BrandRule> rules = ad.getRules(BrandRule.class);
-        List<BrandRule> toRemove = new ArrayList<BrandRule>();
+        //List<BrandRule> toRemove = new ArrayList<BrandRule>();
         for (BrandRule rule : rules) {
             boolean found = false;
             for (BrandRuleBean brandRule : brandRules) {
@@ -576,36 +593,40 @@ public class UserFacade {
                 }
             }
             if(!found){
-                toRemove.add(rule);
+                rule.setActivated(false);
+                //toRemove.add(rule);
                 //rules.remove(rule);
             }
         }
-        ad.getRules().removeAll(toRemove);
+        //ad.getRules().removeAll(toRemove);
 
     }
 
 
     private void deleteNotNeededOpenRule(Ad ad, List<OpenRuleBean> openRuleBeans) {
         List<OpenRule> rules = ad.getRules(OpenRule.class);
-        List<OpenRule> toRemove = new ArrayList<OpenRule>();
+        //List<OpenRule> toRemove = new ArrayList<OpenRule>();
         for (OpenRule rule : rules) {
             boolean found = false;
             for (OpenRuleBean openRuleBean : openRuleBeans) {
                 if(rule.getId().equals(openRuleBean.getId())){
-                    found = true;
+                   found = true;
                     break;
                 }
             }
+
             if(!found){
-                toRemove.add(rule);
+                rule.setActivated(false);
+                //toRemove.add(rule);
             }
+
         }
-        ad.getRules().removeAll(toRemove);
+        //ad.getRules().removeAll(toRemove);
     }
 
     private void deleteNotNeededOpenMultiRule(Ad ad, List<OpenMultiRuleBean> openRuleBeans) {
         List<MultiResponseRule> rules = ad.getRules(MultiResponseRule.class);
-        List<MultiResponseRule> toRemove = new ArrayList<MultiResponseRule>();
+        //List<MultiResponseRule> toRemove = new ArrayList<MultiResponseRule>();
         for (MultiResponseRule rule : rules) {
             boolean found = false;
             for (OpenMultiRuleBean openRuleBean : openRuleBeans) {
@@ -614,11 +635,14 @@ public class UserFacade {
                     break;
                 }
             }
+
             if(!found){
-                toRemove.add(rule);
+                rule.setActivated(false);
+                //toRemove.add(rule);
             }
+
         }
-        ad.getRules().removeAll(toRemove);
+        //ad.getRules().removeAll(toRemove);
     }
 
 
@@ -693,9 +717,9 @@ public class UserFacade {
 
         for (AdRule adRule : ad.getRules()) {
             rules.addRule(adRule);
-            if(adRule instanceof fr.k2i.adbeback.core.business.ad.rule.AdService){
-                boolean used = adGameDao.RuleIsUsed((fr.k2i.adbeback.core.business.ad.rule.AdService) adRule);
-                service.addService(adRule,logoPath,used);
+            if(adRule instanceof fr.k2i.adbeback.core.business.ad.rule.AdService && ((fr.k2i.adbeback.core.business.ad.rule.AdService) adRule).getActivated().equals(true)){
+                //boolean used = adGameDao.RuleIsUsed((fr.k2i.adbeback.core.business.ad.rule.AdService) adRule);
+                service.addService(adRule,logoPath);
             }
         }
 

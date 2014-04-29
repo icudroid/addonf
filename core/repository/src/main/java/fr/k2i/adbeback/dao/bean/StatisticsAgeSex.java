@@ -21,4 +21,23 @@ public class StatisticsAgeSex {
         this.sex = sex;
         this.count = count;
     }
+
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("(Age : ");
+
+        if(getAgeGroup()==null){
+            str.append("Inconnu");
+        }else{
+            str.append(getAgeGroup());
+        }
+
+        str.append(", nombre : ");
+        str.append(getCount());
+        str.append(")");
+
+        return str.toString();
+    }
 }

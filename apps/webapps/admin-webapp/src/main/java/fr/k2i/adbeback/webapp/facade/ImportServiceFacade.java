@@ -57,6 +57,8 @@ public class ImportServiceFacade {
             statisticsDao.removeAllInDay(day);
             stats.addAll(statisticsDao.doStatisticsViewedForDay(day));
             stats.addAll(statisticsDao.doStatisticsValidatedForDay(day));
+            stats.addAll(statisticsDao.doStatisticsNoResponseForDay(day));
+            stats.addAll(statisticsDao.doStatisticsNotValidatedForDay(day));
 
             for (Statistics stat : stats) {
                 statisticsDao.save(stat);

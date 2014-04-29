@@ -25,7 +25,7 @@ public class AdService implements Serializable{
     private List<ProductRuleBean> productRules = new ArrayList<ProductRuleBean>();
 
 
-    public void addService(OpenRule adRule,String base,boolean used) throws IOException {
+    public void addService(OpenRule adRule,String base) throws IOException {
         if(openRules == null){
             openRules = new ArrayList<OpenRuleBean>();
         }
@@ -36,7 +36,7 @@ public class AdService implements Serializable{
         add.setEndDate(adRule.getEndDate());
         add.setMaxDisplayByUser(adRule.getMaxDisplayByUser());
         add.setId(adRule.getId());
-        add.setCanBeDelete(!used);
+        add.setName(adRule.getName());
 
         List<AdResponse> responses = adRule.getResponses();
 
@@ -50,7 +50,7 @@ public class AdService implements Serializable{
 
 
 
-    public void addService(MultiResponseRule adRule,String base,boolean used) throws IOException {
+    public void addService(MultiResponseRule adRule,String base) throws IOException {
         if(openMultiRules == null){
             openMultiRules = new ArrayList<OpenMultiRuleBean>();
         }
@@ -61,9 +61,9 @@ public class AdService implements Serializable{
         add.setEndDate(adRule.getEndDate());
         add.setMaxDisplayByUser(adRule.getMaxDisplayByUser());
         add.setId(adRule.getId());
-        add.setCanBeDelete(!used);
         add.setBtnValidText(adRule.getBtnValidText());
         add.setAddonText(adRule.getAddonText());
+        add.setName(adRule.getName());
 
         List<AdResponse> responses = adRule.getResponses();
 
@@ -77,7 +77,7 @@ public class AdService implements Serializable{
     }
 
 
-    public void addService(BrandRule adRule,boolean used) {
+    public void addService(BrandRule adRule) {
         if(brandRules == null){
             brandRules = new ArrayList<BrandRuleBean>();
         }
@@ -87,7 +87,7 @@ public class AdService implements Serializable{
         add.setEndDate(adRule.getEndDate());
         add.setMaxDisplayByUser(adRule.getMaxDisplayByUser());
         add.setId(adRule.getId());
-        add.setCanBeDelete(!used);
+        add.setName(adRule.getName());
 
         for (Brand brand : adRule.getNoDisplayWith()) {
             add.addNoDisplayWith(new BrandBean(brand));
@@ -97,14 +97,14 @@ public class AdService implements Serializable{
     }
 
 
-    public void addService(AdRule adRule, String base, boolean used) throws IOException {
+    public void addService(AdRule adRule, String base) throws IOException {
 
         if(adRule instanceof BrandRule){
-            addService((BrandRule) adRule,used);
+            addService((BrandRule) adRule);
         }else if(adRule instanceof OpenRule){
-            addService((OpenRule) adRule, base, used);
+            addService((OpenRule) adRule, base);
         }else if(adRule instanceof MultiResponseRule){
-           addService((MultiResponseRule) adRule, base, used);
+           addService((MultiResponseRule) adRule, base);
         }
     }
 }

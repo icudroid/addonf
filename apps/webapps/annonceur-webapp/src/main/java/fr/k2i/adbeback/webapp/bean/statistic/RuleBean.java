@@ -18,22 +18,24 @@ import java.io.Serializable;
 public class RuleBean implements Serializable{
     private Long id;
     private String label;
+    private boolean activated;
 
 
     public RuleBean(AdService service){
         id = service.getId();
+        this.activated = service.getActivated();
 
         if (service instanceof BrandRule) {
             BrandRule rule = (BrandRule) service;
-            label = "Affiche par Logo";
+            label = "Affiche par Logo : "+rule.getName();
 
         }else if (service instanceof OpenRule) {
             OpenRule rule = (OpenRule) service;
-            label = "Affichage personnalisé";
+            label = "Affichage personnalisé : "+rule.getName();
 
         }if (service instanceof MultiResponseRule) {
             MultiResponseRule rule = (MultiResponseRule) service;
-            label = "Affichage multi-réponses";
+            label = "Affichage multi-réponses : "+rule.getName();
         }
     }
 }

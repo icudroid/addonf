@@ -56,6 +56,8 @@ public interface IStatisticsRealTimeDao {
     @Transactional
     Responses computeResponsesPlayer(MultiResponseRule rule);
 
+    @Transactional
+    Double computeAverageBid(AdService rule);
 }
 
 

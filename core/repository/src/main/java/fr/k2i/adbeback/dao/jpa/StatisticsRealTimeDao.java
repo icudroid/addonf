@@ -234,6 +234,24 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
         return stat;
     }
 
+    @Override
+    public Double computeAverageBid(AdService service) {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        LocalDate now = new LocalDate();
+        QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
+        QAdScore score = QAdScore.adScore;
+        QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
+        QAdChoise adChoise = QAdChoise.adChoise;
+
+        query.from(game).join(game.score,score).join(game.score.answers,response).join(game.choises,adChoise).where(
+                response.adService.eq(service)
+                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+        );
+
+        return  query.uniqueResult(adChoise.winBidPrice.avg());
+    }
+
 
     @Override
     public List<StatisticsAgeSex> computeResponsesPlayerKo(AdService service) {

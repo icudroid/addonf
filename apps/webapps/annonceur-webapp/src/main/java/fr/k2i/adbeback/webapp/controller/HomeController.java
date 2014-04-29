@@ -1,8 +1,8 @@
 package fr.k2i.adbeback.webapp.controller;
 
 import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.core.business.user.BrandUser;
-import fr.k2i.adbeback.core.business.user.User;
+import fr.k2i.adbeback.core.business.user.*;
+import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.webapp.facade.FileUtils;
 import fr.k2i.adbeback.webapp.facade.StatisticsFacade;
 import fr.k2i.adbeback.webapp.facade.UserFacade;
@@ -27,6 +27,9 @@ public class HomeController {
     @Autowired
     private UserFacade userFacade;
 
+
+    @Autowired
+    private IMediaDao mediaDao;
 
 
 
@@ -64,6 +67,13 @@ public class HomeController {
         if (user instanceof BrandUser) {
             BrandUser brandUser = (BrandUser) user;
             model.put("logo", brandUser.getBrand().getLogo());
+        }else if (user instanceof MediaUser) {
+            MediaUser mediaUser = (MediaUser) user;
+            Media media = mediaDao.findByMediaUser(mediaUser);
+            model.put("logo", media.getLogo());
+        }else if (user instanceof AgencyUser) {
+            AgencyUser agencyUser = (AgencyUser) user;
+            model.put("logo", agencyUser.getAgency().getLogo());
         }
         return "logo";
     }

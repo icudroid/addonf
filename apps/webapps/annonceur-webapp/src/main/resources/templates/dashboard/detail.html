@@ -51,90 +51,91 @@
         </div>
         <div class="widget-body">
 
-            <form role=form>
+            <form role="form" method="POST" th:object="${search}">
                 <div class="form-group">
                     <label for="startDate">Début</label>
-                    <input type="date" class="form-control" id="startDate">
+                    <input type="date" class="form-control" id="startDate" th:field="*{start}"/>
                 </div>
                 <div class="form-group">
                     <label for="endDate">Fin</label>
-                    <input type="date" class="form-control" id="endDate">
+                    <input type="date" class="form-control" id="endDate" th:field="*{end}"/>
                 </div>
 
 
                 <div class="form-group">
                     <label for="services">Service</label>
-                    <select class="form-control" id="services">
-
+                    <select class="form-control" id="services" name="serviceId" th:field="*{serviceId}">
+                        <option value="">Tous les services</option>
+                        <option th:each="rule : ${rules}" th:value="${rule.id}" th:text="#{${rule.label+ ((!rule.activated)?' (Supprimer)':'')}}">Rule type</option>
                     </select>
                 </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="" />
-                        Par vue global (validé ou non)
-                    </label>
+                <div class="form-group">
+                    <label for="adViewed">Publicité vue</label>
+                    <select class="form-control" id="adViewed" name="adViewedType" th:field="*{adViewedType}">
+                        <option th:each="adViewed : ${adsViewed}" th:value="${adViewed}" th:text="#{${'viewed.by.'+adViewed}}">Vue et validé</option>
+                    </select>
                 </div>
 
 
+                <div class="form-group">
+                    <label for="age">Par Age</label>
+                    <select class="form-control" id="age" name="ageGroups" multiple="true" th:field="*{ageGroups}">
+                        <option th:each="ageGroup : ${ageGroups}" th:value="${ageGroup}" th:text="#{${'age.'+ageGroup}}">18-35 ans</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="sex">Civilité</label>
+                    <select class="form-control" id="sex" name="sexes"  multiple="true" th:field="*{sexes}">
+                        <option th:each="sex : ${sexes}" th:value="${sex}" th:text="#{${'sex.'+sex}}">Mr</option>
+                    </select>
+                </div>
+
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <button class="btn btn-default" type="submit">Rechercher</button>
             </form>
 
         </div>
     </div>
 
 
-
-
     <div class="widget">
         <div class="widget-head">
-            <h4 class="heading">Nombres globaux</h4>
+            <h4 class="heading">Résultats :</h4>
         </div>
         <div class="widget-body">
-            Nombre de visualisation globale : <span th:text="${global}"></span><br/>
-            Nombre de validation : <span th:text="${validated}"></span>
+            <div th:if="${result==null}">
+                Pas de statistiques pour la recherche
+            </div>
+            <div th:if="${result!=null}">
+                <table class="table">
+                    <tr>
+                        <th>Jour</th>
+                        <th>Civilité</th>
+                        <th>Age</th>
+                        <th>Ville</th>
+                        <th>question</th>
+                        <th>Nb</th>
+                    </tr>
+                    <tr th:each="stat : ${result}">
+                        <td th:text="${stat.day}"></td>
+                        <td th:text="${stat.sex}"></td>
+                        <td th:text="${stat.ageGroup}"></td>
+                        <td th:text="${stat.city}"></td>
+                        <td th:text="${stat.service.question}"></td>
+                        <td th:text="${stat.nb}"></td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
     </div>
 
-    <div class="widget">
-        <div class="widget-head">
-            <h4 class="heading">Statistique par Civilité</h4>
-        </div>
-        <div class="widget-body">
-            <div id="statSexId" class="flotchart-holder"></div>
-        </div>
-    </div>
-
-
-    <div class="widget">
-        <div class="widget-head">
-            <h4 class="heading">Statistique par Age</h4>
-        </div>
-        <div class="widget-body">
-            <div id="statAgeGroupId" class="flotchart-holder"></div>
-        </div>
-    </div>
-
-
-
-    <div class="widget">
-        <div class="widget-head">
-            <h4 class="heading">Statistique par Civilité et Age</h4>
-        </div>
-        <div class="widget-body">
-            <div id="statAgeGroupSexId" class="flotchart-holder"></div>
-        </div>
-    </div>
-
-
-
-    <div class="widget">
-        <div class="widget-head">
-            <h4 class="heading">Statistique par Ville</h4>
-        </div>
-        <div class="widget-body">
-            <div id="statCityId" class="flotchart-holder"></div>
-        </div>
-    </div>
 
 </div>
 

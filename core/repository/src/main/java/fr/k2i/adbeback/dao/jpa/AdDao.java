@@ -66,12 +66,27 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         }
 
 
-        Query query = getEntityManager().createQuery("select ad from Ad ad inner join ad.rules as adRule with adRule.class = CountryRule where ad.startDate <= :date and ad.endDate >= :date and adRule.country.id = :countryId")
+        QAd ad = QAd.ad;
+        QAdRule adRule = QAdRule.adRule;
+        QCountryRule countryRule = adRule.as(QCountryRule.class);
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(ad).join(ad.rules,adRule).on(adRule.instanceOf(countryRule.getType()))
+                .where(
+                        ad.startDate.loe(date.toDate())
+                                .and(ad.endDate.goe(date.toDate()))
+                                .and(countryRule.country.id.eq(countryId))
+                );
+
+
+
+
+        /*Query query = getEntityManager().createQuery("select ad from Ad ad inner join ad.rules as adRule with adRule.class = CountryRule where ad.startDate <= :date and ad.endDate >= :date and adRule.country.id = :countryId")
                 .setParameter("countryId", countryId)
-                .setParameter("date", date.toDate());
+                .setParameter("date", date.toDate());*/
 
 
-        return matchRules(query.getResultList(),player);
+        return matchRules(query.list(ad),player);
     }
 
 
@@ -89,12 +104,26 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
         LocalDate date = new LocalDate();
 
-        Query query = getEntityManager().createQuery("select ad from Ad ad inner join ad.rules as adRule with adRule.class = CountryRule where ad.startDate <= :date and ad.endDate >= :date and adRule.country.id = :countryId and ad.providedBy.id= :idPartner")
+        QAd ad = QAd.ad;
+        QAdRule adRule = QAdRule.adRule;
+        QCountryRule countryRule = adRule.as(QCountryRule.class);
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(ad).join(ad.rules,adRule).on(adRule.instanceOf(countryRule.getType()))
+                .where(
+                        ad.startDate.loe(date.toDate())
+                        .and(ad.endDate.goe(date.toDate()))
+                        .and(countryRule.country.id.eq(player.getAddress().getCity().getCountry().getId()))
+                        .and(ad.providedBy.id.eq(media.getId()))
+                );
+
+
+/*        Query query = getEntityManager().createQuery("select ad from Ad ad inner join ad.rules as adRule with adRule.class = CountryRule where ad.startDate <= :date and ad.endDate >= :date and adRule.country.id = :countryId and ad.providedBy.id= :idPartner")
                 .setParameter("countryId",player.getAddress().getCity().getCountry().getId())
                 .setParameter("date", date.toDate())
-                .setParameter("idPartner", media.getId());
+                .setParameter("idPartner", media.getId());*/
 
-        return matchRules(query.getResultList(),player);
+        return matchRules(query.list(ad),player);
     }
 
 
@@ -136,7 +165,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
             List<AdService> rules = ad.getRules(AdService.class);
             if(!rules.isEmpty()){
                 for (AdService rule : rules) {
-                     if(now.after(rule.getStartDate()) && now.before(rule.getEndDate())){
+                     if(rule.getActivated() && now.after(rule.getStartDate()) && now.before(rule.getEndDate())){
                          res.add(ad);
                          break;
                      }
