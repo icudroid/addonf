@@ -211,6 +211,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         http.anonymous()
                 .authenticationFilter(anonymousAuthFilter());
 
+//autorisé les iframes
+/*        http
+                .headers()
+                .frameOptions().disable();*/
     }
 
 

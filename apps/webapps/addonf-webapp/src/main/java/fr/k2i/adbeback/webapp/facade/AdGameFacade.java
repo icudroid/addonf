@@ -11,7 +11,6 @@ import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.*;
 import fr.k2i.adbeback.core.business.user.BidCategoryMedia;
 import fr.k2i.adbeback.core.business.user.Media;
-import fr.k2i.adbeback.core.business.user.MediaType;
 import fr.k2i.adbeback.dao.*;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
@@ -20,9 +19,11 @@ import fr.k2i.adbeback.webapp.bean.StatusGame;
 import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import fr.k2i.adbeback.webapp.bean.configure.information.*;
 import fr.k2i.adbeback.webapp.bean.configure.url.Url;
-import lombok.Data;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -64,11 +65,7 @@ public class AdGameFacade {
 
     public static final String AD_CHOISES = "adChoises";
 
-    public static final String CALL_BACK_URL = "callBack";
-    public static final String CALL_SYS_URL = "callSys";
-
-    public static final double AVERAGE_AP_PRICE = 0.25;
-
+    public static final String CONFIGURE = "configurePayment";
 
     @Autowired
     private IAdDao adDao;
@@ -187,8 +184,7 @@ public class AdGameFacade {
         AbstractAdGame generateAdGame = adGameManager.generate(winBidAds,configure.getIdPartner(),configure.getIdTransaction(),player.getId(),gooseLevel);
 
         //5 : set urlCall in session
-        session.setAttribute(CALL_BACK_URL,configure.getCallBackUrl());
-        session.setAttribute(CALL_SYS_URL,configure.getCallSysUrl());
+        session.setAttribute(CONFIGURE,configure);
 
         List<String> adsVideo = new ArrayList<String>();
         Map<Integer, List<Long>> correctResponse = new HashMap<Integer,  List<Long>>();
@@ -540,20 +536,17 @@ public class AdGameFacade {
                 res.setStatus(StatusGame.Playing);
             } else {
                 fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;
+                PaymentConfigure configure = (PaymentConfigure) session.getAttribute(CONFIGURE);
+                res.setWhereToGo(configure.getCallBackUrl());
+                res.setIdTransaction(configure.getIdTransaction());
                 if(gooseCase instanceof EndLevelGooseCase){
                     res.setStatus(StatusGame.WinLimitTime);
-                    Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
-                    res.setWhereToGo(callBack.getOk());
                     statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
-                    Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
-                    sendCallBack(callSys.getOk());
+                    sendCallBack(configure.getCallSysUrl(), "ok", configure.getIdTransaction());
                 }else{
                     res.setStatus(StatusGame.Lost);
                     statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
-                    Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
-                    res.setWhereToGo(callBack.getKo());
-                    Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
-                    sendCallBack(callSys.getOk());
+                    sendCallBack(configure.getCallSysUrl(), "ko", configure.getIdTransaction());
                 }
                 LimiteTimeAdGameBean gameResult = computeResultGame(request);
                 session.setAttribute(GAME_RESULT, gameResult);
@@ -572,9 +565,16 @@ public class AdGameFacade {
 
     }
 
-    private void sendCallBack(String url) throws IOException {
-        HttpGet httpget = new HttpGet(url);
-        HttpClients.createDefault().execute(httpget);
+    private void sendCallBack(String url, String status,String idTransaction) throws IOException {
+        HttpPost httppost = new HttpPost(url);
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("idTransaction", idTransaction));
+        nameValuePairs.add(new BasicNameValuePair("status", status));
+        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+
+        HttpClients.createDefault().execute(httppost);
     }
 
     @Transactional
@@ -774,29 +774,28 @@ public class AdGameFacade {
 
             Integer maxErr = (Integer) session.getAttribute(MAX_ERRORS);
 
+            PaymentConfigure configure = (PaymentConfigure) session.getAttribute(CONFIGURE);
+
             if (nbErrs > maxErr) {
                 res.setStatus(StatusGame.Lost);
-                Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
-                res.setWhereToGo(callBack.getKo());
-                Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
-                sendCallBack(callSys.getKo());
+                res.setWhereToGo(configure.getCallBackUrl());
+                res.setIdTransaction(configure.getIdTransaction());
+                sendCallBack(configure.getCallSysUrl(), "ko",configure.getIdTransaction());
                 adGameManager.saveResponses((Long) session
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
             } else if (index +1 < correctResponse.size()) {
                 res.setStatus(StatusGame.Playing);
             } else if(score >0){
-                Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
-                res.setWhereToGo(callBack.getOk());
-                Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
-                sendCallBack(callSys.getOk());
+                res.setWhereToGo(configure.getCallBackUrl());
+                sendCallBack(configure.getCallSysUrl(), "ok",configure.getIdTransaction());
+                res.setIdTransaction(configure.getIdTransaction());
                 res.setStatus(StatusGame.WinLimitTime);
                 adGameManager.saveResponses((Long) session
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Win);
             }else{
-                Url callBack = (Url) request.getSession().getAttribute(CALL_BACK_URL);
-                res.setWhereToGo(callBack.getKo());
-                Url callSys = (Url) request.getSession().getAttribute(CALL_SYS_URL);
-                sendCallBack(callSys.getKo());
+                res.setWhereToGo(configure.getCallBackUrl());
+                sendCallBack(configure.getCallSysUrl(), "ko",configure.getIdTransaction());
+                res.setIdTransaction(configure.getIdTransaction());
                 res.setStatus(StatusGame.Lost);
                 adGameManager.saveResponses((Long) session
                         .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);

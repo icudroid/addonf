@@ -12,5 +12,6 @@ public class ResponseAdGameBean implements Serializable{
 	private Boolean correct;
 	private StatusGame status;
     private String whereToGo;
+    private String idTransaction;
     private Integer userToken;
 }

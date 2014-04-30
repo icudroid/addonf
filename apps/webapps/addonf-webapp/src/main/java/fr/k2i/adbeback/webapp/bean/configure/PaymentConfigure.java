@@ -20,8 +20,8 @@ public class PaymentConfigure{
     private String idPartner;
     private String idTransaction;
     private Information informations;
-    private Url callSysUrl;
-    private Url callBackUrl;
+    private String callSysUrl;
+    private String callBackUrl;
     private Boolean selfAd;//utilise ses propres pub
     private MediaType mediaType;
 }
