@@ -48,7 +48,8 @@ public interface IMetaDataController {
         String REGISTRATION_ADV_USER_CONFIRM =        "/confirmAdvUser/{crypt}/{code}";
 
 
-
+        String SHOW_PASSPHRASE =                        "/media/passphrase";
+        String SHOW_PASSPHRASE_GENERATE_NEW =           "/media/passhrase/generate";
     }
 
     interface View{
@@ -84,5 +85,6 @@ public interface IMetaDataController {
         String REGISTRATION_KO =                        "enroll/common/ko";
 
 
+        String SHOW_PASSPHRASE =                        "/media/passphrase";
     }
 }

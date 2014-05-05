@@ -27,16 +27,19 @@
 
 
             <li th:class="${activeFirstMenu == 'passphrase'}?'active':''" sec:authorize="hasRole('ROLE_MEDIA')">
-                <a th:href="@{/}" th:utext="#{menu.manage.passphrase}"></a>
+                <a th:href="@{/media/passphrase}" th:utext="#{menu.manage.passphrase}">clé de cryptage</a>
             </li>
             <li th:class="${activeFirstMenu == 'ext_id'}?'active':''" sec:authorize="hasRole('ROLE_MEDIA')">
-                <a th:href="@{/}" th:utext="#{menu.manage.extId}"></a>
+                <a th:href="@{/media/extId}" th:utext="#{menu.manage.extId}">identifiant WS</a>
             </li>
 
-            <li th:class="${activeFirstMenu == 'Mes services'}?'active':''" sec:authorize="hasRole('ROLE_MEDIA')">
-                <a th:href="@{/}" th:utext="#{menu.manage.media.services}"></a>
+            <li th:class="${activeFirstMenu == 'MyServices'}?'active':''" sec:authorize="hasRole('ROLE_MEDIA')">
+                <a th:href="@{/media/ws}" th:utext="#{menu.manage.media.services}"></a>
             </li>
 
+            <li th:class="${activeFirstMenu == ''}?'active':''">
+                <a th:href="@{/}" th:utext="#{menu.manage.account}"></a>
+            </li>
 
 
 

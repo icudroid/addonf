@@ -72,8 +72,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/confirmAdvUser/**").permitAll()
 
 
-                //permission Agency all
+                // ads + agency
                 .antMatchers("/dashboard/realTime/*").hasAnyRole("AGENCY_ADMIN","AGENCY_USER","ANNONCEUR")
+
+                //permission Agency all
+
 
                 //permission Agency admin
 

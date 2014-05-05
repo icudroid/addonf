@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged">
+
+<head>
+    <title>Pass Phrase</title>
+
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'passphrase'},activeSecondMenu=${''})"></div>
+</div>
+
+<div layout:fragment="content" class="col-app">
+
+    <form th:action="@{/media/passhrase/generate}" class="form-signin" role="form">
+        <h2 class="form-signin-heading" th:text="#{addonf.passphrase.heading}">Votre passe phrase</h2>
+        <div class="form-group" >
+            <label for="passphrase" th:text="#{addonf.passphrase}">passe phrase</label>
+            <p id="passphrase" class="form-control-static" th:text="${passphrase}">qsdcezvfncvfbvnghngh</p>
+        </div>
+        <button type="submit" class="btn btn-lg btn-primary btn-block" th:text="#{addonf.passphrase.btn}">Generate new passphrase</button>
+    </form>
+
+</div>
+
+
+</body>
+</html>
+
+
+
+
+
