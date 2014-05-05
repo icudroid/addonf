@@ -24,4 +24,5 @@ public class PaymentConfigure{
     private String callBackUrl;
     private Boolean selfAd;//utilise ses propres pub
     private MediaType mediaType;
+    private Boolean showSplashScreen;
 }

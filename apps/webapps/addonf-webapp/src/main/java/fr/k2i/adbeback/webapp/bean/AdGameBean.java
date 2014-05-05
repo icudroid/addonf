@@ -16,4 +16,5 @@ public class AdGameBean implements Serializable{
     private Integer userToken;
     private boolean multiple;
     private String logoMedia;
+    private boolean showSplashScreen;
 }

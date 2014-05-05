@@ -48,42 +48,46 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
+
+
+                //permission all non logged
                 .antMatchers("/").permitAll()
                 .antMatchers("/index.html").permitAll()
                 .antMatchers("/home.html").permitAll()
                 .antMatchers("/resources/**").permitAll()
-
                 .antMatchers("/signup.html").permitAll()
                 .antMatchers("/confirmEnroll/**").permitAll()
                 .antMatchers("/getTowns/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/getForgottenPwd").permitAll()
                 .antMatchers("/pwdinit/**").permitAll()
-
-
-
                 .antMatchers("/logout-success").permitAll()
                 .antMatchers("/static/**").permitAll()
-
                 .antMatchers("/enroll.html").permitAll()
                 .antMatchers("/agencyEnroll.html").permitAll()
-
                 .antMatchers("/uploadAttachement/*").permitAll()
-
                 .antMatchers("/confirmAgencyAdmin/**").permitAll()
                 .antMatchers("/confirmAgencyUser/**").permitAll()
-
-
                 .antMatchers("/confirmMediaUser/**").permitAll()
                 .antMatchers("/confirmAdvUser/**").permitAll()
 
+
+                //permission Agency all
                 .antMatchers("/dashboard/realTime/*").hasAnyRole("AGENCY_ADMIN","AGENCY_USER","ANNONCEUR")
 
+                //permission Agency admin
+
+
+                //permission Agency user
+
+
+                //permission Media
+
+
+                //permission Adv
+
+
                 .anyRequest().authenticated();
-
-/*                .antMatchers("/custom-logout").hasRole("ANNONCEUR")
-                .antMatchers("*//**").hasRole("ANNONCEUR");*/
-
 
 
         http.formLogin()

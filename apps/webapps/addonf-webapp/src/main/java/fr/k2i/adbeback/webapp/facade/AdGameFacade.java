@@ -237,6 +237,9 @@ public class AdGameFacade {
 
         res.setLogoMedia(media.getLogo());
 
+        boolean showSplashScreen =  (configure.getShowSplashScreen()!=null)?configure.getShowSplashScreen():false;
+        res.setShowSplashScreen(showSplashScreen);
+
         session.setAttribute(LIMITED_TIME, limitedTime);
         session.setAttribute(PLAYER_GOOSE_GAME, pgg);
         session.setAttribute(USER_ANSWER, answers);

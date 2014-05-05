@@ -26,7 +26,6 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         //$scope.left = 0;
         $scope.responded = false;
         $scope.correct = "noreponse";
-        $scope.gameStarted = false;
         $scope.timeoutStatic;
 
 
@@ -48,13 +47,13 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
 
         //initialize
-
         $scope.adGame = addonf.game;
         $scope.max =  $scope.adGame.minScore;
         $scope.current = $scope.adGame.game[$scope.index];
         $scope.gooseCases =  $scope.adGame.gooseGames;
         $scope.token =  $scope.adGame.userToken;
         $scope.left = (($scope.score*100)/$scope.adGame.minScore);
+
 
         switch ($scope.current.type.$name){
             case 'AUDIO':
@@ -70,6 +69,8 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                 $scope.adImage = image($scope.index);
                 break;
         }
+
+        $scope.gameStarted =  !$scope.adGame.showSplashScreen;
 
         angular.element(document).bind("fullscreenchange", function(e) {
             console.log("fullscreenchange");
@@ -92,6 +93,11 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                 })
             }
         });
+
+
+        if($scope.gameStarted){
+            $scope.startGame();
+        }
 
         $scope.startGame = function(){
             $(document).fullScreen(true);
