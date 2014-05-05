@@ -17,6 +17,8 @@
     <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'passphrase'},activeSecondMenu=${''})"></div>
 </div>
 
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile">Votre passe phrase</h4>
+
 <div layout:fragment="content" class="col-app">
 
     <form th:action="@{/media/passhrase/generate}" class="form-signin" role="form">

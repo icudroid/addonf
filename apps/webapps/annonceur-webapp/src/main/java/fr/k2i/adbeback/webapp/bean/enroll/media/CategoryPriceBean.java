@@ -21,4 +21,15 @@ public class CategoryPriceBean implements Serializable{
     private MediaType mediaType;
     private Double bid;
     private Long mediaId;
+    private Long id;
+
+    public void empty() {
+        uid = null;
+        price=null;
+        category=null;
+        mediaId=null;
+        bid=null;
+        mediaId=null;
+        id=null;
+    }
 }

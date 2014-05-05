@@ -17,6 +17,8 @@
     <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'ext_id'},activeSecondMenu=${''})"></div>
 </div>
 
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile">Votre identifiant pour la connexion au WS</h4>
+
 <div layout:fragment="content" class="col-app">
     <h2 class="form-signin-heading" th:text="#{addonf.extId.heading}">Votre identifiant WS</h2>
     <div class="form-group" >
