@@ -50,6 +50,7 @@ public interface IMetaDataController {
 
         String SHOW_PASSPHRASE =                        "/media/passphrase";
         String SHOW_PASSPHRASE_GENERATE_NEW =           "/media/passhrase/generate";
+        String SHOW_EXT_ID =                            "/media/extId";
     }
 
     interface View{
@@ -86,5 +87,6 @@ public interface IMetaDataController {
 
 
         String SHOW_PASSPHRASE =                        "/media/passphrase";
+        String EXT_ID =                                 "/media/extId";
     }
 }

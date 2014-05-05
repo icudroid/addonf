@@ -32,4 +32,12 @@ public class SettingMediaController {
         return IMetaDataController.View.SHOW_PASSPHRASE;
     }
 
+
+    @RequestMapping(value = IMetaDataController.Path.SHOW_EXT_ID,method = RequestMethod.GET)
+    public String showExtId(ModelMap model) throws Exception {
+        model.put("extId",mediaFacadeService.getExtId());
+        return IMetaDataController.View.EXT_ID;
+    }
+
+
 }

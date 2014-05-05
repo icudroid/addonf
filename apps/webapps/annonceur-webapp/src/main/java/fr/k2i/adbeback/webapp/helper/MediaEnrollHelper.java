@@ -22,6 +22,7 @@ import fr.k2i.adbeback.webapp.bean.enroll.media.PriceInformationCommand;
 import fr.k2i.adbeback.webapp.controller.UploadController;
 import fr.k2i.adbeback.webapp.facade.FileUtils;
 import fr.k2i.adbeback.webapp.state.enroll.MediaEnrollFlowState;
+import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -221,6 +222,15 @@ public class MediaEnrollHelper {
 
         media.setMinPriceByMediaType(minPriceByMediaType);
 
+
+        String extId = null;
+        do{
+            extId = "M" + RandomStringUtils.randomNumeric(8);
+        }while (mediaDao.findByExtId(extId)!=null);
+
+        media.setExtId(extId);
+
+        media.setPassPhrase(RandomStringUtils.randomAlphanumeric(8).toUpperCase());
 
         media = mediaDao.save(media);
 

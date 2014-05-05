@@ -64,4 +64,19 @@ public class MediaFacadeService {
 
     }
 
+    @Transactional
+    public String getExtId() throws Exception {
+        String extId =null;
+
+        User currentUser = userFacade.getCurrentUser();
+        if (currentUser instanceof MediaUser) {
+            MediaUser user = (MediaUser) currentUser;
+            Media media = mediaDao.findByMediaUser(user);
+            extId  = media.getExtId();
+        }else{
+            throw new Exception("bad user");
+        }
+
+        return extId;
+    }
 }

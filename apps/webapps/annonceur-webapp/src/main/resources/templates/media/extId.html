@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged">
+
+<head>
+    <title>Identifiant externe WS</title>
+
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'ext_id'},activeSecondMenu=${''})"></div>
+</div>
+
+<div layout:fragment="content" class="col-app">
+    <h2 class="form-signin-heading" th:text="#{addonf.extId.heading}">Votre identifiant WS</h2>
+    <div class="form-group" >
+        <label for="extId" th:text="#{addonf.extId}">Id</label>
+        <p id="extId" class="form-control-static" th:text="${extId}">vrzefcerzvr</p>
+    </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+
+
