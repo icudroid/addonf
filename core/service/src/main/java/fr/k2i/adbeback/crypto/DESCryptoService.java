@@ -1,13 +1,8 @@
 package fr.k2i.adbeback.crypto;
 
-import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.otp.OTPUserSecurityConfirm;
-import fr.k2i.adbeback.core.business.otp.OneTimePassword;
-import fr.k2i.adbeback.core.business.otp.OtpAction;
-import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.IOTPSecurityDao;
-import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import fr.k2i.adbeback.logger.LogHelper;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -49,10 +44,6 @@ public class DESCryptoService {
 
     @Autowired
     private IOTPSecurityDao otpSecurityDao;
-
-
-    @Autowired
-    private IOneTimePasswordDao oneTimePasswordDao;
 
 
     private static byte[] salt = {
@@ -133,7 +124,7 @@ public class DESCryptoService {
     }
 
 
-    @Transactional
+/*    @Transactional
     public String generateOtp(String toEncodeStr, Player user, OtpAction action){
         OneTimePassword otp =  oneTimePasswordDao.findBy(user,action);
 
@@ -148,5 +139,5 @@ public class DESCryptoService {
         }
 
         return encrypt(toEncodeStr)+"/"+otp.getKey();
-    }
+    }*/
 }

@@ -14,6 +14,7 @@ import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.*;
+import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.service.BrandManager;
 import fr.k2i.adbeback.webapp.bean.*;
 import fr.k2i.adbeback.webapp.bean.AdService;
@@ -22,6 +23,7 @@ import fr.k2i.adbeback.webapp.bean.adservice.BrandRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenMultiRuleBean;
 import fr.k2i.adbeback.webapp.bean.adservice.OpenRuleBean;
 import fr.k2i.adbeback.webapp.bean.enroll.media.CategoryPriceBean;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -50,6 +52,8 @@ import java.util.*;
  */
 @Component
 public class UserFacade {
+
+    private Logger logger = LogHelper.getLogger(this.getClass());
 
 /*
     @Autowired
@@ -795,6 +799,48 @@ public class UserFacade {
         }
 
 
+    }
+
+    public void actionForChangeId(String email,Locale locale) throws Exception {
+
+        User user = getCurrentUser();
+
+        if(user != null){
+            Map<String, Object> modelEmail = new HashMap<String, Object>();
+            String endUrl = desCryptoService.generateOtpConfirm(user.getEmail()+'|'+email, user, 48);
+            modelEmail.put("name",user.getUsername());
+            modelEmail.put("url",urlBase+"account/confirmChId/"+endUrl);
+            Email chIdNew = Email.builder()
+                    .subject("Confirmation de changement d'identifiant")
+                    .model(modelEmail)
+                    .content("email/changeIdentifiant")
+                    .recipients(email)
+                    .noAttachements()
+                    .build();
+
+
+            Email chIdOld = Email.builder()
+                    .subject("Confirmation de changement d'identifiant")
+                    .model(modelEmail)
+                    .content("email/changeIdentifiantOldEmail")
+                    .recipients(user.getEmail())
+                    .noAttachements()
+                    .build();
+
+
+            try{
+                mailEngine.sendMessage(chIdNew,locale);
+                mailEngine.sendMessage(chIdOld,locale);
+            }catch (Exception e){
+                 logger.debug("Erreur durant l'envoie de l'email",e);
+            }
+        }
+    }
+
+    @Transactional
+    public void changeId(String oldEmail, String newEmail) {
+        User user = webUserDao.getUserByEmail(oldEmail);
+        user.setEmail(newEmail);
     }
 
 

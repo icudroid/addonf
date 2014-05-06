@@ -1,23 +1,19 @@
 package fr.k2i.adbeback.service.impl;
 
-import java.util.List;
-
-import fr.k2i.adbeback.core.business.otp.OneTimePassword;
-import fr.k2i.adbeback.core.business.otp.OtpAction;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
+import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.dao.ICountryDao;
-import fr.k2i.adbeback.dao.IOneTimePasswordDao;
 import fr.k2i.adbeback.dao.IPlayerDao;
+import fr.k2i.adbeback.service.PlayerManager;
+import fr.k2i.adbeback.service.UserExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.service.PlayerManager;
-import fr.k2i.adbeback.service.UserExistsException;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 /**
@@ -33,9 +29,6 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
     private ICountryDao countryDao;
     @Autowired(required = false)
     private SaltSource saltSource;
-    @Autowired
-    private IOneTimePasswordDao oneTimePasswordDao;
-
 
 	@Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -209,7 +202,7 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
 
 
 
-    @Transactional
+/*    @Transactional
     @Override
     public void changePasswd(String username, String newPwd) {
         Player user = playerDao.findByEmailorUserName(username);
@@ -222,6 +215,6 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
         } else {
             user.setPassword(passwordEncoder.encodePassword(newPwd, saltSource.getSalt(new WebUser(user))));
         }
-    }
+    }*/
 
 }
