@@ -37,8 +37,8 @@
                 <a th:href="@{/media/myservices}" th:utext="#{menu.manage.media.services}"></a>
             </li>
 
-            <li th:class="${activeFirstMenu == ''}?'active':''">
-                <a th:href="@{/}" th:utext="#{menu.manage.account}"></a>
+            <li th:class="${activeFirstMenu == 'account'}?'active':''">
+                <a th:href="@{/account}" th:utext="#{menu.manage.account}"></a>
             </li>
 
 

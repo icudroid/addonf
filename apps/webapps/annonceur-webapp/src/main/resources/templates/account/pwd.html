@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged">
+
+<head>
+    <title>AdbeBack</title>
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'account'},activeSecondMenu=${''})"></div>
+</div>
+
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:substituteBy="account/fragment/header"></h4>
+
+<div layout:fragment="content" class="col-app">
+
+    <form method="POST" th:object="${pwd}" role="form">
+        <h2 class="form-signin-heading" th:text="#{addonf.changePwd.heading}">Changement de votre mot de passe</h2>
+
+        <div th:class="${#fields.hasErrors('oldPassword')}? 'form-group has-error' :'form-group'" >
+            <label for="old-password">Mot de passe actuel</label>
+            <input class="form-control" type="password" id="old-password" value="" placeholder="Mot de passe actuel" th:field="*{oldPassword}"/>
+            <span  class="help-block" th:if="${#fields.hasErrors('oldPassword')}" th:errors="*{oldPassword}">Incorrect</span>
+        </div>
+
+        <div th:class="${#fields.hasErrors('newPassword')}? 'form-group has-error':'form-group'">
+            <label for="password" class=" control-label" th:text="#{enroll.company.password}">Mot de passe</label>
+            <input type="password" class="form-control" id="password" placeholder="Password" th:placeholder="#{enroll.company.password.placeholder}" th:field="*{newPassword}" />
+            <span class="help-block" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">Error</span>
+        </div>
+        <div th:class="${#fields.hasErrors('newConfirmPassword')}? 'form-group has-error':'form-group'">
+            <label for="passwordConfirm" class=" control-label" th:text="#{enroll.company.passwordConfirm}">Confirmer le mot de passe</label>
+            <input type="password" class="form-control" id="passwordConfirm" placeholder="Password" th:placeholder="#{enroll.company.password.placeholder}" th:field="*{newConfirmPassword}" />
+            <span class="help-block" th:if="${#fields.hasErrors('newConfirmPassword')}" th:errors="*{newConfirmPassword}">Error</span>
+        </div>
+
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="btn btn-lg btn-primary pull-right" th:text="#{addonf.changePwd.btn}">Changer le mot de passe</button>
+    </form>
+
+</div>
+
+
+</body>
+</html>
+
+
+
+
+

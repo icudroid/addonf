@@ -18,103 +18,98 @@
 
 <div layout:fragment="content" class="col-app">
 
-    <div class="container margin-bottom-40">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
-                <form id="formService" th:action="@{/media/myservices}" method="post" class="form-inline" role="form" th:object="${categoryPriceBean}" autocomplete="off">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <div class="widget">
+        <div class="widget-head">
+            <h4 th:utext="#{enroll.media.target.title}">Text explicatif : A rédiger</h4>
+         </div>
+        <div class="widget-body">
+            <form id="formService" th:action="@{/media/myservices}" method="post" class="form-inline" role="form" th:object="${categoryPriceBean}" autocomplete="off">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                    <h2 th:utext="#{enroll.media.target.title}">Text explicatif : A rédiger</h2>
-                    <p th:utext="#{enroll.media.target.explain}">Text explicatif : A rédiger</p>
+                <p th:utext="#{enroll.media.target.explain}">Text explicatif : A rédiger</p>
 
-                    <br/>
+                <br/>
 
-                    <div th:if="${#maps.isEmpty(prices.prices) == false}">
-                        <h4 th:utext="#{enroll.media.list.services}">Prix / categorie / Media</h4>
-                        <fieldset>
-                            <table class="table">
-                                <tr>
-                                    <th th:text="#{enroll.media.table.service.mediaType}">Type de media</th>
-                                    <th th:text="#{enroll.media.table.service.category}">Category</th>
-                                    <th th:text="#{enroll.media.table.service.price}">Prix</th>
-                                    <th th:text="#{enroll.media.table.service.actions}">Action</th>
+                <div th:if="${#maps.isEmpty(prices.prices) == false}">
+                    <h4 th:utext="#{enroll.media.list.services}">Prix / categorie / Media</h4>
+                    <fieldset>
+                        <table class="table">
+                            <tr>
+                                <th th:text="#{enroll.media.table.service.mediaType}">Type de media</th>
+                                <th th:text="#{enroll.media.table.service.category}">Category</th>
+                                <th th:text="#{enroll.media.table.service.price}">Prix</th>
+                                <th th:text="#{enroll.media.table.service.actions}">Action</th>
+                            </tr>
+
+                            <no th:each="media : ${prices.prices}">
+                                <tr th:each="categoryPrice,pCategoryPrice : ${prices.prices[__${media.key}__]}">
+                                    <td th:if="${pCategoryPrice.index == 0}" th:rowspan="${pCategoryPrice.size}" th:text="#{${'media.type.'+categoryPrice.mediaType}}">Radio</td>
+                                    <td th:text="#{${'category.'+categoryPrice.category}}">category</td>
+                                    <td th:text="${categoryPrice.price}">0.30</td>
+                                    <td>
+                                        <a th:id="${'deleteBtn_'+pCategoryPrice.index}" class="btn btn-default" th:text="#{btn.delete}" th:href="@{/media/myservices(removeService='removeService',uid=${categoryPrice.uid})}">Supprimer</a>
+                                    </td>
                                 </tr>
-
-                                <no th:each="media : ${prices.prices}">
-                                    <tr th:each="categoryPrice,pCategoryPrice : ${prices.prices[__${media.key}__]}">
-                                        <td th:if="${pCategoryPrice.index == 0}" th:rowspan="${pCategoryPrice.size}" th:text="#{${'media.type.'+categoryPrice.mediaType}}">Radio</td>
-                                        <td th:text="#{${'category.'+categoryPrice.category}}">category</td>
-                                        <td th:text="${categoryPrice.price}">0.30</td>
-                                        <td>
-                                            <a th:id="${'deleteBtn_'+pCategoryPrice.index}" class="btn btn-default" th:text="#{btn.delete}" th:href="@{/media/myservices(removeService='removeService',uid=${categoryPrice.uid})}">Supprimer</a>
-                                        </td>
-                                    </tr>
-                                </no>
+                            </no>
 
 
-                            </table>
-                        </fieldset>
+                        </table>
+                    </fieldset>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div th:class="${#fields.hasErrors('mediaType')}? 'form-group has-error':'form-group'">
+                            <label for="media" class=" control-label" th:text="#{enroll.media.mediaType}">Type de média</label>
+                            <select id="media" class="form-control" th:field="*{mediaType}">
+                                <option value="">Sélectionner</option>
+                                <option th:each="media : ${medias}"
+                                        th:value="${media}"
+                                        th:text="#{${'media.type.'+media}}">Radio</option>
+                            </select>
+                            <span class="help-block" th:if="${#fields.hasErrors('mediaType')}" th:errors="*{mediaType}">Error</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div th:class="${#fields.hasErrors('category')}? 'form-group has-error':'form-group'">
+                            <label for="category" class=" control-label" th:text="#{enroll.media.category}">Categorie</label>
+                            <select id="category" class="form-control" th:field="*{category}">
+                                <option value="">Sélectionner</option>
+                                <option th:each="category : ${categories}"
+                                        th:value="${category.key}"
+                                        th:text="#{${'category.'+category.key}}">High tech</option>
+                            </select>
+                            <span class="help-block" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Error</span>
+                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div th:class="${#fields.hasErrors('mediaType')}? 'form-group has-error':'form-group'">
-                                <label for="media" class=" control-label" th:text="#{enroll.media.mediaType}">Type de média</label>
-                                <select id="media" class="form-control" th:field="*{mediaType}">
-                                    <option value="">Sélectionner</option>
-                                    <option th:each="media : ${medias}"
-                                            th:value="${media}"
-                                            th:text="#{${'media.type.'+media}}">Radio</option>
-                                </select>
-                                <span class="help-block" th:if="${#fields.hasErrors('mediaType')}" th:errors="*{mediaType}">Error</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div th:class="${#fields.hasErrors('category')}? 'form-group has-error':'form-group'">
-                                <label for="category" class=" control-label" th:text="#{enroll.media.category}">Categorie</label>
-                                <select id="category" class="form-control" th:field="*{category}">
-                                    <option value="">Sélectionner</option>
-                                    <option th:each="category : ${categories}"
-                                            th:value="${category.key}"
-                                            th:text="#{${'category.'+category.key}}">High tech</option>
-                                </select>
-                                <span class="help-block" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Error</span>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-                    <div class="row">
-
-                        <div class="col-md-9">
-                            <div th:class="${#fields.hasErrors('price')}? 'form-group has-error':'form-group'">
+                    <div class="col-md-3">
+                        <div th:class="${#fields.hasErrors('price')}? 'form-group has-error':'form-group'">
+                            <div class="input-group">
                                 <label for="name" class=" control-label" th:text="#{enroll.media.price}">prix</label>
-                                <input type="text" class="form-control" id="name" th:field="*{price}" />&euro;
+                                <input type="text" class="form-control" id="name" th:field="*{price}" style="width:50px;"/><span class="input-group-addon">&euro;</span>
                                 <span class="help-block" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Error</span>
                             </div>
                         </div>
-
-                        <div class="col-md-3">
-                            <input type="submit" id="addTarget" name="addService" th:value="#{enroll.media.add.service.button}" class="btn btn-link"/>
-                        </div>
-
-                    </div>
-                    <br/>
-
-                    <div class="row">
-                        <div class="col-md-12 form-actions right">
-                            <input type="submit" id="submit" name="saveService" value="Sauvegarder les modifications" class="btn default"/>
-                        </div>
                     </div>
 
-                </form>
-            </div>
+                    <div class="col-md-3">
+                        <input type="submit" id="addTarget" name="addService" th:value="#{enroll.media.add.service.button}" class="btn btn-link"/>
+                    </div>
+
+                </div>
+                <br/>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="submit" id="submit" name="saveService" value="Sauvegarder les modifications" class="btn btn-primary pull-right"/>
+                    </div>
+                </div>
+
+            </form>
+
         </div>
     </div>
-
-
 
 
 </div>
