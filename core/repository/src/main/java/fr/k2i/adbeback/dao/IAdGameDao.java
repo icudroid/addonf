@@ -2,7 +2,11 @@ package fr.k2i.adbeback.dao;
 
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
+import fr.k2i.adbeback.core.business.user.Media;
+import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * User Data Access Object (IGenericDao) interface.
@@ -13,5 +17,8 @@ public interface IAdGameDao extends IGenericDao<AbstractAdGame, Long> {
 
     @Transactional
     boolean RuleIsUsed(AdService adRule);
+
+    @Transactional
+    Double sumTransactionForDay(Media media, Date date);
 }
 

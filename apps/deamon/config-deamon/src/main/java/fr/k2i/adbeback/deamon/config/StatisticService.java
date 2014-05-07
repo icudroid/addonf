@@ -2,6 +2,7 @@ package fr.k2i.adbeback.deamon.config;
 
 import fr.k2i.adbeback.core.business.statistic.Statistics;
 import fr.k2i.adbeback.dao.IStatisticsDao;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -36,14 +37,17 @@ public class StatisticService {
      */
 
     @Transactional
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 5 0 * * *")
     public void doAction() throws URISyntaxException, IOException {
-        Date now = new Date();
+
+        LocalDate now = new LocalDate();
+        LocalDate yesterday = now.minusDays(1);
+
         List<Statistics> stats = new ArrayList<Statistics>();
-        stats.addAll(statisticsDao.doStatisticsViewedForDay(now));
-        stats.addAll(statisticsDao.doStatisticsValidatedForDay(now));
-        stats.addAll(statisticsDao.doStatisticsNoResponseForDay(now));
-        stats.addAll(statisticsDao.doStatisticsNotValidatedForDay(now));
+        stats.addAll(statisticsDao.doStatisticsViewedForDay(yesterday.toDate()));
+        stats.addAll(statisticsDao.doStatisticsValidatedForDay(yesterday.toDate()));
+        stats.addAll(statisticsDao.doStatisticsNoResponseForDay(yesterday.toDate()));
+        stats.addAll(statisticsDao.doStatisticsNotValidatedForDay(yesterday.toDate()));
 
         for (Statistics stat : stats) {
             statisticsDao.save(stat);

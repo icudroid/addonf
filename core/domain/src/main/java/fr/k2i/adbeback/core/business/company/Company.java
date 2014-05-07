@@ -2,6 +2,7 @@ package fr.k2i.adbeback.core.business.company;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.core.business.company.billing.MonthBilling;
 import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.user.Attachement;
 import fr.k2i.adbeback.core.business.user.LegalStatus;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,6 +61,9 @@ public abstract class Company extends BaseObject implements Serializable {
     protected Map<String,Attachement> attachements;
 
     protected String logo;
+
+    @OneToMany(targetEntity = MonthBilling.class,cascade = CascadeType.ALL,mappedBy = "company")
+    private Set<MonthBilling> monthBillings;
 
     @Override
     public boolean equals(Object o) {

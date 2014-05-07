@@ -1,11 +1,9 @@
 package fr.k2i.adbeback.webapp.validator;
 
-import edu.vt.middleware.password.*;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.IWebUserDao;
 import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.webapp.bean.ChangeIdentifiantBean;
-import fr.k2i.adbeback.webapp.bean.ChangePwdBean;
 import fr.k2i.adbeback.webapp.facade.UserFacade;
 import fr.k2i.adbeback.webapp.util.ValidatorHelper;
 import org.slf4j.Logger;
@@ -18,8 +16,6 @@ import org.springframework.validation.Validator;
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.groups.Default;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -39,7 +35,7 @@ public class ChangeIdentifiantBeanValidator implements Validator {
     @Autowired
     private UserFacade userFacade;
 
-    @Resource("webUserDao")
+    @Resource(name="webUserDao")
     private IWebUserDao webUserDao;
 
     @Autowired
