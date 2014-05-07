@@ -181,7 +181,8 @@ public class AdGameFacade {
         bidSystemNeedMoreAdForErr(winBidAds,adsSortedByBid, maxErr);
 
         //4 : generate game
-        AbstractAdGame generateAdGame = adGameManager.generate(winBidAds,configure.getIdPartner(),configure.getIdTransaction(),player.getId(),gooseLevel);
+        AdGameTransaction generateAdGame = (AdGameTransaction) adGameManager.generate(winBidAds,configure.getIdPartner(),configure.getIdTransaction(),player.getId(),gooseLevel);
+        generateAdGame.setAmount(configure.getAmount());
 
         //5 : set urlCall in session
         session.setAttribute(CONFIGURE,configure);

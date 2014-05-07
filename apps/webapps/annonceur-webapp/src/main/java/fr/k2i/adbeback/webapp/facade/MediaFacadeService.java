@@ -1,9 +1,16 @@
 package fr.k2i.adbeback.webapp.facade;
 
+import au.com.bytecode.opencsv.CSVWriter;
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+import au.com.bytecode.opencsv.bean.CsvToBean;
+import fr.k2i.adbeback.core.business.game.AdGameTransaction;
+import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.user.*;
+import fr.k2i.adbeback.dao.IAdGameDao;
 import fr.k2i.adbeback.dao.ICategoryDao;
 import fr.k2i.adbeback.dao.ICategoryPriceDao;
 import fr.k2i.adbeback.dao.IMediaDao;
+import fr.k2i.adbeback.dao.jpa.AdGameDao;
 import fr.k2i.adbeback.webapp.bean.enroll.media.CategoryPriceBean;
 import fr.k2i.adbeback.webapp.bean.enroll.media.PriceInformationCommand;
 import org.apache.commons.lang.RandomStringUtils;
@@ -13,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -37,9 +45,11 @@ public class MediaFacadeService {
     @Autowired
     private ICategoryDao categoryDao;
 
-
     @Autowired
     private ICategoryPriceDao categoryPriceDao;
+
+    @Autowired
+    private IAdGameDao adGameDao;
 
     @Transactional
     public String getMediaPassPhrase() throws Exception {
@@ -201,4 +211,51 @@ public class MediaFacadeService {
 
 
     }
+
+
+
+    @Transactional
+    public void exportAllTodayTransactionsOK(HttpServletResponse response) throws Exception {
+        User currentUser = userFacade.getCurrentUser();
+        if (currentUser instanceof MediaUser) {
+            MediaUser mediaUser = (MediaUser) currentUser;
+            Media media = mediaDao.findByMediaUser(mediaUser);
+            List<AdGameTransaction> trs = adGameDao.findTransactionsForDay(media, new Date(), StatusGame.Win);
+
+            CSVWriter writer = new CSVWriter(response.getWriter(), '\t');
+            String[] columns = new String[] {"generated","idTransaction", "amount"};
+            writer.writeNext(columns);
+
+
+            for (AdGameTransaction tr : trs) {
+                String[] line = new String[]{tr.getGenerated().toString(),tr.getIdTransaction(),tr.getAmount().toString()};
+                writer.writeNext(line);
+            }
+        }else{
+            throw new Exception("bad user");
+        }
+    }
+
+    @Transactional
+    public void exportAllTodayTransactionsFailed(HttpServletResponse response) throws Exception {
+        User currentUser = userFacade.getCurrentUser();
+        if (currentUser instanceof MediaUser) {
+            MediaUser mediaUser = (MediaUser) currentUser;
+            Media media = mediaDao.findByMediaUser(mediaUser);
+            List<AdGameTransaction> trs = adGameDao.findTransactionsForDay(media, new Date(), StatusGame.Lost, StatusGame.Playing);
+
+            CSVWriter writer = new CSVWriter(response.getWriter(), '\t');
+            String[] columns = new String[] {"generated","idTransaction", "amount"};
+            writer.writeNext(columns);
+
+
+            for (AdGameTransaction tr : trs) {
+                String[] line = new String[]{tr.getGenerated().toString(),tr.getIdTransaction(),tr.getAmount().toString()};
+                writer.writeNext(line);
+            }
+        }else{
+            throw new Exception("bad user");
+        }
+    }
+
 }

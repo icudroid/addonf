@@ -43,6 +43,9 @@ public class AdResponsePlayer extends BaseObject implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date played;
 
+
+    private AdChoise adChoise;
+
     @ManyToOne
     @JoinColumn(name = "AD_SERVICE_ID")
     private AdService adService;

@@ -120,4 +120,10 @@ public class SettingMediaController {
 
 
 
+    @RequestMapping(value = IMetaDataController.Path.STATS_REAL_TIME,method = RequestMethod.GET)
+    public String statsRealTime(ModelMap model,HttpServletRequest request) throws Exception {
+
+        return IMetaDataController.View.STATS_REAL_TIME;
+    }
+
 }

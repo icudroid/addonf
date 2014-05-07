@@ -19,6 +19,8 @@ public class AdGameTransaction extends AbstractAdGame {
     //private String idPartner;
     private String idTransaction;
 
+    private Double amount;
+
     @ManyToOne
     @JoinColumn(name = "partner_id")
     private Media media;
@@ -27,5 +29,6 @@ public class AdGameTransaction extends AbstractAdGame {
     public String toString() {
         return "AdGameTransaction";
     }
+
 }
 

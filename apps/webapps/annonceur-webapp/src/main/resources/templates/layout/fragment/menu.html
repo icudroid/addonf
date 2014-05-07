@@ -41,6 +41,14 @@
                 <a th:href="@{/account}" th:utext="#{menu.manage.account}"></a>
             </li>
 
+            <li th:class="${activeFirstMenu == 'statsRealTime'}?'active':''" sec:authorize="hasRole('ROLE_MEDIA')">
+                <a th:href="@{/media/statsRealTime}">Utilisation du service</a>
+            </li>
+
+
+            <li th:class="${activeFirstMenu == 'billing'}?'active':''" >
+                <a th:href="@{/billing}">Facturation</a>
+            </li>
 
 
         </ul>

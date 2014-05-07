@@ -6,6 +6,7 @@ import fr.k2i.adbeback.core.business.ad.QBrand;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
 import fr.k2i.adbeback.core.business.ad.rule.QBrandRule;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -73,6 +74,21 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qBrand).where(qBrand.siret.eq(siret));
         return query.uniqueResult(qBrand);
+    }
+
+    @Override
+    public List<Brand> findAllHasActiveCampaign() {
+        QBrand qBrand = QBrand.brand;
+        QAd ad = QAd.ad;
+
+        LocalDate now = new LocalDate();
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+            query.from(ad).join(ad.brand,qBrand).where(
+                    ad.startDate.loe(now.toDate()),
+                    ad.endDate.goe(now.toDate())
+            );
+        return query.list(qBrand);
     }
 }
 

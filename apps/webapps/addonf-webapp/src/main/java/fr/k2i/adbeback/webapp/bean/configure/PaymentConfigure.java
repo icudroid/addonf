@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.bean.configure;
 
+import fr.k2i.adbeback.core.business.user.Category;
 import fr.k2i.adbeback.core.business.user.MediaType;
 import fr.k2i.adbeback.webapp.bean.configure.information.Information;
 import fr.k2i.adbeback.webapp.bean.configure.url.Url;
@@ -24,5 +25,6 @@ public class PaymentConfigure{
     private String callBackUrl;
     private Boolean selfAd;//utilise ses propres pub
     private MediaType mediaType;
+    private String category;
     private Boolean showSplashScreen;
 }

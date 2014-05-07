@@ -25,5 +25,9 @@ public interface IBrandDao extends IGenericDao<Brand, Long> {
 
     @Transactional
     Brand findBySiret(String siret);
+
+    @Transactional
+    List<Brand> findAllHasActiveCampaign();
+
 }
 
