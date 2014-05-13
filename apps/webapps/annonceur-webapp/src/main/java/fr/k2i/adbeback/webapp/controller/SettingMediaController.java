@@ -1,6 +1,5 @@
 package fr.k2i.adbeback.webapp.controller;
 
-import fr.k2i.adbeback.core.business.game.AdGameTransaction;
 import fr.k2i.adbeback.core.business.user.Category;
 import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.core.business.user.MediaType;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -134,8 +134,8 @@ public class SettingMediaController {
     @RequestMapping(value = IMetaDataController.Path.STATS_REAL_TIME,method = RequestMethod.GET)
     public String statsRealTime(ModelMap model,HttpServletRequest request,Pageable pageable) throws Exception {
         Media media = mediaFacadeService.getMediaByUserConnected();
-        Long oks = adGameDao.countTodayTransactionsOk(media);
-        Long kos = adGameDao.countTodayTransactionsFailed(media);
+        Long oks = adGameDao.countTransactionsOkByDate(media, new Date());
+        Long kos = adGameDao.countTransactionsFailedByDate(media, new Date());
 
         Page<AdGameTransactionDto> trs = mediaFacadeService.getTodayTransactions(pageable);
         model.put("nbOK",oks);

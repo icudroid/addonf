@@ -25,7 +25,7 @@ public interface IAdGameDao extends IGenericDao<AbstractAdGame, Long> {
     boolean RuleIsUsed(AdService adRule);
 
     @Transactional
-    Double sumTransactionForDay(Media media, Date date);
+    Double sumTransactionForDate(Media media, Date date);
 
     @Transactional
     Double sumWinBidsForDate(Brand brand, Date date);
@@ -36,9 +36,9 @@ public interface IAdGameDao extends IGenericDao<AbstractAdGame, Long> {
 
     Page<AdGameTransaction> findTransactionsForDayPageable(Media media, Date date, Pageable pageable);
 
-    Long countTodayTransactionsOk(Media media);
+    Long countTransactionsOkByDate(Media media, Date date);
 
-    Long countTodayTransactionsFailed(Media media);
+    Long countTransactionsFailedByDate(Media media, Date date);
 
 }
 

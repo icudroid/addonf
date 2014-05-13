@@ -122,8 +122,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
     }
 
     @Override
-    public Long countTodayTransactionsOk(Media media) {
-        Date date = new Date();
+    public Long countTransactionsOkByDate(Media media, Date date) {
         LocalDate start = new LocalDate(date);
         LocalDate end = new LocalDate(date).plusDays(1);
 
@@ -141,8 +140,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
     }
 
     @Override
-    public Long countTodayTransactionsFailed(Media media) {
-        Date date = new Date();
+    public Long countTransactionsFailedByDate(Media media, Date date) {
         LocalDate start = new LocalDate(date);
         LocalDate end = new LocalDate(date).plusDays(1);
 
@@ -160,7 +158,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
     }
 
     @Override
-    public Double sumTransactionForDay(Media media, Date date) {
+    public Double sumTransactionForDate(Media media, Date date) {
         LocalDate start = new LocalDate(date);
         LocalDate end = new LocalDate(date).plusDays(1);
 

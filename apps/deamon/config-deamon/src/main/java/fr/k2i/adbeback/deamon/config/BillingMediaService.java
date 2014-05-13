@@ -2,12 +2,10 @@ package fr.k2i.adbeback.deamon.config;
 
 import fr.k2i.adbeback.core.business.company.billing.DayBilling;
 import fr.k2i.adbeback.core.business.company.billing.MonthBilling;
-import fr.k2i.adbeback.core.business.statistic.Statistics;
 import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.dao.IAdGameDao;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.IMonthBillingDao;
-import fr.k2i.adbeback.dao.IStatisticsDao;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,7 +54,7 @@ public class BillingMediaService {
         List<Media> medias = mediaDao.getAll();
 
         for (Media media : medias) {
-            Double sum = adGameDao.sumTransactionForDay(media,yesterday.toDate());
+            Double sum = adGameDao.sumTransactionForDate(media, yesterday.toDate());
             MonthBilling monthBilling = monthBillingDao.findByMonth(media,yesterday.getMonthOfYear(),yesterday.getYear());
             if(monthBilling == null){
                 monthBilling = monthBillingDao.save(new MonthBilling(yesterday.getMonthOfYear(),yesterday.getYear(),media));
