@@ -95,9 +95,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
         });
 
 
-        if($scope.gameStarted){
-            $scope.startGame();
-        }
+
 
         $scope.startGame = function(){
             $(document).fullScreen(true);
@@ -114,6 +112,11 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
                     break;
             }
             $scope.gameStarted = true;
+        }
+
+
+        if($scope.gameStarted){
+            $scope.startGame();
         }
 
         $scope.doMargin = function(index){
