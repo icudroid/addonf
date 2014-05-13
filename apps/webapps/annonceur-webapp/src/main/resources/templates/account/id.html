@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged">
+
+<head>
+    <title>AdbeBack</title>
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'account'},activeSecondMenu=${''})"></div>
+</div>
+
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile" th:substituteBy="account/fragment/header"></h4>
+
+<div layout:fragment="content" class="col-app">
+
+    <form method="POST" th:object="${id}" role="form">
+        <h2 class="form-signin-heading" th:text="#{addonf.changeId.heading}">Changement de votre identifiant</h2>
+
+        <div th:class="${#fields.hasErrors('email')}? 'form-group has-error' :'form-group'" >
+            <label for="email">Nouveau identifiant de connexion</label>
+            <input class="form-control" type="email" id="email" value="" placeholder="votre nouvel email" th:field="*{email}"/>
+            <span  class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect</span>
+        </div>
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="btn btn-lg btn-primary pull-right" th:text="#{addonf.changeId.btn}">Changer votre identifiant</button>
+    </form>
+
+</div>
+
+
+</body>
+</html>
+
+
+
+
+

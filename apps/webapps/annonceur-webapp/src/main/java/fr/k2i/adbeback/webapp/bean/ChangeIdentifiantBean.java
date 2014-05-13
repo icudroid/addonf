@@ -2,6 +2,7 @@ package fr.k2i.adbeback.webapp.bean;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  */
 @Data
 public class ChangeIdentifiantBean implements Serializable{
+    @NotEmpty
     @Email
     private String email;
 }
