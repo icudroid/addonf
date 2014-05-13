@@ -326,7 +326,14 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         QAd qAd = QAd.ad;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.eq(brand));
-        return new PageImpl<Ad>(query.list(qAd),pageable,query.count());
+
+        long count = query.count();
+
+        query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        return new PageImpl<Ad>(query.list(qAd),pageable,count);
     }
 
 
@@ -335,7 +342,14 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         QAd qAd = QAd.ad;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.in(brands));
-        return new PageImpl<Ad>(query.list(qAd),pageable,query.count());
+
+        long count = query.count();
+
+        query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        return new PageImpl<Ad>(query.list(qAd),pageable,count);
     }
 
     @Override

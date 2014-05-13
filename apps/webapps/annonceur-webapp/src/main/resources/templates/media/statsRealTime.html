@@ -7,6 +7,7 @@
 
 <head>
     <title>Utilisation de notre service en temps réel</title>
+    <script th:src="@{/static/js/controller/mediaStatsRealTime.js}"></script>
 
 </head>
 
@@ -19,8 +20,34 @@
 
 <h4 class="innerAll bg-white margin-none" layout:fragment="formTile">Vos transactions du jours</h4>
 
-<div layout:fragment="content" class="col-app">
+<div layout:fragment="content" class="col-app"  ng-controller="PaginationDemoCtrl">
     <h2 class="form-signin-heading">Vos transactions</h2>
+    <p th:inline="text">Nombre de Transaction OK : [[${nbOK}]]</p>
+    <p th:inline="text">Nombre de Transaction KO : [[${nbKO}]]</p>
+
+
+    <a th:href="@{/media/downloadStatsRealTime}" target="_blank">Export CSV</a><br />
+
+    <table class="table">
+        <tr>
+            <th>Horaire</th>
+            <th>Id. transaction</th>
+            <th>Statut</th>
+            <th>Montant</th>
+        </tr>
+        <tr th:each="tr : ${transactions}">
+            <td th:text="${#dates.format(tr.generated, 'dd/MMM/yyyy HH:mm:ss')}"></td>
+            <td th:text="${tr.idTransaction}">100115</td>
+            <td th:text="${tr.statusGame.label}">OK</td>
+            <td th:text="${tr.amount}">0.1</td>
+        </tr>
+
+    </table>
+
+    <ul class="pager">
+        <li th:if="${transactions.hasPreviousPage()}"><a th:href="@{/media/statsRealTime(page=transactions.getNumber()-1)}">&laquo;</a></li>
+        <li th:if="${transactions.hasNextPage()}"><a th:href="@{/media/statsRealTime(page=transactions.getNumber()+1)}">&raquo;</a></li>
+    </ul>
 
 
 

@@ -11,12 +11,16 @@ import fr.k2i.adbeback.dao.ICategoryDao;
 import fr.k2i.adbeback.dao.ICategoryPriceDao;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.jpa.AdGameDao;
+import fr.k2i.adbeback.webapp.bean.AdGameTransactionDto;
 import fr.k2i.adbeback.webapp.bean.enroll.media.CategoryPriceBean;
 import fr.k2i.adbeback.webapp.bean.enroll.media.PriceInformationCommand;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -258,4 +262,56 @@ public class MediaFacadeService {
         }
     }
 
+    @Transactional
+    public Page<AdGameTransactionDto> getTodayTransactions(Pageable pageable) throws Exception {
+        User currentUser = userFacade.getCurrentUser();
+        if (currentUser instanceof MediaUser) {
+            MediaUser mediaUser = (MediaUser) currentUser;
+            Media media = mediaDao.findByMediaUser(mediaUser);
+            Page<AdGameTransaction> trs = adGameDao.findTransactionsForDayPageable(media, new Date(), pageable);
+            List<AdGameTransactionDto> res = new ArrayList<AdGameTransactionDto>();
+
+            for (AdGameTransaction tr : trs) {
+                res.add(new AdGameTransactionDto(tr));
+            }
+
+            return new PageImpl<AdGameTransactionDto>(res,pageable,trs.getTotalElements());
+
+        }else{
+            throw new Exception("bad user");
+        }
+    }
+
+    public Media getMediaByUserConnected() throws Exception {
+        User currentUser = userFacade.getCurrentUser();
+        if (currentUser instanceof MediaUser) {
+            MediaUser mediaUser = (MediaUser) currentUser;
+            return mediaDao.findByMediaUser(mediaUser);
+        }
+        return null;
+    }
+
+    public void exportAllTodayTransactions(HttpServletResponse response) throws Exception {
+        User currentUser = userFacade.getCurrentUser();
+        if (currentUser instanceof MediaUser) {
+            MediaUser mediaUser = (MediaUser) currentUser;
+            Media media = mediaDao.findByMediaUser(mediaUser);
+            List<AdGameTransaction> trs = adGameDao.findTransactionsForDay(media, new Date(), StatusGame.Win);
+
+            response.setContentType("application/force-download");
+            response.setHeader("Content-Disposition","inline; filename=\"transactions.csv\"");
+
+            CSVWriter writer = new CSVWriter(response.getWriter(), '\t');
+            String[] columns = new String[] {"generated","idTransaction","status","amount"};
+            writer.writeNext(columns);
+
+
+            for (AdGameTransaction tr : trs) {
+                String[] line = new String[]{tr.getGenerated().toString(),tr.getIdTransaction(),tr.getStatusGame().getLabel(),tr.getAmount().toString()};
+                writer.writeNext(line);
+            }
+        }else{
+            throw new Exception("bad user");
+        }
+    }
 }

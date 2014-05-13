@@ -1,26 +1,22 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.PathBuilder;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.*;
-import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.core.business.player.Player_;
 import fr.k2i.adbeback.core.business.user.Media;
-import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
-import sun.util.resources.LocaleData;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -96,8 +92,71 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
                 transaction.generated.between(start.toDate(),end.toDate()),
                 transaction.statusGame.in(statusGame)
         );
-
+        query.orderBy(transaction.generated.asc());
         return query.list(transaction);
+    }
+
+    @Override
+    public Page<AdGameTransaction> findTransactionsForDayPageable(Media media, Date date, Pageable pageable) {
+        LocalDate start = new LocalDate(date);
+        LocalDate end = new LocalDate(date).plusDays(1);
+
+        QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+
+        query.from(transaction).where(
+                transaction.media.eq(media),
+                transaction.generated.between(start.toDate(),end.toDate())
+        );
+
+        long count = query.count();
+
+        query.orderBy(transaction.generated.asc());
+
+        query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        return new PageImpl<AdGameTransaction>(query.list(transaction),pageable,count);
+    }
+
+    @Override
+    public Long countTodayTransactionsOk(Media media) {
+        Date date = new Date();
+        LocalDate start = new LocalDate(date);
+        LocalDate end = new LocalDate(date).plusDays(1);
+
+        QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+
+        query.from(transaction).where(
+                transaction.media.eq(media),
+                transaction.generated.between(start.toDate(),end.toDate()),
+                transaction.statusGame.eq(StatusGame.Win)
+        );
+
+        return query.count();
+    }
+
+    @Override
+    public Long countTodayTransactionsFailed(Media media) {
+        Date date = new Date();
+        LocalDate start = new LocalDate(date);
+        LocalDate end = new LocalDate(date).plusDays(1);
+
+        QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+
+        query.from(transaction).where(
+                transaction.media.eq(media),
+                transaction.generated.between(start.toDate(),end.toDate()),
+                transaction.statusGame.in(StatusGame.Playing,StatusGame.Lost)
+        );
+
+        return query.count();
     }
 
     @Override

@@ -53,6 +53,7 @@ public interface IMetaDataController {
         String SHOW_EXT_ID =                            "/media/extId";
         String SHOW_MY_SERVICES =                       "/media/myservices";
         String STATS_REAL_TIME =                        "/media/statsRealTime";
+        String DOWNLOAD_STATS_REAL_TIME =               "/media/downloadStatsRealTime";
     }
 
     interface View{

@@ -525,11 +525,13 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.where(predicate);
 
+        long count = query.count();
+
         query
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize());
 
-        return new PageImpl<Statistics>(query.list(qStatistics),pageRequest,query.count());
+        return new PageImpl<Statistics>(query.list(qStatistics),pageRequest,count);
     }
 
 
@@ -600,7 +602,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
     @Override
     public StatisticsAge nbGlobalGroupByGroupAge(Ad ad, Date start, Date end, AgeGroup ageGroup) {
         QStatistics qStatistics = QStatistics.statistics;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery query = new JPAQuery(getEntityManager());query.count()
 
         BooleanExpression predicat = globalDefaultPredicat(ad, start, end, qStatistics);
 
