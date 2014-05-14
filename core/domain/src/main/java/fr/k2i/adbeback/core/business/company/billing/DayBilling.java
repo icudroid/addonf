@@ -22,7 +22,11 @@ public class DayBilling extends BaseObject {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DayBilling_Gen")
     protected Long id;
 
+    private Integer dayOfMonth;
+
     private Double amount;
+
+    private Long nbTransaction;
 
     @ManyToOne
     private MonthBilling monthBilling;

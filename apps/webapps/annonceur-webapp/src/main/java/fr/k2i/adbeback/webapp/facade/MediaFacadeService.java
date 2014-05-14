@@ -25,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.*;
 
 /**
@@ -291,7 +293,7 @@ public class MediaFacadeService {
         return null;
     }
 
-    public void exportAllTodayTransactions(HttpServletResponse response) throws Exception {
+    public byte[] exportAllTodayTransactions(HttpServletResponse response) throws Exception {
         User currentUser = userFacade.getCurrentUser();
         if (currentUser instanceof MediaUser) {
             MediaUser mediaUser = (MediaUser) currentUser;
@@ -301,7 +303,10 @@ public class MediaFacadeService {
             response.setContentType("application/force-download");
             response.setHeader("Content-Disposition","inline; filename=\"transactions.csv\"");
 
-            CSVWriter writer = new CSVWriter(response.getWriter(), '\t');
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+
+            CSVWriter writer = new CSVWriter(new OutputStreamWriter(out), '\t');
             String[] columns = new String[] {"generated","idTransaction","status","amount"};
             writer.writeNext(columns);
 
@@ -310,6 +315,7 @@ public class MediaFacadeService {
                 String[] line = new String[]{tr.getGenerated().toString(),tr.getIdTransaction(),tr.getStatusGame().getLabel(),tr.getAmount().toString()};
                 writer.writeNext(line);
             }
+            return out.toByteArray();
         }else{
             throw new Exception("bad user");
         }

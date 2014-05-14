@@ -11,11 +11,13 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -60,57 +62,53 @@ public class AdGameWebservice {
 
 
     @RequestMapping(value = "/logo/{filename}", method = RequestMethod.GET)
-    public void streamLogoAdNoExt(@PathVariable String filename,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ServletOutputStream outputStream = response.getOutputStream();
-
+    public @ResponseBody byte[] streamLogoAdNoExt(@PathVariable String filename,HttpServletRequest request, HttpServletResponse response) throws Exception {
         File file = new File(pathLogo+filename);
-
-        streamingFile(outputStream, file);
+        return streamingFile(file);
 
     }
 
     @RequestMapping(value = "/logo/{filename}.{ext}", method = RequestMethod.GET)
-    public void streamLogoAd(@PathVariable String filename,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ServletOutputStream outputStream = response.getOutputStream();
+    public @ResponseBody byte[] streamLogoAd(@PathVariable String filename,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {
         File file = new File(pathLogo+filename+"."+ext);
-        streamingFile(outputStream, file);
+        return streamingFile(file);
     }
 
 
 
     @RequestMapping(value = "/video/{index}", method = RequestMethod.GET)
-    public void streamVideoAd(@PathVariable int index,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public @ResponseBody byte[] streamVideoAd(@PathVariable int index,HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<String> videos = (List<String>) request.getSession().getAttribute(ADS_VIDEO);
-        ServletOutputStream outputStream = response.getOutputStream();
         File file = new File(pathAds+videos.get(index));
-        streamingFile(outputStream, file);
+        return  streamingFile(file);
     }
 
 
 
     @RequestMapping(value = "/video/{index}/{type}", method = RequestMethod.GET)
-    public void streamVideoAdByType(@PathVariable int index,@PathVariable String type,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public @ResponseBody byte[] streamVideoAdByType(@PathVariable int index,@PathVariable String type,HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<String> videos = (List<String>) request.getSession().getAttribute(ADS_VIDEO);
-        ServletOutputStream outputStream = response.getOutputStream();
         File file = new File(pathAds+videos.get(index)+"."+type);
-        streamingFile(outputStream, file);
+        return streamingFile(file);
     }
 
     /**
      *
-     * @param outputStream
      * @param file
      * @throws IOException
      */
-    private void streamingFile(ServletOutputStream outputStream, File file) throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(file);
+    private byte[] streamingFile(File file) throws IOException {
+        return  FileCopyUtils.copyToByteArray(file);
+/*        FileInputStream fileInputStream = new FileInputStream(file);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         int read =0;
         byte []b = new byte[1024];
         while((read = fileInputStream.read(b, 0, 1024))>0){
-            outputStream.write(b, 0, read);
+            out.write(b, 0, read);
             b = new byte[1024];
         }
         fileInputStream.close();
+        return out.toByteArray();*/
     }
 
     @RequestMapping(value = "/rest/play/{index}/{responseId}", method = RequestMethod.GET)

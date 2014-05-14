@@ -25,6 +25,9 @@ public class MonthBilling extends BaseObject{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MonthBilling_Gen")
     protected Long id;
 
+    @Enumerated(EnumType.STRING)
+    private BillStatus status;
+
     private Double sum;
 
     @Embedded
@@ -42,6 +45,7 @@ public class MonthBilling extends BaseObject{
         this.month = new Month(month,year);
         this.sum = 0D;
         this.company = company;
+        status = BillStatus.IN_PROGRESS;
     }
 
 }
