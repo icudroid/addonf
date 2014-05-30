@@ -9,6 +9,8 @@ import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.StaticAd;
 import fr.k2i.adbeback.core.business.ad.VideoAd;
 import fr.k2i.adbeback.core.business.ad.rule.*;
+import fr.k2i.adbeback.core.business.company.Company;
+import fr.k2i.adbeback.core.business.company.billing.MonthBilling;
 import fr.k2i.adbeback.core.business.otp.OTPUserSecurityConfirm;
 import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.core.business.user.*;
@@ -125,6 +127,8 @@ public class UserFacade {
     @Autowired
     private ICategoryDao categoryDao;
 
+    @Autowired
+    private ICompanyDao companyDao;
 
     @Transactional
     public User getCurrentUser() throws Exception{
@@ -841,6 +845,14 @@ public class UserFacade {
     public void changeId(String oldEmail, String newEmail) {
         User user = webUserDao.getUserByEmail(oldEmail);
         user.setEmail(newEmail);
+    }
+
+    public void getBillings() throws Exception {
+        User user = getCurrentUser();
+        Company company = companyDao.findByUser(user);
+        Set<MonthBilling> monthBillings = company.getMonthBillings();
+
+
     }
 
 

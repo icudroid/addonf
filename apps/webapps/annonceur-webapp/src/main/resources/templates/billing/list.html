@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/logged">
+
+<head>
+    <title>AdbeBack</title>
+
+</head>
+
+
+<body>
+
+<div layout:fragment="menu">
+    <div th:substituteby="layout/fragment/menu(activeFirstMenu=${'billing'},activeSecondMenu=${''})"></div>
+</div>
+
+<h4 class="innerAll bg-white margin-none" layout:fragment="formTile">
+</h4>
+
+<div layout:fragment="content" class="col-app">
+
+</div>
+
+
+</body>
+</html>
+
+
+
+
+

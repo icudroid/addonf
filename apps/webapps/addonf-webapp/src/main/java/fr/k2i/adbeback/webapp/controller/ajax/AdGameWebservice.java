@@ -7,13 +7,16 @@ import fr.k2i.adbeback.webapp.bean.LimiteTimeAdGameBean;
 import fr.k2i.adbeback.webapp.bean.ResponseAdGameBean;
 import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
+import fr.k2i.adbeback.webapp.util.HttpStreaming;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,54 +65,39 @@ public class AdGameWebservice {
 
 
     @RequestMapping(value = "/logo/{filename}", method = RequestMethod.GET)
-    public @ResponseBody byte[] streamLogoAdNoExt(@PathVariable String filename,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public @ResponseBody
+    ResponseEntity<byte[]> streamLogoAdNoExt(@PathVariable String filename, HttpServletRequest request, HttpServletResponse response) throws Exception {
         File file = new File(pathLogo+filename);
-        return streamingFile(file);
-
+        return  HttpStreaming.streaming(request, file);
     }
 
     @RequestMapping(value = "/logo/{filename}.{ext}", method = RequestMethod.GET)
-    public @ResponseBody byte[] streamLogoAd(@PathVariable String filename,@PathVariable String ext,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public @ResponseBody
+    ResponseEntity<byte[]> streamLogoAd(@PathVariable String filename, @PathVariable String ext, HttpServletRequest request, HttpServletResponse response) throws Exception {
         File file = new File(pathLogo+filename+"."+ext);
-        return streamingFile(file);
+        return  HttpStreaming.streaming(request, file);
     }
 
 
 
     @RequestMapping(value = "/video/{index}", method = RequestMethod.GET)
-    public @ResponseBody byte[] streamVideoAd(@PathVariable int index,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public @ResponseBody
+    ResponseEntity<byte[]> streamVideoAd(@PathVariable int index, HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<String> videos = (List<String>) request.getSession().getAttribute(ADS_VIDEO);
         File file = new File(pathAds+videos.get(index));
-        return  streamingFile(file);
+        return  HttpStreaming.streaming(request, file);
     }
 
 
 
     @RequestMapping(value = "/video/{index}/{type}", method = RequestMethod.GET)
-    public @ResponseBody byte[] streamVideoAdByType(@PathVariable int index,@PathVariable String type,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public @ResponseBody
+    ResponseEntity<byte[]> streamVideoAdByType(@PathVariable int index, @PathVariable String type, HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<String> videos = (List<String>) request.getSession().getAttribute(ADS_VIDEO);
         File file = new File(pathAds+videos.get(index)+"."+type);
-        return streamingFile(file);
+        return HttpStreaming.streaming(request,file);
     }
 
-    /**
-     *
-     * @param file
-     * @throws IOException
-     */
-    private byte[] streamingFile(File file) throws IOException {
-        return  FileCopyUtils.copyToByteArray(file);
-/*        FileInputStream fileInputStream = new FileInputStream(file);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int read =0;
-        byte []b = new byte[1024];
-        while((read = fileInputStream.read(b, 0, 1024))>0){
-            out.write(b, 0, read);
-            b = new byte[1024];
-        }
-        fileInputStream.close();
-        return out.toByteArray();*/
-    }
 
     @RequestMapping(value = "/rest/play/{index}/{responseId}", method = RequestMethod.GET)
     public @ResponseBody
