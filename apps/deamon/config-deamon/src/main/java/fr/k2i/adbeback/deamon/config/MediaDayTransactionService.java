@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.deamon.config;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.MailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Attachement;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
@@ -48,7 +49,7 @@ public class MediaDayTransactionService {
     private IMediaDao mediaDao;
 
     @Autowired
-    private MailEngine mailEngine;
+    private IMailEngine mailEngine;
 
 
 
