@@ -65,7 +65,9 @@ public class HttpStreaming {
 
             headers.add(HttpHeaders.CONTENT_LENGTH, contentLength+"");
 
+            //bytes = new byte[(int) contentLength];
             out.write(bytes,(int)start,(int)contentLength);
+            return new ResponseEntity<byte[]>(out.toByteArray(), headers, HttpStatus.PARTIAL_CONTENT);
         }
 
 
