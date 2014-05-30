@@ -18,6 +18,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>fr.k2i.adbeback.addonf.templates</groupId>
+            <artifactId>templates</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>fr.k2i.adbeback.addonf.core</groupId>
             <artifactId>repository</artifactId>
             <version>${project.version}</version>
