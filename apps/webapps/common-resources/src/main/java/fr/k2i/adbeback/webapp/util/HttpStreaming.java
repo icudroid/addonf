@@ -24,11 +24,12 @@ public class HttpStreaming {
 
         headers.add(HttpHeaders.CONTENT_TYPE, MimetypesFileTypeMap.getDefaultFileTypeMap().getContentType(file));
 
+        bytes =  FileCopyUtils.copyToByteArray(file);
+
         String rang = request.getHeader(HttpHeaders.RANGE);
         if(rang==null){
             //send all file
-            bytes =  FileCopyUtils.copyToByteArray(file);
-            headers.add(HttpHeaders.CONTENT_LENGTH, bytes+"");
+            headers.add(HttpHeaders.CONTENT_LENGTH, bytes.length+"");
             return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.PARTIAL_CONTENT);
         }
 
@@ -60,7 +61,7 @@ public class HttpStreaming {
 
             BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
             ByteArrayOutputStream out = new ByteArrayOutputStream(8192);
-            FileCopyUtils.copy(in,out);
+            //FileCopyUtils.copy(in,out);
 
             headers.add(HttpHeaders.CONTENT_LENGTH, contentLength+"");
 
