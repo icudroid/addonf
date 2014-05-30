@@ -19,7 +19,7 @@ public class BillingController {
     private UserFacade userFacade;
 
     @RequestMapping(value = IMetaDataController.Path.BILLING,method = RequestMethod.GET)
-    public String showBillings(){
+    public String showBillings() throws Exception {
         userFacade.getBillings();
         return IMetaDataController.View.BILLING;
     }
