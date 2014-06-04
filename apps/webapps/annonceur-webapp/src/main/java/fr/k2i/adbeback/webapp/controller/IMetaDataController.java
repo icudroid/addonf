@@ -90,10 +90,10 @@ public interface IMetaDataController {
         String REGISTRATION_KO =                        "enroll/common/ko";
 
 
-        String SHOW_PASSPHRASE =                        "/media/passphrase";
-        String EXT_ID =                                 "/media/extId";
-        String MY_SERVICES =                            "/media/service";
-        String STATS_REAL_TIME =                        "/media/statsRealTime";
-        String BILLING =                                "/billing/list";
+        String SHOW_PASSPHRASE =                        "media/passphrase";
+        String EXT_ID =                                 "media/extId";
+        String MY_SERVICES =                            "media/service";
+        String STATS_REAL_TIME =                        "media/statsRealTime";
+        String BILLING =                                "billing/list";
     }
 }
