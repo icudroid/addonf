@@ -1,14 +1,11 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import fr.k2i.adbeback.core.business.user.User;
-import fr.k2i.adbeback.core.business.user.User_;
-import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
-import java.util.List;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and

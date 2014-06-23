@@ -1,17 +1,15 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.goosegame.*;
-import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class interacts with Spring's HibernateTemplate to save/delete and
@@ -34,14 +32,13 @@ public class GooseCaseDao extends GenericDaoJpa<GooseCase, Long> implements fr.k
     }
 
 	public GooseCase getByNumber(Integer number,GooseLevel level) throws Exception {
-        CriteriaBuilderHelper<GooseCase> helper = new CriteriaBuilderHelper(getEntityManager(),GooseCase.class);
+        JPAQuery query = new JPAQuery(getEntityManager());
 
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.get(GooseCase_.number), number),
-                helper.criteriaHelper.equal(helper.rootHelper.get(GooseCase_.level), level)
-        );
+        QGooseCase gooseCase = QGooseCase.gooseCase;
 
-        return helper.getSingleResult();
+        query.from(gooseCase).where(gooseCase.number.eq(number),gooseCase.level.eq(level));
+
+        return query.uniqueResult(gooseCase);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -57,30 +54,25 @@ public class GooseCaseDao extends GenericDaoJpa<GooseCase, Long> implements fr.k
             nums.add(start+i);
         }
 
-        CriteriaBuilderHelper<GooseCase> helper = new CriteriaBuilderHelper(getEntityManager(),GooseCase.class);
+        JPAQuery query = new JPAQuery(getEntityManager());
 
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.get(GooseCase_.level), level),
-                helper.rootHelper.get(GooseCase_.number).in(nums)
-        );
+        QGooseCase gooseCase = QGooseCase.gooseCase;
 
-        helper.criteriaHelper.asc(helper.rootHelper.get(GooseCase_.number));
+        query.from(gooseCase).where(gooseCase.level.eq(level),gooseCase.number.in(nums)).orderBy(gooseCase.number.asc());
 
-        return helper.getResultList();
+        return query.list(gooseCase);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<GooseCase> getCases(GooseLevel level) throws Exception {
 
-        CriteriaBuilderHelper<GooseCase> helper = new CriteriaBuilderHelper(getEntityManager(),GooseCase.class);
+        JPAQuery query = new JPAQuery(getEntityManager());
 
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.get(GooseCase_.level), level)
-        );
+        QGooseCase gooseCase = QGooseCase.gooseCase;
 
-        helper.criteriaHelper.asc(helper.rootHelper.get(GooseCase_.number));
+        query.from(gooseCase).where(gooseCase.level.eq(level)).orderBy(gooseCase.number.asc());
 
-        return helper.getResultList();
+        return query.list(gooseCase);
 
 	}
 

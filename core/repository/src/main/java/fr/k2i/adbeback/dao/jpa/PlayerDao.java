@@ -1,14 +1,10 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
-import fr.k2i.adbeback.core.business.goosegame.GooseCase_;
-import fr.k2i.adbeback.core.business.goosegame.GooseLevel_;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
-import fr.k2i.adbeback.core.business.goosegame.GooseToken_;
+import fr.k2i.adbeback.core.business.goosegame.QGooseToken;
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.core.business.player.Player_;
 import fr.k2i.adbeback.core.business.player.QPlayer;
-import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -42,9 +38,10 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
      */
     @SuppressWarnings("unchecked")
     public List<Player> getPlayer() {
-        CriteriaBuilderHelper<Player> helper = new CriteriaBuilderHelper(getEntityManager(),Player.class);
-        helper.criteriaHelper.asc(helper.criteriaHelper.upper(helper.rootHelper.get(Player_.username)));
-        return helper.getResultList();
+        JPAQuery query = new JPAQuery(getEntityManager());
+        QPlayer player = QPlayer.player;
+        query.from(player).orderBy(player.username.upper().asc());
+        return query.list(player);
     }
 
 
@@ -58,28 +55,27 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
 
 
 	public Player loadUserByEmail(String email) {
-        CriteriaBuilderHelper<Player> helper = new CriteriaBuilderHelper(getEntityManager(),Player.class);
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.get(Player_.email), email)
-        );
-        List users = helper.getResultList();
+        JPAQuery query = new JPAQuery(getEntityManager());
+        QPlayer player = QPlayer.player;
+        query.from(player).where(player.email.eq(email));
+
+        List<Player> users = query.list(player);
         if (users == null || users.isEmpty()) {
             return null;
         } else {
-            return (Player) users.get(0);
+            return users.get(0);
         }
 	}
 
     @Transactional
     @Override
     public GooseToken getPlayerGooseToken(Long idPlayer, Long idGooseLevel) {
-        CriteriaBuilderHelper<GooseToken> helper = new CriteriaBuilderHelper(getEntityManager(),GooseToken.class);
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.join(GooseToken_.player).get(Player_.id),idPlayer),
-                helper.criteriaHelper.equal(helper.rootHelper.join(GooseToken_.gooseCase).join(GooseCase_.level).get(GooseLevel_.id), idGooseLevel)
-        );
 
-        return helper.getSingleResult();
+        JPAQuery query = new JPAQuery(getEntityManager());
+        QGooseToken gooseToken = QGooseToken.gooseToken;
+        query.from(gooseToken).where(gooseToken.player.id.eq(idPlayer),gooseToken.gooseCase.level.id.eq(idGooseLevel));
+
+        return query.uniqueResult(gooseToken);
     }
 
     @Override

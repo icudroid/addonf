@@ -1,7 +1,7 @@
 package fr.k2i.adbeback.dao.jpa;
 
+import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.goosegame.*;
-import fr.k2i.adbeback.dao.utils.CriteriaBuilderHelper;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -41,18 +41,19 @@ public class GooseGameDao extends GenericDaoJpa<GooseGame, Long> implements fr.k
 
 	public GooseLevel getNextLevel(GooseLevel level) throws Exception {
 
-        CriteriaBuilderHelper<GooseLevel> helper = new CriteriaBuilderHelper(getEntityManager(),GooseLevel.class);
+        JPAQuery query = new JPAQuery(getEntityManager());
+        QGooseLevel gooseLevel = QGooseLevel.gooseLevel;
+
 
         Integer l= 0;
         if(level!=null){
             l = level.getLevel()+1;
         }
 
-        helper.criteriaHelper.and(
-                helper.criteriaHelper.equal(helper.rootHelper.get(GooseLevel_.level), l)
-        );
+        query.from(gooseLevel).where(gooseLevel.level.eq(l));
 
-        return helper.getSingleResult();
+
+        return query.uniqueResult(gooseLevel);
 	}
 
 
