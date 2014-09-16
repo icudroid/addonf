@@ -31,6 +31,9 @@ public interface IMetaData {
         String ATTACHMENTS_MEDIA =                      "media_attachment";
         String ATTACHMENTS =                            "company_attachment";
         String BID_CATEGORY_MEDIA =                     "bid_cat_media";
+        String WALLET =                                 "wallet";
+        String TRANSACTION =                            "transaction";
+        String ORDER =                                  "order";
     }
 
     interface ColumnMetadata {
@@ -222,6 +225,20 @@ public interface IMetaData {
             String STATUS                               = "status";
             String EXTENTION                            = "extention";
             String ID                                   = "attachement_id";
+        }
+
+        public interface Transaction {
+            String JOIN                                 = "transaction_id"  ;
+
+            public interface Discrimator {
+                String CREDIT                           = "credit";
+                String DEBIT                            = "debit" ;
+                String EMPREINT                         = "empreint";
+            }
+        }
+
+        public interface Order {
+            String MEDIA                                = "media_id";
         }
     }
 }

@@ -1,12 +1,10 @@
 package fr.k2i.adbeback.core.business.player;
 
-import fr.k2i.adbeback.core.business.BaseObject;
-import fr.k2i.adbeback.core.business.IMetaData;
-import fr.k2i.adbeback.core.business.LabelValue;
 import fr.k2i.adbeback.core.business.ad.ViewedAd;
 import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.GooseWin;
+import fr.k2i.adbeback.core.business.transaction.Wallet;
 import fr.k2i.adbeback.core.business.user.User;
 import lombok.Data;
 
@@ -45,7 +43,7 @@ public class Player extends User{
     @JoinColumn(name="PLAYER_ID")
     protected List<GooseToken> gooseTokens;
 
-    protected Integer validatedLevel;
+//    protected Integer validatedLevel;
 
     @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
     protected List<ViewedAd> viewedAds = new ArrayList<ViewedAd>();
@@ -53,6 +51,7 @@ public class Player extends User{
     @Enumerated(EnumType.STRING)
     protected AgeGroup ageGroup;
 
+    private Wallet wallet;
 
     public void addGooseToken(GooseToken gooseToken) {
         if(gooseTokens==null){
