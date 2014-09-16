@@ -2,6 +2,7 @@ package fr.k2i.adbeback;
 
 import fr.k2i.adbeback.core.business.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,9 +22,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@Order(Ordered.LOWEST_PRECEDENCE - 8)
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Autowired
     private ApplicationContext context;
@@ -90,7 +93,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 //permission Adv
 
 
-                .anyRequest().authenticated();
+                .anyRequest().fullyAuthenticated();
 
 
         http.formLogin()
@@ -99,14 +102,15 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         http.logout()
-                .deleteCookies("remove")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .invalidateHttpSession(false)
-                .logoutUrl("/custom-logout")
-                .logoutSuccessUrl("/logout-success");
+                .logoutSuccessUrl("/");
 
         http.sessionManagement()
                 .maximumSessions(1)
                 .expiredUrl("/login?expired");
+
+        http.exceptionHandling().accessDeniedPage("/access.error");
 
 /*        http.rememberMe()
                 .tokenValiditySeconds(60*60*24)
