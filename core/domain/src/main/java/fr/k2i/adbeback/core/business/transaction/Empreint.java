@@ -4,6 +4,7 @@ import fr.k2i.adbeback.core.business.IMetaData;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,4 +27,18 @@ public class Empreint extends Transaction{
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
     private List<Credit> credits;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDate;
+
+    @Enumerated(EnumType.STRING)
+    private EmpreintStatus status;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
+    private List<TransactionHistory> histories;
+
 }

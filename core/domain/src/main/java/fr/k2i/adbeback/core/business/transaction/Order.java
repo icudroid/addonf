@@ -8,6 +8,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * User: dimitri
@@ -25,6 +26,11 @@ public class Order  extends BaseObject implements Serializable {
     private Long id;
 
     private Double amount;
+
+    private String product;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date orderDate;
 
     @ManyToOne
     @JoinColumn(name = IMetaData.ColumnMetadata.Order.MEDIA)

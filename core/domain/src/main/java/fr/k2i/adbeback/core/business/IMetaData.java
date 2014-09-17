@@ -34,6 +34,7 @@ public interface IMetaData {
         String WALLET =                                 "wallet";
         String TRANSACTION =                            "transaction";
         String ORDER =                                  "order";
+        String TRANSACTION_HISTORY =                    "tr_history";
     }
 
     interface ColumnMetadata {
