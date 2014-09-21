@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/no-carrousel-1-col"
+        >
+<head>
+    <title>Se connecter</title>
+</head>
+<body>
+
+
+<ul class="breadcrumb" layout:fragment="breadcrumb"></ul>
+<h1 layout:fragment="titlePage" th:inline="text">[[#{enroll.end.title}]]</h1>
+<div class="sidebar col-md-3 col-sm-3" layout:fragment="left"></div>
+<div class="col-md-4 col-sm-4 pull-right"  layout:fragment="right"></div>
+
+<div layout:fragment="content">
+
+    <h4>Merci de votre inscription</h4>
+    <p>Vous allez recevoir un email pour valider votre inscription.</p>
+    <p>A bientôt</p>
+    <p>L'équipe AdLoveYou.</p>
+</div>
+
+
+</body>
+</html>

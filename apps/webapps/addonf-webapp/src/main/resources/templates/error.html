@@ -1,20 +1,63 @@
 <!DOCTYPE html>
 <html
-        xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/no-carrousel-1-col"
         >
 <head>
-<title>Error</title>
+    <title>Se connecter</title>
 </head>
-
 <body>
 
-<div>
 
-		<div id="created" th:text="${#dates.format(timestamp)}">July 11,2012 2:17:16 PM CDT</div>
-		<div>
-			Une erreur s'est produit ou aucunes informations sur le paiement n'a été recu.<br/>
-            Ne refraichisser pas votre navigateur durant le paiement.<br/>
-		</div>
+<ul class="breadcrumb" layout:fragment="breadcrumb"></ul>
+<h1 layout:fragment="titlePage" th:inline="text">[[#{login.title}]]</h1>
+<div class="sidebar col-md-3 col-sm-3" layout:fragment="left"></div>
+<div class="col-md-4 col-sm-4 pull-right"  layout:fragment="right"></div>
+
+<div layout:fragment="content">
+
+
+    <div class="main">
+        <div class="container">
+            <!-- BEGIN SIDEBAR & CONTENT -->
+            <div class="row margin-bottom-40">
+                <!-- BEGIN CONTENT -->
+                <div class="col-md-12 col-sm-12" th:inline="text">
+                    <div class="content-page page-500" th:class="${'content-page page-'+status}">
+                        <div class="number">
+                            [[${status}]]
+                        </div>
+                        <div class="details" th:if="${status == 404}">
+                            <h3>Oops!  You're lost.</h3>
+                            <p>
+                                We can not find the page you're looking for.<br/>
+                                <a href="index.html" class="link">Return home</a> or try the search bar below.
+                            </p>
+                        </div>
+
+
+
+                        <div class="details" th:if="${status == 500}">
+                            <h3>Oops! Something went wrong.</h3>
+                            <p>
+                                We are fixing it!<br/>
+                                Please come back in a while.<br/><br/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END CONTENT -->
+            </div>
+            <!-- END SIDEBAR & CONTENT -->
+        </div>
+    </div>
+
+
+
 </div>
+
 </body>
 </html>

@@ -51,6 +51,7 @@ public class Player extends User{
     @Enumerated(EnumType.STRING)
     protected AgeGroup ageGroup;
 
+    @OneToOne(cascade = CascadeType.ALL)
     private Wallet wallet;
 
     public void addGooseToken(GooseToken gooseToken) {

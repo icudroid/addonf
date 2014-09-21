@@ -3,30 +3,42 @@ package fr.k2i.adbeback.webapp.controller;
 import fr.k2i.adbeback.application.services.mail.IMailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.core.business.Constants;
+import fr.k2i.adbeback.core.business.country.City;
+import fr.k2i.adbeback.core.business.player.Address;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.Sex;
+import fr.k2i.adbeback.core.business.transaction.Wallet;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.crypto.DESCryptoService;
+import fr.k2i.adbeback.dao.ICityDao;
+import fr.k2i.adbeback.dao.jpa.CityDao;
 import fr.k2i.adbeback.service.PlayerManager;
 import fr.k2i.adbeback.service.RoleManager;
 import fr.k2i.adbeback.service.UserExistsException;
+import fr.k2i.adbeback.webapp.bean.PlayerForm;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -46,6 +58,9 @@ public class SignupController {
     protected final Log log = LogFactory.getLog(getClass());
 
     @Autowired
+    private ICityDao cityDao;
+
+    @Autowired
     private RoleManager roleManager;
 
     @Autowired
@@ -62,7 +77,7 @@ public class SignupController {
     @Autowired
     private DESCryptoService desCryptoService;
 
-    @Value("${baseurl}")
+    @Value("${addonf.base.url}")
     private String baseUrl;
 
     @Autowired
@@ -77,18 +92,28 @@ public class SignupController {
 
     @ModelAttribute(value = "user")
     @RequestMapping(method = RequestMethod.GET)
-    public Player showForm(Map<String, Object> model,HttpServletRequest request) {
+    public PlayerForm showForm(Map<String, Object> model,HttpServletRequest request) {
         model.put("civilities", Sex.values());
-        return new Player();
+        return new PlayerForm();
+    }
+
+
+    @InitBinder("user")
+    public void initBinder(WebDataBinder binder,Locale locale) {
+        //DateFormat dateFormat = new SimpleDateFormat(messageSource.getMessage("date_format",null,locale));
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public String onSubmit(@ModelAttribute("user") Player user, final BindingResult errors,Map<String, Object> model, final HttpServletRequest request, final HttpServletResponse response)
+    public String onSubmit(@ModelAttribute("user") PlayerForm user, final BindingResult errors,Map<String, Object> model, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
 
         model.put("civilities", Sex.values());
 
+        //City city = user.getAddress().getCity();
         if (validator != null) { // validator is null during testing
             validator.validate(user, errors);
 
@@ -112,7 +137,7 @@ public class SignupController {
             }
 
 
-            if (user.getAddress().getCity().getId()==null) {
+            if (user.getCityId()==null) {
                 errors.rejectValue("address", "errors.required", new Object[] { getText("user.address.required", request.getLocale()) },
                         "Address is a required field.");
             }
@@ -130,16 +155,32 @@ public class SignupController {
 
         final Locale locale = request.getLocale();
 
-        user.setEnabled(false);
+        Player player = new Player();
+        player.setUsername(user.getUsername());
+        player.setBirthday(user.getBirthday());
+        player.setNewsletter(user.isNewsletter());
+        player.setEmail(user.getEmail());
+        player.setSex(user.getSex());
+
+        player.setWallet(new Wallet());
+
+        player.setEnabled(false);
 
         // Set the default user role on this new user
-        user.addRole(roleManager.getRole(Constants.USER_ROLE));
+        player.addRole(roleManager.getRole(Constants.USER_ROLE));
 
         // unencrypted users password to log in user automatically
         final String password = user.getPassword();
+        player.setPassword(password);
+
+        Address address = new Address();
+        City city = cityDao.get(user.getCityId());
+        address.setCity(city);
+        address.setCountry(city.getCountry());
+        player.setAddress(address);
 
         try {
-            playerManager.savePlayer(user);
+            player = playerManager.savePlayer(player);
         } catch (final AccessDeniedException ade) {
             // thrown by UserSecurityAdvice configured in aop:advisor userManagerSecurity
             log.warn(ade.getMessage());
@@ -167,7 +208,7 @@ public class SignupController {
 
 
         //create users and send validate account when le administrator has validate her account
-        String url = baseUrl + desCryptoService.generateOtpConfirm(user.getUsername() + "|" + user.getEmail(), user, 48);
+        String url = baseUrl + desCryptoService.generateOtpConfirm(player.getUsername() + "|" + player.getEmail(), player, 48);
 
         modelEmail.put("url",url);
         Email.Producer producer = Email.builder()

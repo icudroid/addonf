@@ -96,50 +96,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     }
 
 
-    public SimpleUrlAuthenticationSuccessHandler ajaxLoginSuccessHandler(){
-        return new SimpleUrlAuthenticationSuccessHandler(){
-            protected final Log logger = LogFactory.getLog(this.getClass());
-
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                Authentication authentication) throws ServletException, IOException {
-
-                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-                    response.setContentType("application/json");
-                    response.getWriter().print("{\"success\":true}");
-                    response.getWriter().flush();
-                } else {
-                    super.onAuthenticationSuccess(request, response, authentication);
-                }
-
-            }
-
-        };
-    }
-
-
-
-    public SimpleUrlAuthenticationFailureHandler ajaxLoginFailureHandler(){
-        return new SimpleUrlAuthenticationFailureHandler(){
-            protected final Log logger = LogFactory.getLog(this.getClass());
-
-            @Override
-            public void onAuthenticationFailure(HttpServletRequest request,
-                                                HttpServletResponse response, AuthenticationException exception)
-                    throws IOException, ServletException {
-                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-                    response.setContentType("application/json");
-                    response.getWriter().print("{\"success\":false}");
-                    response.getWriter().flush();
-                } else {
-                    super.onAuthenticationFailure(request, response, exception);
-                }
-            }
-
-        };
-    }
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -194,8 +150,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                     .loginPage("/login")
-                    .successHandler(ajaxLoginSuccessHandler())
-                    .failureHandler(ajaxLoginFailureHandler())
+                    .failureUrl("/login?error")
+                    .defaultSuccessUrl("/home.html")
                     .permitAll();
 
         http.logout()

@@ -98,6 +98,7 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
                             saltSource.getSalt(new WebUser(player))));
                 }
             }
+
         } else {
             log.warn("PasswordEncoder not set, skipping password encryption...");
         }
