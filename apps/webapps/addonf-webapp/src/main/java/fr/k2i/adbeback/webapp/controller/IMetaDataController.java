@@ -15,6 +15,8 @@ public interface IMetaDataController {
 
     interface Path{
 
+        String MY_BORROW = "/myborrow.html";
+        String HISTORY_BORROW_GAME = "/historiesBorrowGame/{tr}";
     }
 
     interface View{
@@ -23,5 +25,11 @@ public interface IMetaDataController {
         String REGISTRATION_CONFIRM                                                 = "enroll/userCreated";
         String REGISTRATION_TIMEOUT                                                 = "enroll/timeout";
         String REGISTRATION_KO                                                      = "enroll/ko";
+
+        public interface MyBorrowController {
+            String NO_BORROWS                                                       = "borrow/no_borrows" ;
+            String BORROW                                                           = "borrow/borrow";
+            String LIST_BORROWS                                                     = "borrow/list";
+        }
     }
 }

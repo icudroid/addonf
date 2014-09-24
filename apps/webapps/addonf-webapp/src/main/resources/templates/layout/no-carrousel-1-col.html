@@ -61,6 +61,13 @@ License: You must have a valid license purchased only from themeforest (the abov
     <!-- Theme styles END -->
 
     <!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->
+
+    <script th:inline="javascript">
+        var addonf = {};
+        addonf.base = [[@{/}]];
+        addonf.static = [[${session.staticUrl}]];
+    </script>
+
     <!--[if lt IE 9]>
     <script th:src="@{/static/metronic/assets/global/plugins/respond.min.js}"></script>
     <![endif]-->
@@ -87,11 +94,7 @@ License: You must have a valid license purchased only from themeforest (the abov
 
 
 
-    <script th:inline="javascript">
-        var addonf = {};
-        addonf.base = [[@{/}]];
-        addonf.static = [[${session.staticUrl}]];
-    </script>
+
 
 </head>
 <!-- Head END -->
@@ -100,29 +103,9 @@ License: You must have a valid license purchased only from themeforest (the abov
 <body class="corporate">
 
 <!-- BEGIN TOP BAR -->
-<div class="pre-header">
-    <div class="container">
-        <div class="row">
-            <!-- BEGIN TOP BAR LEFT PART -->
-            <div class="col-md-6 col-sm-6 additional-shop-info">
-                <ul class="list-unstyled list-inline">
-                    <li><i class="fa fa-phone"></i><span>+336 79 27 04 41</span></li>
-                    <li><i class="fa fa-envelope-o"></i><span>info@adloveyou.com</span></li>
-                </ul>
-            </div>
-            <!-- END TOP BAR LEFT PART -->
-            <!-- BEGIN TOP BAR MENU -->
-            <div class="col-md-6 col-sm-6 additional-nav">
-                <ul class="list-unstyled list-inline pull-right">
-                    <li><a th:href="@{/login}" th:text="#{all.login}">Log In</a></li>
-                    <li><a th:href="@{/signup.html}" th:text="#{all.registration}">Registration</a></li>
-                </ul>
-            </div>
-            <!-- END TOP BAR MENU -->
-        </div>
-    </div>
-</div>
+<div class="pre-header" th:substituteby="layout/fragment/pre-header"></div>
 <!-- END TOP BAR -->
+
 <!-- BEGIN HEADER -->
 <div class="header">
     <div class="container">

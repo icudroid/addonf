@@ -104,7 +104,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/index.html").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/signup.html").permitAll()
-                .antMatchers("/getTownsByZipcode").permitAll()
+                .antMatchers("/getTownsByZipcode/**").permitAll()
                 .antMatchers("/enrollConfirm").permitAll()
 
 
