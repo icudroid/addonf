@@ -31,6 +31,16 @@ public class CityDao extends GenericDaoJpa<City, Long> implements ICityDao {
         return query.list(city);
     }
 
+
+    @Override
+    public List<City> findByZipcode(String zipcode) {
+        QCity city = QCity.city1;
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(city).where(city.zipcode.eq(zipcode));
+        return query.list(city);
+    }
+
     @Override
     public City findByZipcodeAndCityAndCountry_Code(String zipcode, String city, String code) {
         QCity qcity = QCity.city1;

@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPAUpdateClause;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.QGooseToken;
 import fr.k2i.adbeback.core.business.player.Player;
@@ -88,6 +89,19 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
                 );
 
         return query.uniqueResult(player);
+    }
+
+    @Override
+    public void enable(Long userId) {
+
+        log.info("user with id "+ userId +" enabled");
+
+        QPlayer qPlayer = QPlayer.player;
+        JPAUpdateClause query = new JPAUpdateClause(getEntityManager(),qPlayer);
+        query.where(qPlayer.id.eq(userId))
+                .set(qPlayer.enabled,true);
+
+        query.execute();
     }
 
     /**

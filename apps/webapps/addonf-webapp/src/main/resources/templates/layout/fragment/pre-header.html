@@ -1,0 +1,26 @@
+<div class="pre-header">
+    <div class="container">
+        <div class="row">
+            <!-- BEGIN TOP BAR LEFT PART -->
+            <div class="col-md-6 col-sm-6 additional-shop-info">
+                <ul class="list-unstyled list-inline">
+                    <li><i class="fa fa-phone"></i><span>+336 79 27 04 41</span></li>
+                    <li><i class="fa fa-envelope-o"></i><span>info@adloveyou.com</span></li>
+                </ul>
+            </div>
+            <!-- END TOP BAR LEFT PART -->
+            <!-- BEGIN TOP BAR MENU -->
+            <div class="col-md-6 col-sm-6 additional-nav">
+                <ul class="list-unstyled list-inline pull-right">
+                    <li sec:authorize="hasRole('ROLE_USER')" th:inline="text">[[#{all.hello}]]&nbsp;<span sec:authentication="name">Bob</span></li>
+                    <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/logout}" th:text="#{all.logout}">Log out</a></li>
+
+                    <li sec:authorize="isAnonymous()"><a th:href="@{/login}" th:text="#{all.login}">Log In</a></li>
+                    <li sec:authorize="isAnonymous()"><a th:href="@{/signup.html}" th:text="#{all.registration}">Registration</a></li>
+
+                </ul>
+            </div>
+            <!-- END TOP BAR MENU -->
+        </div>
+    </div>
+</div>

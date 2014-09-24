@@ -4,20 +4,17 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/no-carrousel-3-col"
-        ng-app="registrationApp">
+        layout:decorator="layout/no-carrousel-3-col">
 <head>
     <title>Inscription</title>
+    <script th:src="@{/static/metronic/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js}"></script>
+    <script th:src="@{/static/js/registration.js}"></script>
 
-    <script src="lib/angular/angular.js" th:src="@{/static/lib/angular/angular.js}"></script>
-    <script src="lib/angular/angular-animate.js" th:src="@{/static/lib/angular/angular-animate.js}"></script>
-    <script src="lib/angular/angular-resource.js" th:src="@{/static/lib/angular/angular-resource.js}"></script>
-    <script src="lib/angular/i18n/angular-locale_fr-fr.js" th:src="@{/static/lib/angular/i18n/angular-locale_fr-fr.js}"></script>
-    <script src="lib/angular/angular-route.js" th:src="@{/static/lib/angular/angular-route.js}"></script>
-
-    <script th:src="@{/static/lib/angular-bootstrap/ui-bootstrap-tpls.js}"></script>
-
-    <script src="js/controller/registration-controllers.js" th:src="@{/static/js/controller/registration-controllers.js}"></script>
+    <script type="text/javascript" layout:fragment="script">
+        $(function(){
+            new addonf.Registration();
+        });
+    </script>
 
 </head>
 <body>
@@ -29,13 +26,6 @@
 <div class="col-md-4 col-sm-4 pull-right"  layout:fragment="right"></div>
 
 <div layout:fragment="content">
-    <div  ng-controller="registrationCtrl">
-
-        <script type="text/ng-template" id="cityTemplate.html">
-            <a>
-                {{match.model.zipcode}} {{match.model.city}}, {{match.model.country.code}}
-            </a>
-        </script>
 
         <form role="form" class="form-horizontal" th:action="@{/signup}" method="post" th:object="${user}" autocomplete="off">
 
@@ -45,7 +35,7 @@
                 <div class="form-group" th:class="${#fields.hasErrors('sex')}? 'has-error form-group' :'form-group'" >
                     <label for="civility" class="col-lg-4 control-label">Civilité <span class="require">*</span></label>
                     <div class="col-lg-8">
-                        <select class="form-control" id="civility" th:field="*{sex}" ng-required="true">
+                        <select class="form-control" id="civility" th:field="*{sex}">
                             <option th:each="civility : ${civilities}" th:text="#{${civility}}" th:value="${civility}">...</option>
                         </select>
                     </div>
@@ -55,7 +45,7 @@
                 <div class="form-group" th:class="${#fields.hasErrors('username')}? 'has-error form-group' :'form-group'" >
                     <label for="pseudo" class="col-lg-4 control-label">Pseudo <span class="require">*</span></label>
                     <div class="col-lg-8">
-                        <input type="text" class="form-control" id="pseudo" placeholder="Votre pseudo" th:field="*{username}" ng-required="true"/>
+                        <input type="text" class="form-control" id="pseudo" placeholder="Votre pseudo" th:field="*{username}"/>
                     </div>
                     <p  class="help-block" th:if="${#fields.hasErrors('username')}" th:errors="*{email}">Incorrect</p>
                 </div>
@@ -64,7 +54,7 @@
                 <div class="form-group" th:class="${#fields.hasErrors('email')}? 'has-error form-group' :'form-group'" >
                     <label for="email" class="col-lg-4 control-label">Email <span class="require">*</span></label>
                     <div class="col-lg-8">
-                        <input type="email" class="form-control" id="email" placeholder="Votre E-mail" th:field="*{email}" ng-required="true"/>
+                        <input type="email" class="form-control" id="email" placeholder="Votre E-mail" th:field="*{email}"/>
                     </div>
                     <p  class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect</p>
                 </div>
@@ -73,42 +63,40 @@
                 <div class="form-group" th:class="${#fields.hasErrors('birthday')}? 'has-error form-group' :'form-group'" >
                     <label for="birthdate" class="col-lg-4 control-label">Date de naissance <span class="require">*</span></label>
                     <div class="col-lg-8">
-                    <input id="birthdate" type="text"
-                           datepicker-popup="{{format}}"
-                           ng-model="dt"
-                           is-open="opened"
-                           th:field="*{birthday}"
-                           ng-required="true"
-                           class="form-control"
-                           readonly="true"
-                            />
+                    <input id="birthdate" class="form-control" type="date" th:field="*{birthday}"/>
                     </div>
                     <p  class="help-block" th:if="${#fields.hasErrors('birthday')}" th:errors="*{email}">Incorrect</p>
+                </div>
+
+                <legend th:utext="#{signup.place}">Your place</legend>
+
+                <div class="form-group" th:class="${#fields.hasErrors('zipCode')}? 'has-error form-group' :'form-group'">
+                    <label for="zipCode" class="col-lg-4 control-label">Code postal <span class="require">*</span></label>
+                    <div class="col-lg-8">
+                        <input type="text" class="form-control" th:field="*{zipCode}" />
+                    </div>
+                    <p  class="help-block" th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}">Incorrect</p>
                 </div>
 
 
                 <div class="form-group" th:class="${#fields.hasErrors('cityId')}? 'has-error form-group' :'form-group'">
                     <label for="citySearch" class="col-lg-4 control-label">Ville <span class="require">*</span></label>
                     <div class="col-lg-8">
-                        <input type="hidden" th:field="*{cityId}" ng-value="city.id"/>
-                        <input id="citySearch" type="text" ng-model="city" placeholder="Choisir la ville" typeahead-template-url="cityTemplate.html" typeahead="city as city.label for city in getCitiesByName($viewValue)" typeahead-loading="loadingLocations" class="form-control" typeahead-min-length="2" typeahead-wait-ms="300" ng-required="true"/>
-                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                        <select  th:field="*{cityId}" class="form-control"> </select>
                     </div>
                     <p  class="help-block" th:if="${#fields.hasErrors('cityId')}" th:errors="*{cityId}">Incorrect</p>
                 </div>
-
 
                 <legend th:utext="#{signup.password}">Your password</legend>
 
                 <div class="form-group" th:class="${#fields.hasErrors('password')}? 'has-error form-group' :'form-group'" >
                     <label for="passwd" class="col-lg-4 control-label">Mot de passe <span class="require">*</span></label>
                     <div class="col-lg-8">
-                        <input type="password" class="form-control" id="passwd" placeholder="Votre mot de passe" th:field="*{password}" ng-required="true"/>
+                        <input type="password" class="form-control" id="passwd" placeholder="Votre mot de passe" th:field="*{password}"/>
                     </div>
                     <p  class="help-block" th:if="${#fields.hasErrors('password')}" th:errors="*{email}">Incorrect</p>
                 </div>
-            </fieldset>
-            <fieldset>
+
 
                 <legend  th:utext="#{signup.newsletter}">Newsletter</legend>
                 <div class="form-group checkbox">
@@ -134,9 +122,9 @@
             </div>
         </form>
 
-    </div>
-
 </div>
+
+
 
 
 </body>

@@ -11,11 +11,14 @@ import fr.k2i.adbeback.core.business.transaction.Wallet;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.ICityDao;
+import fr.k2i.adbeback.dao.IPlayerDao;
 import fr.k2i.adbeback.dao.jpa.CityDao;
 import fr.k2i.adbeback.service.PlayerManager;
 import fr.k2i.adbeback.service.RoleManager;
 import fr.k2i.adbeback.service.UserExistsException;
+import fr.k2i.adbeback.service.exception.EnrollException;
 import fr.k2i.adbeback.webapp.bean.PlayerForm;
+import fr.k2i.adbeback.webapp.facade.OtpServiceFacade;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,16 +29,16 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -77,8 +80,15 @@ public class SignupController {
     @Autowired
     private DESCryptoService desCryptoService;
 
-    @Value("${addonf.base.url}")
-    private String baseUrl;
+
+    @Autowired
+    private OtpServiceFacade otpServiceFacade;
+
+    @Value("${addonf.base.confirm.url}")
+    private String confirmEnrollUrl;
+
+    @Autowired
+    private IPlayerDao playerDao;
 
     @Autowired
     public void setMessages(MessageSource messageSource) {
@@ -117,16 +127,26 @@ public class SignupController {
         if (validator != null) { // validator is null during testing
             validator.validate(user, errors);
 
-
             if (StringUtils.isBlank(user.getUsername())) {
                 errors.rejectValue("username", "errors.required", new Object[] { getText("user.username.required", request.getLocale()) },
                         "Username is a required field.");
+            }else{
+                if(playerDao.findByEmailorUserName(user.getUsername())!=null){
+                    errors.rejectValue("username", "errors.exist", new Object[] { getText("user.username.exist", request.getLocale()) },
+                            "Username is a required field.");
+                }
             }
 
             if (StringUtils.isBlank(user.getEmail())) {
-                errors.rejectValue("email", "errors.required", new Object[] { getText("user.email.required", request.getLocale()) },
+                errors.rejectValue("email", "errors.required", new Object[]{getText("user.email.required", request.getLocale())},
                         "Email is a required field.");
+            }else{
+                    if(playerDao.findByEmailorUserName(user.getEmail())!=null){
+                        errors.rejectValue("email", "errors.exist", new Object[] { getText("user.email.required", request.getLocale()) },
+                                "Username is a required field.");
+                    }
             }
+
 
             if (StringUtils.isBlank(user.getPassword())) {
                 errors.rejectValue("password", "errors.required", new Object[] { getText("user.password.required", request.getLocale()) },
@@ -208,7 +228,7 @@ public class SignupController {
 
 
         //create users and send validate account when le administrator has validate her account
-        String url = baseUrl + desCryptoService.generateOtpConfirm(player.getUsername() + "|" + player.getEmail(), player, 48);
+        String url = confirmEnrollUrl + desCryptoService.generateOtpConfirm(player.getUsername() + "|" + player.getEmail(), player, 48);
 
         modelEmail.put("url",url);
         Email.Producer producer = Email.builder()
@@ -228,6 +248,38 @@ public class SignupController {
         return "success-registration";
     }
 
+
+    @RequestMapping(value = "/enrollConfirm/{encoded}/{key}")
+    public String confirm(@PathVariable("encoded") String encoded,@PathVariable("key") String key,ModelMap modelMap){
+
+        String decrypt = desCryptoService.decrypt(encoded);
+        String[] split = decrypt.split("|");
+        String username = split[0];
+        String email = split[1];
+
+        OtpServiceFacade.ConfirmationRegistration res = otpServiceFacade.confirmRegistration(email, username, key);
+
+
+        modelMap.addAttribute("result", res.name());
+        modelMap.addAttribute("email",email);
+
+
+        switch (res){
+            case TIME_OUT:
+                return IMetaDataController.View.REGISTRATION_TIMEOUT;
+            case OK:
+                User user = playerDao.findByEmailorUserName(email);
+                playerDao.enable(user.getId());
+                otpServiceFacade.removeOtp(email,username,key);
+                return IMetaDataController.View.REGISTRATION_CONFIRM;
+            case KO:
+                return IMetaDataController.View.REGISTRATION_KO;
+            default:
+                return IMetaDataController.View.REGISTRATION_KO;
+        }
+
+
+    }
 
 
 

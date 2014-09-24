@@ -3,6 +3,7 @@ package fr.k2i.adbeback.service;
 import java.util.List;
 
 import fr.k2i.adbeback.dao.IPlayerDao;
+import fr.k2i.adbeback.service.exception.EnrollException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.k2i.adbeback.core.business.player.Player;
@@ -63,4 +64,5 @@ public interface PlayerManager extends GenericManager<Player, Long> {
 
     @Transactional
     void changePasswd(Player user, String newPwd);
+
 }

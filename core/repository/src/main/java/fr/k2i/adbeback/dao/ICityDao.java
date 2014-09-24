@@ -14,6 +14,9 @@ import java.util.List;
 public interface ICityDao extends IGenericDao<City, Long> {
     @Transactional
     public List<City> findByZipcodeAndCountry_Code(String zipcode,String code);
+
+    List<City> findByZipcode(String zipcode);
+
     @Transactional
     public City findByZipcodeAndCityAndCountry_Code(String zipcode,String city,String code);
     @Transactional

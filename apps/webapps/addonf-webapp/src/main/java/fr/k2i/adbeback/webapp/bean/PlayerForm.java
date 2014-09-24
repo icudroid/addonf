@@ -18,6 +18,7 @@ public class PlayerForm implements Serializable{
     private String username;
     private String email;
     private Date birthday;
+    private String zipCode;
     private Long cityId;
     private String password;
     private boolean newsletter;

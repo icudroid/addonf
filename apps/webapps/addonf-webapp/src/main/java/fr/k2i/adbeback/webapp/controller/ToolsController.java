@@ -63,6 +63,13 @@ public class ToolsController {
     }
 
 
+    @RequestMapping("/getTownsByZipcode/{zipcode}")
+    public @ResponseBody
+    List<City> getTownsByZipcode(@PathVariable("zipcode") String zipcode) {
+        return cityDao.findByZipcode(zipcode);
+    }
+
+
     @RequestMapping("/getTownsByName/{city}")
     public @ResponseBody
     List<City> getTownsByName(@PathVariable("city") String city) {

@@ -3,10 +3,12 @@ package fr.k2i.adbeback.service.impl;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.WebUser;
+import fr.k2i.adbeback.crypto.DESCryptoService;
 import fr.k2i.adbeback.dao.ICountryDao;
 import fr.k2i.adbeback.dao.IPlayerDao;
 import fr.k2i.adbeback.service.PlayerManager;
 import fr.k2i.adbeback.service.UserExistsException;
+import fr.k2i.adbeback.service.exception.EnrollException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -27,8 +29,10 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
     private IPlayerDao playerDao;
     @Autowired
     private ICountryDao countryDao;
+
     @Autowired(required = false)
     private SaltSource saltSource;
+
 
 	@Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -200,6 +204,9 @@ public class PlayerManagerImpl extends GenericManagerImpl<Player, Long> implemen
             user.setPassword(passwordEncoder.encodePassword(newPwd, saltSource.getSalt(new WebUser(user))));
         }
     }
+
+
+
 
 
 

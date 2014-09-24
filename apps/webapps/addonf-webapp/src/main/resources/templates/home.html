@@ -4,22 +4,23 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/no-carrousel-1-col"
-        >
+        layout:decorator="layout/home">
 <head>
-    <title>Se connecter</title>
+    <title>AdLoveYou</title>
 </head>
 <body>
 
 
+<ul class="breadcrumb" layout:fragment="breadcrumb"></ul>
+<h1 layout:fragment="titlePage" th:inline="text">[[#{home.title}]]</h1>
 
 <div layout:fragment="content">
 
-    <h4>Merci de votre inscription</h4>
-    <p>Vous allez recevoir un email pour valider votre inscription.</p>
-    <p>A bientôt</p>
-    <p>L'équipe AdLoveYou.</p>
+home
+
 </div>
+
+
 
 
 </body>

@@ -48,5 +48,7 @@ public interface IPlayerDao extends IGenericDao<Player, Long> {
     GooseToken getPlayerGooseToken(Long idPlayer, Long idGooseLevel);
 
     Player findByEmailorUserName(String username);
+
+    void enable(Long userId);
 }
 
