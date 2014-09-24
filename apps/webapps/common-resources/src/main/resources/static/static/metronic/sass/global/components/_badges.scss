@@ -19,7 +19,15 @@ Custom Bootstrap Badges
    		   -webkit-border-radius: 0 !important;
       	 -moz-border-radius: 0 !important;
           border-radius: 0 !important;
-	}
+	 }
+
+    &.badge-empty {
+      display: inline-block;
+      padding: 0;
+      min-width: 8px;   
+      height: 8px;
+      width: 8px;
+    }
 }
 
 /* Badge variants */

@@ -42,6 +42,10 @@ Responsive & Scrollable Tables
   	border: 1px solid #dddddd;
   	margin: 10px 0 !important;
 
+    &.table-scrollable-borderless {
+        border: 0;
+    }
+
   	> .table {
   		width: 100% !important;
   		margin: 0 !important;
@@ -235,6 +239,76 @@ Custom tables
             > td.highlight:first-child a {
                 margin-left: 8px;
             }
+        }
+    }
+}
+
+
+/***
+Light Table
+***/
+
+.table.table-light {
+    border: 0 !important; 
+
+    > thead {
+        > tr {
+            &:hover {
+                > th {
+                    background: none;
+                }
+            }
+
+            &.uppercase {
+                text-transform: uppercase;
+            }
+
+            > th {
+                font-weight: 600;
+                font-size: 13px;
+                color: darken(#B5BFC4, 5%);  
+                font-family: $font-family-primary;
+                border: 0;
+                border-bottom:1px solid #F2F5F8; 
+            }
+        }
+    }
+
+    > tbody {
+        > tr {
+            &:last-child {
+                > td {
+                    border: 0;
+                }
+            }
+
+            > td {
+                border: 0;
+                border-bottom:1px solid #F2F5F8;
+                color: darken(#AAB4BB, 5%);
+                vertical-align: middle;
+
+                &.fit {
+                    width: 1px;
+                    padding-right: 3px;
+                }
+
+                .user-pic {
+                    display: inline-block;
+                    vertical-align: middle;
+                    height: 30px;
+                    @include border-radius(100%);
+                }
+            }
+        }
+    }
+
+    &.table-hover > tbody > tr {
+        > td:hover,
+        > th:hover, 
+        &:hover > td,
+        &:hover > th { 
+            background: lighten(#94A0B2, 34%);
         }
     }
 }

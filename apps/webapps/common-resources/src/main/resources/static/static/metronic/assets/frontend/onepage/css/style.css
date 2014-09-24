@@ -1491,7 +1491,11 @@ Pre-Footer and pre-footer elements
 }
 
 .fancybox-overlay {
-  z-index: 9999;
+  z-index: 100000 ;
+}
+
+.fancybox-opened {
+  z-index: 100001;
 }
 
 /***

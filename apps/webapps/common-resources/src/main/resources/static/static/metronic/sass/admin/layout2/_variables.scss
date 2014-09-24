@@ -8,8 +8,8 @@ $header-height-xs:             											($header-height * 2) !default; // head
 $header-height-mobile:                                                  46px  !default; 
 
 $header-logo-height:                                    				14px;
-$header-menu-toggler-width:                             				16px; 
-$header-menu-toggler-height:                            				16px;
+$header-menu-toggler-width:                             				20px; 
+$header-menu-toggler-height:                            				20px;
 $header-sidebar-toggler-margin:                         				($header-height - $header-menu-toggler-height - 2px) / 2 0 0 0 !default;
 $header-responsive-toggler-margin:                      				($header-height - $header-menu-toggler-height) / 2 14px 0 6px !default; 
 $header-logo-margin:                                					($header-height - $header-logo-height) / 2 0 0 0 !default;  // adjsut logo's margin top. default: -1px

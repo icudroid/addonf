@@ -2,39 +2,17 @@
 Utilities
 ***/
 
-/* Line through */
+/* Primary Link */
 
-.line-through {
-    display: block;
-    font-size: .875em;
-    margin-bottom: 1em;
-    position: relative;
-    text-align: center;
-    width: 100%;
-    z-index: 1;
+.primary-link {
+    color: $primary-link-color;
+    font-weight: 600;
 
-    &:before {
-        width: 40px;
-        height: 10px;
-        background-color: #ebedf2;
-        content: '';
-        margin: -5px 0 0 -20px;
-        left: 50%;
-        position: absolute;
-        top: 50%;
-        z-index: -1;
-    }
-
-    &:after {
-        border-bottom: 1px solid #dfe0e6;
-        content: '';
-        display: block;
-        position: absolute;
-        top: 49%;
-        width: 100%;
-        z-index: -2;
+    &:hover {
+        color: darken($primary-link-color, 5%);
     }
 }
+
 
 /* Rounded Element */
 .rounded-2 {
@@ -105,6 +83,26 @@ Utilities
     border: 1px solid red;
 }
 
+.font-hg {
+    font-size: 23px;
+}
+
+.font-lg {
+    font-size: 18px;
+}
+
+.font-md {
+    font-size: 14px;
+}
+
+.font-sm {
+    font-size: 13px;
+}
+
+.font-xs {
+    font-size: 11px;
+}
+
 .inline {
     display: inline;
 }
@@ -154,6 +152,10 @@ Utilities
 
 .margin-bottom-25 {
     margin-bottom: 25px !important;
+}
+
+.margin-bottom-30 {
+    margin-bottom: 30px !important;
 }
 
 .margin-right-10 {
@@ -459,3 +461,156 @@ Custom vertical inline menu
     }
 }
 
+/***
+Separated List
+***/
+
+.list-separated {
+    margin-top: 10px;
+    margin-bottom: 15px;
+
+    > div {
+        border-right1: 1px solid #f5f5f5;
+            
+        &:last-child {  
+            border-right: 0; 
+        }
+    }
+
+    @media (max-width: $screen-xs-max) { /* 767px */
+        > div {
+            margin-bottom: 20px;
+        }
+    }
+}
+
+/***
+Number & Chart Stats
+***/
+
+.number-stats {
+    margin: 10px 0;
+
+    .stat-number {
+        display: inline-block;
+        margin: 0 5px;
+
+        .title {
+            font-size: 13px;
+            margin-bottom: 3px;
+            color: #B8C3C7;
+        }
+
+        .number {
+            font-size: 27px;
+            line-height: 27px;
+            color: #7D8C9D;            
+        }
+    }
+
+    .stat-chart {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    > div {
+        border-right: 1px solid #f5f5f5;
+            
+        &:last-child {
+            border-right: 0; 
+        }
+    }
+
+    .stat-left {
+        float: right;
+
+        .stat-number {
+            float: right;
+            text-align: right;
+        }
+
+        .stat-chart {
+            float: right;
+        }
+    }
+
+    .stat-right {
+        float: left !important;
+
+        .stat-number {
+            float: left;
+            text-align: left;
+        }
+
+        .stat-chart {
+            float: left;
+        }
+    }
+
+    .stat-number {
+        float: left;
+        text-align: left;
+    }
+
+    .stat-chart {
+        float: left;
+    }   
+}
+
+/***
+General User Record Listing
+***/
+
+.general-item-list {
+
+    > .item {
+        padding: 10px 0;
+        border-bottom: 1px solid #F1F4F7;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        > .item-head {
+            margin-bottom: 5px;
+            @include clearfix();
+
+            > .item-details {      
+                display: inline-block;
+                float: left;
+
+                > .item-pic {
+                    height: 35px;
+                    margin-right: 10px;
+
+                    @include border-radius(100%);
+                }
+
+                > .item-name {  
+                    display: inline-block;
+                    margin-right: 10px;
+                }
+
+                > .item-label {
+                    color: #C0C9CC;
+                }
+            }
+
+            > .item-status {
+                color: #C0C9CC;
+                top: 10px;
+                position: relative;
+                display: inline-block;
+                float: right;
+
+                > .badge {
+                    margin-top: -2px;
+                }
+            }
+        }
+
+        > .item-body {
+            color: darken(#C0C9CC, 15%);
+        }
+    }
+}

@@ -24,6 +24,16 @@
   filter: alpha(opacity=$value * 100);
 }
 
+// Border radius.
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius !important;
+  -moz-border-radius: $radius !important;
+  -ms-border-radius: $radius !important;
+  -o-border-radius: $radius !important;
+  border-radius: $radius !important;
+}
+
 // Placeholder text
 // -------------------------
 @mixin placeholder($color: $input-color-placeholder) {

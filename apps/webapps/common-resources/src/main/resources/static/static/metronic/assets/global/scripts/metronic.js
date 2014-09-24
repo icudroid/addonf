@@ -243,7 +243,10 @@ var Metronic = function() {
 
     // Handle Hower Dropdowns
     var handleDropdownHover = function() {
-        $('[data-hover="dropdown"]').dropdownHover();
+        $('[data-hover="dropdown"]').not('.hover-initialized').each(function() {   
+            $(this).dropdownHover(); 
+            $(this).addClass('hover-initialized'); 
+        });
     };
 
     // Handles Bootstrap Popovers
@@ -578,7 +581,11 @@ var Metronic = function() {
                 if ($('body').hasClass("page-container-bg-solid")) {
                     $('.page-title').after(html);
                 } else {
-                    $('.page-bar').after(html);
+                    if ($('.page-bar').size() > 0) {
+                        $('.page-bar').after(html);
+                    } else {
+                        $('.page-breadcrumb').after(html);
+                    }
                 }
             } else {
                 if (options.place == "append") {

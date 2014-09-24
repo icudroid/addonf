@@ -28,7 +28,9 @@ var Inbox = function () {
 
                 loading.hide();
                 content.html(res);
-                Layout.fixContentHeight();
+                if (Layout.fixContentHeight) {
+                    Layout.fixContentHeight();
+                }
                 Metronic.initUniform();
             },
             error: function(xhr, ajaxOptions, thrownError)

@@ -97,6 +97,13 @@ Blue Dark
 
 @include flatui-color-variant("blue-dark", #5e738b, #FFFFFF);
 
+/***
+Blue Sharp
+***/
+
+@include flatui-color-variant("blue-sharp", #5C9BD1, #FFFFFF);
+
+
 /***********
 Green Colors
 ************/
@@ -189,7 +196,7 @@ Grey Silver
 ***/
 
 @include flatui-color-variant("grey-silver", #BFBFBF, #FAFCFB);
-
+ 
 /***
 Grey Salsa
 ***/
@@ -200,7 +207,14 @@ Grey Salsa
 Grey Salt
 ***/
 
-@include flatui-color-variant("grey-salt", #bfcad1, #FAFCFB); 
+@include flatui-color-variant("grey-salt", #bfcad1, #FAFCFB);
+
+/***
+Grey Mint
+***/
+
+@include flatui-color-variant("grey-mint", #9eacb4, #FAFCFB);
+
 
 /***********
 Red Colors

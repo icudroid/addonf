@@ -122,7 +122,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .deleteCookies("remove")
                     .invalidateHttpSession(false)
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/jacnjhvnvnv-sss
+                    .logoutSuccessUrl("/");
 
         http.sessionManagement()
                     .maximumSessions(1)

@@ -1996,3 +1996,26 @@ div.checker {
   margin-right: 0;
   margin-left: 3px;
 }
+
+/***
+Morris Charts
+***/
+.portlet-body-morris-fit {
+  margin-right: -20px;
+  margin-left: -20px;
+  margin-bottom: -15px;
+}
+
+.morris-hover.morris-default-style .morris-hover-row-label {
+  text-align: left;
+  font-weight: 400;
+  font-size: 15px;
+  color: #7D8C9D;
+  font-family: "Open Sans", sans-serif;
+}
+.morris-hover.morris-default-style .morris-hover-point {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+}

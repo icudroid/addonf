@@ -595,6 +595,7 @@ body.page-header-fixed {
 }
 .header-navigation .dropdown-menu li > a {
   padding: 10px 15px;
+  font-weight: 400;
   color: #767f88;
 }
 .header-navigation .dropdown-menu > li > a:hover,
@@ -3049,5 +3050,9 @@ Styler Panel
 }
 
 .fancybox-overlay {
-  z-index: 99999;
+  z-index: 100000 ;
+}
+
+.fancybox-opened {
+  z-index: 100001;
 }

@@ -18,11 +18,11 @@ Tasks Widget
 
 		> li {
 			position:relative;
-			padding:10px 5px;
-			border-bottom:1px solid #eaeaea;
+			padding: 10px 0;    
+			border-bottom:1px solid #F4F6F9;
 
 			&:hover  {
-				background:#f9f9f9;
+				background:#F4F6F9;
 			}
 
 			&.last-line {
@@ -55,6 +55,7 @@ Tasks Widget
 			}
  
 			> .task-title  {  
+				color: #838FA1;
 				margin-right:10px;
 
 				.task-title-sp  {

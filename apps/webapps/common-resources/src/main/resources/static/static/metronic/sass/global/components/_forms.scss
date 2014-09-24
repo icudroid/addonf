@@ -39,6 +39,18 @@ Forms
     &.height-auto {
         height: auto;
     }
+
+    &.form-control-solid {
+        background-color: #F1F3F8;
+        border-color: #F1F3F8;
+        color: #A6B2BA;
+
+        &:focus {
+            border-color: darken(#F1F3F8, 4%);
+        }
+
+        @include placeholder(lighten(#A6B2BA, 2%));
+    }
 }
 
 /* Form uneditable input */
@@ -70,7 +82,7 @@ Forms
 }
 
 .input-small {
-    width: 120px !important;
+    width: 145px !important;
 }
 
 .input-medium {

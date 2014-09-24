@@ -125,11 +125,9 @@ Page sidebar
 						background: none;
 						width: 0;
 						height: 0;
-						border-style: solid;
-						border-top: 12px double transparent;
-						border-bottom: 12px double transparent;
-						border-left:0;
-						border-right:8px solid #ffffff;
+						border-top: 12px solid transparent;
+						border-bottom: 12px solid transparent;
+						border-right: 12px solid #ffffff;
 
 						.page-sidebar-reversed & {
 							right: auto;

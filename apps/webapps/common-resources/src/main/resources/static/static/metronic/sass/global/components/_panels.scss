@@ -11,6 +11,10 @@ Customized Bootstrap Panels
         overflow: visible;
     }
 
+    .panel-body {
+        font-size: 13px; 
+    }
+
     .panel-title > a:hover {
         text-decoration: none;
     }
