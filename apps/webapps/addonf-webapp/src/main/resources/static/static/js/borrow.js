@@ -16,23 +16,16 @@ addonf.Borrow.prototype = {
     _init : function(idTr,current){
         var $this = this;
         this._currentPage = current;
-        this._idtr = _idtr;
+        this._idtr = idTr;
 
         this.$gameHistory = $("#game_history");
         this.$gameHistoryPagination = $("#game_history_pagination");
 
-
-        $this.$gameHistoryPagination.bootpag({
-            total: $this._maxPage,          // total pages
-            page: $this._currentPage,            // default page
-            maxVisible: $this._nbByPage,     // visible pagination
-            leaps: true         // next/prev leaps through maxVisible
-        }).on("page", function(event, num){
-            $this._currentPage = num;
-            $this._getHistories();
-        });
-
         this._getHistories();
+
+        $("#play").click(function(){
+            window.location = addonf.base+"repayBorrow/"+$this._idtr;
+        });
 
     },
 
@@ -71,6 +64,15 @@ addonf.Borrow.prototype = {
             $tbody.remove("td");
             $tbody.append(rows);
 
+            $this.$gameHistoryPagination.bootpag({
+                total: $this._maxPage,          // total pages
+                page: $this._currentPage,            // default page
+                maxVisible: $this._nbByPage,     // visible pagination
+                leaps: true         // next/prev leaps through maxVisible
+            }).on("page", function(event, num){
+                $this._currentPage = num;
+                $this._getHistories();
+            });
         });
 
     }

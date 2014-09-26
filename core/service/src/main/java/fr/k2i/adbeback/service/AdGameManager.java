@@ -19,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 public interface AdGameManager extends GenericManager<AbstractAdGame, Long> {
-	/**
+    @Transactional
+    AbstractAdGame generateBorrowGame(Map<Ad, Double> winBidAds, Long idPlayer, GooseLevel level) throws Exception;
+
+    /**
 	 * Generation du jeu$
      *
      *

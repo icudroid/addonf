@@ -2,19 +2,25 @@ package fr.k2i.adbeback.webapp.facade;
 
 import fr.k2i.adbeback.core.business.game.AdGame;
 import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.core.business.transaction.Empreint;
-import fr.k2i.adbeback.core.business.transaction.TransactionHistory;
+import fr.k2i.adbeback.core.business.transaction.*;
+import fr.k2i.adbeback.core.business.user.Media;
+import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.ITransactionDao;
+import fr.k2i.adbeback.dao.jpa.MediaDao;
+import fr.k2i.adbeback.exception.LimitBorrowException;
+import fr.k2i.adbeback.service.BorrowManager;
 import fr.k2i.adbeback.webapp.bean.EmpreintSmallBean;
 import fr.k2i.adbeback.webapp.bean.HistoryAdGameBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +38,11 @@ public class BorrowFacadeService {
     @Autowired
     private ITransactionDao transactionDao;
 
+    @Autowired
+    private BorrowManager borrowManager;
+
+    @Autowired
+    private IMediaDao mediaDao;
 
     @Transactional
     public List<EmpreintSmallBean> getBorrows(){
@@ -51,7 +62,7 @@ public class BorrowFacadeService {
                     .endDate(empreint.getEndDate())
                     .startDate(empreint.getStartDate())
                     .status(empreint.getStatus())
-                    .order(empreint.getOrder().getProduct())
+                    .products(empreint.getOrder().toProductsString())
                     .histories(empreint.getHistories())
                     .build();
 
@@ -61,11 +72,9 @@ public class BorrowFacadeService {
 
         return res;
 
-
-
     }
 
-    public Page<HistoryAdGameBean> getHistoriesBorrowGame(Long tr, PageRequest pageRequest) {
+    public Page<HistoryAdGameBean> getHistoriesBorrowGame(Long tr, Pageable pageRequest) {
         Player player = playerFacade.getCurrentPlayer();
         List<HistoryAdGameBean> list = new ArrayList<HistoryAdGameBean>();
 
@@ -80,5 +89,28 @@ public class BorrowFacadeService {
         }
 
         return new PageImpl<HistoryAdGameBean>(list, pageRequest,transactionDao.countHistoryGame(tr));
+    }
+
+
+    @Transactional
+    public void cet() throws LimitBorrowException {
+        Player player = playerFacade.getCurrentPlayer();
+
+        Media media = mediaDao.findByExtId("1001");
+
+        List<MerchantProduct> products = new ArrayList<>();
+        products.add(MerchantProduct.builder().nb(1).product("toto").build());
+
+        Order order = Order.builder()
+                .orderDate(new Date())
+                .media(media)
+                .amount(100.0)
+                .currentCode("EUR")
+                .referenceMedia("test")
+                .products(products)
+                .build();
+
+        borrowManager.createBorrow(player,order,50.0);
+
     }
 }

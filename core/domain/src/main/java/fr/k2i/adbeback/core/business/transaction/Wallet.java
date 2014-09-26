@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,5 +28,12 @@ public class Wallet extends BaseObject implements Serializable {
     @JoinColumn(name="WALLET_ID")
     private List<Transaction> transactions;
 
+    private Long adAmount;
 
+    public void addTransaction(Transaction tr) {
+        if(transactions == null){
+            transactions = new ArrayList<>();
+        }
+        transactions.add(tr);
+    }
 }

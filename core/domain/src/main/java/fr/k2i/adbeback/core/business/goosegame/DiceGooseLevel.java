@@ -1,22 +1,20 @@
 package fr.k2i.adbeback.core.business.goosegame;
 
-import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import lombok.Data;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 
 @Data
 @Entity
-@DiscriminatorValue(IMetaData.ColumnMetadata.GooseLevel.Discrimator.SINGLE)
-public class SingleGooseLevel extends GooseLevel implements ISingleGooseLevel {
+@DiscriminatorValue(IMetaData.ColumnMetadata.GooseLevel.Discrimator.DICE)
+public class DiceGooseLevel extends GooseLevel implements IDiceGooseLevel {
 
     @Column(name = "score")
-    protected Integer minScore;
+    protected Integer maxScore;
 
 	@Override
 	public String toString() {
@@ -29,9 +27,9 @@ public class SingleGooseLevel extends GooseLevel implements ISingleGooseLevel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SingleGooseLevel)) return false;
+        if (!(o instanceof DiceGooseLevel)) return false;
 
-        SingleGooseLevel that = (SingleGooseLevel) o;
+        DiceGooseLevel that = (DiceGooseLevel) o;
 
         if (level != null ? !level.equals(that.level) : that.level != null) return false;
 

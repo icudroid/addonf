@@ -66,6 +66,18 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
 
     }
 
+    @Override
+    public DiceGooseLevel findDiceLevelForNbAds(Integer nbAds) {
+        QDiceGooseLevel gooseLevel = QDiceGooseLevel.diceGooseLevel;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(gooseLevel)
+                .where(
+                        gooseLevel.maxScore.eq(nbAds)
+                );
+        return query.singleResult(gooseLevel);
+
+    }
+
     public void modifyLevelMinAmount(Long levelId, Integer minAmount) {
         Query q = getEntityManager().createQuery("UPDATE GooseLevel SET minValue=:minAmount where id =:id");
         q.setParameter("id", levelId);

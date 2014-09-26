@@ -3,6 +3,7 @@ package fr.k2i.adbeback.core.business.transaction;
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
 import lombok.Data;
+import lombok.experimental.Builder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -30,5 +31,10 @@ public class TransactionHistory extends BaseObject implements Serializable {
     private TransactionAction action;
 
 
-
+    public static TransactionHistory creation() {
+        TransactionHistory res = new TransactionHistory();
+        res.setExecuted(new Date());
+        res.setAction(TransactionAction.ASKED);
+        return res;
+    }
 }

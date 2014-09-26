@@ -5,6 +5,7 @@ import fr.k2i.adbeback.webapp.facade.AdGameFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,12 @@ public class GameController{
     @RequestMapping("/resume")
     public String resume(Map<String, Object> model,HttpServletRequest request) {
         return "manage/gooseGame/partials/resume";
+    }
+
+    @RequestMapping("/repayBorrow/{idTr}")
+    public String repayBorrow(@PathVariable Long idTr,Map<String, Object> model,HttpServletRequest request) throws Exception {
+        model.put("game", adGameFacade.createBorrowGame(idTr,request));
+        return "game";
     }
 
 

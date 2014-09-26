@@ -48,11 +48,11 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
         //initialize
         $scope.adGame = addonf.game;
-        $scope.max =  $scope.adGame.minScore;
+        $scope.max =  $scope.adGame.score;
         $scope.current = $scope.adGame.game[$scope.index];
         $scope.gooseCases =  $scope.adGame.gooseGames;
         $scope.token =  $scope.adGame.userToken;
-        $scope.left = (($scope.score*100)/$scope.adGame.minScore);
+        $scope.left = (($scope.score*100)/$scope.adGame.score);
 
 
         switch ($scope.current.type.$name){
@@ -125,7 +125,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
         var doResponse = function(data){
             $scope.score = data.score;
-            $scope.left = (($scope.score*100)/$scope.adGame.minScore);
+            $scope.left = (($scope.score*100)/$scope.adGame.score);
             $scope.responded = true;
             $scope.token =  data.userToken;
 

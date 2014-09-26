@@ -1,9 +1,10 @@
 package fr.k2i.adbeback.core.business.transaction;
 
 import fr.k2i.adbeback.core.business.IMetaData;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Empreint extends Transaction{
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
-    private List<Credit> credits;
+    private List<Credit> credits = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
@@ -39,6 +40,6 @@ public class Empreint extends Transaction{
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
-    private List<TransactionHistory> histories;
+    private List<TransactionHistory> histories  = new ArrayList<>();;
 
 }

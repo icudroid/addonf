@@ -8,7 +8,8 @@ import java.util.List;
 @Data
 public class AdGameBean implements Serializable{
 	private static final long serialVersionUID = -7410887579362937509L;
-	private Integer minScore;
+    private Integer typeGame;
+    private Integer score;
 	private Integer totalAds;
 	private Long timeLimite;
 	private List<AdBean> game;

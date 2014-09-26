@@ -66,6 +66,7 @@ public class AdGameFacade {
     public static final String AD_CHOISES = "adChoises";
 
     public static final String CONFIGURE = "configurePayment";
+    private static final String AD_LOVE_YOU_LOGO = "adloveyou.png";
 
     @Autowired
     private IAdDao adDao;
@@ -119,6 +120,106 @@ public class AdGameFacade {
     @Autowired
     IMediaDao mediaDao;
 
+
+    @Transactional
+    public AdGameBean createBorrowGame(Long idBorrow , HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        Player player = playerFacade.getCurrentPlayer();
+
+        //get all valid ad for player
+        List<Ad> ads = adDao.getAllValidFor(player);
+        Map<Double,List<Ad>> adsSortedByBid = constructBidsSortedMap(ads);
+
+        Double amount = 6*0.30;
+        //bid system to calculate min ad neeeded
+        Map<Ad,Double> winBidAds  = bidSystem(adsSortedByBid,amount);
+
+        Integer minScore = winBidAds.size();
+
+        //3 : find level for NB ads
+        GooseLevel gooseLevel = gooseLevelDao.findDiceLevelForNbAds(minScore);
+
+        //4 : generate game
+        AdGameTransaction generateAdGame = (AdGameTransaction) adGameManager.generateBorrowGame(winBidAds, player.getId(), gooseLevel);
+        generateAdGame.setAmount(amount);
+
+        //5 : set urlCall in session
+        //session.setAttribute(CONFIGURE,configure);
+
+        List<String> adsVideo = new ArrayList<String>();
+        Map<Integer, List<Long>> correctResponse = new HashMap<Integer,  List<Long>>();
+        Map<Integer, AdChoise> choises = generateAdGame.getChoises();
+
+        AdGameBean res = createAdBeans(adsVideo, correctResponse, choises);
+
+        //6 : time limit
+        Boolean limitedTime = (gooseLevel.getLimitedTime() !=null)?gooseLevel.getLimitedTime():false ;
+        if(limitedTime !=null && limitedTime ==true) {
+            res.setTimeLimite((long) (minScore * 30));//30 seconds by ad
+        }else{
+            res.setTimeLimite(-1L);
+        }
+
+        res.setTotalAds(choises.size());
+
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(player.getId(), gooseLevel.getId());
+
+        boolean multiple = (gooseLevel instanceof IMultiGooseLevel);
+
+        if(gooseToken==null){
+            gooseToken = new GooseToken();
+            gooseToken.setGooseCase(gooseLevel.getStartCase());
+            player.addGooseToken(gooseToken);
+        }else if(!multiple){
+            gooseToken.setGooseCase(gooseLevel.getStartCase());
+        }
+
+        res.setMultiple(multiple);
+
+        GooseCase gooseCase = gooseToken.getGooseCase();
+        Integer number = gooseCase.getNumber();
+
+        List<PlayerGooseGame> pgg = new ArrayList<PlayerGooseGame>();
+        List<GooseCase> cases = gooseGameManager.getCases(gooseLevel, number,  7);
+        for (GooseCase c : cases) {
+            Integer type = c.ihmValue();
+            pgg.add(new PlayerGooseGame(c.getNumber().equals(number), c.getNumber(), type));
+        }
+
+        res.setGooseGames(pgg);
+        res.setUserToken(gooseCase.getNumber());
+
+        if(gooseLevel instanceof ISingleGooseLevel){
+            res.setScore(((SingleGooseLevel)gooseLevel).getMinScore());
+            res.setTypeGame(0);
+        }else if(gooseLevel instanceof IDiceGooseLevel){
+            res.setScore(((DiceGooseLevel)gooseLevel).getMaxScore());
+            res.setTypeGame(1);
+        }
+
+        Map<Integer, ResponseUser> answers = new HashMap<Integer,ResponseUser>();
+
+        res.setLogoMedia(AD_LOVE_YOU_LOGO);
+
+        res.setShowSplashScreen(false);
+
+        session.setAttribute(LIMITED_TIME, limitedTime);
+        session.setAttribute(PLAYER_GOOSE_GAME, pgg);
+        session.setAttribute(USER_ANSWER, answers);
+        session.setAttribute(CORRECT_ANSWER, correctResponse);
+        session.setAttribute(USER_SCORE, 0);
+        session.setAttribute(MAX_ERRORS, 6);
+        session.setAttribute(NB_ERRORS, 0);
+        session.setAttribute(ID_ADGAME, generateAdGame.getId());
+        session.setAttribute(ADS_VIDEO, adsVideo);
+        session.setAttribute(GAME_RESULT, null);
+        session.setAttribute(PLAYER_TOKEN, gooseCase);
+        session.setAttribute(GOOSE_LEVEL, gooseLevel.getId());
+        session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
+        session.setAttribute(AD_CHOISES,choises);
+
+        return res;
+    }
 
 
 
@@ -231,7 +332,8 @@ public class AdGameFacade {
         res.setUserToken(gooseCase.getNumber());
 
         if(gooseLevel instanceof ISingleGooseLevel){
-            res.setMinScore(((SingleGooseLevel)gooseLevel).getMinScore());
+            res.setScore(((SingleGooseLevel)gooseLevel).getMinScore());
+            res.setTypeGame(0);
         }
 
         Map<Integer, ResponseUser> answers = new HashMap<Integer,ResponseUser>();
@@ -274,6 +376,12 @@ public class AdGameFacade {
             amount-=doBid(res, adsSortedByBid);
         }
         return res;
+    }
+
+    private Map<Ad, Double> bidSystem(Map<Double,List<Ad>> adsSortedByBid, double amount) {
+        PaymentConfigure configure = new PaymentConfigure();
+        configure.setAmount(amount);
+        return bidSystem(adsSortedByBid,configure);
     }
 
 
@@ -868,7 +976,6 @@ public class AdGameFacade {
 
         return res;
     }
-
 
 
 

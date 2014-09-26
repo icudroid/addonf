@@ -22,7 +22,7 @@ public class EmpreintSmallBean implements Serializable{
     private Integer adAmount;
     private Integer adAmountLeft;
 
-    private String order;
+    private List<String> products;
 
     private Date startDate;
 

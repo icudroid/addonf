@@ -33,8 +33,9 @@ public interface IMetaData {
         String BID_CATEGORY_MEDIA =                     "bid_cat_media";
         String WALLET =                                 "wallet";
         String TRANSACTION =                            "transaction";
-        String ORDER =                                  "order";
+        String ORDER =                                  "player_order";
         String TRANSACTION_HISTORY =                    "tr_history";
+        String MERCHANT_PRODUCT =                       "merchant_product";
     }
 
     interface ColumnMetadata {
@@ -184,6 +185,7 @@ public interface IMetaData {
                 String DISCRIMINATOR =                  "classe";
                 String SINGLE =                         "single";
                 String MULTI =                          "multi";
+                String DICE =                           "dice";
             }
         }
 
@@ -240,6 +242,7 @@ public interface IMetaData {
 
         public interface Order {
             String MEDIA                                = "media_id";
+            String JOIN                                 = "order_id";
         }
     }
 }

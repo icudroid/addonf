@@ -63,6 +63,14 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 	}
 
 
+    @Override
+    @Transactional
+    public AbstractAdGame generateBorrowGame(Map<Ad, Double> winBidAds,Long idPlayer, GooseLevel level) throws Exception {
+        return generate(winBidAds,null,null,idPlayer,level);
+    }
+
+
+    @Override
     @Transactional
 	public AbstractAdGame generate(Map<Ad, Double> winBidAds, String idPartner, String idTransaction, Long idPlayer, GooseLevel level) throws Exception {
 
@@ -72,8 +80,10 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
             game = new AdGame();
         }else{
             game = new AdGameTransaction();
-            ((AdGameTransaction)game).setIdTransaction(idTransaction);
-            ((AdGameTransaction)game).setMedia(mediaDao.findByExtId(idPartner));
+            if(idTransaction !=null)
+                ((AdGameTransaction)game).setIdTransaction(idTransaction);
+            if(idPartner != null)
+                ((AdGameTransaction)game).setMedia(mediaDao.findByExtId(idPartner));
         }
 
 		game.setGenerated(new Date());

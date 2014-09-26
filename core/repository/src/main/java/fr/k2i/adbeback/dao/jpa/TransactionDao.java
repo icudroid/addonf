@@ -6,7 +6,7 @@ import fr.k2i.adbeback.core.business.game.QAdGame;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.core.business.transaction.*;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,17 +46,15 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
     }
 
     @Override
-    public List<AdGame> getHistoriesBorrowGame(Player player, Long tr, PageRequest pageRequest) {
+    public List<AdGame> getHistoriesBorrowGame(Player player, Long tr, Pageable pageRequest) {
         JPAQuery query = new JPAQuery(getEntityManager());
 
-        QPlayer qPlayer = QPlayer.player;
+        //QPlayer qPlayer = QPlayer.player;
 
-        QTransaction qTransaction = QTransaction.transaction;
-        QEmpreint qEmpreint = qTransaction.as(QEmpreint.class);
+        //QTransaction qTransaction = QTransaction.transaction;
+        QEmpreint qEmpreint = QEmpreint.empreint;
         QCredit credits = QCredit.credit;
         QAdGame qAdGame = QAdGame.adGame;
-
-        QWallet qWallet = QWallet.wallet;
 
         query.from(qEmpreint).join(qEmpreint.credits,credits).join(credits.adGame,qAdGame).where(
                 qEmpreint.id.eq(tr)
@@ -95,15 +93,33 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
     public long countHistoryGame(Long tr) {
         JPAQuery query = new JPAQuery(getEntityManager());
 
-        QTransaction qTransaction = QTransaction.transaction;
-        QEmpreint qEmpreint = qTransaction.as(QEmpreint.class);
+        QEmpreint qEmpreint = QEmpreint.empreint;
 
         QCredit qCredit = QCredit.credit;
 
-        query.from(qEmpreint).join(qEmpreint.credits).where(
+        query.from(qEmpreint).join(qEmpreint.credits,qCredit).where(
                 qEmpreint.id.eq(tr)
         );
 
         return query.singleResult(qCredit.count());
+    }
+
+    @Override
+    public Integer calculateAmountActiveBorrow(Player player) {
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        QPlayer qPlayer = QPlayer.player;
+
+        QTransaction qTransaction = QTransaction.transaction;
+        QEmpreint qEmpreint = qTransaction.as(QEmpreint.class);
+
+        QWallet qWallet = QWallet.wallet;
+
+        query.from(qPlayer).join(qPlayer.wallet,qWallet).join(qWallet.transactions,qTransaction).where(
+                qTransaction.instanceOf(qEmpreint.getType())
+                        .and(qEmpreint.status.in(EmpreintStatus.WAITING,EmpreintStatus.STARTED))
+                        .and(qPlayer.eq(player))
+        );
+        return query.uniqueResult(qEmpreint.adAmountLeft.sum());
     }
 }
