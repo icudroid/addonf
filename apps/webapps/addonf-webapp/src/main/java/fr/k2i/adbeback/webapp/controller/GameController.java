@@ -60,12 +60,17 @@ public class GameController{
     public String diceResult(Map<String, Object> model,HttpServletRequest request) throws Exception {
         Long idBorrow = (Long) request.getSession().getAttribute(AdGameFacade.ID_BORROW);
 
+
+        model.put("score",request.getSession().getAttribute(AdGameFacade.USER_SCORE));
+
+
         if(idBorrow==null){
+
             return "creditResult";
         }else{
             Empreint empreint = (Empreint) transactionDao.get(idBorrow);
             model.put("status", empreint.getStatus());
-            model.put("score",request.getSession().getAttribute(AdGameFacade.USER_SCORE));
+
 
             model.put("idBorrow", idBorrow);
             return "diceResult";

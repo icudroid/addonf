@@ -679,8 +679,11 @@ public class AdGameFacade {
                     res.setWhereToGo(urlBase+"diceResult.html");
 
                     AdGame adGame = (AdGame) adGameDao.get((Long) session.getAttribute(ID_ADGAME));
+                    Empreint empreint = null;
+                    if(session.getAttribute(ID_BORROW)!=null){
+                        empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
+                    }
 
-                    Empreint empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
                     Credit credit = new Credit();
                     credit.setAdGame(adGame);
                     credit.setAdAmount(score);
@@ -961,12 +964,18 @@ public class AdGameFacade {
                     credit.setAdGame(adGame);
                     credit.setAdAmount(score);
 
-                    Empreint empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
+                    Empreint empreint = null;
+                    if(session.getAttribute(ID_BORROW)!=null){
+                        empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
+                    }
+
                     if(empreint!=null) {
                         empreint.addCredit((Credit) transactionDao.save(credit));
                     }else{
                         currentPlayer.getWallet().addTransaction((Credit) transactionDao.save(credit));
                     }
+
+
 
                 }else{
                     res.setWhereToGo(configure.getCallBackUrl());

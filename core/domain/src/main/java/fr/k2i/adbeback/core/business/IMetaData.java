@@ -240,6 +240,7 @@ public interface IMetaData {
                 String CREDIT                           = "credit";
                 String DEBIT                            = "debit" ;
                 String EMPREINT                         = "empreint";
+                String PURCHASE                         = "purchase";
             }
         }
 

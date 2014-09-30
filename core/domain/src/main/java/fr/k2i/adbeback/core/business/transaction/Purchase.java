@@ -14,16 +14,12 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.CREDIT)
-public class Credit extends Transaction implements ICredit{
+@DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.PURCHASE)
+public class Purchase extends Transaction implements IPurchase{
     private Integer adAmount;
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
     private AdGame adGame;
-
-    @ManyToOne
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.CREDIT_ID)
-    private Empreint empreint;
 
 }

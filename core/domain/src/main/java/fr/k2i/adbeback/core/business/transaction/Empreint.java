@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.EMPREINT)
-public class Empreint extends Transaction{
+public class Empreint extends Transaction implements IEmpreint{
     private Integer adAmount;
     private Integer adAmountLeft;
 
@@ -25,8 +25,8 @@ public class Empreint extends Transaction{
     @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.ORDER_ID)
     private Order order;
 
-    @OneToMany(cascade = CascadeType.ALL,targetEntity = Credit.class,mappedBy = "empreint")
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.CREDIT_ID)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "empreint")
+    //@JoinColumn(name = IMetaData.ColumnMetadata.Transaction.CREDIT_ID)
     private List<Credit> credits = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)

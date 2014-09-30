@@ -28,12 +28,21 @@ public class Wallet extends BaseObject implements Serializable {
     @JoinColumn(name="WALLET_ID")
     private List<Transaction> transactions;
 
-    private Long adAmount;
+    private Long adAmount = 0L;
 
     public void addTransaction(Transaction tr) {
+
         if(transactions == null){
             transactions = new ArrayList<>();
         }
+
         transactions.add(tr);
+
+        if(tr instanceof ICredit){
+            this.adAmount+=((Credit)tr).getAdAmount();
+        }else if(tr instanceof IDebit){
+            this.adAmount-=((Debit)tr).getAdAmount();
+        }
     }
+
 }

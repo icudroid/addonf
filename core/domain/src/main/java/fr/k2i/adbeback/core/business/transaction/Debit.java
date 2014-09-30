@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.DEBIT)
-public class Debit extends Transaction {
+public class Debit extends Transaction implements IDebit{
 
     private Integer adAmount;
 
