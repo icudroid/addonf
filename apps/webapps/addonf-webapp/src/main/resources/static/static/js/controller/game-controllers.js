@@ -141,7 +141,7 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
             },3000);
 
 
-            if(data.status == "WinLimitTime"){
+            if(data.status == "WinLimitTime" || data.status == "Win"){
                 //create from for redirect
                 var $form = $("<form>").attr("action",data.whereToGo).attr("method","post").hide();
                 $form.append("<input type='hidden' name='idTransaction' value='"+data.idTransaction+"' />");

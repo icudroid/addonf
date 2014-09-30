@@ -8,13 +8,13 @@ adminControllers.controller('AdminCtrl', ['$scope', 'Admin', '$interval','$timeo
     function($scope, Admin, $interval, $timeout, $route, $location) {
 
         $scope.level = '';
-        $scope.multiple = false;
+        $scope.type = 'DICE';
         $scope.responseResults = false;
         $scope.results = [];
 
         $scope.search = function(){
             $scope.responseResults=false;
-            Admin.search({'level':$scope.level,'multiple':$scope.multiple},function(data){
+            Admin.search({'level':$scope.level,'type':$scope.type},function(data){
                 $scope.responseResults=true;
                 $scope.results=data;
             });
@@ -74,7 +74,7 @@ adminControllers.controller('CreateCtrl', ['$scope', 'Admin', '$interval','$time
         ];
 
         $scope.create = function(){
-            Admin.create({multiple:$scope.multiple,level:$scope.level,strong:$scope.strong,nbCase:$scope.nbCase,minAmount:$scope.minAmount,nbError:$scope.nbError},function(data){
+            Admin.create({type:$scope.type,level:$scope.level,strong:$scope.strong,nbCase:$scope.nbCase,minAmount:$scope.minAmount,nbError:$scope.nbError},function(data){
                 $scope.result = data;
             });
         }

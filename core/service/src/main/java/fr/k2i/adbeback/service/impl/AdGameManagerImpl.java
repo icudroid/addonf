@@ -9,6 +9,7 @@ import fr.k2i.adbeback.core.business.ad.ViewedAd;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.IDiceGooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.IMultiGooseLevel;
 import fr.k2i.adbeback.dao.*;
 import org.joda.time.LocalDate;
@@ -37,7 +38,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
     @Autowired
 	private fr.k2i.adbeback.dao.IBrandDao brandDao;
-	
+
 	private fr.k2i.adbeback.dao.IAdGameDao adGameDao;
 
     @Autowired
@@ -76,7 +77,9 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
         AbstractAdGame game = null;
 
-        if(level instanceof IMultiGooseLevel){
+        if(level instanceof IMultiGooseLevel) {
+            game = new AdGame();
+        }else if(level instanceof IDiceGooseLevel){
             game = new AdGame();
         }else{
             game = new AdGameTransaction();

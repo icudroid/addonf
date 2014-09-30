@@ -1,22 +1,20 @@
 var addonf = addonf || {};
 
-addonf.Borrow = function(idTr,current){
-    this._init(idTr,current);
+addonf.Credit = function(current){
+    this._init(current);
 };
 
-addonf.Borrow.prototype = {
+addonf.Credit.prototype = {
     $gameHistory : null,
     $gameHistoryPagination : null,
     _currentPage : 0,
-    _idtr : null,
     _nbByPage : 10,
     _maxPage : null,
 
 
-    _init : function(idTr,current){
+    _init : function(current){
         var $this = this;
         this._currentPage = current;
-        this._idtr = idTr;
 
         this.$gameHistory = $("#game_history");
         this.$gameHistoryPagination = $("#game_history_pagination");
@@ -24,7 +22,7 @@ addonf.Borrow.prototype = {
         this._getHistories();
 
         $("#play").click(function(){
-            window.location = addonf.base+"repayBorrow/"+$this._idtr;
+            window.location = addonf.base+"credit";
         });
 
     },
@@ -36,7 +34,7 @@ addonf.Borrow.prototype = {
 
 
         $.ajax({
-            url: addonf.base + "historiesBorrowGame/"+this._idtr ,
+            url: addonf.base + "getCredits" ,
             data : {
                 page : this._currentPage,
                 size : this._nbByPage

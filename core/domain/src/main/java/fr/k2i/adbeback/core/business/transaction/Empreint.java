@@ -22,11 +22,11 @@ public class Empreint extends Transaction{
     private Integer adAmountLeft;
 
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.ORDER_ID)
     private Order order;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
+    @OneToMany(cascade = CascadeType.ALL,targetEntity = Credit.class,mappedBy = "empreint")
+    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.CREDIT_ID)
     private List<Credit> credits = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,8 +38,24 @@ public class Empreint extends Transaction{
     @Enumerated(EnumType.STRING)
     private EmpreintStatus status;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
-    private List<TransactionHistory> histories  = new ArrayList<>();;
+    @OneToMany(cascade = CascadeType.ALL,targetEntity =TransactionHistory.class)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.HISTORY_ID)
+    private List<TransactionHistory> histories  = new ArrayList<>();
+
+    public void addCredit(Credit credit) {
+        if(credits == null){
+            credits = new ArrayList<>();
+        }
+        credits.add(credit);
+
+        adAmountLeft-=credit.getAdAmount();
+
+        if(adAmountLeft>0) {
+            //histories.add(new TransactionHistory(credit.getAdGame().getGenerated(), TransactionAction.REFILLED));
+        }else{
+            histories.add(new TransactionHistory(credit.getAdGame().getGenerated(), TransactionAction.FULL_REFILLED));
+            status = EmpreintStatus.ENDED;
+        }
+    }
 
 }

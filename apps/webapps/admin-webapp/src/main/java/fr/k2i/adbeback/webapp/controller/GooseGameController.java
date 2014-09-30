@@ -1,6 +1,9 @@
 package fr.k2i.adbeback.webapp.controller;
 
+import fr.k2i.adbeback.core.business.goosegame.DiceGooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.MultiGooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.SingleGooseLevel;
 import fr.k2i.adbeback.dao.jpa.GooseLevelDao;
 import fr.k2i.adbeback.webapp.bean.GooseLevelGame;
 import fr.k2i.adbeback.webapp.bean.JsonResultError;
@@ -24,6 +27,24 @@ import java.util.Map;
 @Controller
 public class GooseGameController {
 
+    public enum TypeLevel {
+        SINGLE(SingleGooseLevel.class),MULTIPLE(MultiGooseLevel.class),DICE(DiceGooseLevel.class);
+
+        private Class<? extends GooseLevel> levelType;
+
+        public Class<? extends GooseLevel> getLevelType() {
+            return levelType;
+        }
+
+        TypeLevel(Class<? extends GooseLevel> levelType) {
+            this.levelType = levelType;
+        }
+
+
+    }
+
+
+
     @Autowired
     private GooseLevelDao gooseLevelDao;
 
@@ -44,7 +65,7 @@ public class GooseGameController {
 
     @RequestMapping(value = "/manage/gooseGame/search",method  = RequestMethod.POST)
     public @ResponseBody List<GooseLevelGame> search(@RequestBody SearchBean searchBean,Map<String, Object> model){
-        return gooseGameFacade.search(searchBean.getLevel(), searchBean.getMultiple());
+        return gooseGameFacade.search(searchBean.getLevel(), searchBean.getType().getLevelType());
     }
 
 
@@ -56,11 +77,16 @@ public class GooseGameController {
     @RequestMapping(value = "/manage/gooseGame/create",method  = RequestMethod.POST)
     public @ResponseBody GooseLevelGame create(@RequestBody CreateBean createBean){
 
-        if(createBean.getMultiple() != null && createBean.getMultiple()==true){
-            return gooseGameFacade.generateMultiLevel(createBean.getStrong(),createBean.getLevel(), createBean.getMinAmount());
-        }else{
-            return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel(),createBean.getNbError());
+        switch (createBean.getType()){
+            case DICE:
+                return gooseGameFacade.generateDiceLevel(createBean.getNbCase(), createBean.getLevel());
+            case MULTIPLE:
+                return gooseGameFacade.generateMultiLevel(createBean.getStrong(),createBean.getLevel(), createBean.getMinAmount());
+            case SINGLE:
+                return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel(),createBean.getNbError());
         }
+
+        return null;
     }
 
 
@@ -95,16 +121,20 @@ public class GooseGameController {
 
 }
 
+
 @Data
 class SearchBean implements Serializable{
-    private Boolean multiple;
+    private GooseGameController.TypeLevel type;
     private Integer level;
 }
 
 
 @Data
 class CreateBean implements Serializable{
-    private Boolean multiple;
+
+
+
+    private GooseGameController.TypeLevel type;
     private Integer level;
     private Integer strong;
     private Integer nbCase;

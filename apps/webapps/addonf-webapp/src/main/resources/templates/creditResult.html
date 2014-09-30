@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/no-carrousel-1-col">
+<head>
+    <title>AdLoveYou</title>
+</head>
+<body>
+
+
+<ul class="breadcrumb" layout:fragment="breadcrumb"></ul>
+<h1 layout:fragment="titlePage" th:inline="text">[[#{dice-result.title}]]</h1>
+
+<div layout:fragment="content">
+
+    <div class="margin-bottom-40">
+        <h1>Bravo,</h1>
+        Vous avez accumulé <span th:text="${score}"></span> ad.<br/>
+
+        <br/>
+
+        <a th:href="@{/credit)}" class="btn btn-primary" type="button">Rejouer</a>
+        <a th:href="@{/mycredit.html}" class="btn btn-link" type="button">Retour</a>
+
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

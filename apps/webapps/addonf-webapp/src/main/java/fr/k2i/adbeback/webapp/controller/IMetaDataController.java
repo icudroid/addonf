@@ -17,6 +17,8 @@ public interface IMetaDataController {
 
         String MY_BORROW = "/myborrow.html";
         String HISTORY_BORROW_GAME = "/historiesBorrowGame/{tr}";
+        String MY_CREDIT = "/sold.html";
+        String GET_CREDITS = "/getCredits";
     }
 
     interface View{
@@ -30,6 +32,11 @@ public interface IMetaDataController {
             String NO_BORROWS                                                       = "borrow/no_borrows" ;
             String BORROW                                                           = "borrow/borrow";
             String LIST_BORROWS                                                     = "borrow/list";
+        }
+
+        public interface MyCreditController {
+
+            String SHOW                                                             = "credit";
         }
     }
 }

@@ -18,8 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,11 +41,18 @@ public class MyBorrowController {
 
 
 
+
     @Secured(value = "ROLE_USER")
     @RequestMapping(value = IMetaDataController.Path.MY_BORROW)
-    public String show(ModelMap modelMap){
+    public String show(ModelMap modelMap,@RequestParam(required = false,value = "idBorrow")Long idBorrow){
+        List<EmpreintSmallBean> borrows = null;
+        if(idBorrow == null){
+            borrows = borrowFacadeService.getBorrows();
+        }else{
+            borrows = new ArrayList<>();
+            borrows.add(borrowFacadeService.getBorrow(idBorrow));
+        }
 
-        List<EmpreintSmallBean> borrows = borrowFacadeService.getBorrows();
         switch (borrows.size()){
             case 0 :
                 return IMetaDataController.View.MyBorrowController.NO_BORROWS;
@@ -66,13 +75,13 @@ public class MyBorrowController {
 
 
 
-    @Secured(value = "ROLE_USER")
+/*    @Secured(value = "ROLE_USER")
     @RequestMapping(value = "/cet")
     @ResponseBody
     public String createEmpreinTest() throws LimitBorrowException {
         borrowFacadeService.cet();
         return "ok";
-    }
+    }*/
 
 
 }

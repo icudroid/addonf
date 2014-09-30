@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/no-carrousel-1-col">
+<head>
+    <title>AdLoveYou</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row margin-bottom-40">
+        <div class="col-md-12">
+
+            <h1>Listes des mes achats à crédit de Ad</h1>
+            <div class="content-page">
+                <table class="table">
+                    <thead>
+                        <tr>Montant</tr>
+                        <tr>Montant restant</tr>
+                        <tr>Debut</tr>
+                        <tr>Fin</tr>
+                        <tr>Statut</tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="borrow : ${borrows}">
+                            <td th:text="${borrow.adAmount}"></td>
+                            <td th:text="${borrow.adAmountLeft}"></td>
+                            <td th:text="${#dates.format(borrow.startDate, 'dd/MM/yyyy')}">01/01/2001</td>
+                            <td th:text="${#dates.format(borrow.endDate, 'dd/MM/yyyy')}">01/01/2001</td>
+                            <td th:text="${borrow.status}">WAIT</td>
+                            <td><a th:href="@{/myborrow.html(idBorrow=${borrow.id})}">Voir</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

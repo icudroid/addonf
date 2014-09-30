@@ -9,6 +9,9 @@ import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.core.business.partener.Reduction;
 import fr.k2i.adbeback.core.business.player.*;
+import fr.k2i.adbeback.core.business.transaction.Credit;
+import fr.k2i.adbeback.core.business.transaction.Empreint;
+import fr.k2i.adbeback.core.business.transaction.Transaction;
 import fr.k2i.adbeback.core.business.user.BidCategoryMedia;
 import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.dao.*;
@@ -66,7 +69,8 @@ public class AdGameFacade {
     public static final String AD_CHOISES = "adChoises";
 
     public static final String CONFIGURE = "configurePayment";
-    private static final String AD_LOVE_YOU_LOGO = "adloveyou.png";
+    public static final String AD_LOVE_YOU_LOGO = "adloveyou.png";
+    public static final String ID_BORROW = "id_borrow";
 
     @Autowired
     private IAdDao adDao;
@@ -116,10 +120,26 @@ public class AdGameFacade {
     @Autowired
     private ICountryDao countryDao;
 
+    @Value("${addonf.base.url}")
+    private String urlBase;
 
     @Autowired
-    IMediaDao mediaDao;
+    private IMediaDao mediaDao;
 
+    @Autowired
+    private ITransactionDao transactionDao;
+
+
+    @Autowired
+    private fr.k2i.adbeback.dao.IAdGameDao adGameDao;
+
+
+
+
+    @Transactional
+    public AdGameBean createCreditAdGame(HttpServletRequest request) throws Exception {
+        return createBorrowGame(null,request);
+    }
 
     @Transactional
     public AdGameBean createBorrowGame(Long idBorrow , HttpServletRequest request) throws Exception {
@@ -140,8 +160,7 @@ public class AdGameFacade {
         GooseLevel gooseLevel = gooseLevelDao.findDiceLevelForNbAds(minScore);
 
         //4 : generate game
-        AdGameTransaction generateAdGame = (AdGameTransaction) adGameManager.generateBorrowGame(winBidAds, player.getId(), gooseLevel);
-        generateAdGame.setAmount(amount);
+        AdGame generateAdGame = (AdGame) adGameManager.generateBorrowGame(winBidAds, player.getId(), gooseLevel);
 
         //5 : set urlCall in session
         //session.setAttribute(CONFIGURE,configure);
@@ -217,10 +236,10 @@ public class AdGameFacade {
         session.setAttribute(GOOSE_LEVEL, gooseLevel.getId());
         session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
         session.setAttribute(AD_CHOISES,choises);
+        session.setAttribute(ID_BORROW,idBorrow);
 
         return res;
     }
-
 
 
     @Transactional
@@ -647,24 +666,57 @@ public class AdGameFacade {
             if (nbErrs <= maxErr  && index < correctResponse.size()-1  && !(gooseCase instanceof EndLevelGooseCase)) {
                 res.setStatus(StatusGame.Playing);
             } else {
+
+
+                //chargement du gooselevel
+
+                GooseLevel gooseLevel = gooseLevelDao.get((Long) session.getAttribute(GOOSE_LEVEL));
                 fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;
-                PaymentConfigure configure = (PaymentConfigure) session.getAttribute(CONFIGURE);
-                res.setWhereToGo(configure.getCallBackUrl());
-                res.setIdTransaction(configure.getIdTransaction());
-                if(gooseCase instanceof EndLevelGooseCase){
-                    res.setStatus(StatusGame.WinLimitTime);
+
+                if(gooseLevel instanceof IDiceGooseLevel){
+                    res.setStatus(StatusGame.Win);
                     statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
-                    sendCallBack(configure.getCallSysUrl(), "ok", configure.getIdTransaction());
-                }else{
-                    res.setStatus(StatusGame.Lost);
-                    statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
-                    sendCallBack(configure.getCallSysUrl(), "ko", configure.getIdTransaction());
+                    res.setWhereToGo(urlBase+"diceResult.html");
+
+                    AdGame adGame = (AdGame) adGameDao.get((Long) session.getAttribute(ID_ADGAME));
+
+                    Empreint empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
+                    Credit credit = new Credit();
+                    credit.setAdGame(adGame);
+                    credit.setAdAmount(score);
+
+                    if(empreint!=null) {
+                        empreint.addCredit((Credit) transactionDao.save(credit));
+                    }else{
+                        currentPlayer.getWallet().addTransaction((Credit) transactionDao.save(credit));
+                    }
+
+                }else if(gooseLevel instanceof ISingleGooseLevel){
+                    PaymentConfigure configure = (PaymentConfigure) session.getAttribute(CONFIGURE);
+                    res.setWhereToGo(configure.getCallBackUrl());
+                    res.setIdTransaction(configure.getIdTransaction());
+                    if(gooseCase instanceof EndLevelGooseCase){
+                        res.setStatus(StatusGame.WinLimitTime);
+                        statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
+                        sendCallBack(configure.getCallSysUrl(), "ok", configure.getIdTransaction());
+                    }else{
+                        res.setStatus(StatusGame.Lost);
+                        statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
+                        sendCallBack(configure.getCallSysUrl(), "ko", configure.getIdTransaction());
+                    }
+                }else if(gooseLevel instanceof IMultiGooseLevel){
+                    //Todo:
                 }
+
+
                 LimiteTimeAdGameBean gameResult = computeResultGame(request);
                 session.setAttribute(GAME_RESULT, gameResult);
 
                 adGameManager.saveResponses((Long) session.getAttribute(ID_ADGAME), score, answers, statusGame);
                 //emptyGameSession(request);
+
+
+
             }
         }
 
@@ -887,30 +939,63 @@ public class AdGameFacade {
             Integer maxErr = (Integer) session.getAttribute(MAX_ERRORS);
 
             PaymentConfigure configure = (PaymentConfigure) session.getAttribute(CONFIGURE);
+            fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;
+            GooseLevel gooseLevel = gooseLevelDao.get((Long) session.getAttribute(GOOSE_LEVEL));
+
 
             if (nbErrs > maxErr) {
                 res.setStatus(StatusGame.Lost);
                 res.setWhereToGo(configure.getCallBackUrl());
                 res.setIdTransaction(configure.getIdTransaction());
                 sendCallBack(configure.getCallSysUrl(), "ko",configure.getIdTransaction());
-                adGameManager.saveResponses((Long) session
-                        .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
+                statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
             } else if (index +1 < correctResponse.size()) {
                 res.setStatus(StatusGame.Playing);
             } else if(score >0){
-                res.setWhereToGo(configure.getCallBackUrl());
-                sendCallBack(configure.getCallSysUrl(), "ok",configure.getIdTransaction());
-                res.setIdTransaction(configure.getIdTransaction());
+                if (gooseLevel instanceof IDiceGooseLevel) {
+                    res.setWhereToGo(urlBase+"diceResult.html");
+
+                    AdGame adGame = (AdGame) adGameDao.get((Long) session.getAttribute(ID_ADGAME));
+
+                    Credit credit = new Credit();
+                    credit.setAdGame(adGame);
+                    credit.setAdAmount(score);
+
+                    Empreint empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
+                    if(empreint!=null) {
+                        empreint.addCredit((Credit) transactionDao.save(credit));
+                    }else{
+                        currentPlayer.getWallet().addTransaction((Credit) transactionDao.save(credit));
+                    }
+
+                }else{
+                    res.setWhereToGo(configure.getCallBackUrl());
+                    sendCallBack(configure.getCallSysUrl(), "ok", configure.getIdTransaction());
+                    res.setIdTransaction(configure.getIdTransaction());
+                }
                 res.setStatus(StatusGame.WinLimitTime);
-                adGameManager.saveResponses((Long) session
-                        .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Win);
+                statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
+
             }else{
-                res.setWhereToGo(configure.getCallBackUrl());
-                sendCallBack(configure.getCallSysUrl(), "ko",configure.getIdTransaction());
-                res.setIdTransaction(configure.getIdTransaction());
-                res.setStatus(StatusGame.Lost);
+                if (gooseLevel instanceof IDiceGooseLevel) {
+                    res.setWhereToGo(urlBase+"diceResult.html");
+                    res.setStatus(StatusGame.Win);
+                    statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
+                }else{
+                    res.setWhereToGo(configure.getCallBackUrl());
+                    sendCallBack(configure.getCallSysUrl(), "ko", configure.getIdTransaction());
+                    res.setIdTransaction(configure.getIdTransaction());
+                    res.setStatus(StatusGame.Lost);
+                    statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
+                }
+
+
+            }
+
+
+            if(!fr.k2i.adbeback.core.business.game.StatusGame.Playing.equals(statusGame)){
                 adGameManager.saveResponses((Long) session
-                        .getAttribute(ID_ADGAME), score, answers, fr.k2i.adbeback.core.business.game.StatusGame.Lost);
+                        .getAttribute(ID_ADGAME), score, answers, statusGame);
             }
 
         }
@@ -976,7 +1061,6 @@ public class AdGameFacade {
 
         return res;
     }
-
 
 
 }

@@ -30,6 +30,13 @@ public class TransactionHistory extends BaseObject implements Serializable {
     @Enumerated(EnumType.STRING)
     private TransactionAction action;
 
+    public TransactionHistory(){}
+
+    public TransactionHistory(Date date, TransactionAction action) {
+        executed = date;
+        this.action = action;
+    }
+
 
     public static TransactionHistory creation() {
         TransactionHistory res = new TransactionHistory();

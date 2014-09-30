@@ -22,4 +22,7 @@ public class Credit extends Transaction {
     @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
     private AdGame adGame;
 
+    @ManyToOne
+    private Empreint empreint;
+
 }

@@ -10,10 +10,13 @@
                         <label class="sr-only" for="level" th:text="#{manage.goosegame.form.level}" >numéro du niveau</label>
                         <input type="text" class="form-control" id="level" placeholder="level" ng-model="level"/>
                     </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="multiple"/><span th:text="#{manage.goosegame.form.multiple}">jeu multiple</span>
-                        </label>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="type" >Type</label>
+                        <select ng-model="type" id="type">
+                            <option value="SINGLE">SINGLE</option>
+                            <option value="MULTIPLE">MULTIPLE</option>
+                            <option value="DICE">DICE</option>
+                        </select>
                     </div>
 
                     <button type="button" class="btn btn-default" th:text="#{manage.goosegame.form.btn.search}" ng-click="search()">Rechercher</button>

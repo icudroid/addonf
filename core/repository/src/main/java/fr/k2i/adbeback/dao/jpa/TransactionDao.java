@@ -45,6 +45,33 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
         return query.list(qEmpreint);
     }
 
+
+    @Override
+    public List<AdGame> getHistoriesCreditGame(Player player, Pageable pageRequest) {
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        QPlayer qPlayer = QPlayer.player;
+        QWallet qWallet = QWallet.wallet;
+
+        QTransaction qTransaction = QTransaction.transaction;
+        QCredit qCredit = qTransaction.as(QCredit.class);
+
+        QAdGame qAdGame = QAdGame.adGame;
+
+        query.from(qPlayer).join(qPlayer.wallet,qWallet).join(qWallet.transactions,qTransaction).join(qCredit.adGame,qAdGame).where(
+                qPlayer.eq(player)
+                        .and(qTransaction.instanceOf(qCredit.getType()))
+                        .and(qCredit.empreint.isNull())
+        );
+
+        query.orderBy(qAdGame.generated.desc());
+        query
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize());
+
+        return query.list(qAdGame);
+    }
+
     @Override
     public List<AdGame> getHistoriesBorrowGame(Player player, Long tr, Pageable pageRequest) {
         JPAQuery query = new JPAQuery(getEntityManager());
@@ -90,7 +117,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
     }
 
     @Override
-    public long countHistoryGame(Long tr) {
+    public long countHistoryBorrowGame(Long tr) {
         JPAQuery query = new JPAQuery(getEntityManager());
 
         QEmpreint qEmpreint = QEmpreint.empreint;
@@ -99,6 +126,28 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
 
         query.from(qEmpreint).join(qEmpreint.credits,qCredit).where(
                 qEmpreint.id.eq(tr)
+        );
+
+        return query.singleResult(qCredit.count());
+    }
+
+
+    @Override
+    public long countHistoryCreditGame(Long playerId) {
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+
+
+        QPlayer qPlayer = QPlayer.player;
+        QWallet qWallet = QWallet.wallet;
+
+        QTransaction qTransaction = QTransaction.transaction;
+        QCredit qCredit = qTransaction.as(QCredit.class);
+
+        query.from(qPlayer).join(qPlayer.wallet,qWallet).join(qWallet.transactions,qTransaction).where(
+                qPlayer.id.eq(playerId)
+                        .and(qTransaction.instanceOf(qCredit.getType()))
+                        .and(qCredit.empreint.isNull())
         );
 
         return query.singleResult(qCredit.count());
@@ -122,4 +171,6 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
         );
         return query.uniqueResult(qEmpreint.adAmountLeft.sum());
     }
+
+
 }

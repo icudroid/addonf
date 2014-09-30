@@ -3,24 +3,19 @@ package fr.k2i.adbeback.webapp.facade;
 import fr.k2i.adbeback.core.business.game.AdGame;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.transaction.*;
-import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.ITransactionDao;
-import fr.k2i.adbeback.dao.jpa.MediaDao;
-import fr.k2i.adbeback.exception.LimitBorrowException;
 import fr.k2i.adbeback.service.BorrowManager;
 import fr.k2i.adbeback.webapp.bean.EmpreintSmallBean;
 import fr.k2i.adbeback.webapp.bean.HistoryAdGameBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -88,11 +83,11 @@ public class BorrowFacadeService {
             list.add(HistoryAdGameBean.builder().adAmount(adGame.getScore().getScore()).generated(adGame.getGenerated()).build());
         }
 
-        return new PageImpl<HistoryAdGameBean>(list, pageRequest,transactionDao.countHistoryGame(tr));
+        return new PageImpl<HistoryAdGameBean>(list, pageRequest,transactionDao.countHistoryBorrowGame(tr));
     }
 
 
-    @Transactional
+/*    @Transactional
     public void cet() throws LimitBorrowException {
         Player player = playerFacade.getCurrentPlayer();
 
@@ -111,6 +106,25 @@ public class BorrowFacadeService {
                 .build();
 
         borrowManager.createBorrow(player,order,50.0);
+
+    }*/
+
+    public EmpreintSmallBean getBorrow(Long idBorrow) {
+        Player player = playerFacade.getCurrentPlayer();
+
+        Empreint empreint = (Empreint) transactionDao.get(idBorrow);
+
+        return    EmpreintSmallBean.builder()
+                    .id(empreint.getId())
+                    .adAmount(empreint.getAdAmount())
+                    .adAmountLeft(empreint.getAdAmountLeft())
+                    .endDate(empreint.getEndDate())
+                    .startDate(empreint.getStartDate())
+                    .status(empreint.getStatus())
+                    .products(empreint.getOrder().toProductsString())
+                    .histories(empreint.getHistories())
+                    .build();
+
 
     }
 }

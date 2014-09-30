@@ -30,20 +30,14 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
 
 
     @Override
-    public List<? extends GooseLevel> findLevel(Integer level, Boolean multiple) {
+    public List<? extends GooseLevel> findLevel(Integer level, Class<? extends GooseLevel> type) {
 
         QGooseLevel gooseLevel = QGooseLevel.gooseLevel;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(gooseLevel);
 
 
-            BooleanExpression expression = null;
-
-            if(multiple){
-                expression = gooseLevel.instanceOf(MultiGooseLevel.class);
-            }else{
-                expression = gooseLevel.instanceOf(SingleGooseLevel.class);
-            }
+            BooleanExpression expression = gooseLevel.instanceOf(type);
 
             if(level!=null){
                 expression.and(gooseLevel.level.eq(level));

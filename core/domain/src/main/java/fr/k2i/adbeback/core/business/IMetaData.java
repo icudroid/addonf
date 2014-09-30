@@ -232,6 +232,9 @@ public interface IMetaData {
 
         public interface Transaction {
             String JOIN                                 = "transaction_id"  ;
+            String CREDIT_ID                            = "credit_id";
+            String HISTORY_ID                           = "history_id";
+            String ORDER_ID                             = "order_id";
 
             public interface Discrimator {
                 String CREDIT                           = "credit";

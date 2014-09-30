@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.dao;
 
+import fr.k2i.adbeback.core.business.game.AdGame;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.transaction.Empreint;
 import fr.k2i.adbeback.core.business.transaction.Transaction;
@@ -23,7 +24,11 @@ public interface ITransactionDao extends IGenericDao<Transaction, Long>{
 
     boolean isTransactionOkForPlayer(Long tr, Player player);
 
-    long countHistoryGame(Long tr);
+    long countHistoryBorrowGame(Long tr);
+
+    long countHistoryCreditGame(Long idPlayer);
 
     Integer calculateAmountActiveBorrow(Player player);
+
+    List<AdGame> getHistoriesCreditGame(Player player, Pageable pageRequest);
 }

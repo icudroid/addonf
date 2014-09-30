@@ -31,6 +31,26 @@ public class GooseGameFacade {
     @Autowired
     private GooseCaseDao gooseCaseDao;
 
+    @Transactional
+    public GooseLevelGame generateDiceLevel(Integer nbCase, Integer numLevel) {
+        DiceGooseLevel level = new DiceGooseLevel();
+        level.setLevel(numLevel);
+        level.setNbMaxAdByPlay(nbCase);
+        level.setMaxScore(nbCase);
+
+        level.startCase(new StartLevelGooseCase());
+
+        for (int i = 1; i < nbCase; i++) {
+            NoneGooseCase acase = new NoneGooseCase();
+            acase.setNumber(i);
+            level.addCase(acase);
+        }
+
+        level.endCase(new EndLevelGooseCase(nbCase));
+
+        return new GooseLevelGame(gooseLevelDao.save(level));
+    }
+
 
     @Transactional
     public GooseLevelGame generateSingleLevel(Integer nbCase,Integer numLevel,Integer nbError){
@@ -89,7 +109,7 @@ public class GooseGameFacade {
     }
 
     @Transactional
-    public List<GooseLevelGame> search(Integer level, Boolean multiple) {
+    public List<GooseLevelGame> search(Integer level, Class<? extends GooseLevel> multiple) {
         List<? extends GooseLevel> levels =  gooseLevelDao.findLevel(level,multiple);
         List<GooseLevelGame> gooseLevelGames = new ArrayList<GooseLevelGame>();
         for (GooseLevel gooseLevel : levels) {
@@ -126,4 +146,6 @@ public class GooseGameFacade {
     public void modifyMinAmount(Long levelId, Integer minAmount) {
         gooseLevelDao.modifyLevelMinAmount(levelId,minAmount);
     }
+
+
 }

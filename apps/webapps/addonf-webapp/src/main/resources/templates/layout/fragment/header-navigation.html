@@ -1,9 +1,17 @@
 <div class="header-navigation pull-right font-transform-inherit">
     <ul>
+
+        <li><a th:href="@{/index.html}">Home</a></li>
+
+        <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/myborrow.html}">Mes Crédits de Ad</a></li>
+        <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/sold.html}">Mes Cumules de Ad</a></li>
+        <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/credit}">Gagné des Ad</a></li>
+        <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/buyed.html}">Mes Achats</a></li>
+
+        <!--
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
                 Home
-
             </a>
 
             <ul class="dropdown-menu">
@@ -148,7 +156,7 @@
         <li><a href="onepage-index.html" target="_blank">One Page</a></li>
         <li><a href="http://keenthemes.com/preview/metronic/theme/templates/admin" target="_blank">Admin theme</a></li>
 
-        <!-- BEGIN TOP SEARCH -->
+        &lt;!&ndash; BEGIN TOP SEARCH &ndash;&gt;
         <li class="menu-search">
             <span class="sep"></span>
             <i class="fa fa-search search-btn"></i>
@@ -163,6 +171,7 @@
                 </form>
             </div>
         </li>
+-->
         <!-- END TOP SEARCH -->
     </ul>
 </div>
