@@ -31,6 +31,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -233,12 +234,21 @@ public class AdGameFacade {
 
         //0 : verifier
         Media media = mediaDao.findByExtId(configure.getIdPartner());
+        String passPhrase = media.getPassPhrase();
+
+        //verification crypt
+        String encode = passPhrase+configure.getTransactionDate().getTime()+configure.getIdTransaction();
+        String hex = DigestUtils.md5DigestAsHex(encode.getBytes("UTF-8"));
+
+        if(!hex.equals(configure.getValidation())){
+            throw new Exception("Bad validation");
+        }
 
         if(media ==null){
             return null;
         }else{
             if(mediaDao.existTransaction(configure.getIdPartner(),configure.getIdTransaction())){
-                return null;
+                throw new Exception("Bad Transaction");
             }
         }
 

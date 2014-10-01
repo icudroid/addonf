@@ -6,6 +6,7 @@ import fr.k2i.adbeback.webapp.bean.configure.information.Information;
 import fr.k2i.adbeback.webapp.bean.configure.url.Url;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,4 +28,6 @@ public class PaymentConfigure{
     private MediaType mediaType;
     private String category;
     private Boolean showSplashScreen;
+    private Date transactionDate;
+    private String validation;
 }

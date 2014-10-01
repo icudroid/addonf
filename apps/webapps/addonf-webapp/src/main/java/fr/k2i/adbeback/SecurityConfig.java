@@ -106,7 +106,16 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/signup.html").permitAll()
                 .antMatchers("/getTownsByZipcode/**").permitAll()
                 .antMatchers("/enrollConfirm").permitAll()
+                .antMatchers("/game").permitAll()
+                .antMatchers("/resume").permitAll()
+                .antMatchers("/partials/**").permitAll()
+                .antMatchers("/rest/createGame").permitAll()
 
+                .antMatchers("/logo/**").permitAll()
+                .antMatchers("/video/**").permitAll()
+                .antMatchers("/rest/play/**").permitAll()
+                .antMatchers("/rest/noresponse/*").permitAll()
+                .antMatchers("/rest/getResultAdGame").permitAll()
 
                 .antMatchers("/**").hasRole("USER");
 
