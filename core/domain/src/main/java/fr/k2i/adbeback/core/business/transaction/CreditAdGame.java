@@ -14,12 +14,11 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.PURCHASE)
-public class Purchase extends Transaction implements IPurchase{
-    private Integer adAmount;
+@DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.CREDIT_AD_GAME)
+public class CreditAdGame extends Credit implements ICreditAdGame{
 
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
+    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.AD_GAME)
     private AdGame adGame;
 
 }

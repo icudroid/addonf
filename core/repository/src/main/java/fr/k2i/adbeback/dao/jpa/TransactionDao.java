@@ -6,9 +6,11 @@ import fr.k2i.adbeback.core.business.game.QAdGame;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.core.business.transaction.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,22 +56,89 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
         QWallet qWallet = QWallet.wallet;
 
         QTransaction qTransaction = QTransaction.transaction;
-        QCredit qCredit = qTransaction.as(QCredit.class);
 
-        QAdGame qAdGame = QAdGame.adGame;
+        QCreditAdGame qCreditAdGame = qTransaction.as(QCreditAdGame.class);
+        QCreditLostMicroPurchase qCreditLostMicroPurchase = qTransaction.as(QCreditLostMicroPurchase.class);
 
-        query.from(qPlayer).join(qPlayer.wallet,qWallet).join(qWallet.transactions,qTransaction).join(qCredit.adGame,qAdGame).where(
-                qPlayer.eq(player)
-                        .and(qTransaction.instanceOf(qCredit.getType()))
-                        .and(qCredit.empreint.isNull())
-        );
+        query.from(qPlayer)
+                .join(qPlayer.wallet,qWallet)
+                .join(qWallet.transactions,qTransaction)
+                .where(
+                        qPlayer.eq(player).and(qTransaction.instanceOfAny(qCreditAdGame.getType(), qCreditLostMicroPurchase.getType()))
+                );
 
-        query.orderBy(qAdGame.generated.desc());
+        query.orderBy(qCreditAdGame.adGame.generated.desc(), qCreditLostMicroPurchase.microPurchase.adGame.generated.desc());
         query
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize());
 
-        return query.list(qAdGame);
+        List<Transaction> transactions = query.list(qTransaction);
+
+
+        List<AdGame> res = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            if (transaction instanceof ICreditAdGame) {
+                CreditAdGame iCreditAdGame = (CreditAdGame) transaction;
+                res.add(iCreditAdGame.getAdGame());
+
+            }else if (transaction instanceof ICreditLostMicroPurchase) {
+                CreditLostMicroPurchase iCreditAdGame = (CreditLostMicroPurchase) transaction;
+                res.add(iCreditAdGame.getMicroPurchase().getAdGame());
+            }
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<Transaction> getHistoriesPurchase(Player player, Pageable pageRequest) {
+
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        QPlayer qPlayer = QPlayer.player;
+        QWallet qWallet = QWallet.wallet;
+
+        QTransaction qTransaction = QTransaction.transaction;
+
+        QDebit qDebit = qTransaction.as(QDebit.class);
+        QMicroPurchase qMicroPurchase = qTransaction.as(QMicroPurchase.class);
+
+        query.from(qPlayer)
+                .join(qPlayer.wallet,qWallet)
+                .join(qWallet.transactions,qTransaction)
+                .where(
+                        qPlayer.eq(player).and(qTransaction.instanceOfAny(qDebit.getType(), qMicroPurchase.getType()))
+                );
+
+        query.orderBy(qDebit.order.orderDate.desc(), qMicroPurchase.order.orderDate.desc());
+        query
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize());
+
+        return query.list(qTransaction);
+    }
+
+    @Override
+    public long countHistoryPurchase(Long idPlayer) {
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        QPlayer qPlayer = QPlayer.player;
+        QWallet qWallet = QWallet.wallet;
+
+        QTransaction qTransaction = QTransaction.transaction;
+
+        QDebit qDebit = qTransaction.as(QDebit.class);
+        QMicroPurchase qMicroPurchase = qTransaction.as(QMicroPurchase.class);
+
+        query.from(qPlayer)
+                .join(qPlayer.wallet,qWallet)
+                .join(qWallet.transactions,qTransaction)
+                .where(
+                        qPlayer.id.eq(idPlayer).and(qTransaction.instanceOfAny(qDebit.getType(), qMicroPurchase.getType()))
+                );
+
+        return query.singleResult(qTransaction.count());
     }
 
     @Override
@@ -80,7 +149,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
 
         //QTransaction qTransaction = QTransaction.transaction;
         QEmpreint qEmpreint = QEmpreint.empreint;
-        QCredit credits = QCredit.credit;
+        QCreditRefundBorrow credits = QCreditRefundBorrow.creditRefundBorrow;
         QAdGame qAdGame = QAdGame.adGame;
 
         query.from(qEmpreint).join(qEmpreint.credits,credits).join(credits.adGame,qAdGame).where(
@@ -122,7 +191,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
 
         QEmpreint qEmpreint = QEmpreint.empreint;
 
-        QCredit qCredit = QCredit.credit;
+        QCreditRefundBorrow qCredit = QCreditRefundBorrow.creditRefundBorrow;
 
         query.from(qEmpreint).join(qEmpreint.credits,qCredit).where(
                 qEmpreint.id.eq(tr)
@@ -136,21 +205,23 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
     public long countHistoryCreditGame(Long playerId) {
         JPAQuery query = new JPAQuery(getEntityManager());
 
-
-
         QPlayer qPlayer = QPlayer.player;
         QWallet qWallet = QWallet.wallet;
 
         QTransaction qTransaction = QTransaction.transaction;
-        QCredit qCredit = qTransaction.as(QCredit.class);
 
-        query.from(qPlayer).join(qPlayer.wallet,qWallet).join(qWallet.transactions,qTransaction).where(
-                qPlayer.id.eq(playerId)
-                        .and(qTransaction.instanceOf(qCredit.getType()))
-                        .and(qCredit.empreint.isNull())
-        );
+        QCreditAdGame qCreditAdGame = qTransaction.as(QCreditAdGame.class);
+        QCreditLostMicroPurchase qCreditLostMicroPurchase = qTransaction.as(QCreditLostMicroPurchase.class);
 
-        return query.singleResult(qCredit.count());
+
+        query.from(qPlayer)
+                .join(qPlayer.wallet, qWallet)
+                .join(qWallet.transactions, qTransaction)
+                .where(
+                        qPlayer.id.eq(playerId).and(qTransaction.instanceOfAny(qCreditAdGame.getType(), qCreditLostMicroPurchase.getType()))
+                );
+
+        return query.singleResult(qTransaction.count());
     }
 
     @Override
@@ -171,6 +242,8 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
         );
         return query.uniqueResult(qEmpreint.adAmountLeft.sum());
     }
+
+
 
 
 }

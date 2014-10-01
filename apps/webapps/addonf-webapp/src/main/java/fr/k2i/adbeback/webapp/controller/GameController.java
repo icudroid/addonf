@@ -1,7 +1,6 @@
 package fr.k2i.adbeback.webapp.controller;
 
 import fr.k2i.adbeback.core.business.transaction.Empreint;
-import fr.k2i.adbeback.core.business.transaction.Transaction;
 import fr.k2i.adbeback.dao.ITransactionDao;
 import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
@@ -32,7 +31,7 @@ public class GameController{
 
     @RequestMapping("/game")
     public String startGame(@ModelAttribute PaymentConfigure configure,Map<String, Object> model,HttpServletRequest request) throws Exception {
-        model.put("game",adGameFacade.createAdGame(configure,request));
+        model.put("game",adGameFacade.createMicroPurchaseAdGame(configure, request));
         return "game";
     }
 

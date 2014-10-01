@@ -1,29 +1,21 @@
 package fr.k2i.adbeback.webapp.controller.ajax;
 
 import com.google.common.collect.Lists;
-import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.webapp.bean.AdGameBean;
 import fr.k2i.adbeback.webapp.bean.LimiteTimeAdGameBean;
 import fr.k2i.adbeback.webapp.bean.ResponseAdGameBean;
 import fr.k2i.adbeback.webapp.bean.configure.PaymentConfigure;
 import fr.k2i.adbeback.webapp.facade.AdGameFacade;
 import fr.k2i.adbeback.webapp.util.HttpStreaming;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.activation.MimetypesFileTypeMap;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 import static fr.k2i.adbeback.webapp.facade.AdGameFacade.ADS_VIDEO;
@@ -60,7 +52,7 @@ public class AdGameWebservice {
     @RequestMapping(value = "/rest/createGame", method = RequestMethod.GET)
     public @ResponseBody
     AdGameBean createGame(@ModelAttribute PaymentConfigure configure, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return adGameFacade.createAdGame(configure,request);
+        return adGameFacade.createMicroPurchaseAdGame(configure, request);
     }
 
 

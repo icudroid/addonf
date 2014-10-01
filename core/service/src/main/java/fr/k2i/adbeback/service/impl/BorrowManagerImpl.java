@@ -53,7 +53,7 @@ public class BorrowManagerImpl extends GenericManagerImpl<Empreint, Long> implem
 
         empreint.setAdAmountLeft(adAmount);
         empreint.setAdAmount(adAmount);
-        empreint.setCredits(new ArrayList<Credit>());
+        empreint.setCredits(new ArrayList<>());
         empreint.setStatus(EmpreintStatus.WAITING);
 
 

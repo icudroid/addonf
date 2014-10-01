@@ -266,16 +266,16 @@ public class SignupController {
 
         switch (res){
             case TIME_OUT:
-                return IMetaDataController.View.REGISTRATION_TIMEOUT;
+                return IMetaDataController.SignupController.View.REGISTRATION_TIMEOUT;
             case OK:
                 User user = playerDao.findByEmailorUserName(email);
                 playerDao.enable(user.getId());
                 otpServiceFacade.removeOtp(email,username,key);
-                return IMetaDataController.View.REGISTRATION_CONFIRM;
+                return IMetaDataController.SignupController.View.REGISTRATION_CONFIRM;
             case KO:
-                return IMetaDataController.View.REGISTRATION_KO;
+                return IMetaDataController.SignupController.View.REGISTRATION_KO;
             default:
-                return IMetaDataController.View.REGISTRATION_KO;
+                return IMetaDataController.SignupController.View.REGISTRATION_KO;
         }
 
 

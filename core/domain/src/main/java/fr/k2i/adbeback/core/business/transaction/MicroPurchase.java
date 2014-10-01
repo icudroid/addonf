@@ -14,11 +14,13 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.DEBIT)
-public class Debit extends Transaction implements IDebit{
+@DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.MICRO_PURCHASE)
+public class MicroPurchase extends Debit implements IMicroPurchase {
 
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.ORDER_ID)
-    private Order order;
+    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.AD_GAME)
+    private AdGame adGame;
+
+
 
 }

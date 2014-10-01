@@ -43,7 +43,7 @@ public class MyBorrowController {
 
 
     @Secured(value = "ROLE_USER")
-    @RequestMapping(value = IMetaDataController.Path.MY_BORROW)
+    @RequestMapping(value = IMetaDataController.MyBorrowController.Path.MY_BORROW)
     public String show(ModelMap modelMap,@RequestParam(required = false,value = "idBorrow")Long idBorrow){
         List<EmpreintSmallBean> borrows = null;
         if(idBorrow == null){
@@ -55,19 +55,19 @@ public class MyBorrowController {
 
         switch (borrows.size()){
             case 0 :
-                return IMetaDataController.View.MyBorrowController.NO_BORROWS;
+                return IMetaDataController.MyBorrowController.View.NO_BORROWS;
             case 1 :
                 modelMap.addAttribute("borrow",borrows.get(0));
-                return IMetaDataController.View.MyBorrowController.BORROW;
+                return IMetaDataController.MyBorrowController.View.BORROW;
             default:
                 modelMap.addAttribute("borrows",borrows);
-                return IMetaDataController.View.MyBorrowController.LIST_BORROWS;
+                return IMetaDataController.MyBorrowController.View.LIST_BORROWS;
         }
     }
 
 
     @Secured(value = "ROLE_USER")
-    @RequestMapping(value = IMetaDataController.Path.HISTORY_BORROW_GAME)
+    @RequestMapping(value = IMetaDataController.MyBorrowController.Path.HISTORY_BORROW_GAME)
     @ResponseBody
     public Page<HistoryAdGameBean> historiesBorrowGame(@PathVariable("tr") Long tr,Pageable pageable){
         return borrowFacadeService.getHistoriesBorrowGame(tr,pageable);

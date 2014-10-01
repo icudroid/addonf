@@ -13,30 +13,61 @@ public interface IMetaDataController {
         String CONTEXT_RELATIVE="contextRelative:";
     }
 
-    interface Path{
 
-        String MY_BORROW = "/myborrow.html";
-        String HISTORY_BORROW_GAME = "/historiesBorrowGame/{tr}";
-        String MY_CREDIT = "/sold.html";
-        String GET_CREDITS = "/getCredits";
+
+
+
+
+    public interface SignupController {
+        interface View {
+            String REGISTRATION_CONFIRM                                                 = "enroll/userCreated";
+            String REGISTRATION_TIMEOUT                                                 = "enroll/timeout";
+            String REGISTRATION_KO                                                      = "enroll/ko";
+        }
+        interface Path {
+
+
+        }
     }
 
-    interface View{
-
-
-        String REGISTRATION_CONFIRM                                                 = "enroll/userCreated";
-        String REGISTRATION_TIMEOUT                                                 = "enroll/timeout";
-        String REGISTRATION_KO                                                      = "enroll/ko";
-
-        public interface MyBorrowController {
+    public interface MyBorrowController {
+        interface View {
             String NO_BORROWS                                                       = "borrow/no_borrows" ;
             String BORROW                                                           = "borrow/borrow";
             String LIST_BORROWS                                                     = "borrow/list";
         }
+        interface Path {
+            String MY_BORROW                                                        = "/myborrow.html";
+            String HISTORY_BORROW_GAME                                              = "/historiesBorrowGame/{tr}";
 
-        public interface MyCreditController {
-
-            String SHOW                                                             = "credit";
         }
     }
+
+    public interface MyCreditController {
+        interface View {
+            String SHOW                                                             = "credit";
+        }
+        interface Path {
+            String MY_CREDIT                                                        = "/sold.html";
+            String GET_CREDITS                                                      = "/getCredits";
+
+        }
+
+    }
+
+
+    public interface MyPurchaseController {
+        interface View {
+            String SHOW                                                             = "purchase";
+            String DETAIL                                                           = "purchaseDetailPopup";
+        }
+        interface Path {
+            String MY_PURCHASE                                                      = "/purchase.html";
+            String GET_PURCHASES                                                    = "/getPurchase";
+
+            String DETAIL                                                           = "/purchase/{id}";
+        }
+
+    }
+
 }

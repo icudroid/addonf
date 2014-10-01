@@ -18,7 +18,6 @@ import java.util.List;
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.EMPREINT)
 public class Empreint extends Transaction implements IEmpreint{
-    private Integer adAmount;
     private Integer adAmountLeft;
 
     @OneToOne(cascade = {CascadeType.ALL})
@@ -27,7 +26,7 @@ public class Empreint extends Transaction implements IEmpreint{
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "empreint")
     //@JoinColumn(name = IMetaData.ColumnMetadata.Transaction.CREDIT_ID)
-    private List<Credit> credits = new ArrayList<>();
+    private List<CreditRefundBorrow> credits = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
@@ -42,7 +41,7 @@ public class Empreint extends Transaction implements IEmpreint{
     @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.HISTORY_ID)
     private List<TransactionHistory> histories  = new ArrayList<>();
 
-    public void addCredit(Credit credit) {
+    public void addCredit(CreditRefundBorrow credit) {
         if(credits == null){
             credits = new ArrayList<>();
         }

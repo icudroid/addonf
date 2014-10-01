@@ -30,6 +30,9 @@ public abstract class Transaction extends BaseObject implements Serializable{
     @Id
     @SequenceGenerator(name = "Transaction_Gen", sequenceName = "Transaction_Sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Transaction_Gen")
-    private Long id;
+    protected Long id;
+
+
+    protected Integer adAmount;
 
 }

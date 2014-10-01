@@ -17,4 +17,6 @@ import java.util.Date;
 public class HistoryAdGameBean implements Serializable {
     private Date generated;
     private Integer adAmount;
+    private String media;
+    private Long id;
 }

@@ -31,4 +31,8 @@ public interface ITransactionDao extends IGenericDao<Transaction, Long>{
     Integer calculateAmountActiveBorrow(Player player);
 
     List<AdGame> getHistoriesCreditGame(Player player, Pageable pageRequest);
+
+    List<Transaction> getHistoriesPurchase(Player player, Pageable pageRequest);
+
+    long countHistoryPurchase(Long idPlayer);
 }

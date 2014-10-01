@@ -231,16 +231,21 @@ public interface IMetaData {
         }
 
         public interface Transaction {
-            String JOIN                                 = "transaction_id"  ;
+            //String JOIN                                 = "transaction_id"  ;
             String CREDIT_ID                            = "credit_id";
             String HISTORY_ID                           = "history_id";
             String ORDER_ID                             = "order_id";
+            String MICRO_PURCHASE_ID                    = "micro_purchase_id";
+            String AD_GAME                              = "ad_game_id";
 
             public interface Discrimator {
                 String CREDIT                           = "credit";
                 String DEBIT                            = "debit" ;
                 String EMPREINT                         = "empreint";
-                String PURCHASE                         = "purchase";
+                String MICRO_PURCHASE                   = "micro_purchase";
+                String CREDIT_LOST_MICRO_PURCHASE       = "credit_lost";
+                String CREDIT_REFUND_BORROW             = "credit_refund_borrow";
+                String CREDIT_AD_GAME                   = "credit_ad_game";
             }
         }
 

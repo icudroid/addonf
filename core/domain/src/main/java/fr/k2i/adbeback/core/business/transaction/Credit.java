@@ -15,15 +15,8 @@ import javax.persistence.*;
 @Data
 @Entity
 @DiscriminatorValue(IMetaData.ColumnMetadata.Transaction.Discrimator.CREDIT)
-public class Credit extends Transaction implements ICredit{
-    private Integer adAmount;
+public abstract class Credit extends Transaction implements ICredit{
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.JOIN)
-    private AdGame adGame;
 
-    @ManyToOne
-    @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.CREDIT_ID)
-    private Empreint empreint;
 
 }

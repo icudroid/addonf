@@ -34,15 +34,15 @@ public class MyCreditController {
 
 
     @Secured(value = "ROLE_USER")
-    @RequestMapping(value = IMetaDataController.Path.MY_CREDIT)
+    @RequestMapping(value = IMetaDataController.MyCreditController.Path.MY_CREDIT)
     public String show(ModelMap modelMap){
         modelMap.addAttribute("adAmount", creditFacadeService.getAdAmount());
-        return IMetaDataController.View.MyCreditController.SHOW;
+        return IMetaDataController.MyCreditController.View.SHOW;
     }
 
 
     @Secured(value = "ROLE_USER")
-    @RequestMapping(value = IMetaDataController.Path.GET_CREDITS)
+    @RequestMapping(value = IMetaDataController.MyCreditController.Path.GET_CREDITS)
     @ResponseBody
     public Page<HistoryAdGameBean> getCredits(Pageable pageable){
         return creditFacadeService.getCreditGame(pageable);

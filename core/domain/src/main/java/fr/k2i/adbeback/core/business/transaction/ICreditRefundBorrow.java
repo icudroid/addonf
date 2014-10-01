@@ -2,9 +2,9 @@ package fr.k2i.adbeback.core.business.transaction;
 
 /**
  * User: dimitri
- * Date: 30/09/14
- * Time: 17:56
+ * Date: 01/10/14
+ * Time: 10:16
  * Goal:
  */
-public interface IPurchase {
+public interface ICreditRefundBorrow {
 }
