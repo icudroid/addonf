@@ -28,6 +28,10 @@ public class PaymentConfigure{
     private MediaType mediaType;
     private String category;
     private Boolean showSplashScreen;
-    private Date transactionDate;
+    private Long transactionDate;
     private String validation;
+
+    public Date getTransactionDate(){
+        return new Date(transactionDate);
+    }
 }
