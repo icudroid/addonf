@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class GameController{
     @Autowired
     private ITransactionDao transactionDao;
 
-    @RequestMapping("/game")
+    @RequestMapping(value = "/game",method = RequestMethod.POST)
     public String startGame(@ModelAttribute PaymentConfigure configure,Map<String, Object> model,HttpServletRequest request) throws Exception {
         model.put("game",adGameFacade.createMicroPurchaseAdGame(configure, request));
         return "game";
