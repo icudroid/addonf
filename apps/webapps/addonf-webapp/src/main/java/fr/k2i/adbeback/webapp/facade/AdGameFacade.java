@@ -684,7 +684,7 @@ public class AdGameFacade {
                 GooseLevel gooseLevel = gooseLevelDao.get((Long) session.getAttribute(GOOSE_LEVEL));
                 fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;
 
-                AdGame adGame = (AdGame) adGameDao.get((Long) session.getAttribute(ID_ADGAME));
+                AbstractAdGame adGame = adGameDao.get((Long) session.getAttribute(ID_ADGAME));
 
                 if(gooseLevel instanceof IDiceGooseLevel){
                     res.setStatus(StatusGame.Win);
@@ -699,14 +699,14 @@ public class AdGameFacade {
 
                     if(empreint!=null) {
                         CreditRefundBorrow credit = new CreditRefundBorrow();
-                        credit.setAdGame(adGame);
+                        credit.setAdGame((AdGame) adGame);
                         credit.setAdAmount(score);
 
                         empreint.addCredit((CreditRefundBorrow) transactionDao.save(credit));
                     }else{
 
                         CreditAdGame credit = new CreditAdGame();
-                        credit.setAdGame(adGame);
+                        credit.setAdGame((AdGame) adGame);
                         credit.setAdAmount(score);
 
                         currentPlayer.getWallet().addTransaction(transactionDao.save(credit));
@@ -723,7 +723,7 @@ public class AdGameFacade {
 
                         MicroPurchase microPurchase = new MicroPurchase();
                         microPurchase.setAdAmount(score);
-                        microPurchase.setAdGame(adGame);
+                        microPurchase.setAdGame((AdGameTransaction) adGame);
                         microPurchase.setOrder(createorder(configure));
 
                         currentPlayer.getWallet().addTransaction(transactionDao.save(microPurchase));
@@ -733,7 +733,7 @@ public class AdGameFacade {
 
                         MicroPurchase microPurchase = new MicroPurchase();
                         microPurchase.setAdAmount(score);
-                        microPurchase.setAdGame(adGame);
+                        microPurchase.setAdGame((AdGameTransaction) adGame);
                         microPurchase.setOrder(createorder(configure));
 
                         CreditLostMicroPurchase credit = new CreditLostMicroPurchase();
@@ -996,7 +996,7 @@ public class AdGameFacade {
 
         Integer maxErr = (Integer) session.getAttribute(MAX_ERRORS);
 
-        AdGame adGame = (AdGame) adGameDao.get((Long) session.getAttribute(ID_ADGAME));
+        AbstractAdGame adGame = adGameDao.get((Long) session.getAttribute(ID_ADGAME));
         fr.k2i.adbeback.core.business.game.StatusGame statusGame = null;
 
         if (gooseLevel instanceof IDiceGooseLevel) {
@@ -1016,14 +1016,14 @@ public class AdGameFacade {
 
                 if(empreint!=null) {
                     CreditRefundBorrow credit = new CreditRefundBorrow();
-                    credit.setAdGame(adGame);
+                    credit.setAdGame((AdGame) adGame);
                     credit.setAdAmount(score);
 
                     empreint.addCredit((CreditRefundBorrow) transactionDao.save(credit));
                 }else{
 
                     CreditAdGame credit = new CreditAdGame();
-                    credit.setAdGame(adGame);
+                    credit.setAdGame((AdGame) adGame);
                     credit.setAdAmount(score);
 
                     currentPlayer.getWallet().addTransaction(transactionDao.save(credit));
@@ -1044,7 +1044,7 @@ public class AdGameFacade {
 
                 MicroPurchase microPurchase = new MicroPurchase();
                 microPurchase.setAdAmount(score);
-                microPurchase.setAdGame(adGame);
+                microPurchase.setAdGame((AdGameTransaction) adGame);
                 microPurchase.setOrder(createorder(configure));
 
                 CreditLostMicroPurchase credit = new CreditLostMicroPurchase();

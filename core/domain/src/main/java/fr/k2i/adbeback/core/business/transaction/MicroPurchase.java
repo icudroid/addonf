@@ -2,6 +2,7 @@ package fr.k2i.adbeback.core.business.transaction;
 
 import fr.k2i.adbeback.core.business.IMetaData;
 import fr.k2i.adbeback.core.business.game.AdGame;
+import fr.k2i.adbeback.core.business.game.AdGameTransaction;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class MicroPurchase extends Debit implements IMicroPurchase {
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = IMetaData.ColumnMetadata.Transaction.AD_GAME)
-    private AdGame adGame;
+    private AdGameTransaction adGame;
 
 
 
