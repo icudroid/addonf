@@ -22,7 +22,7 @@ public class EndLevelGooseCase extends GooseCase {
 
 	@Override
 	public String toString() {
-		return "EndLevelGooseCase [id=" + id + ", level=" + level + "]";
+		return "EndLevelGooseCase [id=" + id + ", level=" + level.getLevel() + "]";
 	}
 
 }
