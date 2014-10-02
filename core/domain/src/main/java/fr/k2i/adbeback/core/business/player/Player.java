@@ -33,30 +33,30 @@ public class Player extends User{
     protected Boolean newsletter;
 
     @OneToMany(mappedBy="player",cascade=CascadeType.ALL)
-    protected List<AbstractAdGame> games = new ArrayList<AbstractAdGame>();
+    protected List<AbstractAdGame> games = new ArrayList<>();
 
     @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
     @OrderBy("windate DESC")
-    protected List<GooseWin> wins = new ArrayList<GooseWin>();
+    protected List<GooseWin> wins = new ArrayList<>();
 
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="PLAYER_ID")
-    protected List<GooseToken> gooseTokens;
+    protected List<GooseToken> gooseTokens = new ArrayList<>();
 
 //    protected Integer validatedLevel;
 
     @OneToMany(cascade=CascadeType.ALL,mappedBy="player")
-    protected List<ViewedAd> viewedAds = new ArrayList<ViewedAd>();
+    protected List<ViewedAd> viewedAds = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     protected AgeGroup ageGroup;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Wallet wallet;
+    private Wallet wallet = new Wallet();
 
     public void addGooseToken(GooseToken gooseToken) {
         if(gooseTokens==null){
-            gooseTokens = new ArrayList<GooseToken>();
+            gooseTokens = new ArrayList<>();
         }
         gooseToken.setPlayer(this);
         gooseTokens.add(gooseToken);
