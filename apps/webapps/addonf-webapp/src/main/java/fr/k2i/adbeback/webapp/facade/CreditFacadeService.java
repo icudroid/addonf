@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.webapp.facade;
 
+import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.AdGame;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.ITransactionDao;
@@ -35,9 +36,9 @@ public class CreditFacadeService {
         List<HistoryAdGameBean> list = new ArrayList<HistoryAdGameBean>();
 
 
-        List<AdGame> historiesCreditGame = transactionDao.getHistoriesCreditGame(player, pageRequest);
+        List<AbstractAdGame> historiesCreditGame = transactionDao.getHistoriesCreditGame(player, pageRequest);
 
-        for (AdGame adGame : historiesCreditGame) {
+        for (AbstractAdGame adGame : historiesCreditGame) {
             list.add(HistoryAdGameBean.builder().adAmount(adGame.getScore().getScore()).generated(adGame.getGenerated()).build());
         }
 

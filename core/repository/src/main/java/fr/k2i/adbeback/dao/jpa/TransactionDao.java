@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
+import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.AdGame;
 import fr.k2i.adbeback.core.business.game.QAdGame;
 import fr.k2i.adbeback.core.business.player.Player;
@@ -49,7 +50,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
 
 
     @Override
-    public List<AdGame> getHistoriesCreditGame(Player player, Pageable pageRequest) {
+    public List<AbstractAdGame> getHistoriesCreditGame(Player player, Pageable pageRequest) {
         JPAQuery query = new JPAQuery(getEntityManager());
 
         QPlayer qPlayer = QPlayer.player;
@@ -75,7 +76,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
         List<Transaction> transactions = query.list(qTransaction);
 
 
-        List<AdGame> res = new ArrayList<>();
+        List<AbstractAdGame> res = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
             if (transaction instanceof ICreditAdGame) {

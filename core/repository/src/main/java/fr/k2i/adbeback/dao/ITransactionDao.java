@@ -1,5 +1,6 @@
 package fr.k2i.adbeback.dao;
 
+import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.AdGame;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.transaction.Empreint;
@@ -30,7 +31,7 @@ public interface ITransactionDao extends IGenericDao<Transaction, Long>{
 
     Integer calculateAmountActiveBorrow(Player player);
 
-    List<AdGame> getHistoriesCreditGame(Player player, Pageable pageRequest);
+    List<AbstractAdGame> getHistoriesCreditGame(Player player, Pageable pageRequest);
 
     List<Transaction> getHistoriesPurchase(Player player, Pageable pageRequest);
 
