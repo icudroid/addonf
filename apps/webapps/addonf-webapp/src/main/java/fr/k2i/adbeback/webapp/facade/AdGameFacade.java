@@ -13,6 +13,8 @@ import fr.k2i.adbeback.core.business.transaction.*;
 import fr.k2i.adbeback.core.business.user.BidCategoryMedia;
 import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.dao.*;
+import fr.k2i.adbeback.logger.Log;
+import fr.k2i.adbeback.logger.LogHelper;
 import fr.k2i.adbeback.service.AdGameManager;
 import fr.k2i.adbeback.service.GooseGameManager;
 import fr.k2i.adbeback.webapp.bean.*;
@@ -25,6 +27,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -117,6 +120,9 @@ public class AdGameFacade {
 
     @Autowired
     private fr.k2i.adbeback.dao.IAdGameDao adGameDao;
+
+
+    private static Logger logger = LogHelper.getLogger(AdGameFacade.class);
 
 
 
@@ -230,6 +236,9 @@ public class AdGameFacade {
     @Transactional
     public AdGameBean createMicroPurchaseAdGame(PaymentConfigure configure, HttpServletRequest request) throws Exception {
 
+
+        logger.debug("createMicroPurchaseAdGame PaymentConfigure : {}",configure);
+
         HttpSession session = request.getSession();
 
         //0 : verifier
@@ -241,13 +250,16 @@ public class AdGameFacade {
         String hex = DigestUtils.md5DigestAsHex(encode.getBytes("UTF-8"));
 
         if(!hex.equals(configure.getValidation())){
+            logger.debug("Bad validation");
             throw new Exception("Bad validation");
         }
 
         if(media ==null){
+            logger.debug("media not exist");
             return null;
         }else{
             if(mediaDao.existTransaction(configure.getIdPartner(),configure.getIdTransaction())){
+                logger.debug("transaction exist {} for {}",new Object[]{configure.getIdPartner(),configure.getIdTransaction()});
                 throw new Exception("Bad Transaction");
             }
         }
@@ -286,10 +298,15 @@ public class AdGameFacade {
 
         Integer minScore = winBidAds.size();
 
+        logger.debug("minScore {}",minScore);
+
         //3 : find level for NB ads
         SingleGooseLevel gooseLevel = gooseLevelDao.findForNbAds(minScore);
+        logger.debug("gooseLevel {}",gooseLevel);
 
         int maxErr = gooseLevel.getNbMaxAdByPlay() - gooseLevel.getMinScore();
+
+        logger.debug("maxErr : {}",maxErr);
 
         //need more add for max Err
         bidSystemNeedMoreAdForErr(winBidAds,adsSortedByBid, maxErr);
