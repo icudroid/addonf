@@ -692,25 +692,7 @@ public class AdGameFacade {
                     res.setWhereToGo(urlBase+"diceResult.html");
 
 
-                    Empreint empreint = null;
-                    if(session.getAttribute(ID_BORROW)!=null){
-                        empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
-                    }
-
-                    if(empreint!=null) {
-                        CreditRefundBorrow credit = new CreditRefundBorrow();
-                        credit.setAdGame((AdGame) adGame);
-                        credit.setAdAmount(score);
-
-                        empreint.addCredit((CreditRefundBorrow) transactionDao.save(credit));
-                    }else{
-
-                        CreditAdGame credit = new CreditAdGame();
-                        credit.setAdGame((AdGame) adGame);
-                        credit.setAdAmount(score);
-
-                        currentPlayer.getWallet().addTransaction(transactionDao.save(credit));
-                    }
+                    addCreditOnDiceLevel(session, currentPlayer, score, (AdGame) adGame);
 
                 }else if(gooseLevel instanceof ISingleGooseLevel){
                     PaymentConfigure configure = (PaymentConfigure) session.getAttribute(CONFIGURE);
@@ -721,26 +703,12 @@ public class AdGameFacade {
                         res.setStatus(StatusGame.WinLimitTime);
                         statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
 
-                        MicroPurchase microPurchase = new MicroPurchase();
-                        microPurchase.setAdAmount(score);
-                        microPurchase.setAdGame((AdGameTransaction) adGame);
-                        microPurchase.setOrder(createorder(configure));
-
-                        currentPlayer.getWallet().addTransaction(transactionDao.save(microPurchase));
+                        addCreditOnWinMicroPurchase(currentPlayer, score, (AdGameTransaction) adGame, configure);
 
                         sendCallBack(configure.getCallSysUrl(), "ok", configure.getIdTransaction());
                     }else{
 
-                        MicroPurchase microPurchase = new MicroPurchase();
-                        microPurchase.setAdAmount(score);
-                        microPurchase.setAdGame((AdGameTransaction) adGame);
-                        microPurchase.setOrder(createorder(configure));
-
-                        CreditLostMicroPurchase credit = new CreditLostMicroPurchase();
-                        credit.setAdAmount(score);
-                        credit.setMicroPurchase(microPurchase);
-
-                        currentPlayer.getWallet().addTransaction(transactionDao.save(credit));
+                        addCreditOnLostMicroPurchase(currentPlayer, score, (AdGameTransaction) adGame, configure);
 
                         res.setStatus(StatusGame.Lost);
                         statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
@@ -770,6 +738,37 @@ public class AdGameFacade {
 
         return res;
 
+    }
+
+    private void addCreditOnDiceLevel(HttpSession session, Player currentPlayer, Integer score, AdGame adGame) {
+        Empreint empreint = null;
+        if(session.getAttribute(ID_BORROW)!=null){
+            empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
+        }
+
+        if(empreint!=null) {
+            CreditRefundBorrow credit = new CreditRefundBorrow();
+            credit.setAdGame((AdGame) adGame);
+            credit.setAdAmount(score);
+
+            empreint.addCredit((CreditRefundBorrow) transactionDao.save(credit));
+        }else{
+
+            CreditAdGame credit = new CreditAdGame();
+            credit.setAdGame((AdGame) adGame);
+            credit.setAdAmount(score);
+
+            currentPlayer.getWallet().addTransaction(transactionDao.save(credit));
+        }
+    }
+
+    private void addCreditOnWinMicroPurchase(Player currentPlayer, Integer score, AdGameTransaction adGame, PaymentConfigure configure) {
+        MicroPurchase microPurchase = new MicroPurchase();
+        microPurchase.setAdAmount(score);
+        microPurchase.setAdGame((AdGameTransaction) adGame);
+        microPurchase.setOrder(createorder(configure));
+
+        currentPlayer.getWallet().addTransaction(transactionDao.save(microPurchase));
     }
 
     private Order createorder(PaymentConfigure configure) {
@@ -1009,25 +1008,7 @@ public class AdGameFacade {
 
                 res.setWhereToGo(urlBase+"diceResult.html");
 
-                Empreint empreint = null;
-                if(session.getAttribute(ID_BORROW)!=null){
-                    empreint = (Empreint) transactionDao.get((Long) session.getAttribute(ID_BORROW));
-                }
-
-                if(empreint!=null) {
-                    CreditRefundBorrow credit = new CreditRefundBorrow();
-                    credit.setAdGame((AdGame) adGame);
-                    credit.setAdAmount(score);
-
-                    empreint.addCredit((CreditRefundBorrow) transactionDao.save(credit));
-                }else{
-
-                    CreditAdGame credit = new CreditAdGame();
-                    credit.setAdGame((AdGame) adGame);
-                    credit.setAdAmount(score);
-
-                    currentPlayer.getWallet().addTransaction(transactionDao.save(credit));
-                }
+                addCreditOnDiceLevel(session, currentPlayer, score, (AdGame) adGame);
 
                 statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
 
@@ -1042,17 +1023,7 @@ public class AdGameFacade {
             }else{
                 //lost
 
-                MicroPurchase microPurchase = new MicroPurchase();
-                microPurchase.setAdAmount(score);
-                microPurchase.setAdGame((AdGameTransaction) adGame);
-                microPurchase.setOrder(createorder(configure));
-
-                CreditLostMicroPurchase credit = new CreditLostMicroPurchase();
-                credit.setAdAmount(score);
-                credit.setMicroPurchase(microPurchase);
-
-                currentPlayer.getWallet().addTransaction(transactionDao.save(credit));
-
+                addCreditOnLostMicroPurchase(currentPlayer, score, (AdGameTransaction) adGame, configure);
 
                 res.setStatus(StatusGame.Lost);
                 res.setWhereToGo(configure.getCallBackUrl());
@@ -1079,6 +1050,18 @@ public class AdGameFacade {
         return res;
     }
 
+    private void addCreditOnLostMicroPurchase(Player currentPlayer, Integer score, AdGameTransaction adGame, PaymentConfigure configure) {
+        MicroPurchase microPurchase = new MicroPurchase();
+        microPurchase.setAdAmount(score);
+        microPurchase.setAdGame((AdGameTransaction) adGame);
+        microPurchase.setOrder(createorder(configure));
+
+        CreditLostMicroPurchase credit = new CreditLostMicroPurchase();
+        credit.setAdAmount(score);
+        credit.setMicroPurchase(microPurchase);
+
+        currentPlayer.getWallet().addTransaction(transactionDao.save(credit));
+    }
 
 
     private List<PlayerGooseGame> getGooseGame(HttpServletRequest request)
