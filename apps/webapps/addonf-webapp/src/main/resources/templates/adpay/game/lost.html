@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/iframe">
+<head>
+    <title>AdLoveYou</title>
+
+    <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+
+
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row margin-bottom-40">
+        <div class="col-md-12">
+            <h1>Désolé !!!!</h1>
+            <h2>Vous avez perdu</h2>
+
+            <div class="content-page">
+
+                <form id="formChoice" class="form-horizontal" role="form" th:action="${flowExecutionUrl}" method="post">
+
+                    <p>Pour ne pas perdre vos point accumulé vous devez soit vous connecter avec votre compte adloveyou, soit vous enregistrer.</p>
+
+                    <p>Ces points pourront vos servir pour faire des réductions ou obtenir gratuitement des musiques sur <a href="www.mtzik.fr" target="_blank">MTZik.fr</a>  </p>
+
+                    <form id="formWinLottery" class="form-horizontal" role="form" th:object="${command}" th:action="${flowExecutionUrl}" method="post">
+
+                        <div class="form-actions fluid">
+                            <div class="col-md-offset-3 col-md-9">
+                                <input class="btn green" type="submit" value="Retenter votre chance" name="_eventId_retry" />
+                                <input class="btn green" type="submit" value="S'inscrire" name="_eventId_enroll" />
+                                <input class="btn green" type="submit" value="Se connecter" name="_eventId_login" />
+                                <input class="btn green" type="submit" value="Choisir un autre moyen de paiement" name="_eventId_otherChoice" />
+                            </div>
+                        </div>
+
+                    </form>
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -108,12 +108,21 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         QAdRule adRule = QAdRule.adRule;
         QCountryRule countryRule = adRule.as(QCountryRule.class);
 
+        City city = player.getAddress().getCity();
+        Long countryId = null;
+        if(city==null){
+            countryId = player.getAddress().getCountry().getId();
+        }else{
+            countryId = city.getCountry().getId();
+        }
+
+
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(ad).join(ad.rules,adRule).on(adRule.instanceOf(countryRule.getType()))
                 .where(
                         ad.startDate.loe(date.toDate())
                         .and(ad.endDate.goe(date.toDate()))
-                        .and(countryRule.country.id.eq(player.getAddress().getCity().getCountry().getId()))
+                        .and(countryRule.country.id.eq(countryId))
                         .and(ad.providedBy.id.eq(media.getId()))
                 );
 

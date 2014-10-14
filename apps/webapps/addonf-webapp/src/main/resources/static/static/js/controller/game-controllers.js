@@ -143,17 +143,32 @@ adgameControllers.controller('GameCtrl', ['$scope', 'Game', '$interval','$timeou
 
             if(data.status == "WinLimitTime" || data.status == "Win"){
                 //create from for redirect
-                var $form = $("<form>").attr("action",data.whereToGo).attr("method","post").hide();
-                $form.append("<input type='hidden' name='idTransaction' value='"+data.idTransaction+"' />");
+                var $form;
+                if($scope.adGame.typeGame == 3){
+                    $form = $("<form>").attr("action",addonf.flowExecutionUrl+'&_eventId=next').attr("method","post").hide();
+                }else{
+                    $form = $("<form>").attr("action",data.whereToGo).attr("method","post").hide();
+                    $form.append("<input type='hidden' name='idTransaction' value='"+data.idTransaction+"' />");
+                }
+
                 $('body').append($form);
                 $form.submit();
 
             }else if(data.status == "Lost"){
 
+                if($scope.adGame.typeGame == 3){
+                    addonf.lost = {
+                        whereToGo : addonf.flowExecutionUrl,
+                        idTransaction : data.idTransaction
+                    };
+                }else{
                     addonf.lost = {
                         whereToGo : data.whereToGo,
                         idTransaction : data.idTransaction
                     };
+                }
+
+
 
                     $timeout.cancel($scope.timeoutStatic);
                     $scope.videoElt[0].pause();

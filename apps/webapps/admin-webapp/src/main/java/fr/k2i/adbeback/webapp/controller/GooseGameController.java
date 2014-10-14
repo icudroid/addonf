@@ -1,9 +1,6 @@
 package fr.k2i.adbeback.webapp.controller;
 
-import fr.k2i.adbeback.core.business.goosegame.DiceGooseLevel;
-import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
-import fr.k2i.adbeback.core.business.goosegame.MultiGooseLevel;
-import fr.k2i.adbeback.core.business.goosegame.SingleGooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.*;
 import fr.k2i.adbeback.dao.jpa.GooseLevelDao;
 import fr.k2i.adbeback.webapp.bean.GooseLevelGame;
 import fr.k2i.adbeback.webapp.bean.JsonResultError;
@@ -28,7 +25,7 @@ import java.util.Map;
 public class GooseGameController {
 
     public enum TypeLevel {
-        SINGLE(SingleGooseLevel.class),MULTIPLE(MultiGooseLevel.class),DICE(DiceGooseLevel.class);
+        SINGLE(SingleGooseLevel.class),MULTIPLE(MultiGooseLevel.class),DICE(DiceGooseLevel.class),LOTTERY(LotteryGooseLevel.class);
 
         private Class<? extends GooseLevel> levelType;
 
@@ -84,6 +81,8 @@ public class GooseGameController {
                 return gooseGameFacade.generateMultiLevel(createBean.getStrong(),createBean.getLevel(), createBean.getMinAmount());
             case SINGLE:
                 return gooseGameFacade.generateSingleLevel(createBean.getNbCase(),createBean.getLevel(),createBean.getNbError());
+            case LOTTERY:
+                return gooseGameFacade.generateLotteryLevel(createBean.getNbCase(),createBean.getLevel());
         }
 
         return null;

@@ -2,6 +2,7 @@ package fr.k2i.adbeback.dao;
 
 import fr.k2i.adbeback.core.business.goosegame.DiceGooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
+import fr.k2i.adbeback.core.business.goosegame.LotteryGooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.SingleGooseLevel;
 
 import java.util.List;
@@ -20,5 +21,6 @@ public interface IGooseLevelDao extends IGenericDao<GooseLevel, Long> {
 
     DiceGooseLevel findDiceLevelForNbAds(Integer minScore);
 
+    LotteryGooseLevel findLotteryForNbAds(Integer minScore);
 }
 

@@ -128,6 +128,159 @@ public class AdGameFacade {
 
 
     @Transactional
+    public AdGameBean createLotteryAdGame(PaymentConfigure configure, HttpServletRequest request) throws Exception {
+
+
+        HttpSession session = request.getSession();
+
+        //0 : verifier
+        Media media = mediaDao.findByExtId(configure.getIdPartner());
+
+        if(media ==null){
+            logger.debug("media not exist");
+            return null;
+        }else{
+            if(mediaDao.existTransaction(configure.getIdPartner(),configure.getIdTransaction())){
+                logger.debug("transaction exist {} for {}",new Object[]{configure.getIdPartner(),configure.getIdTransaction()});
+                throw new Exception("Bad Transaction");
+            }
+        }
+        Player player = null;
+        if(!playerFacade.isAnnonymous() || playerFacade.isAnnonymousPlayer()){
+            player = playerFacade.getCurrentPlayer();
+        }else{
+            //1 : create Anonym User
+            player = getAnonymousPlayer(configure);
+            //log user
+            WebUser webPlayer = new WebUser(player);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(webPlayer, webPlayer.getPassword(), webPlayer.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+
+
+        //get all valid ad for player
+        List<Ad> ads = null;
+        if(configure.getSelfAd()){
+            ads = adDao.getAllValidForAndProvidedBy(player,media);
+        }else{
+            ads= adDao.getAllValidFor(player);
+        }
+
+        Map<Double,List<Ad>> adsSortedByBid = constructBidsSortedMap(ads);
+
+        //bid system to calculate min ad neeeded
+        Map<Ad,Double> winBidAds  = bidSystem(adsSortedByBid,configure);
+
+        //moyen 0.20 euro / pub
+        //2 : estimate min score
+        /*Double nb = configure.getAmount() / AVERAGE_AP_PRICE;
+        Double left = configure.getAmount() % AVERAGE_AP_PRICE;
+        Integer minScore =  nb.intValue();
+
+        //one more if exemple 3.75 => 4
+        if(left!=0){
+            minScore++;
+        }*/
+
+        Integer minScore = winBidAds.size();
+
+        logger.debug("minScore {}",minScore);
+
+        //3 : find level for NB ads
+        LotteryGooseLevel gooseLevel = gooseLevelDao.findLotteryForNbAds(minScore);
+        logger.debug("gooseLevel {}",gooseLevel);
+
+        int maxErr = gooseLevel.getNbMaxAdByPlay() - gooseLevel.getMinScore();
+
+        logger.debug("maxErr : {}",maxErr);
+
+        //need more add for max Err
+        bidSystemNeedMoreAdForErr(winBidAds,adsSortedByBid, maxErr);
+
+        //4 : generate game
+        AdGameTransaction generateAdGame = (AdGameTransaction) adGameManager.generate(winBidAds,configure.getIdPartner(),configure.getIdTransaction(),player.getId(),gooseLevel);
+        generateAdGame.setAmount(configure.getAmount());
+
+        //5 : set urlCall in session
+        session.setAttribute(CONFIGURE,configure);
+
+        List<String> adsVideo = new ArrayList<String>();
+        Map<Integer, List<Long>> correctResponse = new HashMap<Integer,  List<Long>>();
+        Map<Integer, AdChoise> choises = generateAdGame.getChoises();
+
+        AdGameBean res = createAdBeans(adsVideo, correctResponse, choises);
+
+        //6 : time limit
+        Boolean limitedTime = (gooseLevel.getLimitedTime() !=null)?gooseLevel.getLimitedTime():false ;
+        if(limitedTime !=null && limitedTime ==true) {
+            res.setTimeLimite((long) (minScore * 30));//30 seconds by ad
+        }else{
+            res.setTimeLimite(-1L);
+        }
+
+        res.setTotalAds(choises.size());
+
+        GooseToken gooseToken =  playerDao.getPlayerGooseToken(player.getId(), gooseLevel.getId());
+
+        boolean multiple = (gooseLevel instanceof IMultiGooseLevel);
+
+        if(gooseToken==null){
+            gooseToken = new GooseToken();
+            gooseToken.setGooseCase(gooseLevel.getStartCase());
+            player.addGooseToken(gooseToken);
+        }else if(!multiple){
+            gooseToken.setGooseCase(gooseLevel.getStartCase());
+        }
+
+        res.setMultiple(multiple);
+
+        GooseCase gooseCase = gooseToken.getGooseCase();
+        Integer number = gooseCase.getNumber();
+
+        List<PlayerGooseGame> pgg = new ArrayList<PlayerGooseGame>();
+        List<GooseCase> cases = gooseGameManager.getCases(gooseLevel, number,  7);
+        for (GooseCase c : cases) {
+            Integer type = c.ihmValue();
+            pgg.add(new PlayerGooseGame(c.getNumber().equals(number), c.getNumber(), type));
+        }
+
+        res.setGooseGames(pgg);
+        res.setUserToken(gooseCase.getNumber());
+
+        determineGameType(gooseLevel, res);
+
+
+        Map<Integer, ResponseUser> answers = new HashMap<Integer,ResponseUser>();
+
+        res.setLogoMedia(media.getLogo());
+
+        boolean showSplashScreen =  (configure.getShowSplashScreen()!=null)?configure.getShowSplashScreen():false;
+        res.setShowSplashScreen(showSplashScreen);
+
+        session.setAttribute(LIMITED_TIME, limitedTime);
+        session.setAttribute(PLAYER_GOOSE_GAME, pgg);
+        session.setAttribute(USER_ANSWER, answers);
+        session.setAttribute(CORRECT_ANSWER, correctResponse);
+        session.setAttribute(USER_SCORE, 0);
+        session.setAttribute(MAX_ERRORS, maxErr);
+        session.setAttribute(NB_ERRORS, 0);
+        session.setAttribute(ID_ADGAME, generateAdGame.getId());
+        session.setAttribute(ADS_VIDEO, adsVideo);
+        session.setAttribute(GAME_RESULT, null);
+        session.setAttribute(PLAYER_TOKEN, gooseCase);
+        session.setAttribute(GOOSE_LEVEL, gooseLevel.getId());
+        session.setAttribute(GAME_END_TIME, new Date().getTime()+(res.getTimeLimite())*1000);
+        session.setAttribute(AD_CHOISES,choises);
+
+        return res;
+
+
+
+    }
+
+
+
+    @Transactional
     public AdGameBean createCreditAdGame(HttpServletRequest request) throws Exception {
         return createBorrowGame(null,request);
     }
@@ -199,13 +352,7 @@ public class AdGameFacade {
         res.setGooseGames(pgg);
         res.setUserToken(gooseCase.getNumber());
 
-        if(gooseLevel instanceof ISingleGooseLevel){
-            res.setScore(((SingleGooseLevel)gooseLevel).getMinScore());
-            res.setTypeGame(0);
-        }else if(gooseLevel instanceof IDiceGooseLevel){
-            res.setScore(((DiceGooseLevel)gooseLevel).getMaxScore());
-            res.setTypeGame(1);
-        }
+        determineGameType(gooseLevel, res);
 
         Map<Integer, ResponseUser> answers = new HashMap<Integer,ResponseUser>();
 
@@ -232,6 +379,21 @@ public class AdGameFacade {
         return res;
     }
 
+    private void determineGameType(GooseLevel gooseLevel, AdGameBean res) {
+        if(gooseLevel instanceof ISingleGooseLevel){
+            res.setScore(((SingleGooseLevel)gooseLevel).getMinScore());
+            res.setTypeGame(0);
+        }else if(gooseLevel instanceof IDiceGooseLevel){
+            res.setScore(((DiceGooseLevel)gooseLevel).getMaxScore());
+            res.setTypeGame(1);
+        }else if(gooseLevel instanceof IMultiGooseLevel) {
+            res.setScore(((MultiGooseLevel) gooseLevel).getMinValue());
+            res.setTypeGame(2);
+        }else if(gooseLevel instanceof ILotteryGooseLevel) {
+            res.setScore(((LotteryGooseLevel) gooseLevel).getMinScore());
+            res.setTypeGame(3);
+        }
+    }
 
     @Transactional
     public AdGameBean createMicroPurchaseAdGame(PaymentConfigure configure, HttpServletRequest request) throws Exception {
@@ -361,10 +523,7 @@ public class AdGameFacade {
         res.setGooseGames(pgg);
         res.setUserToken(gooseCase.getNumber());
 
-        if(gooseLevel instanceof ISingleGooseLevel){
-            res.setScore(((SingleGooseLevel)gooseLevel).getMinScore());
-            res.setTypeGame(0);
-        }
+        determineGameType(gooseLevel, res);
 
         Map<Integer, ResponseUser> answers = new HashMap<Integer,ResponseUser>();
 
@@ -401,7 +560,15 @@ public class AdGameFacade {
 
     private Map<Ad, Double> bidSystem(Map<Double,List<Ad>> adsSortedByBid, final PaymentConfigure configure) {
         Map<Ad, Double> res = new HashMap<Ad, Double>();
-        double amount = configure.getAmount();
+        double amount = 0.0;
+
+        if(configure==null){
+            //Todo :
+            amount = 6*0.3;
+        }else{
+            amount = configure.getAmount();
+        }
+
         while (amount>0.0){
             amount-=doBid(res, adsSortedByBid);
         }
@@ -573,36 +740,43 @@ public class AdGameFacade {
      * @param configure
      * @return
      */
+    @Transactional
     private Player getAnonymousPlayer(PaymentConfigure configure) {
         Player player = new AnonymPlayer();
         player.setEmail(UUID.randomUUID().toString());
         player.setPassword(UUID.randomUUID().toString());
         player.setUsername(UUID.randomUUID().toString());
 
-        Information informations = configure.getInformations();
-        AgeInformation ageInf = informations.getAge();
-        if(ageInf!=null)player.setAgeGroup(AgeGroup.fromAge(ageInf.getOld()));
+        if(configure != null){
 
-        CityInformation cityInf = informations.getCity();
-        if(cityInf!=null){
-            Address address = new Address();
-            address.setCity(cityDao.findByZipcodeAndCityAndCountry_Code(cityInf.getZipCode(),cityInf.getCityName(),cityInf.getCountryCode()));
-            address.setCountry(null);
-            player.setAddress(address);
-        }
+            Information informations = configure.getInformations();
+            if(informations!=null) {
+                AgeInformation ageInf = informations.getAge();
+                if (ageInf != null) player.setAgeGroup(AgeGroup.fromAge(ageInf.getOld()));
 
-        if(cityInf==null){
-            CountryInformation countryInf = informations.getCountry();
-            if(countryInf!=null){
-                Address addressCountry = new Address();
-                addressCountry.setCountry(countryDao.findByCode(countryInf.getCountryCode()));
-                addressCountry.setCity(null);
-                player.setAddress(addressCountry);
+                CityInformation cityInf = informations.getCity();
+                if (cityInf != null) {
+                    Address address = new Address();
+                    address.setCity(cityDao.findByZipcodeAndCityAndCountry_Code(cityInf.getZipCode(), cityInf.getCityName(), cityInf.getCountryCode()));
+                    address.setCountry(null);
+                    player.setAddress(address);
+                }
+
+                if (cityInf == null) {
+                    CountryInformation countryInf = informations.getCountry();
+                    if (countryInf != null) {
+                        Address addressCountry = new Address();
+                        addressCountry.setCountry(countryDao.findByCode(countryInf.getCountryCode()));
+                        addressCountry.setCity(null);
+                        player.setAddress(addressCountry);
+                    }
+                }
+
+                SexInformation sexInf = informations.getSex();
+                if (sexInf != null) player.setSex(sexInf.getSex());
             }
         }
 
-        SexInformation sexInf = informations.getSex();
-        if(sexInf!=null)player.setSex(sexInf.getSex());
 
         return playerDao.save(player);
     }
@@ -717,7 +891,21 @@ public class AdGameFacade {
 
                 }else if(gooseLevel instanceof IMultiGooseLevel){
                     //Todo:
+                }else if(gooseLevel instanceof ILotteryGooseLevel){
+                    PaymentConfigure configure = (PaymentConfigure) session.getAttribute(CONFIGURE);
+                    res.setWhereToGo(configure.getCallBackUrl());
+                    res.setIdTransaction(configure.getIdTransaction());
+
+
+                    if(gooseCase instanceof EndLevelGooseCase){
+                        res.setStatus(StatusGame.WinLimitTime);
+                        statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Win;
+                    }else{
+                        res.setStatus(StatusGame.Lost);
+                        statusGame = fr.k2i.adbeback.core.business.game.StatusGame.Lost;
+                    }
                 }
+
 
 
                 LimiteTimeAdGameBean gameResult = computeResultGame(request);
@@ -1033,8 +1221,12 @@ public class AdGameFacade {
 
             }
 
-        }else{
-            //todo :
+        }else if (gooseLevel instanceof ILotteryGooseLevel) {
+            PaymentConfigure configure = (PaymentConfigure) session.getAttribute(CONFIGURE);
+
+            res.setStatus(StatusGame.Lost);
+            res.setWhereToGo(configure.getCallBackUrl());
+
         }
 
         if(!fr.k2i.adbeback.core.business.game.StatusGame.Playing.equals(statusGame)){

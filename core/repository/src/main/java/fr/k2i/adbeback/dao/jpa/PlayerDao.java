@@ -5,6 +5,7 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.QGooseToken;
 import fr.k2i.adbeback.core.business.player.Player;
+import fr.k2i.adbeback.core.business.player.QAnonymPlayer;
 import fr.k2i.adbeback.core.business.player.QPlayer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -102,6 +103,14 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
                 .set(qPlayer.enabled,true);
 
         query.execute();
+    }
+
+    @Override
+    public boolean isAnonymPlayer(Long id) {
+        JPAQuery query = new JPAQuery(getEntityManager());
+        QAnonymPlayer anonymPlayer = QAnonymPlayer.anonymPlayer;
+        query.from(anonymPlayer).orderBy(anonymPlayer.username.upper().asc());
+        return query.exists();
     }
 
     /**

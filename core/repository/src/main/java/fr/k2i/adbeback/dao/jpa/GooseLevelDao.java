@@ -48,6 +48,19 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
         return query.list(gooseLevel);
     }
 
+
+    @Override
+    public LotteryGooseLevel findLotteryForNbAds(Integer nbAds) {
+        QLotteryGooseLevel gooseLevel = QLotteryGooseLevel.lotteryGooseLevel;
+        JPAQuery query = new JPAQuery(getEntityManager());
+        query.from(gooseLevel)
+                .where(
+                        gooseLevel.minScore.eq(nbAds)
+                );
+        return query.singleResult(gooseLevel);
+
+    }
+
     @Override
     public SingleGooseLevel findForNbAds(Integer nbAds) {
         QSingleGooseLevel gooseLevel = QSingleGooseLevel.singleGooseLevel;
@@ -71,6 +84,8 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
         return query.singleResult(gooseLevel);
 
     }
+
+
 
     public void modifyLevelMinAmount(Long levelId, Integer minAmount) {
         Query q = getEntityManager().createQuery("UPDATE GooseLevel SET minValue=:minAmount where id =:id");

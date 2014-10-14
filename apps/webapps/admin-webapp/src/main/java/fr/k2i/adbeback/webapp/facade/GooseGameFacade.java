@@ -31,6 +31,28 @@ public class GooseGameFacade {
     @Autowired
     private GooseCaseDao gooseCaseDao;
 
+
+    @Transactional
+    public GooseLevelGame generateLotteryLevel(Integer nbCase, Integer numLevel) {
+        LotteryGooseLevel level = new LotteryGooseLevel();
+        level.setLevel(numLevel);
+        level.setNbMaxAdByPlay(nbCase);
+        level.setMinScore(nbCase);
+
+        level.startCase(new StartLevelGooseCase());
+
+        for (int i = 1; i < nbCase; i++) {
+            NoneGooseCase acase = new NoneGooseCase();
+            acase.setNumber(i);
+            level.addCase(acase);
+        }
+
+        level.endCase(new EndLevelGooseCase(nbCase));
+
+        return new GooseLevelGame(gooseLevelDao.save(level));
+    }
+
+
     @Transactional
     public GooseLevelGame generateDiceLevel(Integer nbCase, Integer numLevel) {
         DiceGooseLevel level = new DiceGooseLevel();

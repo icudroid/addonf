@@ -1,9 +1,11 @@
 package fr.k2i.adbeback.webapp.facade;
 
+import fr.k2i.adbeback.core.business.player.AnonymPlayer;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.dao.IPlayerDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -36,7 +38,21 @@ public class PlayerFacade {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    public boolean isAnnonymous(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication();
+        if ((principal instanceof AnonymousAuthenticationToken)) {
+            return true;
+        }
+
+        return false;
+    }
 
 
-
+    public boolean isAnnonymousPlayer() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication();
+        if ((principal instanceof WebUser)) {
+            return playerDao.isAnonymPlayer(((WebUser) principal).getUser().getId());
+        }
+        return false;
+    }
 }

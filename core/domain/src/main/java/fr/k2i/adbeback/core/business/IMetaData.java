@@ -36,6 +36,8 @@ public interface IMetaData {
         String ORDER =                                  "player_order";
         String TRANSACTION_HISTORY =                    "tr_history";
         String MERCHANT_PRODUCT =                       "merchant_product";
+        String LUCKY_WIN_LOTTERY =                      "lucky_win_lottery";
+        String LUCKY_WIN_LOTTERY_CONFIG =               "lucky_config";
     }
 
     interface ColumnMetadata {
@@ -186,6 +188,7 @@ public interface IMetaData {
                 String SINGLE =                         "single";
                 String MULTI =                          "multi";
                 String DICE =                           "dice";
+                String LOTTERY =                        "lottery";
             }
         }
 
@@ -252,6 +255,16 @@ public interface IMetaData {
         public interface Order {
             String MEDIA                                = "media_id";
             String JOIN                                 = "order_id";
+        }
+
+        public interface LuckyWinLottery {
+            String JOIN                                 = "lucky_win_lottery_id";
+            String WIN_LOTTERY_JOIN                     = "ad_game_id";
+        }
+
+        public class LuckyWinLotteryConfig {
+
+            public static final String JOIN             = "lottery_id";
         }
     }
 }

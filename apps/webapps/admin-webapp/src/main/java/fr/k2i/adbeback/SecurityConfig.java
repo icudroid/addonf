@@ -41,7 +41,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                     .antMatchers("/login").permitAll()
-                    .antMatchers("/logout-success").permitAll()
                     .antMatchers("/static/**").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .antMatchers("/coral/**").permitAll()
@@ -50,7 +49,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .antMatchers("/js/**").permitAll()
                     .antMatchers("/template/**").permitAll()
                     .antMatchers("/test*").permitAll()
-                    .antMatchers("/custom-logout").hasRole("ADMIN")
                     .antMatchers("/manage/**").hasRole("ADMIN")
                     .antMatchers("/**").hasRole("ADMIN");
 
@@ -61,10 +59,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                         .permitAll();
 
         http.logout()
-                            .deleteCookies("remove")
-                            .invalidateHttpSession(false)
-                            .logoutUrl("/custom-logout")
-                            .logoutSuccessUrl("/logout-success");
+                .deleteCookies("remove")
+                .invalidateHttpSession(false)
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/");
 
         http.sessionManagement()
                             .maximumSessions(1)

@@ -63,7 +63,8 @@ public class EncodeVideoService {
             String adFile = ad.getAdFile();
 
             String encodeCmds[] = {
-                    "avconv -i {0} -ar 48000 -strict experimental {1}.mp4",
+                    "avconv -i {0} -c:v libx264 -c:a libvo_aacenc -movflags faststart {1}.mp4",
+                    //"avconv -i {0} -ar 48000 -strict experimental {1}.mp4",
                     "avconv -i {0} {1}.ogv",
                     "avconv -i {0} {1}.webm"
             };

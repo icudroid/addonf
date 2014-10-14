@@ -4,6 +4,8 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.QBrand;
 import fr.k2i.adbeback.core.business.player.WebUser;
+import fr.k2i.adbeback.core.business.user.Admin;
+import fr.k2i.adbeback.core.business.user.QAdmin;
 import fr.k2i.adbeback.core.business.user.QUser;
 import fr.k2i.adbeback.core.business.user.User;
 import fr.k2i.adbeback.dao.IWebUserDao;
@@ -70,14 +72,14 @@ public class WebUserDao extends GenericDaoJpa<User, Long> implements UserDetails
 
     @Override
     public User getUserByEmail(String username) {
-        QUser user = QUser.user;
+        QAdmin user = QAdmin.admin;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(user)
                 .where(
                         user.email.eq(username).or(user.username.eq(username))
                 );
 
-        List<User> users = query.list(user);
+        List<Admin> users = query.list(user);
 
         if (users == null || users.isEmpty()) {
             throw new UsernameNotFoundException("user '" + username + "' not found...");

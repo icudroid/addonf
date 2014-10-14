@@ -1,9 +1,7 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
-import fr.k2i.adbeback.core.business.game.AbstractAdGame;
-import fr.k2i.adbeback.core.business.game.AdGame;
-import fr.k2i.adbeback.core.business.game.QAdGame;
+import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.core.business.transaction.*;
@@ -140,6 +138,20 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                 );
 
         return query.singleResult(qTransaction.count());
+    }
+
+    @Override
+    public boolean isLotteryWinWithTransactionId(String lastTransactionId) {
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        QAdGameTransaction gameTransaction = QAdGameTransaction.adGameTransaction;
+
+        query.from(gameTransaction)
+                .where(
+                        gameTransaction.statusGame.eq(StatusGame.Win).and(gameTransaction.idTransaction.eq(lastTransactionId))
+                );
+
+        return query.exists();
     }
 
     @Override

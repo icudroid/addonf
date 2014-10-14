@@ -50,5 +50,7 @@ public interface IPlayerDao extends IGenericDao<Player, Long> {
     Player findByEmailorUserName(String username);
 
     void enable(Long userId);
+
+    boolean isAnonymPlayer(Long id);
 }
 

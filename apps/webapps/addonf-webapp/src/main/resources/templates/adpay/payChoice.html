@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/iframe">
+<head>
+    <title>AdLoveYou</title>
+
+    <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+
+
+    <script type="text/javascript">
+        $(function(){
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'formChoice',elementId:'submit',event:'onclick'}));
+        });
+    </script>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row margin-bottom-40">
+        <div class="col-md-12">
+            <h1>Choisir votre option de paiement et/ou réduction</h1>
+            <div class="content-page">
+
+                <form id="formChoice" class="form-horizontal" role="form" th:object="${command}" th:action="${flowExecutionUrl}" method="post">
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <div class="radio-list">
+                                <label th:each="option : ${options}">
+                                    <input type="radio" checked="" th:value="${option.toString()}" th:field="*{choice}" />
+                                    <span th:text="#{${'choice.option.'+option}}"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-actions fluid">
+                        <div class="col-md-offset-3 col-md-9">
+                            <input class="btn green" type="submit" value="Valider" name="_eventId_continue" />
+                        </div>
+                    </div>
+
+                </form>
+
+                <p th:utext="#{choice.explain}">Explication :</p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

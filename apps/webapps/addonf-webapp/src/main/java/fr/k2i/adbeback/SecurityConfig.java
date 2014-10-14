@@ -117,6 +117,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rest/noresponse/*").permitAll()
                 .antMatchers("/rest/getResultAdGame").permitAll()
 
+                .antMatchers("/adPay").permitAll()
+
                 .antMatchers("/**").hasRole("USER");
 
         http.csrf().disable();

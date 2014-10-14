@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layout/iframe">
+<head>
+    <title>AdLoveYou</title>
+
+    <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+
+
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row margin-bottom-40">
+        <div class="col-md-12">
+            <h1>Bravo !!!!</h1>
+            <h2>Vous venez de remporter votre achat</h2>
+
+            <div class="content-page">
+
+                <form id="formChoice" class="form-horizontal" role="form" th:action="${flowExecutionUrl}" method="post">
+
+                    <p>Pour benéficier de votre gain vous devez soit vous connecter avec votre compte adloveyou, soit vous enregistrer.</p>
+
+                    <form id="formWinLottery" class="form-horizontal" role="form" th:object="${command}" th:action="${flowExecutionUrl}" method="post">
+
+                        <div class="form-actions fluid">
+                            <div class="col-md-offset-3 col-md-9">
+                                <input class="btn green" type="submit" value="S'inscrire" name="_eventId_enroll" />
+                                <input class="btn green" type="submit" value="Se connecter" name="_eventId_login" />
+                            </div>
+                        </div>
+
+                    </form>
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

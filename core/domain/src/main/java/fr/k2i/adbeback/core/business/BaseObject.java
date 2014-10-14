@@ -1,5 +1,7 @@
 package fr.k2i.adbeback.core.business;
 
+import fr.k2i.adbeback.core.business.game.AdGameTransaction;
+
 import java.io.Serializable;
 
 public abstract class BaseObject implements Serializable {    
@@ -25,4 +27,6 @@ public abstract class BaseObject implements Serializable {
      * @return hashCode
      */
     public abstract int hashCode();
+
+
 }

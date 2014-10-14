@@ -36,4 +36,6 @@ public interface ITransactionDao extends IGenericDao<Transaction, Long>{
     List<Transaction> getHistoriesPurchase(Player player, Pageable pageRequest);
 
     long countHistoryPurchase(Long idPlayer);
+
+    boolean isLotteryWinWithTransactionId(String lastTransactionId);
 }

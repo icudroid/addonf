@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <persistence-context/>
+
+    <var name="state" class="fr.k2i.adbeback.webapp.state.AdPayFlowState"/>
+    <var name="command" class="fr.k2i.adbeback.webapp.state.AdPayCommand"/>
+
+    <var name="loginCommand" class="fr.k2i.adbeback.webapp.state.LoginCommand"/>
+
+    <on-start>
+        <evaluate expression="payAdService.prepareRequestParameters(requestParameters)" result="conversationScope.orderData" />
+    </on-start>
+
+
+    <action-state id="validate">
+        <evaluate expression="payAdService.validate(conversationScope.orderData)"/>
+        <transition on="userKnwow" to="userKnwow" />
+        <transition on="userUnknwow" to="userUnknwow" />
+    </action-state>
+
+
+    <view-state id="userUnknwow" model="command" view="adpay/payChoice">
+        <on-render>
+            <evaluate expression="payAdService.payOptions()" result="flowScope.options"/>
+        </on-render>
+        <transition to="whichOption" />
+    </view-state>
+
+    <action-state id="whichOption">
+        <evaluate expression="payAdService.whichOption(command)"/>
+        <transition on="win" to="win"/>
+        <transition on="payAndWin" to="payAndWin"/>
+        <transition on="borrow" to="borrow"/>
+    </action-state>
+
+
+    <view-state id="win" view="game">
+        <on-render>
+            <evaluate expression="payAdService.createLotteryAdGame(flowRequestContext,state)" result="flowScope.game" />
+        </on-render>
+        <transition on="next" to="isLotteryWin"/>
+    </view-state>
+
+    <action-state id="isLotteryWin">
+        <evaluate expression="payAdService.isLotteryWin(state)"/>
+        <transition on="win" to="wonAdGame"/>
+        <transition on="lost" to="lostAdGame"/>
+    </action-state>
+
+    <view-state id="wonAdGame" view="adpay/game/win">
+        <transition on="login" to="login" />
+        <transition on="enroll" to="registrationWinLottery" />
+    </view-state>
+
+    <view-state id="lostAdGame" view="adpay/game/lost">
+        <transition on="retry" to="win" />
+        <transition on="registration" to="registrationLostLottery" />
+        <transition on="otherChoice" to="userUnknwow" />
+        <transition on="login" to="login" />
+    </view-state>
+
+
+    <view-state id="payAndWin">
+
+    </view-state>
+
+
+    <view-state id="borrow">
+
+    </view-state>
+
+
+    <subflow-state id="registrationWinLottery" subflow="registration/ligthRegistration">
+
+    </subflow-state>
+    <subflow-state id="registrationLostLottery" subflow="registration/ligthRegistration">
+
+    </subflow-state>
+
+
+    <view-state id="login" model="loginCommand" view="adpay/login">
+
+    </view-state>
+
+</flow>
