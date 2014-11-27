@@ -65,7 +65,7 @@
                     <div class="col-lg-8">
                     <input id="birthdate" class="form-control" type="date" th:field="*{birthday}"/>
                     </div>
-                    <p  class="help-block" th:if="${#fields.hasErrors('birthday')}" th:errors="*{email}">Incorrect</p>
+                    <p  class="help-block" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">Incorrect</p>
                 </div>
 
                 <legend th:utext="#{signup.place}">Your place</legend>
