@@ -32,7 +32,9 @@ Dropdown Menu
     background-color: #fffff; 
     box-shadow: 5px 5px rgba(#666, 0.1);
     border: 1px solid #eee;
-    font-family: $font-family-default;
+    font-family: $font-family-default;  
+
+    @include border-radius($general-border-radius);          
 
     li.divider {
         background: #f1f3f6;
@@ -81,15 +83,17 @@ Dropdown Menu
     }
 }
 
+.dropdown,
 .dropdown-toggle,
 .btn-group {
-    .dropdown-menu {        
+    > .dropdown-menu {        
         margin-top: 10px; 
 
         &:before {
             position: absolute;
             top: -8px;
-            right: 9px;
+            left: 9px;
+            right: auto;
             display: inline-block !important;
             border-right: 8px solid transparent;
             border-bottom: 8px solid #e0e0e0;
@@ -100,7 +104,8 @@ Dropdown Menu
         &:after {
             position: absolute;
             top: -7px;
-            right: 10px;
+            left: 10px;
+            right: auto;
             display: inline-block !important;
             border-right: 7px solid transparent;
             border-bottom: 7px solid #fff;
@@ -110,13 +115,37 @@ Dropdown Menu
 
         &.pull-left {
             &:before {
-                left: 9px;
-                right: auto;
+                left: auto;
+                right: 9px;
             }
 
             &:after {
-                left: 10px;
-                right: auto;
+                left: auto;
+                right: 10px; 
+            }
+        }
+
+        &.pull-right {
+            &:before {
+                left: auto;
+                right: 9px;
+            }
+
+            &:after {
+                left: auto;
+                right: 10px;
+            }
+        }
+    }
+
+    &.dropup {
+        > .dropdown-menu {     
+            margin-top: 0px;
+            margin-bottom: 10px;
+
+            &:after,
+            &:before {
+                display: none !important;
             }
         }
     }

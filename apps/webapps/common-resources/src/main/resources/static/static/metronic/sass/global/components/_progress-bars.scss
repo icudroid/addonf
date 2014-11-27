@@ -6,9 +6,14 @@ Customized Progress Bars
   border: 0; 
   background-image: none;
   filter: none;
+  box-shadow: none;
   -webkit-box-shadow: none;
      -moz-box-shadow: none;
           box-shadow: none;   
+
+  &.progress-sm {
+    height: 12px;
+  }
 }
 
 .progress > .progress-bar-default {

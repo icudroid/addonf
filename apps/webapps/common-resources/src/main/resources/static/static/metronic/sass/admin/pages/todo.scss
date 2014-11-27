@@ -5,6 +5,10 @@ TODO Page
 @import '../../global/_variables'; // global variables.
 @import '../../global/components/_mixins'; // global mixings.
 
+.todo-ui {
+	margin-top: 20px;
+}
+
 .todo-sidebar {
 	float:left;
   	width:230px;

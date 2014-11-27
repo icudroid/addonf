@@ -60,7 +60,6 @@ Customized Bootstrap Tabs
 /* Left tabs */
 
 .tabs-left.nav-tabs {
-  float1: left;
   border-right: 1px solid #ddd;
 
     > li > a {
@@ -69,14 +68,16 @@ Customized Bootstrap Tabs
     
         &:hover,
         &:focus {
-            border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+            @include border-radius($general-border-radius 0 0 $general-border-radius);
+            border-color: #eeeeee #dddddd #eeeeee #eeeeee; 
         }
     }
 
     > li.active > a,
     > li.active > a:hover
     > li.active > a:focus {
-        border-color: #ddd transparent #ddd #ddd;
+        @include border-radius($general-border-radius 0 0 $general-border-radius);          
+        border-color: #ddd transparent #ddd #ddd;      
         *border-right-color: #ffffff;   
     }
 }
@@ -84,7 +85,6 @@ Customized Bootstrap Tabs
 /* Right tabs */
 
 .tabs-right.nav-tabs {
-    float1: right;
     border-left: 1px solid #ddd;
 
     > li > a {
@@ -93,6 +93,7 @@ Customized Bootstrap Tabs
     
         &:hover,
         &:focus {
+            @include border-radius(0 $general-border-radius $general-border-radius 0);
             border-color: #eeeeee #eeeeee #eeeeee #dddddd;
         }
     }
@@ -100,6 +101,7 @@ Customized Bootstrap Tabs
     > li.active > a,
     > li.active > a:hover
     > li.active > a:focus {
+        @include border-radius(0 $general-border-radius $general-border-radius 0);
         border-color: #ddd #ddd #ddd transparent;
         *border-left-color: #ffffff;
     }
@@ -128,12 +130,18 @@ Customized Bootstrap Tabs
             border-top-color: #ddd;
             border-bottom-color: transparent;
         }
+
+        .dropdown-menu {
+            @include border-radius($general-border-radius); 
+        }
     }
 
     .active a,
     .active a:hover
     .active a:focus {
-         border-color: transparent #ddd #ddd #ddd;
+        @include border-radius(0 0 $general-border-radius $general-border-radius);              
+        
+        border-color: transparent #ddd #ddd #ddd;
     }
 }
 
@@ -145,7 +153,7 @@ Custom tabs
 
 .tabbable {
     @include clearfix();
-}
+}   
 
 .tabbable-custom { 
     margin-bottom: 15px; 
@@ -160,8 +168,10 @@ Custom tabs
             margin-right: 2px; 
             border-top: 2px solid transparent; 
 
+
             > a {
-                margin-right: 0;
+                margin-right: 0;      
+                @include border-radius(0);
 
                 &:hover {
                     background: none;
@@ -178,7 +188,12 @@ Custom tabs
                     border-top: none; 
                     font-weight: 400; 
 
+                    @include border-radius(0);
+
+
                     &:hover {
+                        @include border-radius(0);  
+
                         border-top: none; 
                         background: #fff; 
                         border-color: #d4d4d4 #d4d4d4 transparent; 
@@ -191,7 +206,9 @@ Custom tabs
     > .tab-content { 
         background-color: #fff;
         border: 1px solid #ddd;  
-        padding: 10px;
+        padding: 10px; 
+
+        @include border-radius(0 0 $general-border-radius $general-border-radius);                  
     }
 
     /* justified tabs */
@@ -214,6 +231,8 @@ Custom tabs
     &.tabs-below.nav-justified .tab-content {
         margin-top: 0px;
         margin-bottom: -2px;
+  
+        @include border-radius($general-border-radius $general-border-radius 0 0);
     }
 
     /* full width tabs */
@@ -231,7 +250,7 @@ Custom tabs
             border-right:none;
             border-bottom:none;
         }
-    }
+    }    
 
     /* below tabs */
 
@@ -240,7 +259,7 @@ Custom tabs
         > li > a { 
             border-top: none; 
             border-bottom: 2px solid transparent; 
-            margin-top: -1px; 
+            margin-top: -1px;         
         }
 
         > li.active {
@@ -250,7 +269,7 @@ Custom tabs
             position: relative; 
 
             > a {
-                border-bottom: none; 
+                border-bottom: none;  
 
                 &:hover {
                     background: #fff; 
@@ -282,6 +301,7 @@ $tabbable-line-font-color: #333 !default;
 
         > li { 
             margin-right: 2px; 
+
 
             > a {
                 border: 0;

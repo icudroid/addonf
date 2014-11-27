@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- 
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.2.0
-Version: 3.3.0
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.1
+Version: 3.5.1
 Author: KeenThemes
 Website: http://www.keenthemes.com/
 Contact: support@keenthemes.com
@@ -34,14 +34,14 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END GLOBAL MANDATORY STYLES -->
 <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
 <link href="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
-<link href="../../assets/global/plugins/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
 <link href="../../assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css"/>
 <!-- END PAGE LEVEL PLUGIN STYLES -->
 <!-- BEGIN PAGE STYLES -->
 <link href="../../assets/admin/pages/css/tasks.css" rel="stylesheet" type="text/css"/>
 <!-- END PAGE STYLES -->
 <!-- BEGIN THEME STYLES -->
-<link href="../../assets/global/css/components.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
 <link href="../../assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
 <link href="../../assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
 <link id="style_color" href="../../assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css"/>
@@ -85,10 +85,10 @@ License: You must have a valid license purchased only from themeforest(the above
 					</a>
 				</li>
 				<li class="mega-menu-dropdown">
-					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="dropdown" data-close-others="true">
+					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
 					Mega <i class="fa fa-angle-down"></i>
 					</a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu" style="min-width: 700px;">
 						<li>
 							<!-- Content container to add padding -->
 							<div class="mega-menu-content">
@@ -200,7 +200,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					</ul>
 				</li>
 				<li class="mega-menu-dropdown mega-menu-full">
-					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="dropdown" data-close-others="true">
+					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
 					Full Mega <i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="dropdown-menu">
@@ -362,7 +362,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					</ul>
 				</li>
 				<li class="classic-menu-dropdown">
-					<a data-toggle="dropdown" href="javascript:;" data-hover="dropdown" data-close-others="true">
+					<a data-toggle="dropdown" href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true">
 					Classic <i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="dropdown-menu pull-left">
@@ -436,10 +436,6 @@ License: You must have a valid license purchased only from themeforest(the above
 						</li>
 					</ul>
 				</li>
-				<li>
-					<a href="">
-					Link </a>
-				</li>
 			</ul>
 		</div>
 		<!-- END HORIZANTAL MENU -->
@@ -462,6 +458,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		<div class="top-menu">
 			<ul class="nav navbar-nav pull-right">
 				<!-- BEGIN NOTIFICATION DROPDOWN -->
+				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 				<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 					<i class="icon-bell"></i>
@@ -469,105 +466,109 @@ License: You must have a valid license purchased only from themeforest(the above
 					7 </span>
 					</a>
 					<ul class="dropdown-menu">
-						<li>
-							<p>
-								 You have 14 new notifications
-							</p>
+						<li class="external">
+							<h3><span class="bold">12 pending</span> notifications</h3>
+							<a href="extra_profile.html">view all</a>
 						</li>
 						<li>
-							<ul class="dropdown-menu-list scroller" style="height: 250px;">
+							<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">just now</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-success">
 									<i class="fa fa-plus"></i>
 									</span>
-									New user registered. <span class="time">
-									Just now </span>
+									New user registered. </span>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">3 mins</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-danger">
 									<i class="fa fa-bolt"></i>
 									</span>
-									Server #12 overloaded. <span class="time">
-									15 mins </span>
+									Server #12 overloaded. </span>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">10 mins</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-warning">
 									<i class="fa fa-bell-o"></i>
 									</span>
-									Server #2 not responding. <span class="time">
-									22 mins </span>
+									Server #2 not responding. </span>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">14 hrs</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-info">
 									<i class="fa fa-bullhorn"></i>
 									</span>
-									Application error. <span class="time">
-									40 mins </span>
+									Application error. </span>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">2 days</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-danger">
 									<i class="fa fa-bolt"></i>
 									</span>
-									Database overloaded 68%. <span class="time">
-									2 hrs </span>
+									Database overloaded 68%. </span>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">3 days</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-danger">
 									<i class="fa fa-bolt"></i>
 									</span>
-									2 user IP blocked. <span class="time">
-									5 hrs </span>
+									A user IP blocked. </span>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">4 days</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-warning">
 									<i class="fa fa-bell-o"></i>
 									</span>
-									Storage Server #4 not responding. <span class="time">
-									45 mins </span>
+									Storage Server #4 not responding dfdfdfd. </span>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">5 days</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-info">
 									<i class="fa fa-bullhorn"></i>
 									</span>
-									System Error. <span class="time">
-									55 mins </span>
+									System Error. </span>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="javascript:;">
+									<span class="time">9 days</span>
+									<span class="details">
 									<span class="label label-sm label-icon label-danger">
 									<i class="fa fa-bolt"></i>
 									</span>
-									Database overloaded 68%. <span class="time">
-									2 hrs </span>
+									Storage server failed. </span>
 									</a>
 								</li>
 							</ul>
-						</li>
-						<li class="external">
-							<a href="#">
-							See all notifications <i class="m-icon-swapright"></i>
-							</a>
 						</li>
 					</ul>
 				</li>
 				<!-- END NOTIFICATION DROPDOWN -->
 				<!-- BEGIN INBOX DROPDOWN -->
+				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 				<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 					<i class="icon-envelope-open"></i>
@@ -575,23 +576,21 @@ License: You must have a valid license purchased only from themeforest(the above
 					4 </span>
 					</a>
 					<ul class="dropdown-menu">
-						<li>
-							<p>
-								 You have 12 new messages
-							</p>
+						<li class="external">
+							<h3>You have <span class="bold">7 New</span> Messages</h3>
+							<a href="page_inbox.html">view all</a>
 						</li>
 						<li>
-							<ul class="dropdown-menu-list scroller" style="height: 250px;">
+							<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
 								<li>
 									<a href="inbox.html?a=view">
 									<span class="photo">
-									<img src="../../assets/admin/layout/img/avatar2.jpg" alt=""/>
+									<img src="../../assets/admin/layout3/img/avatar2.jpg" class="img-circle" alt="">
 									</span>
 									<span class="subject">
 									<span class="from">
 									Lisa Wong </span>
-									<span class="time">
-									Just Now </span>
+									<span class="time">Just Now </span>
 									</span>
 									<span class="message">
 									Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>
@@ -600,13 +599,12 @@ License: You must have a valid license purchased only from themeforest(the above
 								<li>
 									<a href="inbox.html?a=view">
 									<span class="photo">
-									<img src="../../assets/admin/layout/img/avatar3.jpg" alt=""/>
+									<img src="../../assets/admin/layout3/img/avatar3.jpg" class="img-circle" alt="">
 									</span>
 									<span class="subject">
 									<span class="from">
 									Richard Doe </span>
-									<span class="time">
-									16 mins </span>
+									<span class="time">16 mins </span>
 									</span>
 									<span class="message">
 									Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
@@ -615,13 +613,12 @@ License: You must have a valid license purchased only from themeforest(the above
 								<li>
 									<a href="inbox.html?a=view">
 									<span class="photo">
-									<img src="../../assets/admin/layout/img/avatar1.jpg" alt=""/>
+									<img src="../../assets/admin/layout3/img/avatar1.jpg" class="img-circle" alt="">
 									</span>
 									<span class="subject">
 									<span class="from">
 									Bob Nilson </span>
-									<span class="time">
-									2 hrs </span>
+									<span class="time">2 hrs </span>
 									</span>
 									<span class="message">
 									Vivamus sed nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
@@ -630,13 +627,12 @@ License: You must have a valid license purchased only from themeforest(the above
 								<li>
 									<a href="inbox.html?a=view">
 									<span class="photo">
-									<img src="../../assets/admin/layout/img/avatar2.jpg" alt=""/>
+									<img src="../../assets/admin/layout3/img/avatar2.jpg" class="img-circle" alt="">
 									</span>
 									<span class="subject">
 									<span class="from">
 									Lisa Wong </span>
-									<span class="time">
-									40 mins </span>
+									<span class="time">40 mins </span>
 									</span>
 									<span class="message">
 									Vivamus sed auctor 40% nibh congue nibh... </span>
@@ -645,13 +641,12 @@ License: You must have a valid license purchased only from themeforest(the above
 								<li>
 									<a href="inbox.html?a=view">
 									<span class="photo">
-									<img src="../../assets/admin/layout/img/avatar3.jpg" alt=""/>
+									<img src="../../assets/admin/layout3/img/avatar3.jpg" class="img-circle" alt="">
 									</span>
 									<span class="subject">
 									<span class="from">
 									Richard Doe </span>
-									<span class="time">
-									46 mins </span>
+									<span class="time">46 mins </span>
 									</span>
 									<span class="message">
 									Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
@@ -659,15 +654,11 @@ License: You must have a valid license purchased only from themeforest(the above
 								</li>
 							</ul>
 						</li>
-						<li class="external">
-							<a href="inbox.html">
-							See all messages <i class="m-icon-swapright"></i>
-							</a>
-						</li>
 					</ul>
 				</li>
 				<!-- END INBOX DROPDOWN -->
 				<!-- BEGIN TODO DROPDOWN -->
+				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 				<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 					<i class="icon-calendar"></i>
@@ -675,151 +666,104 @@ License: You must have a valid license purchased only from themeforest(the above
 					3 </span>
 					</a>
 					<ul class="dropdown-menu extended tasks">
-						<li>
-							<p>
-								 You have 12 pending tasks
-							</p>
+						<li class="external">
+							<h3>You have <span class="bold">12 pending</span> tasks</h3>
+							<a href="page_todo.html">view all</a>
 						</li>
 						<li>
-							<ul class="dropdown-menu-list scroller" style="height: 250px;">
+							<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
 								<li>
-									<a href="page_todo.html">
+									<a href="javascript:;">
 									<span class="task">
-									<span class="desc">
-									New release v1.2 </span>
-									<span class="percent">
-									30% </span>
+									<span class="desc">New release v1.2 </span>
+									<span class="percent">30%</span>
 									</span>
-									<div class="progress">
-										<div style="width: 40%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-											<div class="sr-only">
-												 40% Complete
-											</div>
-										</div>
-									</div>
+									<span class="progress">
+									<span style="width: 40%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">40% Complete</span></span>
+									</span>
 									</a>
 								</li>
 								<li>
-									<a href="page_todo.html">
+									<a href="javascript:;">
 									<span class="task">
-									<span class="desc">
-									Application deployment </span>
-									<span class="percent">
-									65% </span>
+									<span class="desc">Application deployment</span>
+									<span class="percent">65%</span>
 									</span>
-									<div class="progress progress-striped">
-										<div style="width: 65%;" class="progress-bar progress-bar-danger" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
-											<div class="sr-only">
-												 65% Complete
-											</div>
-										</div>
-									</div>
+									<span class="progress">
+									<span style="width: 65%;" class="progress-bar progress-bar-danger" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">65% Complete</span></span>
+									</span>
 									</a>
 								</li>
 								<li>
-									<a href="page_todo.html">
+									<a href="javascript:;">
 									<span class="task">
-									<span class="desc">
-									Mobile app release </span>
-									<span class="percent">
-									98% </span>
+									<span class="desc">Mobile app release</span>
+									<span class="percent">98%</span>
 									</span>
-									<div class="progress">
-										<div style="width: 98%;" class="progress-bar progress-bar-success" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100">
-											<div class="sr-only">
-												 98% Complete
-											</div>
-										</div>
-									</div>
+									<span class="progress">
+									<span style="width: 98%;" class="progress-bar progress-bar-success" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">98% Complete</span></span>
+									</span>
 									</a>
 								</li>
 								<li>
-									<a href="page_todo.html">
+									<a href="javascript:;">
 									<span class="task">
-									<span class="desc">
-									Database migration </span>
-									<span class="percent">
-									10% </span>
+									<span class="desc">Database migration</span>
+									<span class="percent">10%</span>
 									</span>
-									<div class="progress progress-striped">
-										<div style="width: 10%;" class="progress-bar progress-bar-warning" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-											<div class="sr-only">
-												 10% Complete
-											</div>
-										</div>
-									</div>
+									<span class="progress">
+									<span style="width: 10%;" class="progress-bar progress-bar-warning" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">10% Complete</span></span>
+									</span>
 									</a>
 								</li>
 								<li>
-									<a href="page_todo.html">
+									<a href="javascript:;">
 									<span class="task">
-									<span class="desc">
-									Web server upgrade </span>
-									<span class="percent">
-									58% </span>
+									<span class="desc">Web server upgrade</span>
+									<span class="percent">58%</span>
 									</span>
-									<div class="progress progress-striped">
-										<div style="width: 58%;" class="progress-bar progress-bar-info" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100">
-											<div class="sr-only">
-												 58% Complete
-											</div>
-										</div>
-									</div>
+									<span class="progress">
+									<span style="width: 58%;" class="progress-bar progress-bar-info" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">58% Complete</span></span>
+									</span>
 									</a>
 								</li>
 								<li>
-									<a href="page_todo.html">
+									<a href="javascript:;">
 									<span class="task">
-									<span class="desc">
-									Mobile development </span>
-									<span class="percent">
-									85% </span>
+									<span class="desc">Mobile development</span>
+									<span class="percent">85%</span>
 									</span>
-									<div class="progress progress-striped">
-										<div style="width: 85%;" class="progress-bar progress-bar-success" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-											<div class="sr-only">
-												 85% Complete
-											</div>
-										</div>
-									</div>
+									<span class="progress">
+									<span style="width: 85%;" class="progress-bar progress-bar-success" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">85% Complete</span></span>
+									</span>
 									</a>
 								</li>
 								<li>
-									<a href="page_todo.html">
+									<a href="javascript:;">
 									<span class="task">
-									<span class="desc">
-									New UI release </span>
-									<span class="percent">
-									18% </span>
+									<span class="desc">New UI release</span>
+									<span class="percent">38%</span>
 									</span>
-									<div class="progress progress-striped">
-										<div style="width: 18%;" class="progress-bar progress-bar-important" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100">
-											<div class="sr-only">
-												 18% Complete
-											</div>
-										</div>
-									</div>
+									<span class="progress progress-striped">
+									<span style="width: 38%;" class="progress-bar progress-bar-important" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">38% Complete</span></span>
+									</span>
 									</a>
 								</li>
 							</ul>
-						</li>
-						<li class="external">
-							<a href="page_todo.html">
-							See all tasks <i class="icon-arrow-right"></i>
-							</a>
 						</li>
 					</ul>
 				</li>
 				<!-- END TODO DROPDOWN -->
 				<!-- BEGIN USER LOGIN DROPDOWN -->
+				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 				<li class="dropdown dropdown-user">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-					<img alt="" class="img-circle hide1" src="../../assets/admin/layout/img/avatar3_small.jpg"/>
+					<img alt="" class="img-circle" src="../../assets/admin/layout/img/avatar3_small.jpg"/>
 					<span class="username username-hide-on-mobile">
 					Nick </span>
 					<i class="fa fa-angle-down"></i>
 					</a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu dropdown-menu-default">
 						<li>
 							<a href="extra_profile.html">
 							<i class="icon-user"></i> My Profile </a>
@@ -854,6 +798,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				</li>
 				<!-- END USER LOGIN DROPDOWN -->
 				<!-- BEGIN QUICK SIDEBAR TOGGLER -->
+				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 				<li class="dropdown dropdown-quick-sidebar-toggler">
 					<a href="javascript:;" class="dropdown-toggle">
 					<i class="icon-logout"></i>
@@ -1288,10 +1233,6 @@ License: You must have a valid license purchased only from themeforest(the above
 						</li>
 					</ul>
 				</li>
-				<li>
-					<a href="">
-					Link </a>
-				</li>
 			</ul>
 		</div>
 		<!-- END HORIZONTAL RESPONSIVE MENU -->
@@ -1350,7 +1291,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="theme-option">
 						<span>
 						Layout </span>
-						<select class="layout-option form-control input-small">
+						<select class="layout-option form-control input-sm">
 							<option value="fluid" selected="selected">Fluid</option>
 							<option value="boxed">Boxed</option>
 						</select>
@@ -1358,15 +1299,23 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="theme-option">
 						<span>
 						Header </span>
-						<select class="page-header-option form-control input-small">
+						<select class="page-header-option form-control input-sm">
 							<option value="fixed" selected="selected">Fixed</option>
 							<option value="default">Default</option>
 						</select>
 					</div>
 					<div class="theme-option">
 						<span>
+						Top Menu Dropdown</span>
+						<select class="page-header-top-dropdown-style-option form-control input-sm">
+							<option value="light" selected="selected">Light</option>
+							<option value="dark">Dark</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
 						Sidebar Mode</span>
-						<select class="sidebar-option form-control input-small">
+						<select class="sidebar-option form-control input-sm">
 							<option value="fixed">Fixed</option>
 							<option value="default" selected="selected">Default</option>
 						</select>
@@ -1374,7 +1323,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="theme-option">
 						<span>
 						Sidebar Menu </span>
-						<select class="sidebar-menu-option form-control input-small">
+						<select class="sidebar-menu-option form-control input-sm">
 							<option value="accordion" selected="selected">Accordion</option>
 							<option value="hover">Hover</option>
 						</select>
@@ -1382,7 +1331,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="theme-option">
 						<span>
 						Sidebar Style </span>
-						<select class="sidebar-style-option form-control input-small">
+						<select class="sidebar-style-option form-control input-sm">
 							<option value="default" selected="selected">Default</option>
 							<option value="light">Light</option>
 						</select>
@@ -1390,7 +1339,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="theme-option">
 						<span>
 						Sidebar Position </span>
-						<select class="sidebar-pos-option form-control input-small">
+						<select class="sidebar-pos-option form-control input-sm">
 							<option value="left" selected="selected">Left</option>
 							<option value="right">Right</option>
 						</select>
@@ -1398,7 +1347,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="theme-option">
 						<span>
 						Footer </span>
-						<select class="page-footer-option form-control input-small">
+						<select class="page-footer-option form-control input-sm">
 							<option value="fixed">Fixed</option>
 							<option value="default" selected="selected">Default</option>
 						</select>
@@ -1427,8 +1376,8 @@ License: You must have a valid license purchased only from themeforest(the above
 				</ul>
 				<div class="page-toolbar">
 					<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height grey-salt" data-placement="top" data-original-title="Change dashboard date range">
-						<i class="icon-calendar"></i>&nbsp;
-						<span class="thin uppercase visible-lg-inline-block"></span>&nbsp;
+						<i class="icon-calendar"></i>&nbsp; 
+						<span class="thin uppercase visible-lg-inline-block">&nbsp;</span>&nbsp; 
 						<i class="fa fa-angle-down"></i>
 					</div>
 				</div>
@@ -1979,6 +1928,8 @@ License: You must have a valid license purchased only from themeforest(the above
 								</a>
 								<a href="" class="reload">
 								</a>
+								<a href="" class="fullscreen">
+								</a>
 							</div>
 							<div class="actions">
 								<div class="btn-group">
@@ -2419,8 +2370,7 @@ License: You must have a valid license purchased only from themeforest(the above
 							<div class="row">
 								<div class="col-md-4">
 									<div class="sparkline-chart">
-										<div class="number" id="sparkline_bar">
-										</div>
+										<div class="number" id="sparkline_bar"></div>
 										<a class="title" href="#">
 										Network <i class="icon-arrow-right"></i>
 										</a>
@@ -2430,8 +2380,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								</div>
 								<div class="col-md-4">
 									<div class="sparkline-chart">
-										<div class="number" id="sparkline_bar2">
-										</div>
+										<div class="number" id="sparkline_bar2"></div>
 										<a class="title" href="#">
 										CPU Load <i class="icon-arrow-right"></i>
 										</a>
@@ -2441,8 +2390,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								</div>
 								<div class="col-md-4">
 									<div class="sparkline-chart">
-										<div class="number" id="sparkline_line">
-										</div>
+										<div class="number" id="sparkline_line"></div>
 										<a class="title" href="#">
 										Load Rate <i class="icon-arrow-right"></i>
 										</a>
@@ -2469,6 +2417,8 @@ License: You must have a valid license purchased only from themeforest(the above
 								<a href="#portlet-config" data-toggle="modal" class="config">
 								</a>
 								<a href="" class="reload">
+								</a>
+								<a href="" class="fullscreen">
 								</a>
 								<a href="" class="remove">
 								</a>
@@ -2543,6 +2493,8 @@ License: You must have a valid license purchased only from themeforest(the above
 								<a href="#portlet-config" data-toggle="modal" class="config">
 								</a>
 								<a href="" class="reload">
+								</a>
+								<a href="" class="fullscreen">
 								</a>
 								<a href="" class="remove">
 								</a>
@@ -3415,6 +3367,8 @@ License: You must have a valid license purchased only from themeforest(the above
 								</a>
 								<a href="" class="reload">
 								</a>
+								<a href="" class="fullscreen">
+								</a>
 								<a href="" class="remove">
 								</a>
 							</div>
@@ -4217,8 +4171,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/global/plugins/respond.min.js"></script>
 <script src="../../assets/global/plugins/excanvas.min.js"></script> 
 <![endif]-->
-<script src="../../assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
 <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 <script src="../../assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
@@ -4243,9 +4197,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/global/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
 <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support -->
-<script src="../../assets/global/plugins/fullcalendar/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/jquery-easypiechart/jquery.easypiechart.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->

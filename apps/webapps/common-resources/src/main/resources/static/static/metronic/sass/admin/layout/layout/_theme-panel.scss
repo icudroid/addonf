@@ -3,12 +3,12 @@ Theme Panel
 ***/
 
 .theme-panel {
-    width: 400px;
+    width: 420px;
     margin-top: -13px;
     margin-right: 0px;
     z-index: 100;
     float: right;
-    position:relative;
+    position:relative;    
 
     > .toggler {
         top:4px;
@@ -17,6 +17,8 @@ Theme Panel
         cursor:pointer;
         position:absolute;
         background:#d5dade url(../img/icon-color.png) center no-repeat;
+
+        @include border-radius($general-border-radius);
 
         &:hover {
             background-color: #3d3d3d !important;
@@ -33,6 +35,8 @@ Theme Panel
         position:absolute;
         background: #3d3d3d url(../img/icon-color-close.png) center no-repeat !important;
 
+        @include border-radius($general-border-radius); 
+
         &:hover {
             background-color:#222 !important;
         }
@@ -46,6 +50,8 @@ Theme Panel
         z-index: 100;  
         background:#3d3d3d;
         box-shadow: 5px 5px rgba(#3d3d3d, 0.1);  
+
+        @include border-radius($general-border-radius);
         
         > .theme-option {
             color:#cfcfcf;
@@ -57,14 +63,14 @@ Theme Panel
             > span {  
               text-transform:uppercase;
               display: inline-block;
-              width: 138px;
-              font-size: 14px;
+              width: 145px;
+              font-size: 13px;
               font-weight: 300;
             }
 
             > select.form-control {
               display: inline;
-              width: 100px;
+              width: 135px;
               padding: 2px;
               text-transform: lowercase;
             }
@@ -85,8 +91,8 @@ Theme Panel
                   margin-top: 15px;
 
                   > li {
-                        width:37px;
-                        height:37px;
+                        width:40px;
+                        height:40px;
                         margin:0 4px;
                         cursor:pointer;
                         list-style:none;

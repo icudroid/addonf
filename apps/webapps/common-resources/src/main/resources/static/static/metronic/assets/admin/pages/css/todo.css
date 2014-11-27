@@ -1,6 +1,10 @@
 /***
 TODO Page
 ***/
+.todo-ui {
+  margin-top: 20px;
+}
+
 .todo-sidebar {
   float: left;
   width: 230px;

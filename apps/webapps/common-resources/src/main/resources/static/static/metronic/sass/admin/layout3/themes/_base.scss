@@ -25,13 +25,7 @@ General
 /* Theme Light Portlet */
 .portlet.light {
     .btn.btn-circle.btn-icon-only.btn-default {
-        margin-top: 2px;
-        margin-right: 5px;
         border-color: lighten(#ACB5C3, 5%);
-
-        &:last-child {
-            margin-right: 0;
-        }
 
         > i {
             font-size: 13px;
@@ -690,7 +684,7 @@ Page Footer
                         border-bottom: 1px solid #F0F0F0;
 
                         &:last-child {
-                            border-bottom: 0;
+                            border-bottom: 0;  
                         }
 
                         > a {
@@ -704,7 +698,7 @@ Page Footer
 
                         &:hover > {
                             a {
-                                background: none;
+                                background: none !important;
                                 color: $header-mobile-hor-menu-default-link-font-color-on-hover !important;
 
                                 > i {
@@ -736,6 +730,10 @@ Page Footer
                             li {
                                 &.divider {
                                     border-bottom: 1px solid #F0F0F0;
+                                }
+
+                                &:first-child {
+                                    margin-top: 1px; 
                                 }
 
                                 > a {
@@ -772,7 +770,15 @@ Page Footer
                                 }
                             }
                         }
-                    }            
+                    }    
+
+                    > li.classic-menu-dropdown {
+                        .dropdown-menu > {
+                            li.dropdown-submenu.open > a:after {
+                                color: $header-mobile-hor-menu-default-link-font-color-on-active !important;
+                            }
+                        }
+                    }        
                 }
 
                 .nav {
@@ -796,24 +802,28 @@ Page Footer
 
         .search-form {
             background: #fff !important;
-            
-            .form-control {
-                background: #fff !important;
-            }
+    
+            .input-group {   
+                background: #fff !important; 
 
-            .input-group-btn {
-                .btn.submit {
-                    i {
-                        color: #fff !important;
-                    }
+                .form-control {
+                    background: #fff !important;
+                }
 
-                    background: $brand-main-color;
+                .input-group-btn {
+                    .btn.submit {
+                        i {
+                            color: #fff !important;
+                        }
 
-                    &:hover,
-                    &:focus,
-                    &:active,
-                    &.active {
-                        background: darken($brand-main-color, 8%);
+                        background: $brand-main-color;
+
+                        &:hover,
+                        &:focus,
+                        &:active,
+                        &.active {
+                            background: darken($brand-main-color, 8%);
+                        }
                     }
                 }
             }
@@ -852,3 +862,11 @@ Page Footer
 
 } 
 
+/****
+ CSS3 Spinner Bar
+****/  
+
+.page-spinner-bar > div,  
+.block-spinner-bar > div {
+    background: lighten($brand-main-color, 5%);
+}

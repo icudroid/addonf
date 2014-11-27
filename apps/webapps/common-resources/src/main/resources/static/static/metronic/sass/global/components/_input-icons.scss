@@ -7,6 +7,10 @@ Input icons
 
     > .form-control {
         padding-left: 33px;
+
+        .input-group & {
+             @include border-radius($portlet-border-radius 0 0 $portlet-border-radius);
+        }
     }
 
     > i {
@@ -45,6 +49,10 @@ Input icons
         > .form-control {
             padding-right: 33px;
             padding-left: 12px;
+
+            .input-group & {
+                @include border-radius(0 $portlet-border-radius $portlet-border-radius 0); 
+            }
         }
 
         > i {

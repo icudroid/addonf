@@ -2,6 +2,12 @@
 Utilities
 ***/
 
+/* Links */
+
+a:hover {
+    cursor: pointer;
+}
+
 /* Primary Link */
 
 .primary-link {
@@ -136,6 +142,10 @@ Utilities
 
 .margin-top-10 {
     margin-top: 10px !important;
+}
+
+.margin-top-15 {
+    margin-top: 15px !important;
 }
 
 .margin-bottom-15 {
@@ -612,5 +622,19 @@ General User Record Listing
         > .item-body {
             color: darken(#C0C9CC, 15%);
         }
+    }
+}
+
+/***
+File dropzone
+***/
+
+.file-drop-zone {
+    border: 2px dashed #ddd;
+    padding: 30px; 
+    text-align: center;
+    
+    &.file-drop-zone-over {
+        border-color: #aaa;
     }
 }

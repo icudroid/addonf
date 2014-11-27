@@ -51,7 +51,7 @@ $base-color: lighten(#3D4A53, 1%);
             position: relative;
             top: 12px;
             right: 12px;
-            font-size: 22px;
+            font-size: 20px;
             color: darken(#fff, 5%);
         }
 
@@ -69,10 +69,11 @@ $base-color: lighten(#3D4A53, 1%);
         z-index: 100;  
         background:$base-color;
         border:1px solid darken($base-color, 3%);
+        @include border-radius($general-border-radius);
         
         > .theme-option {
             color:#eee;
-            padding: 10px;
+            padding: 11px;
             border-top:1px solid lighten($base-color, 3%);
             margin-top: 0px;
             margin-bottom: 0px;
@@ -80,8 +81,8 @@ $base-color: lighten(#3D4A53, 1%);
             > span {  
               text-transform:uppercase;
               display: inline-block;
-              width: 138px;
-              font-size: 14px;
+              width: 115px;
+              font-size: 13px;
               font-weight: 300;
             }
 

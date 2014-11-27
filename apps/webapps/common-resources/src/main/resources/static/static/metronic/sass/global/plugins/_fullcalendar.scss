@@ -11,6 +11,15 @@ Fullcalendar
   margin-left: 5px ;
 }
 
+.fc-scroller {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.fc-month-view .fc-scroller {
+    height: auto !important;
+}
+
 .portlet {
 
     .event-form-title {
@@ -24,11 +33,12 @@ Fullcalendar
         .fc-button {
             -webkit-box-shadow: none ;
             -moz-box-shadow: none ;
-            box-shadow: none ;
+            box-shadow: none ;    
             text-shadow: none;
             border: 0 ;
-            padding: 5px 8px 33px 8px ; 
-            margin-left:2px;  
+            height: 35px;
+            padding: 6px 8px 7px 8px ; 
+            margin-left:2px;   
             border-top-style: none;
             border-bottom-style: none;
             border-right-style: solid;
@@ -36,8 +46,20 @@ Fullcalendar
             border-color: #ddd;
             background: transparent;
             color: #fff;
-            top: -48px;     
+            top: -45px; 
+            outline: none !important;    
+          
+            @include border-radius($general-border-radius $general-border-radius 0 0);    
         }
+
+        .fc-toolbar {
+          h2 {
+            margin-top: 3px;
+            font-size: 17px;
+          }
+
+           margin-bottom: 0px; 
+        }   
 
         .fc-header {
             margin-bottom:-21px;
@@ -63,6 +85,30 @@ Fullcalendar
             &.fc-state-disabled {
                 color: #ddd;
             }
+
+            .fc-icon-left-single-arrow {
+              font-family: FontAwesome; 
+              font-size: 16px;
+
+              &:after {
+                content: "";
+              }
+              &:before {
+                content: "\f104";
+              }
+            }
+
+            .fc-icon-right-single-arrow {
+              font-family: FontAwesome; 
+              font-size: 16px;
+
+              &:after {
+                content: "";
+              }
+              &:before {
+                content: "\f105";
+              }
+            }
         }
 
         .fc-text-arrow {
@@ -76,11 +122,11 @@ Fullcalendar
           background-color: #69a4e0;
           color: #fff;
 
-           .fc-event-inner {
+           .fc-content {
               border: 0px;
             }
 
-             .fc-event-time {
+             .fc-time {
               float: left;
               text-align: left;
               color: #fff;
@@ -88,7 +134,7 @@ Fullcalendar
               font-weight: 300;
             }
 
-            .fc-event-title {
+            .fc-title {
               text-align: left;
               float: left;
               color: #fff;
@@ -139,7 +185,7 @@ Fullcalendar
 
         .mobile {
 
-            .fc-button {
+            .fc-button { 
                 padding: 0px 6px 20px 6px ;
                 margin-left:2px ;
                 border: 0;    

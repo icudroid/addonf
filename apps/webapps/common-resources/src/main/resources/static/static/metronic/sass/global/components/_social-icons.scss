@@ -17,6 +17,7 @@ Social Icons
         text-indent:-9999px;
 
         > a {
+            @include border-radius(2px);
             width:28px;
             height:28px;
             display:block;
@@ -107,6 +108,7 @@ Inline Social Icons
     height:28px;
     background-position:0 0;
     background-repeat:no-repeat;
+    @include border-radius(2px);
     transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;

@@ -545,6 +545,12 @@ body.page-header-fixed {
   border-radius: 0;
   z-index: 9999;
 }
+
+.header-navigation .dropdown-menu:before,
+.header-navigation .dropdown-menu:after {
+	display: none !important; 
+}
+
 .dropdown-fix-left .dropdown-menu {
 	left: 0;
 	width: 700px;

@@ -30,69 +30,6 @@ var Layout = function () {
         }
     }
 
-// Handles portlet tools & actions 
-    var handlePortletTools = function () {
-        jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.remove', function (e) {
-            e.preventDefault();
-            jQuery(this).closest(".portlet").remove();
-        });
-
-        jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.reload', function (e) {
-            e.preventDefault();
-            var el = jQuery(this).closest(".portlet").children(".portlet-body");
-            var url = jQuery(this).attr("data-url");
-            var error = $(this).attr("data-error-display");
-            if (url) {
-                Metronic.blockUI({target: el, iconOnly: true});
-                $.ajax({
-                    type: "GET",
-                    cache: false,
-                    url: url,
-                    dataType: "html",
-                    success: function(res) 
-                    {                        
-                        Metronic.unblockUI(el);
-                        el.html(res);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError)
-                    {
-                        Metronic.unblockUI(el);
-                        var msg = 'Error on reloading the content. Please check your connection and try again.';
-                        if (error == "toastr" && toastr) {
-                            toastr.error(msg);
-                        } else if (error == "notific8" && $.notific8) {
-                            $.notific8('zindex', 11500);
-                            $.notific8(msg, {theme: 'ruby', life: 3000});
-                        } else {
-                            alert(msg);
-                        }
-                    }
-                });
-            } else {
-                // for demo purpose
-                Metronic.blockUI({target: el, iconOnly: true});
-                window.setTimeout(function () {
-                    Metronic.unblockUI(el);
-                }, 1000);
-            }            
-        });
-
-        // load ajax data on page init
-        $('.portlet .portlet-title a.reload[data-load="true"]').click();
-
-        jQuery('body').on('click', '.portlet > .portlet-title > .tools > .collapse, .portlet .portlet-title > .tools > .expand', function (e) {
-            e.preventDefault();
-            var el = jQuery(this).closest(".portlet").children(".portlet-body");
-            if (jQuery(this).hasClass("collapse")) {
-                jQuery(this).removeClass("collapse").addClass("expand");
-                el.slideUp(200);
-            } else {
-                jQuery(this).removeClass("expand").addClass("collapse");
-                el.slideDown(200);
-            }
-        });
-    }
-
     // runs callback functions set by App.addResponsiveHandler().
     var runResponsiveHandlers = function () {
         // reinitialize other subscribed elements
@@ -372,7 +309,6 @@ var Layout = function () {
             handleScrollers();
             handleSubMenuExt();
             handleMobiToggler();
-            handlePortletTools();
         },
 
         initUniform: function (els) {

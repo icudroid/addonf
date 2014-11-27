@@ -42,6 +42,8 @@ Dashboard stats
     margin-bottom: 25px;
     overflow: hidden;
 
+    @include border-radius($general-border-radius);  
+
     @include clearfix();
 
     .portlet &:last-child {

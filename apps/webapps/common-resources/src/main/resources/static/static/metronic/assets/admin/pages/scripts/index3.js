@@ -19,6 +19,9 @@ var Index = function() {
         },
 
         initJQVMAP: function() {
+            if (!jQuery().vectorMap) {
+                return;
+            }
 
             var showMap = function(name) {
                 jQuery('.vmaps').hide();

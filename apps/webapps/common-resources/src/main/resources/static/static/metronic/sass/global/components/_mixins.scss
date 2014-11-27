@@ -21,17 +21,17 @@
 
 @mixin opacity($value) {
   opacity: $value;
-  filter: alpha(opacity=$value * 100);
+  filter: alpha(opacity=#{$value * 100});
 }
 
 // Border radius.
 
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius !important;
-  -moz-border-radius: $radius !important;
-  -ms-border-radius: $radius !important;
-  -o-border-radius: $radius !important;
-  border-radius: $radius !important;
+@mixin border-radius($radius, $important: '') {
+  -webkit-border-radius: $radius#{$important};
+  -moz-border-radius: $radius#{$important};
+  -ms-border-radius: $radius#{$important};  
+  -o-border-radius: $radius#{$important};  
+  border-radius: $radius#{$important}; 
 }
 
 // Placeholder text
@@ -166,17 +166,22 @@
   &:active,
   &.active {
     color: $color;
-    background-color: darken($background, 8%);
+    background-color: darken($background, 7%);
     @if $border != "" { border-color: darken($border, 10%); }
   }
   .open & { &.dropdown-toggle {
     color: $color;
-    background-color: darken($background, 8%);
+    background-color: darken($background, 7%);
     @if $border != "" { border-color: darken($border, 10%); } 
   } }
   &:active,
   &.active {
     background-image: none;
+    background-color: darken($background, 12%);
+
+    &:hover {
+      background-color: darken($background, 10%);  
+    }
   }
   .open & { &.dropdown-toggle {
     background-image: none;

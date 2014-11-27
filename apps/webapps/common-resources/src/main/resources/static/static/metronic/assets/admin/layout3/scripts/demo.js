@@ -141,13 +141,37 @@ var Demo = function () {
         });
     };
 
-    //* END:CORE HANDLERS *//
+    // handle theme style
+    var setThemeStyle = function(style) {
+        var file = (style === 'rounded' ? 'components-rounded' : 'components');
+        file = (Metronic.isRTL() ? file + '-rtl' : file);
+
+        $('#style_components').attr("href", Metronic.getGlobalCssPath() + file + ".css");
+
+        if ($.cookie) {
+            $.cookie('layout-style-option', style);
+        }
+
+
+    };
 
     return {
 
         //main function to initiate the theme
-        init: function () {            
-            handleTheme(); // handles style customer tool
+        init: function() {
+            // handles style customer tool
+            handleTheme(); 
+
+            // handle layout style change
+            $('.theme-panel .theme-setting-style').change(function() {
+                 setThemeStyle($(this).val());
+            });
+
+            // set layout style from cookie
+            if ($.cookie && $.cookie('layout-style-option') === 'rounded') {
+                setThemeStyle($.cookie('layout-style-option'));  
+                $('.theme-panel .theme-setting-style').val($.cookie('layout-style-option'));
+            }            
         }
     };
 

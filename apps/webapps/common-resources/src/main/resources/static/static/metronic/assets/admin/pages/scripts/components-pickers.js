@@ -131,6 +131,10 @@ var ComponentsPickers = function () {
 
     var handleDatetimePicker = function () {
 
+        if (!jQuery().datetimepicker) {
+            return;
+        }
+
         $(".form_datetime").datetimepicker({
             autoclose: true,
             isRTL: Metronic.isRTL(),

@@ -6,6 +6,9 @@ Charts and statistics
 .bars {
     overflow: hidden;
     height: 300px;
+    width: 100%;
+    font-family: $font-family-primary !important;
+    font-size: 14px;
 }
 
 /***

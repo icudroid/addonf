@@ -25,7 +25,7 @@ Default table
 
 /* Contextual table row variants */
 
-@include table-row-variant('active', lighten($state-primary-bg, 25%), darken($state-primary-text, 55%));  
+@include table-row-variant('active', lighten($state-primary-bg, 25%), darken($state-primary-text, 5%));  
 @include table-row-variant('success', $state-success-bg, $state-success-text);
 @include table-row-variant('info', $state-info-bg, $state-info-text);
 @include table-row-variant('warning', $state-warning-bg, $state-warning-text);

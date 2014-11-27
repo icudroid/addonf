@@ -156,8 +156,9 @@ var Inbox = function () {
     }
 
     var loadReply = function (el) {
-        var url = 'inbox_reply.html';
-
+        var messageid = $(el).attr("data-messageid");
+        var url = 'inbox_reply.html?messageid=' + messageid;
+        
         loading.show();
         content.html('');
         toggleButton(el);

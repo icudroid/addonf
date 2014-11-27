@@ -109,9 +109,12 @@ Page Header
 
                     /* 2nd level */
                     > .dropdown-menu {   
+                        z-index: $zindex-header-top-menu;
                         margin-top: 5px;
                         margin-right: 7px;
                         font-family: $font-family-primary;
+
+                        @include border-radius(4px);
 
                         &:before {
                             position: absolute;
@@ -166,6 +169,8 @@ Page Header
                             overflow: hidden;
                             padding: 15px 15px;  
                             letter-spacing: 0.5px;
+
+                            @include border-radius(4px 4px 0 0);
 
                             > h3 {
                                 margin: 0;
@@ -495,6 +500,7 @@ Page Header
 
     /* Page Header Menu */
     .page-header-menu {
+        display: block;
         height: $header-hor-menu-height;
         clear: both;
 
@@ -650,7 +656,6 @@ Page Header
                     }
 
 
-
                     &.classic-menu-dropdown {
                         .dropdown-menu {
                             min-width: 195px;
@@ -680,8 +685,13 @@ Page Header
             width: 176px;
             transition: width 0.4s;
             margin-top: 8px;
+            
+            @include border-radius($form-control-border-radius);
 
             .input-group {
+
+                @include border-radius($form-control-border-radius);      
+
                 .form-control {
                     border: 0;
                     font-size: 13px;
@@ -737,6 +747,7 @@ Page Header
     .page-header {
         /* Page Header Menu */
         .page-header-menu {
+
             &.fixed {
                 width: 100%;
                 position: fixed;
@@ -838,6 +849,7 @@ Page Header
                         &.open {
                             > .dropdown-menu {
                                 display: block;
+                                min-width: 100% !important;
                             }
                         }
                     }
@@ -855,19 +867,19 @@ Page Header
                         > .dropdown-menu {
                             > li {
                                 > a {
-                                    padding-left: 10px;
+                                    padding-left: 20px;  
                                 }
 
                                 > .dropdown-menu {
                                     > li {
                                         > a {
-                                            padding-left: 30px;
+                                            padding-left: 40px;
                                         }
 
                                         > .dropdown-menu {
                                             > li {
                                                 > a {
-                                                    padding-left: 50px;
+                                                    padding-left: 60px;
                                                 }
                                             }
                                         }
@@ -877,13 +889,14 @@ Page Header
                         }
 
                         &.active,
-                        &.open {
+                        &.open {   
                             > .dropdown-menu {
                                 display: block;
                             }
                         }
 
                         .dropdown-menu {
+                            max-width: none;
                             width: auto;
 
                             > li {
@@ -897,14 +910,14 @@ Page Header
                                     > a:after {
                                         content: "\f104";
                                         font-size: 14px;
-                                        margin-right: 9px;
+                                        margin-right: 7px;
                                     }
                                 }
 
                                 &.dropdown-submenu.open {
                                     > a:after {
                                         content: "\f107";                                    
-                                        margin-right: 7px;
+                                        margin-right: 5px;
                                     }
                                 }
                             }
@@ -923,6 +936,7 @@ Page Header
                 }
 
                 .input-group {
+
                     .form-control {
                         height: 38px;
 

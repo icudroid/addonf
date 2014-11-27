@@ -75,9 +75,13 @@ Form Layouts
         *zoom: 1;
 
         .portlet.light & {
-            background: none;
+            background: none;   
             padding-left: 0;
             padding-right: 0;
+        }
+
+        .portlet & {
+            @include border-radius(0 0 $portlet-border-radius $portlet-border-radius);   
         }
 
         @include clearfix(); 

@@ -70,3 +70,31 @@ Iconic labels
         padding: 3px 0px 3px 3px;
     }
 }
+
+/***
+Text states
+***/
+
+.text-default {
+    color: $brand-default;
+}
+
+.text-primary {
+    color: $brand-primary;
+}
+
+.text-success {
+    color: $brand-success;
+}
+
+.text-info {
+    color: $brand-info;
+}
+
+.text-warning {
+    color: $brand-warning;
+}
+
+.text-danger {
+    color: $brand-danger;
+}

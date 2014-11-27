@@ -6,6 +6,10 @@ Morris Charts
     margin-right: -20px;
     margin-left: -20px;
     margin-bottom: -15px;
+
+    > svg {
+		@include border-radius(0 0 $portlet-border-radius $portlet-border-radius); 
+	}
 }
 
 .morris-hover.morris-default-style {

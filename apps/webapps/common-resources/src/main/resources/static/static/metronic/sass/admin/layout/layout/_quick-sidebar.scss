@@ -184,6 +184,8 @@ Quick Sidebar Content
 					font-size: 13px;
 					text-transform: uppercase;
 
+                    @include border-radius(0); 
+
 					> .badge {
 						position: absolute;
 						top: 12px;

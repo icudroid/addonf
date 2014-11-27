@@ -2,6 +2,18 @@
 CKEditor css changes
 ***/
 
+.cke {
+  @include border-radius($general-border-radius);
+
+  .cke-top {
+    @include border-radius($general-border-radius $general-border-radius 0 0);
+  }
+
+  .cke-bottom {
+    @include border-radius(0 0 $general-border-radius $general-border-radius);     
+  }
+}
+
 .cke_bottom, 
 .cke_inner, 
 .cke_top, 
@@ -53,6 +65,7 @@ CKEditor css changes
    -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
+  
 }
 
 .cke_button, 
@@ -62,10 +75,6 @@ CKEditor css changes
   background-image: none !important;
   filter:none ;
   text-shadow:none ;
-  -webkit-border-radius: 0px !important;
-  -moz-border-radius: 0px !important;
-  -ms-border-radius: 0px !important;
-  -o-border-radius: 0px !important;
 }
 
 .cke_button:hover, 

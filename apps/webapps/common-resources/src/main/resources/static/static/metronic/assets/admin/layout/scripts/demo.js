@@ -41,6 +41,8 @@ var Demo = function() {
                 $('.scroll-to-top').insertAfter('.page-footer');
             }
 
+             $(".top-menu > .navbar-nav > li.dropdown").removeClass("dropdown-dark");
+
             $('body > .container').remove();
         };
 
@@ -55,6 +57,7 @@ var Demo = function() {
             var sidebarPosOption = $('.sidebar-pos-option', panel).val();
             var sidebarStyleOption = $('.sidebar-style-option', panel).val();
             var sidebarMenuOption = $('.sidebar-menu-option', panel).val();
+            var headerTopDropdownStyle = $('.page-header-top-dropdown-style-option', panel).val();
 
             if (sidebarOption == "fixed" && headerOption == "default") {
                 alert('Default Header with Fixed Sidebar option is not supported. Proceed with Fixed Header with Fixed Sidebar.');
@@ -112,6 +115,13 @@ var Demo = function() {
                     $("page-sidebar-menu").removeClass("page-sidebar-menu-fixed");
                     $('.page-sidebar-menu').unbind('mouseenter').unbind('mouseleave');
                 }
+            }
+
+            // top dropdown style
+            if (headerTopDropdownStyle === 'dark') {
+                $(".top-menu > .navbar-nav > li.dropdown").addClass("dropdown-dark");
+            } else {
+                $(".top-menu > .navbar-nav > li.dropdown").removeClass("dropdown-dark");
             }
 
             //footer 
@@ -238,17 +248,38 @@ var Demo = function() {
         var sidebarStyleOption = $('.sidebar-style-option', panel).val();
         var sidebarMenuOption = $('.sidebar-menu-option', panel).val();
 
-        $('.layout-option, .page-header-option, .sidebar-option, .page-footer-option, .sidebar-pos-option, .sidebar-style-option, .sidebar-menu-option', panel).change(setLayout);
+        $('.layout-option, .page-header-option, .page-header-top-dropdown-style-option, .sidebar-option, .page-footer-option, .sidebar-pos-option, .sidebar-style-option, .sidebar-menu-option', panel).change(setLayout);
     };
 
-    //* END:CORE HANDLERS *//
+    // handle theme style
+    var setThemeStyle = function(style) {
+        var file = (style === 'rounded' ? 'components-rounded' : 'components');
+        file = (Metronic.isRTL() ? file + '-rtl' : file);
+
+        $('#style_components').attr("href", Metronic.getGlobalCssPath() + file + ".css");
+
+        if ($.cookie) {
+            $.cookie('layout-style-option', style);
+        }
+    };
 
     return {
 
         //main function to initiate the theme
         init: function() {
+            // handles style customer tool
+            handleTheme(); 
 
-            handleTheme(); // handles style customer tool
+            // handle layout style change
+            $('.theme-panel .layout-style-option').change(function() {
+                 setThemeStyle($(this).val());
+            });
+
+            // set layout style from cookie
+            if ($.cookie && $.cookie('layout-style-option') === 'rounded') {
+                setThemeStyle($.cookie('layout-style-option'));
+                $('.theme-panel .layout-style-option').val($.cookie('layout-style-option'));
+            }            
         }
     };
 

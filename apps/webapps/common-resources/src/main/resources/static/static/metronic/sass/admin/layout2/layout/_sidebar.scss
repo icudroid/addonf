@@ -375,7 +375,9 @@ Page sidebar
 						display: block !important;
 
 						> a {
+							@include border-radius(0 $general-border-radius 0 0);
 							text-align: left;
+
 							> i {
 								display: inline-block;
 								margin-right: 10px;   
@@ -403,6 +405,8 @@ Page sidebar
 							margin-top: 0;
 							top: 100%;
 							display: block !important; 
+
+							@include border-radius(0 0 $general-border-radius $general-border-radius);
 
 							> li {
 								> a {
@@ -476,6 +480,8 @@ Page sidebar
 							margin-left: -($sidebar-collapsed-submenu-width-on-hover + 1px);
 
 							> a {
+								@include border-radius($general-border-radius 0 0 0);
+								
 								> .title {
 									padding-left: 0;
 									padding-right: 15px;
@@ -550,6 +556,8 @@ Page sidebar
 				z-index: $zindex-sidebar-submenu;
 				position: absolute;		
 
+				@include border-radius($general-border-radius);
+
 				> li {
 					> a {
 						margin: 3px;
@@ -606,6 +614,7 @@ Page sidebar
 		> li:hover {
 			> a {
 				> .arrow {
+					z-index: 1;
 					right: 0px;
 					margin-top: -36px; 
 
