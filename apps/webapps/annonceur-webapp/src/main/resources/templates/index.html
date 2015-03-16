@@ -4,16 +4,23 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/corporate/unlogged_carrousel">
+        layout:decorator="layout/frontend/index">
 <head>
     <title>Acceuil</title>
 </head>
 <body>
 
 <div layout:fragment="content">
-    Page en construction
+    <h1>Page en construction</h1>
 </div>
 
+<div layout:fragment="page-slider"></div>
+<div layout:fragment="service-box"></div>
+<div layout:fragment="quote-v1"></div>
+<div layout:fragment="recent-work"></div>
+<div layout:fragment="mix-block"></div>
+<div layout:fragment="step"></div>
+<div layout:fragment="customer"></div>
 
 </body>
 </html>
