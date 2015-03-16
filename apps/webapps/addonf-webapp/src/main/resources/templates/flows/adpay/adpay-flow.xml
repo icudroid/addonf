@@ -45,7 +45,7 @@
     </view-state>
 
     <action-state id="isLotteryWin">
-        <evaluate expression="payAdService.isLotteryWin(state)"/>
+        <evaluate expression="payAdService.isLotteryWin(flowRequestContext,state)"/>
         <transition on="win" to="wonAdGame"/>
         <transition on="lost" to="lostAdGame"/>
     </action-state>
