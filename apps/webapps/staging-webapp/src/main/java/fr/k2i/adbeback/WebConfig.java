@@ -18,13 +18,10 @@ package fr.k2i.adbeback;
 
 
 import fr.k2i.adbeback.webapp.config.AbstractWebConfig;
-import fr.k2i.adbeback.webapp.config.MvcConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -32,16 +29,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "fr.k2i.adbeback")
 public class WebConfig extends AbstractWebConfig {
-
-    @Bean
-    public SecurityConfig securityConfig() {
-        return new SecurityConfig();
-    }
-
-    @Bean
-    public MvcConfig mvcConfig() {
-        return new MvcConfig();
-    }
 
     public static void main(String[] args) throws Exception {
         new SpringApplicationBuilder(WebConfig.class).run(args);

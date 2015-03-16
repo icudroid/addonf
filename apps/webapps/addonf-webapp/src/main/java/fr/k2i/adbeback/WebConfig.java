@@ -18,29 +18,22 @@ package fr.k2i.adbeback;
 
 
 import fr.k2i.adbeback.webapp.config.AbstractWebConfig;
-import fr.k2i.adbeback.webapp.config.MvcConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 @Configuration
 @EnableTransactionManagement
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "fr.k2i.adbeback")
-//@PropertySource(value = {"classpath:application.properties","classpath:mail.properties"})
 public class WebConfig extends AbstractWebConfig {
 
-    @Bean
-    public SecurityConfig securityConfig() {
-        return new SecurityConfig();
-    }
-
-    @Bean
-    public MvcConfig mvcConfig() {
-        return new MvcConfig();
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
     }
 
 
