@@ -6,7 +6,6 @@ import fr.k2i.adbeback.core.business.game.AbstractAdGame;
 import fr.k2i.adbeback.core.business.game.AdGameTransaction;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.user.Media;
-import org.joda.time.LocalDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;

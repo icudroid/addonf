@@ -1,0 +1,42 @@
+rootProject.name = 'addonf'
+include ':tools'
+include ':core:domain'
+include ':core:repository'
+include ':core:service'
+include ':core:application-service'
+include ':core:domain-web'
+include ':core:repository-web'
+include ':core'
+include ':apps:webapps:staging-webapp'
+include ':apps:webapps:addonf-webapp'
+include ':apps:webapps:annonceur-webapp'
+include ':apps:webapps:admin-webapp'
+include ':apps:webapps:common-resources'
+include ':apps:webapps'
+include ':apps:batches:statistics-batch'
+include ':apps:batches'
+include ':apps:deamon:config-deamon'
+include ':apps:deamon'
+include ':apps'
+include ':templates'
+
+project(':tools').projectDir = "$rootDir/tools" as File
+project(':core:domain').projectDir = "$rootDir/core/domain" as File
+project(':core:repository').projectDir = "$rootDir/core/repository" as File
+project(':core:service').projectDir = "$rootDir/core/service" as File
+project(':core:application-service').projectDir = "$rootDir/core/application-service" as File
+project(':core:domain-web').projectDir = "$rootDir/core/domain-web" as File
+project(':core:repository-web').projectDir = "$rootDir/core/repository-web" as File
+project(':core').projectDir = "$rootDir/core" as File
+project(':apps:webapps:staging-webapp').projectDir = "$rootDir/apps/webapps/staging-webapp" as File
+project(':apps:webapps:addonf-webapp').projectDir = "$rootDir/apps/webapps/addonf-webapp" as File
+project(':apps:webapps:annonceur-webapp').projectDir = "$rootDir/apps/webapps/annonceur-webapp" as File
+project(':apps:webapps:admin-webapp').projectDir = "$rootDir/apps/webapps/admin-webapp" as File
+project(':apps:webapps:common-resources').projectDir = "$rootDir/apps/webapps/common-resources" as File
+project(':apps:webapps').projectDir = "$rootDir/apps/webapps" as File
+project(':apps:batches:statistics-batch').projectDir = "$rootDir/apps/batches/statistics-batch" as File
+project(':apps:batches').projectDir = "$rootDir/apps/batches" as File
+project(':apps:deamon:config-deamon').projectDir = "$rootDir/apps/deamon/config-deamon" as File
+project(':apps:deamon').projectDir = "$rootDir/apps/deamon" as File
+project(':apps').projectDir = "$rootDir/apps" as File
+project(':templates').projectDir = "$rootDir/templates" as File

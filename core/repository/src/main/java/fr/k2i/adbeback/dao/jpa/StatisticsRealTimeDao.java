@@ -15,12 +15,13 @@ import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.dao.IStatisticsRealTimeDao;
 import fr.k2i.adbeback.dao.IViewedAdDao;
 import fr.k2i.adbeback.dao.bean.*;
-import org.joda.time.LocalDate;
+import fr.k2i.adbeback.date.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.*;
 
 @Repository
@@ -47,7 +48,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.ad.eq(ad)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.responses.isNotEmpty())
         );
 
@@ -63,7 +64,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public Responses computeResponsesPlayer(OpenRule rule){
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -75,7 +76,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(response.responses,possibility).join(openPossibility.generatedBy,qAdResponse).join(game.player, player).where(
                 response.adService.eq(rule)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.responses.isNotEmpty())
         );
 
@@ -108,7 +109,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public Responses computeResponsesPlayer(BrandRule rule) {
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -122,7 +123,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(response.responses,possibility).join(brandPossibility.brand,brand).join(game.player,player).where(
                 response.adService.eq(rule)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.responses.isNotEmpty())
         );
 
@@ -155,7 +156,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
         List<AdResponse> responses = rule.getResponses();
         AdResponse[] adResponses = responses.toArray(new AdResponse[responses.size()]);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
 
         Responses stat = new Responses();
 
@@ -199,7 +200,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
             JPASubQuery subQuery = new JPASubQuery();
             subQuery.from(subResponse).join(subResponse.adScore).join(subResponse.adScore.game,game).join(subResponse.responses, possibility).where(
                     subResponse.adService.eq(rule)
-                            .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                            .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                             .and(openPossibility.generatedBy.in(responses4Query))
             ).groupBy(subResponse).having(subResponse.responses.size().eq(responses4Query.size())).distinct();
 
@@ -238,7 +239,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public Double computeAverageBid(AdService service) {
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -246,7 +247,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.choises,adChoise).where(
                 response.adService.eq(service)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
         );
 
         return  query.uniqueResult(adChoise.winBidPrice.avg());
@@ -257,7 +258,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public List<StatisticsAgeSex> computeResponsesPlayerKo(AdService service) {
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -265,7 +266,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.eq(service)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.correctAnswer.eq(false))
                         .and(response.responses.isNotEmpty())
         );
@@ -294,7 +295,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public List<Tuple> computeResponsesPlayerKo(Ad ad) {
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -302,7 +303,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.ad.eq(ad)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.correctAnswer.eq(false))
                         .and(response.responses.isNotEmpty())
         );
@@ -317,7 +318,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public List<StatisticsAgeSex> computeResponsesPlayerOk(AdService service) {
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -325,7 +326,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.eq(service)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.correctAnswer.eq(true))
                         .and(response.responses.isNotEmpty())
         );
@@ -353,7 +354,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public List<Tuple> computeResponsesPlayerOk(Ad ad) {
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -361,7 +362,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.ad.eq(ad)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.correctAnswer.eq(true))
                         .and(response.responses.isNotEmpty())
         );
@@ -375,7 +376,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public List<StatisticsAgeSex> computeNoResponses(AdService service) {
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -383,7 +384,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.eq(service)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.correctAnswer.eq(false))
                         .and(response.responses.isEmpty())
         );
@@ -411,7 +412,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public List<Tuple> computeNoResponses(Ad ad) {
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -419,7 +420,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.ad.eq(ad)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.correctAnswer.eq(false))
                         .and(response.responses.isEmpty())
         );
@@ -434,7 +435,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public Long computeNbView(AdService service){
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -442,7 +443,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.eq(service)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
         );
 
 
@@ -456,7 +457,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public Long computeNbView(Ad ad){
         JPAQuery query = new JPAQuery(entityManager);
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -464,7 +465,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).where(
                 response.adService.ad.eq(ad)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.correctAnswer.eq(false))
         );
 
@@ -477,13 +478,13 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public Long computeNbViewGlobal(Ad ad){
         JPAQuery query = new JPAQuery(entityManager);
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
 
         query.from(game).join(game.score,score).join(game.score.answers,response).where(
                 response.adService.ad.eq(ad)
-                .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
         );
         query.distinct();
         return query.uniqueResult(response.count());
@@ -493,13 +494,13 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
     public Long computeNbValidated(Ad ad) {
         JPAQuery query = new JPAQuery(entityManager);
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
 
         query.from(game).join(game.score,score).join(game.score.answers,response).where(
                 response.adService.ad.eq(ad)
-                        .and(game.generated.between(now.toDate(), now.plusDays(1).toDate()))
+                        .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                         .and(response.correctAnswer.eq(true))
         );
 

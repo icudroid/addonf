@@ -1,0 +1,12 @@
+apply plugin: 'spring-boot'
+
+group = 'fr.k2i.adbeback.addonf.webapps'
+description = 'WEBAPPS - ANNONCEURS WEBAPP'
+dependencies {
+  compile project(':apps:webapps:common-resources')
+  compile project(':core:service')
+  compile project(':templates')
+  compile project(':core:application-service')
+    compile group: 'edu.vt.middleware', name: 'vt-password', version:'3.1.2'
+    compile group: 'net.sf.opencsv', name: 'opencsv', version:'2.3'
+}

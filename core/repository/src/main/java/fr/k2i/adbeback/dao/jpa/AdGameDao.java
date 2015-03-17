@@ -5,14 +5,15 @@ import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.user.Media;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
+import fr.k2i.adbeback.date.DateUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,27 +51,27 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
     @Override
     public List<Double> sumTransactionByHourForDay(Media media, Date date) {
-        LocalDate start = new LocalDate(date);
-        LocalDate end = new LocalDate(date).plusDays(1);
+        LocalDate start = DateUtils.asLocalDate(date);
+        LocalDateTime end = DateUtils.asLocalDateTime(date).plusDays(1);
 
         QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
 
 
         List<Double> res = new ArrayList<Double>();
         int plusHours = 0;
-        LocalDateTime begin = new LocalDateTime(start).plusHours(plusHours);
+        LocalDateTime begin = start.atStartOfDay().plusHours(plusHours);
         do{
             JPAQuery query = new JPAQuery(getEntityManager());
 
             query.from(transaction).where(
                     transaction.media.eq(media),
-                    transaction.generated.between(begin.toDate(),begin.plusHours(1).toDate()),
+                    transaction.generated.between(DateUtils.asDate(begin),DateUtils.asDate(begin.plusHours(1))),
                     transaction.statusGame.eq(StatusGame.Win)
             );
 
             res.add(query.uniqueResult(transaction.amount.sum()));
             plusHours++;
-            begin = new LocalDateTime(date).plusHours(plusHours);
+            begin = DateUtils.asLocalDateTime(date).plusHours(plusHours);
         }while (begin.isAfter(end));
 
 
@@ -80,8 +81,8 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
     @Override
     public List<AdGameTransaction> findTransactionsForDay(Media media, Date date,StatusGame ...statusGame) {
-        LocalDate start = new LocalDate(date);
-        LocalDate end = new LocalDate(date).plusDays(1);
+        LocalDate start = DateUtils.asLocalDate(date);
+        LocalDateTime end = DateUtils.asLocalDateTime(date).plusDays(1);
 
         QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
         JPAQuery query = new JPAQuery(getEntityManager());
@@ -89,7 +90,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
         query.from(transaction).where(
                 transaction.media.eq(media),
-                transaction.generated.between(start.toDate(),end.toDate()),
+                transaction.generated.between(DateUtils.asDate(start),DateUtils.asDate(end)),
                 transaction.statusGame.in(statusGame)
         );
         query.orderBy(transaction.generated.asc());
@@ -98,8 +99,8 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
     @Override
     public Page<AdGameTransaction> findTransactionsForDayPageable(Media media, Date date, Pageable pageable) {
-        LocalDate start = new LocalDate(date);
-        LocalDate end = new LocalDate(date).plusDays(1);
+        LocalDate start = DateUtils.asLocalDate(date);
+        LocalDateTime end = DateUtils.asLocalDateTime(date).plusDays(1);
 
         QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
         JPAQuery query = new JPAQuery(getEntityManager());
@@ -107,7 +108,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
         query.from(transaction).where(
                 transaction.media.eq(media),
-                transaction.generated.between(start.toDate(),end.toDate())
+                transaction.generated.between(DateUtils.asDate(start),DateUtils.asDate(end))
         );
 
         long count = query.count();
@@ -123,8 +124,8 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
     @Override
     public Long countTransactionsOkByDate(Media media, Date date) {
-        LocalDate start = new LocalDate(date);
-        LocalDate end = new LocalDate(date).plusDays(1);
+        LocalDate start = DateUtils.asLocalDate(date);
+        LocalDateTime end = DateUtils.asLocalDateTime(date).plusDays(1);
 
         QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
         JPAQuery query = new JPAQuery(getEntityManager());
@@ -132,7 +133,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
         query.from(transaction).where(
                 transaction.media.eq(media),
-                transaction.generated.between(start.toDate(),end.toDate()),
+                transaction.generated.between(DateUtils.asDate(start),DateUtils.asDate(end)),
                 transaction.statusGame.eq(StatusGame.Win)
         );
 
@@ -141,8 +142,8 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
     @Override
     public Long countTransactionsFailedByDate(Media media, Date date) {
-        LocalDate start = new LocalDate(date);
-        LocalDate end = new LocalDate(date).plusDays(1);
+        LocalDate start = DateUtils.asLocalDate(date);
+        LocalDateTime end = DateUtils.asLocalDateTime(date).plusDays(1);
 
         QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
         JPAQuery query = new JPAQuery(getEntityManager());
@@ -150,7 +151,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
         query.from(transaction).where(
                 transaction.media.eq(media),
-                transaction.generated.between(start.toDate(),end.toDate()),
+                transaction.generated.between(DateUtils.asDate(start),DateUtils.asDate(end)),
                 transaction.statusGame.in(StatusGame.Playing,StatusGame.Lost)
         );
 
@@ -159,8 +160,8 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
     @Override
     public Double sumTransactionForDate(Media media, Date date) {
-        LocalDate start = new LocalDate(date);
-        LocalDate end = new LocalDate(date).plusDays(1);
+        LocalDate start = DateUtils.asLocalDate(date);
+        LocalDateTime end = DateUtils.asLocalDateTime(date).plusDays(1);
 
         QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
         JPAQuery query = new JPAQuery(getEntityManager());
@@ -168,7 +169,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
         query.from(transaction).where(
                 transaction.media.eq(media),
-                transaction.generated.between(start.toDate(),end.toDate()),
+                transaction.generated.between(DateUtils.asDate(start),DateUtils.asDate(end)),
                 transaction.statusGame.eq(StatusGame.Win)
         );
 
@@ -177,8 +178,8 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
     @Override
     public Double sumWinBidsForDate(Brand brand, Date date) {
-        LocalDate start = new LocalDate(date);
-        LocalDate end = new LocalDate(date).plusDays(1);
+        LocalDate start = DateUtils.asLocalDate(date);
+        LocalDateTime end = DateUtils.asLocalDateTime(date).plusDays(1);
 
         QAdGameTransaction transaction = QAdGameTransaction.adGameTransaction;
         QAdChoise adChoise = QAdChoise.adChoise;
@@ -186,7 +187,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
         query.from(transaction).join(transaction.choises, adChoise).where(
                 adChoise.generatedBy.ad.brand.eq(brand),
-                transaction.generated.between(start.toDate(), end.toDate())
+                transaction.generated.between(DateUtils.asDate(start),DateUtils.asDate(end))
         );
 
         BigDecimal sum = new BigDecimal(0);

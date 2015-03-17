@@ -1,0 +1,12 @@
+apply plugin: 'spring-boot'
+
+group = 'fr.k2i.adbeback.addonf.core'
+description = 'CORE - DOMAIN - WEB'
+dependencies {
+  compile project(':core:domain')
+  compile "org.springframework.security:spring-security-core"
+}
+
+
+startScripts.enabled = false
+bootRepackage.enabled = false

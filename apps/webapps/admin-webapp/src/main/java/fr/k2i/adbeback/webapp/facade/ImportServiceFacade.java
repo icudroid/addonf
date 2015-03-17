@@ -1,23 +1,20 @@
 package fr.k2i.adbeback.webapp.facade;
 
-import fr.k2i.adbeback.core.business.country.City;
-import fr.k2i.adbeback.core.business.country.Country;
 import fr.k2i.adbeback.core.business.statistic.Statistics;
 import fr.k2i.adbeback.dao.ICityDao;
 import fr.k2i.adbeback.dao.ICountryDao;
 import fr.k2i.adbeback.dao.IStatisticsDao;
+import fr.k2i.adbeback.date.DateUtils;
 import fr.k2i.adbeback.logger.LogHelper;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -46,14 +43,21 @@ public class ImportServiceFacade {
     @Transactional
     public void doStat(Date start, Date end) {
 
-        Days days = Days.daysBetween(new DateTime(start), new DateTime(end));
+        LocalDateTime startLDT = DateUtils.asLocalDateTime(start);
+        LocalDateTime endLDT = DateUtils.asLocalDateTime(end);
 
 
-        DateTime now = new DateTime(start);
+        //Todo : //Days days = Days.daysBetween(new DateTime(start), new DateTime(end));
+        Period between = Period.between(startLDT.toLocalDate(), endLDT.toLocalDate());
 
-        for (int i = 0; i < days.getDays(); i++) {
+        int days = between.getDays();
+
+
+        LocalDateTime now = startLDT;
+
+        for (int i = 0; i < days; i++) {
             List<Statistics> stats = new ArrayList<Statistics>();
-            Date day = now.plusDays(i).toDate();
+            Date day = DateUtils.asDate(now.plusDays(i));
             statisticsDao.removeAllInDay(day);
             stats.addAll(statisticsDao.doStatisticsViewedForDay(day));
             stats.addAll(statisticsDao.doStatisticsValidatedForDay(day));

@@ -1,6 +1,8 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,8 +13,7 @@ import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.user.*;
-import org.joda.time.LocalDate;
-import org.joda.time.Years;
+import fr.k2i.adbeback.date.DateUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -55,7 +56,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
          */
 
-        LocalDate date = new LocalDate();
+        LocalDate date = LocalDate.now();
 
         City city = player.getAddress().getCity();
         Long countryId = null;
@@ -73,8 +74,8 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(ad).join(ad.rules,adRule).on(adRule.instanceOf(countryRule.getType()))
                 .where(
-                        ad.startDate.loe(date.toDate())
-                                .and(ad.endDate.goe(date.toDate()))
+                        ad.startDate.loe(DateUtils.asDate(date))
+                                .and(ad.endDate.goe(DateUtils.asDate(date)))
                                 .and(countryRule.country.id.eq(countryId))
                 );
 
@@ -102,7 +103,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
          */
 
-        LocalDate date = new LocalDate();
+        LocalDate date = LocalDate.now();
 
         QAd ad = QAd.ad;
         QAdRule adRule = QAdRule.adRule;
@@ -120,8 +121,8 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(ad).join(ad.rules,adRule).on(adRule.instanceOf(countryRule.getType()))
                 .where(
-                        ad.startDate.loe(date.toDate())
-                        .and(ad.endDate.goe(date.toDate()))
+                        ad.startDate.loe(DateUtils.asDate(date))
+                        .and(ad.endDate.goe(DateUtils.asDate(date)))
                         .and(countryRule.country.id.eq(countryId))
                         .and(ad.providedBy.id.eq(media.getId()))
                 );
@@ -187,8 +188,9 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
     private List<Ad> matchAge(List<Ad> ads,Player player) {
         List<Ad> res = new ArrayList<Ad>();
         Date birthday = player.getBirthday();
-        LocalDate now = new LocalDate();
-        Years age = Years.yearsBetween(new LocalDate(birthday), now);
+        LocalDate now = LocalDate.now();
+        Period period = Period.between(DateUtils.asLocalDate(birthday), now);
+        int age = period.getYears();
 
         for (Ad ad : ads) {
             List<AgeRule> rules = ad.getRules(AgeRule.class);
@@ -196,7 +198,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
                 for (AgeRule rule : rules) {
                     Integer ageMax = rule.getAgeMax();
                     Integer ageMin = rule.getAgeMin();
-                    if(age.getYears()>=ageMin && age.getYears()<=ageMax){
+                    if(age>=ageMin && age<=ageMax){
                         res.add(ad);
                     }
                 }

@@ -1,0 +1,64 @@
+apply plugin: 'spring-boot'
+
+
+
+sourceSets {
+    generated {
+        java {
+            srcDirs = ['src/main/generated']
+        }
+    }
+}
+
+
+configurations {
+    querydslapt
+}
+
+group = 'fr.k2i.adbeback.addonf.core'
+description = 'CORE - DOMAIN'
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile libs.commonsLang
+    compile libs.queryDsl
+    compile "org.hibernate:hibernate-entitymanager"
+    querydslapt libs.queryDslApt
+    compile libs.lombok
+    compile "org.hibernate:hibernate-validator"
+    compile project(':tools')
+}
+
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.querydslapt
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
+
+compileGeneratedJava {
+    dependsOn generateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.main.runtimeClasspath
+}
+
+clean {
+    delete sourceSets.generated.java.srcDirs
+}
+
+idea {
+    module {
+        sourceDirs += file('src/main/generated')
+    }
+}
+
+startScripts.enabled = false
+bootRepackage.enabled = false

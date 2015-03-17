@@ -2,7 +2,7 @@ package fr.k2i.adbeback.deamon.config;
 
 import fr.k2i.adbeback.core.business.statistic.Statistics;
 import fr.k2i.adbeback.dao.IStatisticsDao;
-import org.joda.time.LocalDate;
+import fr.k2i.adbeback.date.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,14 +40,14 @@ public class StatisticService {
     @Scheduled(cron = "0 5 0 * * *")
     public void doAction() throws URISyntaxException, IOException {
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         LocalDate yesterday = now.minusDays(1);
 
         List<Statistics> stats = new ArrayList<Statistics>();
-        stats.addAll(statisticsDao.doStatisticsViewedForDay(yesterday.toDate()));
-        stats.addAll(statisticsDao.doStatisticsValidatedForDay(yesterday.toDate()));
-        stats.addAll(statisticsDao.doStatisticsNoResponseForDay(yesterday.toDate()));
-        stats.addAll(statisticsDao.doStatisticsNotValidatedForDay(yesterday.toDate()));
+        stats.addAll(statisticsDao.doStatisticsViewedForDay(DateUtils.asDate(yesterday)));
+        stats.addAll(statisticsDao.doStatisticsValidatedForDay(DateUtils.asDate(yesterday)));
+        stats.addAll(statisticsDao.doStatisticsNoResponseForDay(DateUtils.asDate(yesterday)));
+        stats.addAll(statisticsDao.doStatisticsNotValidatedForDay(DateUtils.asDate(yesterday)));
 
         for (Statistics stat : stats) {
             statisticsDao.save(stat);

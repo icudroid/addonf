@@ -2,21 +2,17 @@ package fr.k2i.adbeback.deamon.config;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import fr.k2i.adbeback.application.services.mail.IMailEngine;
-import fr.k2i.adbeback.application.services.mail.MailEngine;
 import fr.k2i.adbeback.application.services.mail.dto.Attachement;
 import fr.k2i.adbeback.application.services.mail.dto.Email;
 import fr.k2i.adbeback.application.services.mail.exception.SendException;
-import fr.k2i.adbeback.core.business.company.billing.DayBilling;
-import fr.k2i.adbeback.core.business.company.billing.MonthBilling;
 import fr.k2i.adbeback.core.business.game.AdGameTransaction;
 import fr.k2i.adbeback.core.business.game.StatusGame;
 import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.dao.IAdGameDao;
 import fr.k2i.adbeback.dao.IMediaDao;
-import fr.k2i.adbeback.dao.IMonthBillingDao;
+import fr.k2i.adbeback.date.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -67,15 +63,15 @@ public class MediaDayTransactionService {
     @Transactional
     @Scheduled(cron = "0 30 0 * * *")
     public void doAction() throws URISyntaxException, IOException {
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         LocalDate yesterday = now.minusDays(1);
 
         List<Media> medias = mediaDao.getAll();
 
         for (Media media : medias) {
-            Double sum = adGameDao.sumTransactionForDate(media, yesterday.toDate());
-            Long nbOk = adGameDao.countTransactionsOkByDate(media, yesterday.toDate());
-            Long nbKo = adGameDao.countTransactionsOkByDate(media, yesterday.toDate());
+            Double sum = adGameDao.sumTransactionForDate(media, DateUtils.asDate(yesterday));
+            Long nbOk = adGameDao.countTransactionsOkByDate(media, DateUtils.asDate(yesterday));
+            Long nbKo = adGameDao.countTransactionsOkByDate(media, DateUtils.asDate(yesterday));
 
 
             List<AdGameTransaction> trs = adGameDao.findTransactionsForDay(media, new Date(), StatusGame.Win);
@@ -103,7 +99,7 @@ public class MediaDayTransactionService {
             Attachement attachement = new Attachement(new ClassPathResource(csv.getPath()),"transactions.csv");
 
             Email email = Email.builder()
-                    .subject("Vos transactions du " + yesterday.getDayOfMonth() + "/" + yesterday.getMonthOfYear() + "/"+yesterday.getYear())
+                    .subject("Vos transactions du " + yesterday.getDayOfMonth() + "/" + yesterday.getMonthValue() + "/"+yesterday.getYear())
                     .model(model)
                     .content("email/media_transaction_day")
                     .recipients(media.getUser().getEmail())

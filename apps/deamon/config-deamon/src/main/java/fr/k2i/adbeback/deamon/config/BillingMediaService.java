@@ -1,7 +1,9 @@
 package fr.k2i.adbeback.deamon.config;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.simpleparser.StyleSheet;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
@@ -15,8 +17,8 @@ import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.dao.IAdGameDao;
 import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.IMonthBillingDao;
+import fr.k2i.adbeback.date.DateUtils;
 import fr.k2i.adbeback.logger.LogHelper;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,12 +28,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-
-
-
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -79,23 +82,23 @@ public class BillingMediaService {
     @Transactional
     @Scheduled(cron = "0 10 0 * * *")
     public void doAction() throws URISyntaxException, IOException {
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         LocalDate yesterday = now.minusDays(1);
 
         List<Media> medias = mediaDao.getAll();
 
         for (Media media : medias) {
-            Double sum = adGameDao.sumTransactionForDate(media, yesterday.toDate());
-            MonthBilling monthBilling = monthBillingDao.findByMonth(media,yesterday.getMonthOfYear(),yesterday.getYear());
+            Double sum = adGameDao.sumTransactionForDate(media, DateUtils.asDate(yesterday));
+            MonthBilling monthBilling = monthBillingDao.findByMonth(media,yesterday.getMonthValue(),yesterday.getYear());
             if(monthBilling == null){
-                monthBilling = monthBillingDao.save(new MonthBilling(yesterday.getMonthOfYear(),yesterday.getYear(),media));
+                monthBilling = monthBillingDao.save(new MonthBilling(yesterday.getMonthValue(),yesterday.getYear(),media));
             }
 
             DayBilling dayBilling = new DayBilling();
             dayBilling.setAmount(sum);
             dayBilling.setMonthBilling(monthBilling);
             dayBilling.setDayOfMonth(yesterday.getDayOfMonth());
-            dayBilling.setNbTransaction(adGameDao.countTransactionsOkByDate(media, yesterday.toDate()));
+            dayBilling.setNbTransaction(adGameDao.countTransactionsOkByDate(media, DateUtils.asDate(yesterday)));
 
             BigDecimal sumMonth = new BigDecimal(""+monthBilling.getSum());
             sumMonth = sumMonth.add(new BigDecimal("" + sum));

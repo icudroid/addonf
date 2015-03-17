@@ -1,0 +1,10 @@
+apply plugin: 'spring-boot'
+
+group = 'fr.k2i.adbeback.addonf.core'
+description = 'CORE - REPOSITORY'
+dependencies {
+  compile project(':core:domain')
+}
+
+startScripts.enabled = false
+bootRepackage.enabled = false

@@ -1,12 +1,11 @@
 package fr.k2i.adbeback.webapp.bean.enroll;
 
-import org.joda.time.DateMidnight;
-import org.joda.time.IllegalFieldValueException;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,19 +31,11 @@ public class DateBean implements Serializable {
         }
     }
 
-    public DateBean(DateMidnight dateMidnight) {
+    public DateBean(LocalDate dateMidnight) {
         if (dateMidnight != null) {
             day = dateMidnight.getDayOfMonth();
-            month = dateMidnight.getMonthOfYear();
+            month = dateMidnight.getMonthValue();
             year = dateMidnight.getYear();
-        }
-    }
-
-    public DateBean(LocalDate localDate) {
-        if (localDate != null) {
-            day = localDate.getDayOfMonth();
-            month = localDate.getMonthOfYear();
-            year = localDate.getYear();
         }
     }
 
@@ -144,14 +135,7 @@ public class DateBean implements Serializable {
         if (day == null || month == null || year == null) {
             return null;
         }
-        return new LocalDate(year, month, day);
-    }
-
-    public DateMidnight toDateMidnight() {
-        if (day == null || month == null || year == null) {
-            return null;
-        }
-        return new DateMidnight(year, month, day);
+        return LocalDate.of(year, month, day);
     }
 
     public boolean isValid() {
@@ -159,8 +143,8 @@ public class DateBean implements Serializable {
             return false;
         }
         try {
-            new LocalDate(year, month, day);
-        } catch (IllegalFieldValueException ex) {
+            LocalDate.of(year, month, day);
+        } catch (DateTimeException ex) {
             logger.debug("isValid",ex);
             return false;
         }

@@ -1,18 +1,15 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.jpa.impl.JPAQuery;
+import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.QAd;
 import fr.k2i.adbeback.core.business.ad.QBrand;
-import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.ad.rule.BrandRule;
-import fr.k2i.adbeback.core.business.ad.rule.QBrandRule;
-import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
+import fr.k2i.adbeback.date.DateUtils;
 import org.springframework.stereotype.Repository;
-
-import fr.k2i.adbeback.core.business.ad.Brand;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -81,12 +78,12 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
         QBrand qBrand = QBrand.brand;
         QAd ad = QAd.ad;
 
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
 
         JPAQuery query = new JPAQuery(getEntityManager());
             query.from(ad).join(ad.brand,qBrand).where(
-                    ad.startDate.loe(now.toDate()),
-                    ad.endDate.goe(now.toDate())
+                    ad.startDate.loe(DateUtils.asDate(now)),
+                    ad.endDate.goe(DateUtils.asDate(now))
             );
         return query.list(qBrand);
     }

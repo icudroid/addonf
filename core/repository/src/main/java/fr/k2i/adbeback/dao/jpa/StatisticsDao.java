@@ -2,13 +2,11 @@ package fr.k2i.adbeback.dao.jpa;
 
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PathBuilder;
 import fr.k2i.adbeback.core.business.ad.Ad;
-import fr.k2i.adbeback.core.business.ad.QViewedAd;
-import fr.k2i.adbeback.core.business.ad.rule.*;
+import fr.k2i.adbeback.core.business.ad.rule.AdService;
+import fr.k2i.adbeback.core.business.ad.rule.QAdService;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.country.QCity;
 import fr.k2i.adbeback.core.business.game.QAbstractAdGame;
@@ -16,21 +14,25 @@ import fr.k2i.adbeback.core.business.game.QAdChoise;
 import fr.k2i.adbeback.core.business.game.QAdResponsePlayer;
 import fr.k2i.adbeback.core.business.game.QAdScore;
 import fr.k2i.adbeback.core.business.player.AgeGroup;
-import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.core.business.player.Sex;
 import fr.k2i.adbeback.core.business.statistic.*;
-import fr.k2i.adbeback.core.business.statistic.Statistics;
 import fr.k2i.adbeback.dao.IStatisticsDao;
-import fr.k2i.adbeback.dao.bean.*;
-import org.joda.time.*;
+import fr.k2i.adbeback.dao.bean.StatisticsAge;
+import fr.k2i.adbeback.dao.bean.StatisticsAgeSex;
+import fr.k2i.adbeback.dao.bean.StatisticsCity;
+import fr.k2i.adbeback.dao.bean.StatisticsSex;
+import fr.k2i.adbeback.date.DateUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Repository
 public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IStatisticsDao {
@@ -54,7 +56,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         JPAQuery query = new JPAQuery(getEntityManager());
 
-        LocalDate now = new LocalDate(day);
+        LocalDate now = DateUtils.asLocalDate(day);
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -66,7 +68,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
         query.from(game).join(game.score.answers,response).join(game.player, player).leftJoin(player.address.city,city).join(game.choises,choise).join(choise.generatedBy,adRule).where(
-                game.generated.between(now.toDate(), now.plusDays(1).toDate())
+                game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1)))
         );
 
 
@@ -91,7 +93,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         JPAQuery query = new JPAQuery(getEntityManager());
 
-        LocalDate now = new LocalDate(day);
+        LocalDate now = DateUtils.asLocalDate(day);
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -103,9 +105,9 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
         query.from(game).join(game.score.answers,response).join(game.player, player).leftJoin(player.address.city,city).join(game.choises,choise).join(choise.generatedBy,adRule).where(
-                game.generated.between(now.toDate(), now.plusDays(1).toDate())
-                        .and(response.correctAnswer.eq(true))
-        );
+                game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1)))
+                                .and(response.correctAnswer.eq(true))
+                );
 
 
 
@@ -126,7 +128,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
     public List<StatisticsNoResponse> doStatisticsNoResponseForDay(Date day) {
         JPAQuery query = new JPAQuery(getEntityManager());
 
-        LocalDate now = new LocalDate(day);
+        LocalDate now = DateUtils.asLocalDate(day);
 
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
@@ -137,7 +139,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
         QCity city =QCity.city1;
 
         query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player,player).leftJoin(player.address.city,city).join(game.choises,choise).join(choise.generatedBy,adService).where(
-                game.generated.between(now.toDate(), now.plusDays(1).toDate())
+                game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1)))
                         .and(response.correctAnswer.eq(false))
                         .and(response.responses.isEmpty())
         );
@@ -165,7 +167,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
     public List<StatisticsNotValidated> doStatisticsNotValidatedForDay(Date day) {
         JPAQuery query = new JPAQuery(getEntityManager());
 
-        LocalDate now = new LocalDate(day);
+        LocalDate now = DateUtils.asLocalDate(day);
         QAbstractAdGame game = QAbstractAdGame.abstractAdGame;
         QAdScore score = QAdScore.adScore;
         QAdResponsePlayer response = QAdResponsePlayer.adResponsePlayer;
@@ -177,7 +179,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
         query.from(game).join(game.score.answers,response).join(game.player, player).leftJoin(player.address.city,city).join(game.choises,choise).join(choise.generatedBy,adRule).where(
-                game.generated.between(now.toDate(), now.plusDays(1).toDate())
+                game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1)))
                         .and(response.correctAnswer.eq(false))
                         .and(response.responses.isNotEmpty())
         );

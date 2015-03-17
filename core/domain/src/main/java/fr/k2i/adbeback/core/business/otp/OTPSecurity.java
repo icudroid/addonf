@@ -2,11 +2,12 @@ package fr.k2i.adbeback.core.business.otp;
 
 import fr.k2i.adbeback.core.business.BaseObject;
 import fr.k2i.adbeback.core.business.IMetaData;
+import fr.k2i.adbeback.date.DateUtils;
 import org.hibernate.annotations.GenericGenerator;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -43,8 +44,8 @@ public abstract class OTPSecurity extends BaseObject implements Serializable {
     }
 
     public void expirationInHours(int expirationInHours) {
-        DateTime expire = new DateTime(creationDate);
-        expirationDate = expire.plusHours(expirationInHours).toDate();
+        LocalDateTime expire = DateUtils.asLocalDateTime(creationDate);
+        expirationDate = DateUtils.asDate(expire.plusHours(expirationInHours));
     }
 
     public void computeNewExpirationInHours(int expirationInHours) {

@@ -3,12 +3,10 @@ package fr.k2i.adbeback.deamon.config;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.company.billing.DayBilling;
 import fr.k2i.adbeback.core.business.company.billing.MonthBilling;
-import fr.k2i.adbeback.core.business.user.Media;
 import fr.k2i.adbeback.dao.IAdGameDao;
 import fr.k2i.adbeback.dao.IBrandDao;
-import fr.k2i.adbeback.dao.IMediaDao;
 import fr.k2i.adbeback.dao.IMonthBillingDao;
-import org.joda.time.LocalDate;
+import fr.k2i.adbeback.date.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -49,16 +48,16 @@ public class BillingAdvService {
     @Transactional
     @Scheduled(cron = "0 20 0 * * *")
     public void doAction() throws URISyntaxException, IOException {
-        LocalDate now = new LocalDate();
+        LocalDate now = LocalDate.now();
         LocalDate yesterday = now.minusDays(1);
 
         List<Brand> brands = brandDao.findAllHasActiveCampaign();
 
         for (Brand brand : brands) {
-            Double sum = adGameDao.sumWinBidsForDate(brand,yesterday.toDate());
-            MonthBilling monthBilling = monthBillingDao.findByMonth(brand,yesterday.getMonthOfYear(),yesterday.getYear());
+            Double sum = adGameDao.sumWinBidsForDate(brand, DateUtils.asDate(yesterday));
+            MonthBilling monthBilling = monthBillingDao.findByMonth(brand,yesterday.getMonthValue(),yesterday.getYear());
             if(monthBilling == null){
-                monthBilling = monthBillingDao.save(new MonthBilling(yesterday.getMonthOfYear(),yesterday.getYear(),brand));
+                monthBilling = monthBillingDao.save(new MonthBilling(yesterday.getMonthValue(),yesterday.getYear(),brand));
             }
 
             DayBilling dayBilling = new DayBilling();

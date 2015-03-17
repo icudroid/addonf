@@ -1,27 +1,26 @@
 package fr.k2i.adbeback.service.impl;
 
-import java.util.*;
-import java.util.Map.Entry;
-
-
 import fr.k2i.adbeback.bean.ResponseUser;
+import fr.k2i.adbeback.core.business.ad.Ad;
+import fr.k2i.adbeback.core.business.ad.Brand;
+import fr.k2i.adbeback.core.business.ad.Product;
 import fr.k2i.adbeback.core.business.ad.ViewedAd;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.goosegame.GooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.IDiceGooseLevel;
 import fr.k2i.adbeback.core.business.goosegame.IMultiGooseLevel;
+import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.dao.*;
-import org.joda.time.LocalDate;
+import fr.k2i.adbeback.date.DateUtils;
+import fr.k2i.adbeback.service.AdGameManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import fr.k2i.adbeback.core.business.ad.Ad;
-import fr.k2i.adbeback.core.business.ad.Brand;
-import fr.k2i.adbeback.core.business.ad.Product;
-import fr.k2i.adbeback.core.business.player.Player;
-import fr.k2i.adbeback.service.AdGameManager;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Implementation of UserManager interface.
@@ -129,7 +128,7 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
             List<AdRule> rules = adWinned.getRules();
             List<AdService> rulesPossible = new ArrayList<AdService>();
 
-            LocalDate now = new LocalDate();
+            LocalDate now = LocalDate.now();
 
             for (AdRule adRule : rules) {
                 if (AdService.class.isAssignableFrom(adRule.getClass())) {
@@ -172,7 +171,8 @@ public class AdGameManagerImpl extends GenericManagerImpl<AbstractAdGame, Long>
 
 
     private void addValidAdService(Player player, List<AdService> rulesPossible, LocalDate now, AdService adRule) {
-        if(now.toDate().after((adRule).getStartDate()) ||now.toDate().equals((adRule).getStartDate())  && now.toDate().before((adRule).getEndDate()) || now.toDate().equals((adRule).getEndDate())){
+        Date date = DateUtils.asDate(now);
+        if(date.after((adRule).getStartDate()) || date.equals((adRule).getStartDate())  && date.before((adRule).getEndDate()) || date.equals((adRule).getEndDate())){
             ViewedAd forToday = viewedAdDao.findForToday(player,  adRule);
             if((adRule).getMaxDisplayByUser()==null){
                 rulesPossible.add( adRule);

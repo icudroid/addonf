@@ -1,8 +1,11 @@
 package fr.k2i.adbeback.core.business.player;
 
-import org.joda.time.DateTime;
-import org.joda.time.Years;
 
+import fr.k2i.adbeback.date.DateUtils;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Date;
 
 /**
@@ -41,19 +44,19 @@ public enum AgeGroup{
     }
 
     public Date minDate() {
-        DateTime now = new DateTime();
-        return now.minusYears(this.min).toDate();
+        LocalDateTime now = LocalDateTime.now();
+        return DateUtils.asDate(now.minusYears(this.min));
     }
 
     public Date maxDate() {
-        DateTime now = new DateTime();
-        return now.minusYears(this.max).toDate();
+        LocalDateTime now = LocalDateTime.now();
+        return DateUtils.asDate(now.minusYears(this.max));
     }
 
     public static AgeGroup getGroupByBirhday(Date birthday) {
-        Years years = Years.yearsBetween(new DateTime(birthday), new DateTime());
+        Period period = Period.between(DateUtils.asLocalDate(birthday), LocalDate.now());
+        int age = period.getYears();
         for (AgeGroup ageGroup : values()) {
-            int age = years.getYears();
             if(age >=ageGroup.getMin() && age <=ageGroup.getMax()){
                 return ageGroup;
             }
