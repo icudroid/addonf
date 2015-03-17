@@ -4,43 +4,20 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/corporate/unlogged">
+        layout:decorator="layout/frontend/index">
 <head>
     <title>Inscription Agence</title>
-
-    <script th:src="@{/static/js/addonf/townPostalCodeCheck.js}" type="text/javascript"/>
-    <script th:src="@{/static/metronic/admin/template/assets/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js}" type="text/javascript"/>
-
-    <script th:inline="javascript">
-
-        Spring.addDecoration(
-                new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'submit',event:'onclick'}));
-
-        Spring.addDecoration(
-                new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'back',event:'onclick'}));
-
-        $(function(){
-            $('#zipcode').postalCodeConsistency({
-                baseUrl   : addonf.base,
-                townId    : "city",
-                countryId : "country"
-            });
-
-            $("#creationDate").inputmask("dd/mm/yyyy",{ "placeholder": "dd/mm/yyyy" });
-        });
-
-    </script>
-
 </head>
 <body>
-<div layout:fragment="content">
+<th:block layout:fragment="content">
     <div th:substituteby="enroll/agency/fragment/breadcrumb(active=2)"></div>
 
     <div class="container margin-bottom-40">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
+            <h1 th:text="#{enroll.agency.breadcrumb.title}">Inscription d'une agence</h1>
+            <div class="login-signup-page form">
                 <form id="formDataInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" th:object="${agencyEnrollCommand}" autocomplete="off">
-
+                    <div class="form-body">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                     <h2 th:utext="#{enroll.agency.info.title}">Text explicatif : A rédiger</h2>
@@ -108,13 +85,12 @@
                         <span class="help-block" th:if="${#fields.hasErrors('info.phone')}" th:errors="*{info.phone}">Error</span>
                     </div>
 
+                    </div>
 
-
-
-                    <div class="row">
-                        <div class="col-md-12 form-actions right">
-                            <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default"/>
-                            <input type="submit" id="submit" name="_eventId_submit" th:value="#{btn.next}" class="btn blue"/>
+                    <div class="form-actions ">
+                        <div class="pull-right">
+                                <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default "/>
+                                <input type="submit" id="submit" name="_eventId_submit" th:value="#{btn.next}" class="btn blue"/>
                         </div>
                     </div>
 
@@ -125,9 +101,62 @@
     </div>
 
 
-</div>
+    </th:block>
 
 
+    <th:block layout:fragment="page-slider"></th:block>
+    <th:block layout:fragment="service-box"></th:block>
+    <th:block layout:fragment="quote-v1"></th:block>
+    <th:block layout:fragment="recent-work"></th:block>
+    <th:block layout:fragment="mix-block"></th:block>
+    <th:block layout:fragment="step"></th:block>
+    <th:block layout:fragment="customer"></th:block>
+
+
+    <th:block layout:fragment="page-js">
+
+        <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+        <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+        <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+
+
+
+
+        <script src="../../../static/static/js/addonf/townPostalCodeCheck.js"
+                th:src="@{/static/js/addonf/townPostalCodeCheck.js}"
+                type="text/javascript"/>
+
+<!--        <script src="../../../../../../../common-resources/src/main/resources/static/static/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js"
+                th:src="@{/static/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js}"
+                type="text/javascript"/>-->
+
+
+        <script type="text/javascript">
+            $(function(){
+                Metronic.init();
+                Layout.init();
+
+
+/*                Spring.addDecoration(
+                        new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'submit',event:'onclick'}));
+
+                Spring.addDecoration(
+                        new Spring.AjaxEventDecoration({formId:'formDataInfo',elementId:'back',event:'onclick'}));*/
+
+                    $('#zipcode').postalCodeConsistency({
+                        baseUrl   : addonf.base,
+                        townId    : "city",
+                        countryId : "country"
+                    });
+
+                $("#creationDate").inputmask("dd/mm/yyyy",{ "placeholder": "dd/mm/yyyy" });
+
+            });
+        </script>
+
+
+
+    </th:block>
 
 </body>
 </html>

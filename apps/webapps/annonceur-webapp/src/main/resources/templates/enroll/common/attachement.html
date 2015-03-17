@@ -4,56 +4,33 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/corporate/unlogged">
+        layout:decorator="layout/frontend/index">
 <head>
     <title>Inscription</title>
 
-    <script th:src="@{/static/lib/plupload/js/plupload.full.min.js}" type="text/javascript"/>
-    <script th:src="@{/static/lib/plupload/js/i18n/fr.js}" type="text/javascript"/>
-
-    <script th:src="@{/static/js/addonf/attachement.js}" type="text/javascript"/>
-
-    <script type="text/javascript">
-        $(function(){
-            Spring.addDecoration(
-                    new Spring.AjaxEventDecoration({formId:'formAttachmentInfo',elementId:'continue',event:'onclick'}));
-            Spring.addDecoration(
-                    new Spring.AjaxEventDecoration({formId:'formAttachmentInfo',elementId:'back',event:'onclick'}));
-        });
-    </script>
-
-
-    <script th:inline="javascript">
-        $(function(){
-
-            var options = {
-                files : [[${files}]],
-                strStatusPresent : [[#{'status.file.PRESENT'}]],
-                strStatusNoPresent : [[#{'status.file.NO_PRESENT'}]],
-                flash_swf_url : [[@{/static/lib/plupload/js/Moxie.swf}]],
-                silverlight_xap_url : [[@{/static/lib/plupload/js/Moxie.xap}]],
-                url : [[@{/uploadAttachement/_fileId(_csrf=${_csrf.token})}]],
-                errors : {
-                    "format":[[#{'error.file.format'}]],
-                    "size":[[#{'error.file.size'}]]
-                }
-            };
-
-            new Addonf.Enroll.attachement(options);
-
-
-        });
-    </script>
 </head>
 <body>
 
-<div layout:fragment="content">
+
+
+<th:block layout:fragment="addition-css">
+    <link href="../../../../../../../common-resources/src/main/resources/static/static/assets/global/plugins/fancybox/source/jquery.fancybox.css"
+          th:href="@{/static/assets/global/plugins/fancybox/source/jquery.fancybox.css}"
+          rel="stylesheet" />
+
+    <link href="../../../../../../../common-resources/src/main/resources/static/static/assets/global/plugins/uniform/css/uniform.default.css"
+          th:href="@{/static/assets/global/plugins/uniform/css/uniform.default.css}"
+          rel="stylesheet" type="text/css" />
+</th:block>
+
+<th:block layout:fragment="content">
     <div th:substituteby="enroll/agency/fragment/breadcrumb(active=${activeId})"></div>
     <div class="container margin-bottom-40">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
+            <h1 th:text="#{enroll.agency.breadcrumb.title}">Inscription d'une agence</h1>
+            <div class="login-signup-page form">
                 <form id="formAttachmentInfo" th:action="${flowExecutionUrl}" method="post" class="form-horizontal" role="form" autocomplete="off">
-
+                    <div class="form-body">
                     <h2 th:utext="#{${'enroll.'+state.registration+'.attachement.title'}}">Text explicatif : A rédiger</h2>
                     <p th:utext="#{${'enroll.'+state.registration+'.attachement.explain'}}">Text explicatif : A rédiger</p>
 
@@ -78,9 +55,10 @@
                     </div>
 
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-12 form-actions right">
+                    <div class="form-actions ">
+                        <div class="pull-right">
                             <input type="submit" id="back" name="_eventId_back" th:value="#{btn.back}" class="btn default"/>
                             <input type="submit" id="continue" name="_eventId_submit" th:value="#{btn.next}" class="btn blue"/>
                         </div>
@@ -90,8 +68,69 @@
             </div>
         </div>
     </div>
-</div>
+</th:block>
 
+<th:block layout:fragment="page-slider"></th:block>
+<th:block layout:fragment="service-box"></th:block>
+<th:block layout:fragment="quote-v1"></th:block>
+<th:block layout:fragment="recent-work"></th:block>
+<th:block layout:fragment="mix-block"></th:block>
+<th:block layout:fragment="step"></th:block>
+<th:block layout:fragment="customer"></th:block>
+
+
+<th:block layout:fragment="page-js">
+
+    <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+
+
+
+    <script th:src="@{/static/assets/global/plugins/plupload/js/plupload.full.min.js}" src="../../../../../../../common-resources/src/main/resources/static/static/assets/global/plugins/plupload/js/plupload.full.min.js" type="text/javascript"/>
+    <script th:src="@{/static/assets/global/plugins/plupload/js/i18n/fr.js}" src="../../../../../../../common-resources/src/main/resources/static/static/assets/global/plugins/plupload/js/i18n/fr.js" type="text/javascript"/>
+
+    <script th:src="@{/static/js/addonf/attachement.js}" src="../../../static/static/js/addonf/attachement.js" type="text/javascript"/>
+
+
+    <script src="../../../../../../../common-resources/src/main/resources/static/static/assets/global/plugins/uniform/jquery.uniform.min.js"
+            th:src="@{/static/assets/global/plugins/uniform/jquery.uniform.min.js}"
+            type="text/javascript" ></script>
+
+    <script src="../../../../../../../common-resources/src/main/resources/static/static/assets/frontend/layout/scripts/layout.js"
+            th:src="@{/static/assets/frontend/layout/scripts/layout.js}"
+            type="text/javascript"></script>
+
+    <script type="text/javascript" th:inline="javascript">
+        $(function(){
+            Metronic.init();
+            Layout.init();
+            Layout.initUniform();
+
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'formAttachmentInfo',elementId:'continue',event:'onclick'}));
+            Spring.addDecoration(
+                    new Spring.AjaxEventDecoration({formId:'formAttachmentInfo',elementId:'back',event:'onclick'}));
+
+
+            var options = {
+                files : [[${files}]],
+                strStatusPresent : [[#{'status.file.PRESENT'}]],
+                strStatusNoPresent : [[#{'status.file.NO_PRESENT'}]],
+                flash_swf_url : [[@{/static/lib/plupload/js/Moxie.swf}]],
+                silverlight_xap_url : [[@{/static/lib/plupload/js/Moxie.xap}]],
+                url : [[@{/uploadAttachement/_fileId(_csrf=${_csrf.token})}]],
+                errors : {
+                    "format":[[#{'error.file.format'}]],
+                            "size":[[#{'error.file.size'}]]
+                }
+            };
+
+            new Addonf.Enroll.attachement(options);
+
+        });
+    </script>
+</th:block>
 
 </body>
 </html>

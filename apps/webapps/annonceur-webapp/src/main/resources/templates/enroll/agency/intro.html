@@ -4,24 +4,28 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/corporate/unlogged">
+        layout:decorator="layout/frontend/index">
 <head>
     <title>Inscription Agence</title>
-
-    <script th:inline="javascript">
-        $(function(){
-            Spring.addDecoration(
-                    new Spring.AjaxEventDecoration({formId:'triggerform',elementId:'continue',event:'onclick'}));
-        });
-    </script>
 </head>
 <body>
 
-    <div layout:fragment="content">
+<th:block layout:fragment="addition-css">
+    <link href="../../../../../../../common-resources/src/main/resources/static/static/assets/global/plugins/fancybox/source/jquery.fancybox.css"
+          th:href="@{/static/assets/global/plugins/fancybox/source/jquery.fancybox.css}"
+          rel="stylesheet" />
+
+    <link href="../../../../../../../common-resources/src/main/resources/static/static/assets/global/plugins/uniform/css/uniform.default.css"
+          th:href="@{/static/assets/global/plugins/uniform/css/uniform.default.css}"
+          rel="stylesheet" type="text/css" />
+</th:block>
+
+<th:block layout:fragment="content">
         <div th:substituteby="enroll/agency/fragment/breadcrumb(active=1)"></div>
         <div class="container margin-bottom-40">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 login-signup-page">
+                <h1 th:text="#{enroll.agency.breadcrumb.title}">Inscription d'une agence</h1>
+                <div class="login-signup-page">
                     <form id="triggerform" method="post" th:action="${flowExecutionUrl}">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
@@ -29,15 +33,44 @@
                         <p th:utext="#{enroll.agency.intro.explain}">Text explicatif : A rédiger</p>
 
                         <div class="row">
-                            <div class="col-md-12 form-actions right">
-                                <input type="submit" id="continue" name="_eventId_continue" th:value="#{btn.next}" class="btn blue"/>
-                            </div>
+                            <input type="submit" id="continue" name="_eventId_continue" th:value="#{btn.next}" class="btn blue pull-right"/>
                         </div>
 
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+</th:block>
+
+
+<th:block layout:fragment="page-slider"></th:block>
+<th:block layout:fragment="service-box"></th:block>
+<th:block layout:fragment="quote-v1"></th:block>
+<th:block layout:fragment="recent-work"></th:block>
+<th:block layout:fragment="mix-block"></th:block>
+<th:block layout:fragment="step"></th:block>
+<th:block layout:fragment="customer"></th:block>
+
+
+<th:block layout:fragment="page-js">
+
+        <script type="text/javascript" th:src="@{/resources/dojo/dojo.js}"></script>
+        <script type="text/javascript" th:src="@{/resources/spring/Spring.js}"></script>
+        <script type="text/javascript" th:src="@{/static/js/Spring-Dojo-bootstrap.js}"></script>
+
+
+
+    <script type="text/javascript">
+        $(function(){
+            Metronic.init();
+            Layout.init();
+            /*
+            Spring.addDecoration(
+             new Spring.AjaxEventDecoration({formId:'triggerform',elementId:'continue',event:'onclick'}));
+             */
+        });
+    </script>
+</th:block>
+
 </body>
 </html>

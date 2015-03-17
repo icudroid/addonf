@@ -139,6 +139,14 @@
         </exclusions>
     </dependency>
 
+
+    <dependency>
+        <groupId>org.springframework.webflow</groupId>
+        <artifactId>spring-js-resources</artifactId>
+    </dependency>
+
+
+
 </dependencies>
 
 </project>

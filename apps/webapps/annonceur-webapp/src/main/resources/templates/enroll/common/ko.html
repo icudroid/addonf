@@ -4,12 +4,12 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layout/corporate/unlogged">
+        layout:decorator="layout/frontend/index">
 <head>
     <title>Finalisation d'inscription</title>
 </head>
 <body>
-<div layout:fragment="content">
+<th:block layout:fragment="content">
 
     <div class="row breadcrumbs margin-bottom-40">
         <div class="container">
@@ -26,6 +26,26 @@
         </div>
     </div>
     <!-- END CONTAINER -->
-</div>
+    </th:block>
+
+
+    <th:block layout:fragment="page-slider"></th:block>
+    <th:block layout:fragment="service-box"></th:block>
+    <th:block layout:fragment="quote-v1"></th:block>
+    <th:block layout:fragment="recent-work"></th:block>
+    <th:block layout:fragment="mix-block"></th:block>
+    <th:block layout:fragment="step"></th:block>
+    <th:block layout:fragment="customer"></th:block>
+
+
+    <th:block layout:fragment="page-js">
+        <script type="text/javascript">
+            $(function(){
+                Metronic.init();
+                Layout.init();
+            });
+        </script>
+
+    </th:block>
 </body>
 </html>

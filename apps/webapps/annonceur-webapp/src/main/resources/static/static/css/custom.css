@@ -1,3 +1,18 @@
-.header a.logo-v1 img {
-    margin-top: -5px;
+.site-logo img {
+    max-width: 250px;
+}
+
+
+.content {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px 0;
+}
+
+
+.login-signup-page form {
+    background: none repeat scroll 0 0 #fefefe;
+    border: 1px solid #e0dede;
+    box-shadow: 0 0 3px #e0dede;
+    padding: 10px 30px 30px;
 }

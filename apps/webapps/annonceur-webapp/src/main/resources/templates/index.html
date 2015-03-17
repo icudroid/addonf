@@ -8,19 +8,21 @@
 <head>
     <title>Acceuil</title>
 </head>
-<body>
+<body th:with="activeMenu=${'home'}">
 
-<div layout:fragment="content">
-    <h1>Page en construction</h1>
-</div>
+<th:block layout:fragment="content">
+    <div class="row margin-bottom-40 padding-top-40 content">
+        <h1 class="text-center">Page en construction</h1>
+    </div>
+</th:block>
 
-<div layout:fragment="page-slider"></div>
-<div layout:fragment="service-box"></div>
-<div layout:fragment="quote-v1"></div>
-<div layout:fragment="recent-work"></div>
-<div layout:fragment="mix-block"></div>
-<div layout:fragment="step"></div>
-<div layout:fragment="customer"></div>
+<!--<th:block layout:fragment="page-slider"></th:block>
+<th:block layout:fragment="service-box"></th:block>
+<th:block layout:fragment="quote-v1"></th:block>
+<th:block layout:fragment="recent-work"></th:block>
+<th:block layout:fragment="mix-block"></th:block>
+<th:block layout:fragment="step"></th:block>
+<th:block layout:fragment="customer"></th:block>-->
 
 </body>
 </html>
