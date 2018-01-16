@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.*;
 import fr.k2i.adbeback.core.business.ad.rule.*;
 import fr.k2i.adbeback.core.business.country.City;
@@ -87,7 +87,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
                 .setParameter("date", date.toDate());*/
 
 
-        return matchRules(query.list(ad),player);
+        return matchRules(query.select(ad).fetch(),player);
     }
 
 
@@ -133,12 +133,12 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
                 .setParameter("date", date.toDate())
                 .setParameter("idPartner", media.getId());*/
 
-        return matchRules(query.list(ad),player);
+        return matchRules(query.select(ad).fetch(),player);
     }
 
 
     @Transactional
-    private List<Ad> matchRules(List<Ad> ads,Player player) {
+    List<Ad> matchRules(List<Ad> ads,Player player) {
         List<Ad> res = new ArrayList<Ad>();
 
 
@@ -320,7 +320,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         QAd qAd = QAd.ad;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.eq(brand));
-        return query.list(qAd);
+        return query.select(qAd).fetch();
     }
 
 
@@ -329,7 +329,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         QAd qAd = QAd.ad;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.in(brands));
-        return query.list(qAd);
+        return query.select(qAd).fetch();
     }
 
     @Override
@@ -338,13 +338,13 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.eq(brand));
 
-        long count = query.count();
+        long count = query.fetchCount();
 
         query
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        return new PageImpl<Ad>(query.list(qAd),pageable,count);
+        return new PageImpl<Ad>(query.select(qAd).fetch(),pageable,count);
     }
 
 
@@ -354,13 +354,13 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.brand.in(brands));
 
-        long count = query.count();
+        long count = query.fetchCount();
 
         query
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        return new PageImpl<Ad>(query.list(qAd),pageable,count);
+        return new PageImpl<Ad>(query.select(qAd).fetch(),pageable,count);
     }
 
     @Override
@@ -371,7 +371,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
 
         query.from(qAd).join(qAd.bidCategoryMedias,bidCategoryMedia).where(bidCategoryMedia.media.eq(media).and(qAd.startDate.lt(date).and(qAd.endDate.gt(date))));
 
-        return query.list(qAd);
+        return query.select(qAd).fetch();
     }
 
 
@@ -380,7 +380,7 @@ public class AdDao extends GenericDaoJpa<Ad, Long> implements fr.k2i.adbeback.da
         QVideoAd qAd = QVideoAd.videoAd;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAd).where(qAd.adFileEncoded.eq(false).or(qAd.adFileEncoded.isNull()));
-        return query.list(qAd);
+        return query.select(qAd).fetch();
     }
 
 

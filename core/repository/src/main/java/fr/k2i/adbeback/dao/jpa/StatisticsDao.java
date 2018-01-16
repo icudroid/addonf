@@ -1,9 +1,9 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.EntityPathBase;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.EntityPathBase;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.ad.rule.QAdService;
@@ -77,7 +77,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
         List<StatisticsViewed> res = new ArrayList<StatisticsViewed>();
-        List<Tuple> list = query.list(city,player.sex,player.ageGroup,adRule ,response.count());
+        List<Tuple> list = query.select(city,player.sex,player.ageGroup,adRule ,response.count()).fetch();
         for (Tuple tuple : list) {
             StatisticsViewed viewed = new StatisticsViewed(day, tuple.get(player.sex), tuple.get(player.address.city), tuple.get(adRule), tuple.get(player.ageGroup), tuple.get(response.count()));
             res.add((StatisticsViewed) save(viewed));
@@ -115,7 +115,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
         List<StatisticsValidated> res = new ArrayList<StatisticsValidated>();
-        List<Tuple> list = query.list(city,player.sex,player.ageGroup ,adRule,response.count());
+        List<Tuple> list = query.select(city,player.sex,player.ageGroup ,adRule,response.count()).fetch();
         for (Tuple tuple : list) {
             StatisticsValidated viewed = new StatisticsValidated(day, tuple.get(player.sex), tuple.get(player.address.city), tuple.get(adRule), tuple.get(player.ageGroup), tuple.get(response.count()));
             res.add((StatisticsValidated) save(viewed));
@@ -149,7 +149,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         List<StatisticsNoResponse> res = new ArrayList<StatisticsNoResponse>();
 
-        List<Tuple> tuples = query.list(city,player.sex,player.ageGroup,adService,response.count());
+        List<Tuple> tuples = query.select(city,player.sex,player.ageGroup,adService,response.count()).fetch();
 
         for (Tuple tuple : tuples) {
             AgeGroup ageGroup = tuple.get(player.ageGroup);
@@ -190,7 +190,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
 
         List<StatisticsNotValidated> res = new ArrayList<StatisticsNotValidated>();
-        List<Tuple> list = query.list(city,player.sex,player.ageGroup ,adRule,response.count());
+        List<Tuple> list = query.select(city,player.sex,player.ageGroup ,adRule,response.count()).fetch();
         for (Tuple tuple : list) {
             StatisticsNotValidated viewed = new StatisticsNotValidated(day, tuple.get(player.sex), tuple.get(player.address.city), tuple.get(adRule), tuple.get(player.ageGroup), tuple.get(response.count()));
             res.add((StatisticsNotValidated) save(viewed));
@@ -246,7 +246,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.groupBy(qStatistics.ageGroup);
 
-        List<Tuple> list = query.list(qStatistics.count(), qStatistics.ageGroup);
+        List<Tuple> list = query.select(qStatistics.count(), qStatistics.ageGroup).fetch();
         List<StatisticsAge> res = new ArrayList<StatisticsAge>();
         for (Tuple tuple : list) {
             Long count = tuple.get(qStatistics.count());
@@ -272,7 +272,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.groupBy(qStatistics.ageGroup);
 
-        List<Tuple> list = query.list(qStatistics.count(), qStatistics.ageGroup);
+        List<Tuple> list = query.select(qStatistics.count(), qStatistics.ageGroup).fetch();
         List<StatisticsAge> res = new ArrayList<StatisticsAge>();
         for (Tuple tuple : list) {
             Long count = tuple.get(qStatistics.count());
@@ -299,7 +299,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.groupBy(qStatistics.ageGroup).groupBy(qStatistics.sex);
 
-        List<Tuple> list = query.list(qStatistics.count(), qStatistics.ageGroup,qStatistics.sex);
+        List<Tuple> list = query.select(qStatistics.count(), qStatistics.ageGroup,qStatistics.sex).fetch();
         List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
         for (Tuple tuple : list) {
             Long count = tuple.get(qStatistics.count());
@@ -326,7 +326,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.groupBy(qStatistics.ageGroup).groupBy(qStatistics.sex);
 
-        List<Tuple> list = query.list(qStatistics.count(), qStatistics.ageGroup,qStatistics.sex);
+        List<Tuple> list = query.select(qStatistics.count(), qStatistics.ageGroup,qStatistics.sex).fetch();
         List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
         for (Tuple tuple : list) {
             Long count = tuple.get(qStatistics.count());
@@ -353,7 +353,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.groupBy(qStatistics.city);
 
-        List<Tuple> list = query.list(qStatistics.count(), qStatistics.city);
+        List<Tuple> list = query.select(qStatistics.count(), qStatistics.city).fetch();
         List<StatisticsCity> res = new ArrayList<StatisticsCity>();
         for (Tuple tuple : list) {
             Long count = tuple.get(qStatistics.count());
@@ -379,7 +379,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.groupBy(qStatistics.city);
 
-        List<Tuple> list = query.list(qStatistics.count(), qStatistics.city);
+        List<Tuple> list = query.select(qStatistics.count(), qStatistics.city).fetch();
         List<StatisticsCity> res = new ArrayList<StatisticsCity>();
         for (Tuple tuple : list) {
             Long count = tuple.get(qStatistics.count());
@@ -405,7 +405,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.groupBy(qStatistics.sex);
 
-        List<Tuple> list = query.list(qStatistics.count(), qStatistics.sex);
+        List<Tuple> list = query.select(qStatistics.count(), qStatistics.sex).fetch();
         List<StatisticsSex> res = new ArrayList<StatisticsSex>();
         for (Tuple tuple : list) {
             Long count = tuple.get(qStatistics.count());
@@ -431,7 +431,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.groupBy(qStatistics.sex);
 
-        List<Tuple> list = query.list(qStatistics.count(), qStatistics.sex);
+        List<Tuple> list = query.select(qStatistics.count(), qStatistics.sex).fetch();
         List<StatisticsSex> res = new ArrayList<StatisticsSex>();
         for (Tuple tuple : list) {
             Long count = tuple.get(qStatistics.count());
@@ -455,7 +455,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.from(qStatistics).where(predicat);
 
-        return query.count();
+        return query.fetchCount();
     }
 
     @Override
@@ -471,7 +471,7 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.from(qStatistics).where(predicat);
 
-        return query.count();
+        return query.fetchCount();
     }
 
     @Override
@@ -527,13 +527,13 @@ public class StatisticsDao extends GenericDaoJpa<Statistics, Long> implements IS
 
         query.where(predicate);
 
-        long count = query.count();
+        long count = query.fetchCount();
 
         query
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize());
 
-        return new PageImpl<Statistics>(query.list(qStatistics),pageRequest,count);
+        return new PageImpl<Statistics>(query.select(qStatistics).fetch(),pageRequest,count);
     }
 
 

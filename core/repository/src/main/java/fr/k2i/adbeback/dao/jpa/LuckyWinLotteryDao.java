@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.game.lottery.LuckyWinLottery;
 import fr.k2i.adbeback.core.business.game.lottery.LuckyWinLotteryConfig;
 import fr.k2i.adbeback.core.business.game.lottery.QLuckyWinLottery;
@@ -29,12 +29,12 @@ public class LuckyWinLotteryDao extends GenericDaoJpa<LuckyWinLottery, Long> imp
 
     @Override
     public LuckyWinLottery findLuckyWinLotteryNotWin(LuckyWinLotteryConfig config) {
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<LuckyWinLottery> query = new JPAQuery(getEntityManager());
         QLuckyWinLottery qLuckyWinLottery = QLuckyWinLottery.luckyWinLottery;
 
         query.from(qLuckyWinLottery).where(qLuckyWinLottery.winLottery.isNull());
 
-        return query.uniqueResult(qLuckyWinLottery);
+        return query.select(qLuckyWinLottery).fetchOne();
     }
 }
 

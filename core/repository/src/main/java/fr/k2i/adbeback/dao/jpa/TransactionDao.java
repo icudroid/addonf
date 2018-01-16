@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.game.*;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.QPlayer;
@@ -43,7 +43,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                 .and(qEmpreint.status.in(EmpreintStatus.WAITING,EmpreintStatus.STARTED))
                 .and(qPlayer.eq(player))
         );
-        return query.list(qEmpreint);
+        return query.select(qEmpreint).fetch();
     }
 
 
@@ -71,7 +71,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize());
 
-        List<Transaction> transactions = query.list(qTransaction);
+        List<Transaction> transactions = query.select(qTransaction).fetch();
 
 
         List<AbstractAdGame> res = new ArrayList<>();
@@ -115,7 +115,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize());
 
-        return query.list(qTransaction);
+        return query.select(qTransaction).fetch();
     }
 
     @Override
@@ -137,7 +137,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                         qPlayer.id.eq(idPlayer).and(qTransaction.instanceOfAny(qDebit.getType(), qMicroPurchase.getType()))
                 );
 
-        return query.singleResult(qTransaction.count());
+        return (long) query.select(qTransaction.count()).fetchOne();
     }
 
     @Override
@@ -151,7 +151,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                         gameTransaction.statusGame.eq(StatusGame.Win).and(gameTransaction.idTransaction.eq(lastTransactionId))
                 );
 
-        return query.exists();
+        return (boolean) query.select(query.exists()).fetchOne();
     }
 
     @Override
@@ -175,7 +175,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize());
 
-        return query.list(qAdGame);
+        return query.select(qAdGame).fetch();
     }
 
     @Override
@@ -195,7 +195,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                         .and(qTransaction.id.eq(tr))
         );
 
-        return query.exists();
+        return (boolean) query.select(query.exists()).fetchOne();
     }
 
     @Override
@@ -210,7 +210,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                 qEmpreint.id.eq(tr)
         );
 
-        return query.singleResult(qCredit.count());
+        return (long) query.select(qCredit.count()).fetchOne();
     }
 
 
@@ -234,7 +234,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                         qPlayer.id.eq(playerId).and(qTransaction.instanceOfAny(qCreditAdGame.getType(), qCreditLostMicroPurchase.getType()))
                 );
 
-        return query.singleResult(qTransaction.count());
+        return (long) query.select(qTransaction.count()).fetchOne();
     }
 
     @Override
@@ -253,7 +253,7 @@ public class TransactionDao extends GenericDaoJpa<Transaction, Long> implements 
                         .and(qEmpreint.status.in(EmpreintStatus.WAITING,EmpreintStatus.STARTED))
                         .and(qPlayer.eq(player))
         );
-        return query.uniqueResult(qEmpreint.adAmountLeft.sum());
+        return (Integer) query.select(qEmpreint.adAmountLeft.sum()).fetchOne();
     }
 
 

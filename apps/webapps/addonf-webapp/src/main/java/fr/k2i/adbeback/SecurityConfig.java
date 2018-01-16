@@ -60,7 +60,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
                     throws IOException, ServletException {
 
-                if (applyAnonymousForThisRequest((HttpServletRequest) req)) {
+                //if (applyAnonymousForThisRequest((HttpServletRequest) req)) {
 
                     addAttributesToSession((HttpServletRequest)req);
 
@@ -77,7 +77,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                                     + SecurityContextHolder.getContext().getAuthentication() + "'");
                         }
                     }
-                }
+                //}
 
                 chain.doFilter(req, res);
             }

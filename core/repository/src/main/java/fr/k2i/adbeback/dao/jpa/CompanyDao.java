@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.QBrand;
 import fr.k2i.adbeback.core.business.company.Company;
 import fr.k2i.adbeback.core.business.company.QCompany;
@@ -23,7 +23,7 @@ public class CompanyDao extends GenericDaoJpa<Company, Long> implements ICompany
     public Company findByUser(User user) {
         QCompany company = QCompany.company;
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Company> query = new JPAQuery(getEntityManager());
 
 
         if (user instanceof MediaUser) {
@@ -41,7 +41,7 @@ public class CompanyDao extends GenericDaoJpa<Company, Long> implements ICompany
             query.from(agency).join(agency.users,qAgencyUser).where(qAgencyUser.eq(agencyUser));
         }
 
-        return query.uniqueResult(company);
+        return query.select(company).fetchOne();
     }
 
 }

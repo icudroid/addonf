@@ -1,7 +1,7 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import org.springframework.stereotype.Repository;
 
@@ -45,43 +45,43 @@ public class GooseLevelDao extends GenericDaoJpa<GooseLevel, Long> implements fr
 
             query.where(expression);
 
-        return query.list(gooseLevel);
+        return query.select(gooseLevel).fetch();
     }
 
 
     @Override
     public LotteryGooseLevel findLotteryForNbAds(Integer nbAds) {
         QLotteryGooseLevel gooseLevel = QLotteryGooseLevel.lotteryGooseLevel;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<LotteryGooseLevel> query = new JPAQuery(getEntityManager());
         query.from(gooseLevel)
                 .where(
                         gooseLevel.minScore.eq(nbAds)
                 );
-        return query.singleResult(gooseLevel);
+        return query.select(gooseLevel).fetchOne();
 
     }
 
     @Override
     public SingleGooseLevel findForNbAds(Integer nbAds) {
         QSingleGooseLevel gooseLevel = QSingleGooseLevel.singleGooseLevel;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<SingleGooseLevel> query = new JPAQuery(getEntityManager());
         query.from(gooseLevel)
                 .where(
                        gooseLevel.minScore.eq(nbAds)
                 );
-        return query.singleResult(gooseLevel);
+        return query.select(gooseLevel).fetchOne();
 
     }
 
     @Override
     public DiceGooseLevel findDiceLevelForNbAds(Integer nbAds) {
         QDiceGooseLevel gooseLevel = QDiceGooseLevel.diceGooseLevel;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<SingleGooseLevel> query = new JPAQuery(getEntityManager());
         query.from(gooseLevel)
                 .where(
                         gooseLevel.maxScore.eq(nbAds)
                 );
-        return query.singleResult(gooseLevel);
+        return query.select(gooseLevel).fetchOne();
 
     }
 

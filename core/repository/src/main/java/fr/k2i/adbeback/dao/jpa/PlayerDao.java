@@ -1,7 +1,7 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.jpa.impl.JPAUpdateClause;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import fr.k2i.adbeback.core.business.goosegame.GooseToken;
 import fr.k2i.adbeback.core.business.goosegame.QGooseToken;
 import fr.k2i.adbeback.core.business.player.Player;
@@ -43,7 +43,7 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
         JPAQuery query = new JPAQuery(getEntityManager());
         QPlayer player = QPlayer.player;
         query.from(player).orderBy(player.username.upper().asc());
-        return query.list(player);
+        return query.select(player).fetch();
     }
 
 
@@ -61,7 +61,7 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
         QPlayer player = QPlayer.player;
         query.from(player).where(player.email.eq(email));
 
-        List<Player> users = query.list(player);
+        List<Player> users = query.select(player).fetch();
         if (users == null || users.isEmpty()) {
             return null;
         } else {
@@ -73,23 +73,23 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
     @Override
     public GooseToken getPlayerGooseToken(Long idPlayer, Long idGooseLevel) {
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<GooseToken> query = new JPAQuery(getEntityManager());
         QGooseToken gooseToken = QGooseToken.gooseToken;
         query.from(gooseToken).where(gooseToken.player.id.eq(idPlayer),gooseToken.gooseCase.level.id.eq(idGooseLevel));
 
-        return query.uniqueResult(gooseToken);
+        return query.select(gooseToken).fetchOne();
     }
 
     @Override
     public Player findByEmailorUserName(String username) {
         QPlayer player = QPlayer.player;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Player> query = new JPAQuery(getEntityManager());
         query.from(player)
                 .where(
                         player.username.eq(username).or(player.email.eq(username))
                 );
 
-        return query.uniqueResult(player);
+        return query.select(player).fetchOne();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class PlayerDao extends GenericDaoJpa<Player, Long> implements fr.k2i.adb
         JPAQuery query = new JPAQuery(getEntityManager());
         QAnonymPlayer anonymPlayer = QAnonymPlayer.anonymPlayer;
         query.from(anonymPlayer).orderBy(anonymPlayer.username.upper().asc());
-        return query.exists();
+        return (boolean) query.select(query.exists()).fetchOne();
     }
 
     /**

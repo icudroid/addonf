@@ -1,6 +1,7 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.game.QAdGameTransaction;
 import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.dao.IMediaDao;
@@ -22,10 +23,10 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
     public Media findByExtId(String idPartnerExt) {
         QMedia media = QMedia.media;
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Media> query = new JPAQuery(getEntityManager());
         query.from(media).where(media.extId.eq(idPartnerExt));
 
-        return query.uniqueResult(media);
+        return query.select(media).fetchOne();
     }
 
 
@@ -33,10 +34,10 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
     public Media findByMediaUser(MediaUser user) {
         QMedia media = QMedia.media;
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Media> query = new JPAQuery(getEntityManager());
         query.from(media).where(media.user.eq(user));
 
-        return query.uniqueResult(media);
+        return query.select(media).fetchOne();
     }
 
     @Override
@@ -44,11 +45,11 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         QMedia media = QMedia.media;
         QCategoryPrice qCategoryPrice = QCategoryPrice.categoryPrice;
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<CategoryPrice> query = new JPAQuery(getEntityManager());
         query.from(media).join(media.minPriceByMediaType,qCategoryPrice)
                 .where(media.id.eq(idMedia).and(qCategoryPrice.category.key.eq(categoryKey).and(qCategoryPrice.mediaType.eq(mediaType))));
 
-        return query.uniqueResult(qCategoryPrice);
+        return query.select(qCategoryPrice).fetchOne();
     }
 
 
@@ -57,7 +58,7 @@ public class MediaDao extends GenericDaoJpa<Media, Long> implements IMediaDao {
         QAdGameTransaction adGameTransaction = QAdGameTransaction.adGameTransaction;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(adGameTransaction).where(adGameTransaction.media.extId.eq(idPartnerExt).and(adGameTransaction.idTransaction.eq(idTransactionExt)));
-        return query.exists();
+        return (boolean) query.select(query.exists()).fetchOne();
     }
 }
 

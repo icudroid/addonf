@@ -34,7 +34,7 @@ task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates
     classpath = configurations.compile + configurations.querydslapt
     options.compilerArgs = [
             "-proc:only",
-            "-processor", "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
     ]
     destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
 }
@@ -60,5 +60,5 @@ idea {
     }
 }
 
-startScripts.enabled = false
+////startScripts.enabled = false
 bootRepackage.enabled = false

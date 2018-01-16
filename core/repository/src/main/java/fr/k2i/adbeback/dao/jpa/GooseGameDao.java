@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +41,7 @@ public class GooseGameDao extends GenericDaoJpa<GooseGame, Long> implements fr.k
 
 	public GooseLevel getNextLevel(GooseLevel level) throws Exception {
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<GooseLevel> query = new JPAQuery(getEntityManager());
         QGooseLevel gooseLevel = QGooseLevel.gooseLevel;
 
 
@@ -53,7 +53,7 @@ public class GooseGameDao extends GenericDaoJpa<GooseGame, Long> implements fr.k
         query.from(gooseLevel).where(gooseLevel.level.eq(l));
 
 
-        return query.uniqueResult(gooseLevel);
+        return query.select(gooseLevel).fetchOne();
 	}
 
 

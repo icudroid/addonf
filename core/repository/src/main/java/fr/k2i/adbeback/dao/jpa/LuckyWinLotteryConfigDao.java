@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.game.lottery.LuckyWinLotteryConfig;
 import fr.k2i.adbeback.core.business.game.lottery.QLuckyWinLottery;
 import fr.k2i.adbeback.core.business.game.lottery.QLuckyWinLotteryConfig;
@@ -29,12 +29,12 @@ public class LuckyWinLotteryConfigDao extends GenericDaoJpa<LuckyWinLotteryConfi
 
     @Override
     public LuckyWinLotteryConfig findByPrice(Double price) {
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<LuckyWinLotteryConfig> query = new JPAQuery(getEntityManager());
 
         QLuckyWinLotteryConfig qLuckyWinLotteryConfig =   QLuckyWinLotteryConfig.luckyWinLotteryConfig;
         query.from(qLuckyWinLotteryConfig)
             .where(qLuckyWinLotteryConfig.minPrice.goe(price).and(qLuckyWinLotteryConfig.maxPrice.loe(price)));
-        return query.uniqueResult(qLuckyWinLotteryConfig);
+        return query.select(qLuckyWinLotteryConfig).fetchOne();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class LuckyWinLotteryConfigDao extends GenericDaoJpa<LuckyWinLotteryConfi
         query.from(qLuckyWinLotteryConfig).join(qLuckyWinLotteryConfig.lotteries,qLuckyWinLottery)
                 .where(qLuckyWinLotteryConfig.eq(config));
 
-        return query.singleResult(qLuckyWinLottery.count());
+        return (Long) query.select(qLuckyWinLottery.count()).fetchOne();
 
     }
 }

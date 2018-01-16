@@ -6,5 +6,5 @@ dependencies {
   compile project(':core:domain')
 }
 
-startScripts.enabled = false
+//startScripts.enabled = false
 bootRepackage.enabled = false

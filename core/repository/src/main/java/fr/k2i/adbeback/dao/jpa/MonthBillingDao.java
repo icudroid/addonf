@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.company.Company;
 import fr.k2i.adbeback.core.business.company.billing.MonthBilling;
 import fr.k2i.adbeback.core.business.company.billing.QMonthBilling;
@@ -23,7 +23,7 @@ public class MonthBillingDao extends GenericDaoJpa<MonthBilling, Long> implement
     public MonthBilling findByMonth(Company company, int month, int year) {
         QMonthBilling monthBilling = QMonthBilling.monthBilling;
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<MonthBilling> query = new JPAQuery(getEntityManager());
 
         query.from(monthBilling).where(
                 monthBilling.company.eq(company),
@@ -31,7 +31,7 @@ public class MonthBillingDao extends GenericDaoJpa<MonthBilling, Long> implement
                 monthBilling.month.year.eq(year)
         );
 
-        return query.uniqueResult(monthBilling);
+        return query.select(monthBilling).fetchOne();
     }
 }
 

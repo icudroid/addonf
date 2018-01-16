@@ -3,7 +3,7 @@ package fr.k2i.adbeback.dao.jpa;
 
 import java.util.List;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.player.QRole;
 import fr.k2i.adbeback.dao.ILookupDao;
 import org.springframework.stereotype.Repository;
@@ -31,7 +31,7 @@ public class LookupDao extends GenericDaoJpa<Role, Long> implements ILookupDao {
         log.debug("Retrieving all role names...");
         JPAQuery query = new JPAQuery(getEntityManager());
         QRole role = QRole.role;
-        return query.from(role).list(role);
+        return query.from(role).select(role).fetch();
     }
 }
 

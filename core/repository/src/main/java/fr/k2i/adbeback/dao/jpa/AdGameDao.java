@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.game.*;
@@ -45,7 +45,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
         QAdChoise qAdChoise = QAdChoise.adChoise;
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(qAdChoise).where(qAdChoise.generatedBy.eq(adRule));
-          return query.exists();
+          return (boolean) query.select(query.exists()).fetchOne();
     }
 
 
@@ -69,7 +69,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
                     transaction.statusGame.eq(StatusGame.Win)
             );
 
-            res.add(query.uniqueResult(transaction.amount.sum()));
+            res.add((Double) query.select(transaction.amount.sum()).fetchOne());
             plusHours++;
             begin = DateUtils.asLocalDateTime(date).plusHours(plusHours);
         }while (begin.isAfter(end));
@@ -94,7 +94,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
                 transaction.statusGame.in(statusGame)
         );
         query.orderBy(transaction.generated.asc());
-        return query.list(transaction);
+        return query.select(transaction).fetch();
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
                 transaction.generated.between(DateUtils.asDate(start),DateUtils.asDate(end))
         );
 
-        long count = query.count();
+        long count = query.fetchCount();
 
         query.orderBy(transaction.generated.asc());
 
@@ -119,7 +119,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        return new PageImpl<AdGameTransaction>(query.list(transaction),pageable,count);
+        return new PageImpl<AdGameTransaction>(query.select(transaction).fetch(),pageable,count);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
                 transaction.statusGame.eq(StatusGame.Win)
         );
 
-        return query.count();
+        return query.fetchCount();
     }
 
     @Override
@@ -155,7 +155,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
                 transaction.statusGame.in(StatusGame.Playing,StatusGame.Lost)
         );
 
-        return query.count();
+        return query.fetchCount();
     }
 
     @Override
@@ -173,7 +173,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
                 transaction.statusGame.eq(StatusGame.Win)
         );
 
-        return query.uniqueResult(transaction.amount.sum());
+        return (Double) query.select(transaction.amount.sum()).fetchOne();
     }
 
     @Override
@@ -192,7 +192,7 @@ public class AdGameDao extends GenericDaoJpa<AbstractAdGame, Long> implements fr
 
         BigDecimal sum = new BigDecimal(0);
 
-        List<AdChoise> list = query.list(adChoise);
+        List<AdChoise> list = query.select(adChoise).fetch();
         for (AdChoise choise : list) {
             Integer number = choise.getNumber();
             Double winBidPrice = choise.getWinBidPrice();

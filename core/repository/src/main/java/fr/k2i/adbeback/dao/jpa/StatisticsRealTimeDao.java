@@ -1,9 +1,10 @@
 package fr.k2i.adbeback.dao.jpa;
 
 import com.google.common.collect.Lists;
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.QBrand;
@@ -92,7 +93,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         List<StatisticsAgeSexResponse> res = new ArrayList<StatisticsAgeSexResponse>();
 
-        List<Tuple> tuples = query.list(player.sex, player.ageGroup, qAdResponse, response.count());
+        List<Tuple> tuples = query.select(player.sex, player.ageGroup, qAdResponse, response.count()).fetch();
         for (Tuple tuple : tuples) {
             AgeGroup ageGroup = tuple.get(player.ageGroup);
             Sex sex = tuple.get(player.sex);
@@ -134,7 +135,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         List<StatisticsAgeSexBrand> res = new ArrayList<StatisticsAgeSexBrand>();
 
-        List<Tuple> tuples = query.list(player.sex,player.ageGroup,brand,response.count());
+        List<Tuple> tuples = query.select(player.sex,player.ageGroup,brand,response.count()).fetch();
 
         for (Tuple tuple : tuples) {
             AgeGroup ageGroup = tuple.get(player.ageGroup);
@@ -196,24 +197,21 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
             QOpenPossibility openPossibility = possibility.as(QOpenPossibility.class);
 
 
-
-            JPASubQuery subQuery = new JPASubQuery();
-            subQuery.from(subResponse).join(subResponse.adScore).join(subResponse.adScore.game,game).join(subResponse.responses, possibility).where(
+            JPQLQuery<AdResponsePlayer> subQuery = JPAExpressions.select(subResponse).from(subResponse).join(subResponse.adScore).join(subResponse.adScore.game, game).join(subResponse.responses, possibility).where(
                     subResponse.adService.eq(rule)
                             .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
                             .and(openPossibility.generatedBy.in(responses4Query))
             ).groupBy(subResponse).having(subResponse.responses.size().eq(responses4Query.size())).distinct();
 
 
-
             JPAQuery query = new JPAQuery(entityManager);
             query.from(game).join(game.score,score).join(game.score.answers,response).join(game.player, player).where(
-                    response.in(subQuery.list(subResponse))
+                    response.in(subQuery)
             ).groupBy(player.sex, player.ageGroup);
 
 
             query.distinct();
-            List<Tuple> tuples = query.list(player.sex, player.ageGroup,response.count());
+            List<Tuple> tuples = query.select(player.sex, player.ageGroup,response.count()).fetch();
 
 
             List statistics = stat.getStatistics();
@@ -250,7 +248,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
                         .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
         );
 
-        return  query.uniqueResult(adChoise.winBidPrice.avg());
+        return (Double) query.select(adChoise.winBidPrice.avg()).fetchOne();
     }
 
 
@@ -276,7 +274,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
 
-        List<Tuple> tuples = query.list(player.sex,player.ageGroup,response.count());
+        List<Tuple> tuples = query.select(player.sex,player.ageGroup,response.count()).fetch();
 
         for (Tuple tuple : tuples) {
             AgeGroup ageGroup = tuple.get(player.ageGroup);
@@ -310,7 +308,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.groupBy(player.sex,player.ageGroup);
 
-        return query.list(player.sex,player.ageGroup,response.count());
+        return query.select(player.sex,player.ageGroup,response.count()).fetch();
 
     }
 
@@ -336,7 +334,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
 
-        List<Tuple> tuples = query.list(player.sex,player.ageGroup,response.count());
+        List<Tuple> tuples = query.select(player.sex,player.ageGroup,response.count()).fetch();
 
         for (Tuple tuple : tuples) {
             AgeGroup ageGroup = tuple.get(player.ageGroup);
@@ -369,7 +367,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.groupBy(player.sex,player.ageGroup);
 
-        return query.list(player.sex,player.ageGroup,response.count());
+        return query.select(player.sex,player.ageGroup,response.count()).fetch();
     }
 
     @Override
@@ -394,7 +392,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         List<StatisticsAgeSex> res = new ArrayList<StatisticsAgeSex>();
 
-        List<Tuple> tuples = query.list(player.sex,player.ageGroup,response.count());
+        List<Tuple> tuples = query.select(player.sex,player.ageGroup,response.count()).fetch();
 
         for (Tuple tuple : tuples) {
             AgeGroup ageGroup = tuple.get(player.ageGroup);
@@ -427,7 +425,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
 
         query.groupBy(player.sex,player.ageGroup);
 
-        return query.list(player.sex,player.ageGroup,response.count());
+        return query.select(player.sex,player.ageGroup,response.count()).fetch();
     }
 
     @Transactional
@@ -447,7 +445,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
         );
 
 
-        return query.uniqueResult(response.count());
+        return (Long) query.select(response.count()).fetchOne();
     }
 
 
@@ -470,7 +468,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
         );
 
 
-        return query.uniqueResult(response.count());
+        return (Long) query.select(response.count()).fetchOne();
     }
 
     @Transactional
@@ -487,7 +485,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
                 .and(game.generated.between(DateUtils.asDate(now), DateUtils.asDate(now.plusDays(1))))
         );
         query.distinct();
-        return query.uniqueResult(response.count());
+        return (Long) query.select(response.count()).fetchOne();
     }
 
     @Override
@@ -505,7 +503,7 @@ public class StatisticsRealTimeDao  implements IStatisticsRealTimeDao {
         );
 
         query.distinct();
-        return query.uniqueResult(response.count());
+        return (Long) query.select(response.count()).fetchOne();
 
     }
 

@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.player.WebUser;
 import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.dao.IWebUserDao;
@@ -62,7 +62,7 @@ public class AnnonceurUserDao extends GenericDaoJpa<User, Long> implements UserD
                         )
                 );
 
-        List<User> users = query.list(user);
+        List<User> users = query.select(user).fetch();
 
         if (users == null || users.isEmpty()) {
             throw new UsernameNotFoundException("user '" + username + "' not found...");
@@ -100,7 +100,7 @@ public class AnnonceurUserDao extends GenericDaoJpa<User, Long> implements UserD
                                 )
                 );
 
-        List<User> users = query.list(user);
+        List<User> users = query.select(user).fetch();
 
         if (users == null || users.isEmpty()) {
             throw new UsernameNotFoundException("user '" + username + "' not found...");

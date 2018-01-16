@@ -2,7 +2,7 @@ package fr.k2i.adbeback.dao.jpa;
 
 import java.util.List;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.player.QRole;
 import fr.k2i.adbeback.dao.IRoleDao;
 import org.springframework.stereotype.Repository;
@@ -34,7 +34,7 @@ public class RoleDao extends GenericDaoJpa<Role, Long> implements IRoleDao {
         QRole role = QRole.role;
         query.from(role).where(role.name.eq(rolename));
 
-        List<Role> roles = query.list(role);
+        List<Role> roles = query.select(role).fetch();
         if (roles.isEmpty()) {
             return null;
         } else {

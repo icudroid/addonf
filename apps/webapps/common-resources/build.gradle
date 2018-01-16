@@ -26,5 +26,5 @@ exclude(module: 'commons-logging')
     compile group: 'org.springframework.webflow', name: 'spring-js-resources', version:'2.4.1.RELEASE'
 }
 
-startScripts.enabled = false
+//startScripts.enabled = false
 bootRepackage.enabled = false

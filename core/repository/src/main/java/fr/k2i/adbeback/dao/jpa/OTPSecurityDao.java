@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.otp.*;
 import fr.k2i.adbeback.core.business.user.User;
@@ -23,9 +23,9 @@ public class OTPSecurityDao extends GenericDaoJpa<OTPSecurity, Long> implements 
     @Override
     public OTPUserSecurityConfirm findByUser(User user) {
         QOTPUserSecurityConfirm securityConfirm = QOTPUserSecurityConfirm.oTPUserSecurityConfirm;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<OTPUserSecurityConfirm> query = new JPAQuery(getEntityManager());
         query.from(securityConfirm).where(securityConfirm.user.id.eq(user.getId()));
 
-        return query.uniqueResult(securityConfirm);
+        return query.select(securityConfirm).fetchOne();
     }
 }

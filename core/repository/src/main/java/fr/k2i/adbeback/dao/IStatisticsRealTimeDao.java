@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao;
 
-import com.mysema.query.Tuple;
+import com.querydsl.core.Tuple;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.rule.AdService;
 import fr.k2i.adbeback.core.business.ad.rule.BrandRule;

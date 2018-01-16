@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Brand;
 import fr.k2i.adbeback.core.business.ad.QAd;
 import fr.k2i.adbeback.core.business.ad.QBrand;
@@ -45,16 +45,16 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
             query.where(qBrand.notIn(noDisplayWith));
         }
 
-        return query.list(qBrand);
+        return query.select(qBrand).fetch();
 
     }
 
     @Override
     public Brand findByName(String name) {
         QBrand qBrand = QBrand.brand;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Brand> query = new JPAQuery(getEntityManager());
         query.from(qBrand).where(qBrand.name.eq(name));
-        return query.uniqueResult(qBrand);
+        return query.select(qBrand).fetchOne();
     }
 
 /*    @Override
@@ -68,9 +68,9 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
     @Override
     public Brand findBySiret(String siret) {
         QBrand qBrand = QBrand.brand;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Brand> query = new JPAQuery(getEntityManager());
         query.from(qBrand).where(qBrand.siret.eq(siret));
-        return query.uniqueResult(qBrand);
+        return query.select(qBrand).fetchOne();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class BrandDao extends GenericDaoJpa<Brand, Long> implements fr.k2i.adbeb
                     ad.startDate.loe(DateUtils.asDate(now)),
                     ad.endDate.goe(DateUtils.asDate(now))
             );
-        return query.list(qBrand);
+        return query.select(qBrand).fetch();
     }
 }
 

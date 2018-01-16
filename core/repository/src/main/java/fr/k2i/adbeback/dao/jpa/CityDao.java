@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.rule.AdRule;
 import fr.k2i.adbeback.core.business.country.City;
 import fr.k2i.adbeback.core.business.country.QCity;
@@ -28,7 +28,7 @@ public class CityDao extends GenericDaoJpa<City, Long> implements ICityDao {
 
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(city).where(city.zipcode.eq(zipcode).and(city.country.code.eq(code)));
-        return query.list(city);
+        return query.select(city).fetch();
     }
 
 
@@ -38,16 +38,16 @@ public class CityDao extends GenericDaoJpa<City, Long> implements ICityDao {
 
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(city).where(city.zipcode.eq(zipcode));
-        return query.list(city);
+        return query.select(city).fetch();
     }
 
     @Override
     public City findByZipcodeAndCityAndCountry_Code(String zipcode, String city, String code) {
         QCity qcity = QCity.city1;
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<City> query = new JPAQuery(getEntityManager());
         query.from(qcity).where(qcity.zipcode.eq(zipcode).and(qcity.country.code.eq(code)));
-        return query.uniqueResult(qcity);
+        return query.select(qcity).fetchOne();
 
     }
 
@@ -57,7 +57,7 @@ public class CityDao extends GenericDaoJpa<City, Long> implements ICityDao {
 
         JPAQuery query = new JPAQuery(getEntityManager());
         query.from(city).where(city.city.startsWithIgnoreCase(name));
-        return query.list(city);
+        return query.select(city).fetch();
 
     }
 }

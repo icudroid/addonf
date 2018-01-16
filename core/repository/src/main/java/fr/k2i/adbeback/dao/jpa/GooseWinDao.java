@@ -2,7 +2,7 @@ package fr.k2i.adbeback.dao.jpa;
 
 import java.util.List;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.goosegame.QGooseWin;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +31,9 @@ public class GooseWinDao extends GenericDaoJpa<GooseWin, Long> implements fr.k2i
 	public List<GooseWin> getLastWinners() throws Exception {
         JPAQuery query = new JPAQuery(getEntityManager());
         QGooseWin gooseWin =  QGooseWin.gooseWin;
-        return query.from(gooseWin).orderBy(gooseWin.windate.desc()).limit(25).list(gooseWin);
+        query.from(gooseWin).orderBy(gooseWin.windate.desc()).limit(25);
+
+        return query.select(gooseWin).fetch();
 	}
 
 }

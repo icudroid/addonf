@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.game.QAdGameTransaction;
 import fr.k2i.adbeback.core.business.user.*;
 import fr.k2i.adbeback.dao.ICategoryDao;
@@ -23,10 +23,10 @@ public class CategoryDao extends GenericDaoJpa<Category, Long> implements ICateg
 
         QCategory category = QCategory.category;
 
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Category> query = new JPAQuery(getEntityManager());
         query.from(category).where(category.key.eq(key));
 
-        return query.uniqueResult(category);
+        return query.select(category).fetchOne();
     }
 }
 

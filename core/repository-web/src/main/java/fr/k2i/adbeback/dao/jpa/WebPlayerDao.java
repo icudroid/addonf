@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.player.Player;
 import fr.k2i.adbeback.core.business.player.QPlayer;
 import fr.k2i.adbeback.core.business.player.WebUser;
@@ -54,7 +54,7 @@ public class WebPlayerDao extends GenericDaoJpa<Player, Long> implements UserDet
                         user.email.eq(username).or(user.username.eq(username))
                 );
 
-        List<Player> users = query.list(user);
+        List<Player> users = query.select(user).fetch();
 
         if (users == null || users.isEmpty()) {
             throw new UsernameNotFoundException("user '" + username + "' not found...");

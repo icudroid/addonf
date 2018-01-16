@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.Ad;
 import fr.k2i.adbeback.core.business.ad.QViewedAd;
 import fr.k2i.adbeback.core.business.ad.ViewedAd;
@@ -29,13 +29,13 @@ public class ViewedAdDao extends GenericDaoJpa<ViewedAd, Long> implements IViewe
     @Override
     public ViewedAd findForToday(Player currentPlayer, AdService adService) {
         QViewedAd viewedAd = QViewedAd.viewedAd;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<ViewedAd> query = new JPAQuery(getEntityManager());
         query.from(viewedAd)
                 .where(
                         viewedAd.player.eq(currentPlayer).and(viewedAd.adRule.eq(adService)).and(viewedAd.date.eq(new Date()))
                 );
 
-        return query.uniqueResult(viewedAd);
+        return query.select(viewedAd).fetchOne();
     }
 
     @Override
@@ -47,6 +47,6 @@ public class ViewedAdDao extends GenericDaoJpa<ViewedAd, Long> implements IViewe
                         viewedAd.date.eq(new Date()).and(viewedAd.adRule.ad.eq(ad))
                 );
 
-        return Long.valueOf(query.uniqueResult(viewedAd.nb.sum()));
+        return Long.valueOf((String) query.select(viewedAd.nb.sum()).fetchOne());
     }
 }

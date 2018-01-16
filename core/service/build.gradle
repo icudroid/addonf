@@ -18,5 +18,5 @@ dependencies {
 }
 
 
-startScripts.enabled = false
+//startScripts.enabled = false
 bootRepackage.enabled = false

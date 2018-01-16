@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.ad.QSector;
 import fr.k2i.adbeback.core.business.ad.Sector;
 import fr.k2i.adbeback.core.business.game.QAdGameTransaction;
@@ -25,9 +25,9 @@ public class SectorDao extends GenericDaoJpa<Sector, Long> implements ISectorDao
     @Override
     public Sector findbyCode(String code) {
         QSector sector = QSector.sector;
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Sector> query = new JPAQuery(getEntityManager());
         query.from(sector).where(sector.code.eq(code));
-        return query.uniqueResult(sector);
+        return query.select(sector).fetchOne();
     }
 }
 

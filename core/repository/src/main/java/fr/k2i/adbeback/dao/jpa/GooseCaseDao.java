@@ -1,6 +1,6 @@
 package fr.k2i.adbeback.dao.jpa;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import fr.k2i.adbeback.core.business.goosegame.*;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,13 +32,13 @@ public class GooseCaseDao extends GenericDaoJpa<GooseCase, Long> implements fr.k
     }
 
 	public GooseCase getByNumber(Integer number,GooseLevel level) throws Exception {
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<GooseCase> query = new JPAQuery(getEntityManager());
 
         QGooseCase gooseCase = QGooseCase.gooseCase;
 
         query.from(gooseCase).where(gooseCase.number.eq(number),gooseCase.level.eq(level));
 
-        return query.uniqueResult(gooseCase);
+        return query.select(gooseCase).fetchOne();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -60,7 +60,7 @@ public class GooseCaseDao extends GenericDaoJpa<GooseCase, Long> implements fr.k
 
         query.from(gooseCase).where(gooseCase.level.eq(level),gooseCase.number.in(nums)).orderBy(gooseCase.number.asc());
 
-        return query.list(gooseCase);
+        return query.select(gooseCase).fetch();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,7 +72,7 @@ public class GooseCaseDao extends GenericDaoJpa<GooseCase, Long> implements fr.k
 
         query.from(gooseCase).where(gooseCase.level.eq(level)).orderBy(gooseCase.number.asc());
 
-        return query.list(gooseCase);
+        return query.select(gooseCase).fetch();
 
 	}
 
